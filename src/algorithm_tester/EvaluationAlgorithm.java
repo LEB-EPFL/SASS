@@ -20,7 +20,7 @@
 package algorithm_tester;
 
 import ij.ImageStack;
-
+import java.util.HashMap;
 /**
  *
  * @author stefko
@@ -34,9 +34,7 @@ public interface EvaluationAlgorithm {
     
     public void processStack();
     
-    public double getOutputValue(int image_no);
-    
-    public double getRawOutputValue(int image_no);
+    public HashMap<String, Double> getOutputValues(int image_no);
     
     public String getName();
     

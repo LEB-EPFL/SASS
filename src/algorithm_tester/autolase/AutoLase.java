@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester;
+package algorithm_tester.autolase;
 
+import algorithm_tester.EvaluationAlgorithm;
 import ij.ImageStack;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 /**
  *
  * @author stefko
@@ -43,7 +43,7 @@ public class AutoLase implements EvaluationAlgorithm {
     
     @Override
     public String getName() {
-        return "Original_AutoLase";
+        return "AutoLase";
     }
     
     @Override
@@ -63,19 +63,25 @@ public class AutoLase implements EvaluationAlgorithm {
     }
 
     @Override
-    public double getOutputValue(int image_no) {
-        return value_list.get(image_no);
+    public HashMap<String, Double> getOutputValues(int image_no) {
+        HashMap<String, Double> map = new LinkedHashMap<String, Double>();
+        map.put("on-time", value_list.get(image_no));
+        map.put("raw_on-time", raw_value_list.get(image_no));
+        return map;
     }
 
-    @Override
-    public double getRawOutputValue(int image_no) {
-        return raw_value_list.get(image_no);
-    }
 
-
-    
 }
-
+/**
+ * This class estimates the density of activations by sampling a Camera at 
+ * regular intervals (default 20ms). The density at a particular point relates 
+ * to the maximum time a certain pixel is "on", or above a certain threshold. 
+ * The density is calculated as a moving average (default 1s).
+ * 
+ * The code only works for 2 bytes per pixel cameras for now. 
+ * 
+ * @author Thomas Pengo
+ */
 class AutoLaseAnalyzer {
     public static final int DEFAULT_THRESHOLD = 5500;
     public static final int DEFAULT_WAIT_TIME = 20;

@@ -19,12 +19,14 @@
  */
 package algorithm_tester;
 
+import algorithm_tester.autolase.AutoLase;
+import algorithm_tester.spotcounter.SpotCounter;
 import ij.ImageStack;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -50,7 +52,9 @@ public class AlgorithmTester {
         analyzers = new ArrayList<EvaluationAlgorithm>();
         
         addAnalyzer(new AutoLase());
+        addAnalyzer(new SpotCounter());
         
+        /*
         // File chooser dialog
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(null);
@@ -60,17 +64,24 @@ public class AlgorithmTester {
         // Set the selected file and show in label
         System.out.print("Loading selected .tif file.");
         File tiff_file = fc.getSelectedFile();
+        /*/
+        File tiff_file = new File("C:\\Users\\stefko\\Desktop\\sim400orig.tif");
+        //*/
+        
         loadTiff(tiff_file);
-        System.out.print("Tif file loaded.");
+        System.out.format("Tif file loaded: %s\n",tiff_file.getAbsolutePath());
         for (EvaluationAlgorithm analyzer: analyzers) {
             System.out.format("Starting analyzer: %s\n",analyzer.getClass().getName());
             analyzer.setImageStack(stack);
             System.out.print("ImageStack set. Starting analysis...\n");
+            System.out.format("Stack size: %d\n", stack.getSize());
             long time_start = System.currentTimeMillis();
             analyzer.processStack();
             long time_end = System.currentTimeMillis();
             System.out.format("Analysis finished in %d ms.\n",time_end - time_start);
         }
+        
+        /*
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         //set a default filename (this is where you default extension first comes in)
         fc.setSelectedFile(new File("output.csv"));
@@ -81,6 +92,10 @@ public class AlgorithmTester {
             return;
         }
         saveToCsv(fc.getSelectedFile());
+        /*/
+        saveToCsv(new File("C:\\Users\\stefko\\Desktop\\output.csv"));
+        //*/
+        
     }
     
     public void addAnalyzer(EvaluationAlgorithm analyzer) {
@@ -111,18 +126,30 @@ public class AlgorithmTester {
             Logger.getLogger(AlgorithmTester.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
-        writer.println("#Analyzer_names:");
+        
+        HashMap<String, Double> output_map;
+        
+        // Print header
+        writer.println("#Columns:");
         String analyzer_names = "frame_id,";
         for (EvaluationAlgorithm analyzer: analyzers) {
-            analyzer_names = analyzer_names.concat(",").concat(analyzer.getName());
+            output_map = analyzer.getOutputValues(0);
+                for (String key: output_map.keySet()) {
+                    analyzer_names = analyzer_names.concat(",").
+                    concat(analyzer.getName()).concat(":").concat(key);
+                }
         }
-        analyzer_names = analyzer_names.substring(0,analyzer_names.length()-1);
         writer.println(analyzer_names);
         
+        // Print data
         for (int i=0; i<stack.getSize(); i++) {
             String s = String.format("%d",i+1);
             for (EvaluationAlgorithm analyzer: analyzers) {
-                s = s.concat(String.format(",%f",analyzer.getOutputValue(i)));
+                output_map = analyzer.getOutputValues(i);
+                for (String key: output_map.keySet()) {
+                    s = s.concat(String.format(",%f",output_map.get(key)));
+                }
+                
             }
             writer.println(s);
         }

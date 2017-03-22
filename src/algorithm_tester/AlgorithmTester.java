@@ -51,23 +51,47 @@ public class AlgorithmTester {
     public void execute() {
         analyzers = new ArrayList<EvaluationAlgorithm>();
         
-        addAnalyzer(new AutoLase());
-        addAnalyzer(new SpotCounter());
+        AutoLase autolase = new AutoLase();
+        HashMap<String, Integer> autolase_params = new HashMap<String, Integer>();
+        autolase_params.put("threshold", 70);
+        autolase_params.put("averaging", 30);
+        autolase.setCustomParameters(autolase_params);
+        
+        SpotCounter spotcounter = new SpotCounter();
+        HashMap<String, Integer> spotcounter_params = new HashMap<String, Integer>();
+        spotcounter_params.put("noise-tolerance", 90);
+        spotcounter_params.put("box-size", 5);
+        spotcounter.setCustomParameters(spotcounter_params);
+        
+        
+        addAnalyzer(autolase);
+        addAnalyzer(spotcounter);
         
         //*
-        // File chooser dialog
+        // File chooser dialog for choosing tif stack
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        // Set the selected file and show in label
-        System.out.print("Loading selected .tif file.");
         File tiff_file = fc.getSelectedFile();
+        
+        // File chooser dialog for saving output csv
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        //set a default filename (this is where you default extension first comes in)
+        fc.setSelectedFile(new File("tester_output.csv"));
+        //Set an extension filter, so the user sees other XML files
+        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
+        returnVal = fc.showSaveDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File csv_output = fc.getSelectedFile();
+        
         /*/
         File tiff_file = new File("C:\\Users\\stefko\\Desktop\\sim400orig.tif");
         //*/
-        
+        System.out.print("Loading selected .tif file.");
         loadTiff(tiff_file);
         System.out.format("Tif file loaded: %s\n",tiff_file.getAbsolutePath());
         for (EvaluationAlgorithm analyzer: analyzers) {
@@ -80,18 +104,8 @@ public class AlgorithmTester {
             long time_end = System.currentTimeMillis();
             System.out.format("Analysis finished in %d ms.\n",time_end - time_start);
         }
-        
         //*
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        //set a default filename (this is where you default extension first comes in)
-        fc.setSelectedFile(new File("output.csv"));
-        //Set an extension filter, so the user sees other XML files
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
-        returnVal = fc.showSaveDialog(null);
-        if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        saveToCsv(fc.getSelectedFile());
+        saveToCsv(csv_output);
         /*/
         saveToCsv(new File("C:\\Users\\stefko\\Desktop\\output.csv"));
         //*/
@@ -127,11 +141,26 @@ public class AlgorithmTester {
             return;
         }
         
-        HashMap<String, Double> output_map;
         
+        HashMap<String, Integer> parameter_map;
+        // Print header: analyzer settings
+        writer.println("#Analyzer settings:");
+        String parameters = "";
+        for (EvaluationAlgorithm analyzer: analyzers) {
+            parameter_map = analyzer.getCustomParameters();
+                for (String key: parameter_map.keySet()) {
+                    parameters = parameters.
+                        concat(analyzer.getName()).concat(".").concat(key).
+                        concat(":").concat(parameter_map.get(key).toString()).
+                        concat(",");
+                }
+        }
+        writer.println(parameters);
+        
+        HashMap<String, Double> output_map;
         // Print header
         writer.println("#Columns:");
-        String analyzer_names = "frame_id,";
+        String analyzer_names = "frame-id";
         for (EvaluationAlgorithm analyzer: analyzers) {
             output_map = analyzer.getOutputValues(0);
                 for (String key: output_map.keySet()) {

@@ -42,19 +42,30 @@ import java.util.LinkedHashMap;
  */
 public class SpotCounter implements EvaluationAlgorithm {
     ImageStack stack;
-    private final ArrayList<Double> spot_counts;
-    private final ArrayList<Double> min_dists;
-    private final ArrayList<Double> mean_dists;
-    private final ArrayList<Double> p10_dists;
+    private ArrayList<Double> spot_counts;
+    private ArrayList<Double> min_dists;
+    private ArrayList<Double> mean_dists;
+    private ArrayList<Double> p10_dists;
     SpotCounterCore analyzer;
     
+    private HashMap<String, Integer> parameters;
+    private int noise_tolerance = 100;
+    private int box_size = 5;
+    
     public SpotCounter() {
+        parameters = new HashMap<String, Integer>();
+        parameters.put("noise-tolerance", noise_tolerance);
+        parameters.put("box-size", box_size);
+        init();
+    }
+    
+    private void init() {
         spot_counts = new ArrayList<Double>();
         min_dists = new ArrayList<Double>();
         mean_dists = new ArrayList<Double>();
         p10_dists = new ArrayList<Double>();
-        analyzer = new SpotCounterCore();
-    }
+        analyzer = new SpotCounterCore(noise_tolerance, box_size);
+    } 
     
     @Override
     public void setImageStack(ImageStack stack) {
@@ -87,6 +98,19 @@ public class SpotCounter implements EvaluationAlgorithm {
     @Override
     public String getName() {
         return "SpotCounter";
+    }
+
+    @Override
+    public void setCustomParameters(HashMap<String, Integer> map) {
+        noise_tolerance = map.get("noise-tolerance");
+        box_size = map.get("box-size");
+        parameters = map;
+        init();
+    }
+
+    @Override
+    public HashMap<String, Integer> getCustomParameters() {
+        return parameters;
     }
     
 }
@@ -121,8 +145,13 @@ class SpotCounterCore {
     private static final boolean outputAllSpots_ = false;
     private static final FindLocalMaxima.FilterType filter_
             = FindLocalMaxima.FilterType.NONE;
-    private static final int boxSize_ = 3;
-    private static final int noiseTolerance_ = 70;
+    private final int boxSize_;
+    private final int noiseTolerance_;
+    
+    public SpotCounterCore(int noiseTolerance, int boxSize) {
+        boxSize_ = boxSize;
+        noiseTolerance_ = noiseTolerance;
+    }
 
     public ResultsTable analyze(ImageProcessor ip) {
 

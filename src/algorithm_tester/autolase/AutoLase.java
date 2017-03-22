@@ -31,12 +31,24 @@ import java.util.LinkedHashMap;
  */
 public class AutoLase implements EvaluationAlgorithm {
     private ImageStack stack;
-    private final AutoLaseAnalyzer analyzer;
-    private final ArrayList<Double> value_list;
-    private final ArrayList<Double> raw_value_list;
+    private AutoLaseAnalyzer analyzer;
+    private ArrayList<Double> value_list;
+    private ArrayList<Double> raw_value_list;
+    private HashMap<String, Integer> parameters;
+    
+    private int threshold = 120;
+    private int averaging = 30;
     
     public AutoLase() {
-        analyzer = new AutoLaseAnalyzer();
+        parameters = new HashMap<String, Integer>();
+        parameters.put("threshold", threshold);
+        parameters.put("averaging", averaging);
+        
+        init();
+    }
+    
+    private void init() {
+        analyzer = new AutoLaseAnalyzer(threshold, averaging);
         value_list = new ArrayList<Double>();
         raw_value_list = new ArrayList<Double>();
     }
@@ -70,6 +82,19 @@ public class AutoLase implements EvaluationAlgorithm {
         return map;
     }
 
+    @Override
+    public void setCustomParameters(HashMap<String, Integer> map) {
+        threshold = map.get("threshold");
+        averaging = map.get("averaging");
+        parameters = map;
+        init();
+    }
+
+    @Override
+    public HashMap<String, Integer> getCustomParameters() {
+        return parameters;
+    }
+
 
 }
 /**
@@ -83,8 +108,8 @@ public class AutoLase implements EvaluationAlgorithm {
  * @author Thomas Pengo
  */
 class AutoLaseAnalyzer {
-    public static final int DEFAULT_THRESHOLD = 70;
-    public static final int NUM_ELEMS = 30;
+    public static final int threshold = 120;
+    public static final int averaging = 30;
     
     boolean running = true;
     boolean stopping = false;
@@ -92,14 +117,11 @@ class AutoLaseAnalyzer {
     double currentDensity = 0;
     float[] accumulator = null;
     long lastTime;
-    
-    int threshold = DEFAULT_THRESHOLD;
-    int fifoNumElems = NUM_ELEMS;
 
     ArrayDeque<Double> density_fifo;
     
-    public AutoLaseAnalyzer( ) {
-        this.density_fifo = new ArrayDeque<Double>(fifoNumElems);
+    public AutoLaseAnalyzer(int threshold, int averaging ) {
+        this.density_fifo = new ArrayDeque<Double>(averaging);
         lastTime = System.currentTimeMillis();
     }
     
@@ -149,7 +171,7 @@ class AutoLaseAnalyzer {
                 curd = accumulator[i];
 
         // Moving average estimate
-        if (density_fifo.size() == fifoNumElems)
+        if (density_fifo.size() == averaging)
             density_fifo.remove();
         density_fifo.offer(curd);
 

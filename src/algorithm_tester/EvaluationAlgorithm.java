@@ -34,6 +34,10 @@ public interface EvaluationAlgorithm {
     
     public void processStack();
     
+    public void setCustomParameters(HashMap<String, Integer> map);
+    
+    public HashMap<String, Integer> getCustomParameters();
+    
     public HashMap<String, Double> getOutputValues(int image_no);
     
     public String getName();

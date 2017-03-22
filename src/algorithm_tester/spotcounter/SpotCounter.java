@@ -29,8 +29,10 @@ import ij.process.ImageProcessor;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -42,11 +44,15 @@ public class SpotCounter implements EvaluationAlgorithm {
     ImageStack stack;
     private final ArrayList<Double> spot_counts;
     private final ArrayList<Double> min_dists;
+    private final ArrayList<Double> mean_dists;
+    private final ArrayList<Double> p10_dists;
     SpotCounterCore analyzer;
     
     public SpotCounter() {
         spot_counts = new ArrayList<Double>();
         min_dists = new ArrayList<Double>();
+        mean_dists = new ArrayList<Double>();
+        p10_dists = new ArrayList<Double>();
         analyzer = new SpotCounterCore();
     }
     
@@ -61,15 +67,19 @@ public class SpotCounter implements EvaluationAlgorithm {
         for (int i=1; i<=stack.getSize(); i++) {
             result = analyzer.analyze(stack.getProcessor(i));
             spot_counts.add(result.getValue("n", i-1));
-            min_dists.add(result.getValue("min_dist", i-1));
+            min_dists.add(result.getValue("min-distance", i-1));
+            mean_dists.add(result.getValue("mean-distance", i-1));
+            p10_dists.add(result.getValue("p10-distance", i-1));
         }
     }
 
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
-        map.put("spot_count", spot_counts.get(image_no));
-        map.put("min_dist", min_dists.get(image_no));
+        map.put("spot-count", spot_counts.get(image_no));
+        map.put("min-dist", min_dists.get(image_no));
+        map.put("mean-dist", mean_dists.get(image_no));
+        map.put("p10-dist", p10_dists.get(image_no));
         return map;
     }
 
@@ -112,7 +122,7 @@ class SpotCounterCore {
     private static final FindLocalMaxima.FilterType filter_
             = FindLocalMaxima.FilterType.NONE;
     private static final int boxSize_ = 3;
-    private static final int noiseTolerance_ = 1000;
+    private static final int noiseTolerance_ = 70;
 
     public ResultsTable analyze(ImageProcessor ip) {
 
@@ -130,8 +140,9 @@ class SpotCounterCore {
         pasN_ += 1;
         res_.addValue("n", ov.size());
         
-        // determine lowest distance
-        res_.addValue("min_dist", getLowestDistance(ov));
+        HashMap<String, Double> map = getFrameStats(ov);
+        for (String key: map.keySet())
+            res_.addValue(key, map.get(key));
         
         /*if (ov.size() > 0) {
             double sumRoiIntensities = 0;
@@ -168,12 +179,17 @@ class SpotCounterCore {
 
     }
     
-    private double getLowestDistance(Overlay ov) {
-        double min_dist2 = 10000.0;
+    private HashMap<String, Double> getFrameStats(Overlay ov) {
+        HashMap<String, Double> map = new LinkedHashMap<String, Double>();
+        
         double dist2;
+        double[] min_distances = new double[ov.size()];
         for (int i=0; i<ov.size(); i++) {
             Rectangle rect_i = ov.get(i).getBounds();
-            for (int j=i; j<ov.size(); j++) {
+            double min_dist2 = 1000000000.0;
+            for (int j=0; j<ov.size(); j++) {
+                if (i==j)
+                    continue;
                 Rectangle rect_j = ov.get(j).getBounds();
                 dist2 = ((rect_i.getCenterX() - rect_j.getCenterX())* 
                          (rect_i.getCenterX() - rect_j.getCenterX()) ) +
@@ -182,10 +198,23 @@ class SpotCounterCore {
                 if (dist2<min_dist2)
                     min_dist2 = dist2;
             }
+            min_distances[i] = sqrt(min_dist2);
         }
-        return sqrt(min_dist2);
+        
+        Arrays.sort(min_distances);
+        double mean = 0.0;
+        for (double val: min_distances)
+            mean += val;
+        mean /= ov.size();
+        
+        map.put("min-distance", min_distances[0]);
+        map.put("mean-distance", mean);
+        int p10 = (int) ceil((double) ov.size() / 10.0);
+        map.put("p10-distance", min_distances[p10]);
+        return map;
     }
-
+    
+    
     /**
      * Finds local maxima and returns them as an collection of Rois (an overlay)
      *

@@ -54,7 +54,7 @@ public class AlgorithmTester {
         addAnalyzer(new AutoLase());
         addAnalyzer(new SpotCounter());
         
-        /*
+        //*
         // File chooser dialog
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(null);
@@ -81,7 +81,7 @@ public class AlgorithmTester {
             System.out.format("Analysis finished in %d ms.\n",time_end - time_start);
         }
         
-        /*
+        //*
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         //set a default filename (this is where you default extension first comes in)
         fc.setSelectedFile(new File("output.csv"));
@@ -154,7 +154,6 @@ public class AlgorithmTester {
             writer.println(s);
         }
         writer.close();
-        
         
     }
 }

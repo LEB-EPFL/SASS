@@ -66,26 +66,25 @@ public class AutoLase implements EvaluationAlgorithm {
     public HashMap<String, Double> getOutputValues(int image_no) {
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
         map.put("on-time", value_list.get(image_no));
-        map.put("raw_on-time", raw_value_list.get(image_no));
+        map.put("raw-on-time", raw_value_list.get(image_no));
         return map;
     }
 
 
 }
 /**
- * This class estimates the density of activations by sampling a Camera at 
- * regular intervals (default 20ms). The density at a particular point relates 
+ * This class estimates the density of activations. The density at a particular 
+ * point relates 
  * to the maximum time a certain pixel is "on", or above a certain threshold. 
- * The density is calculated as a moving average (default 1s).
+ * The density is calculated as a moving average 30 frames.
  * 
  * The code only works for 2 bytes per pixel cameras for now. 
  * 
  * @author Thomas Pengo
  */
 class AutoLaseAnalyzer {
-    public static final int DEFAULT_THRESHOLD = 5500;
-    public static final int DEFAULT_WAIT_TIME = 20;
-    public static final int NUM_ELEMS = 50;
+    public static final int DEFAULT_THRESHOLD = 70;
+    public static final int NUM_ELEMS = 30;
     
     boolean running = true;
     boolean stopping = false;
@@ -95,7 +94,6 @@ class AutoLaseAnalyzer {
     long lastTime;
     
     int threshold = DEFAULT_THRESHOLD;
-    long timeInterval = DEFAULT_WAIT_TIME;
     int fifoNumElems = NUM_ELEMS;
 
     ArrayDeque<Double> density_fifo;
@@ -126,14 +124,14 @@ class AutoLaseAnalyzer {
             accumulator = new float[image.length];
             for(int i=0; i<accumulator.length; i++)
                 if (curMask[i])
-                    accumulator[i] = timeInterval;
+                    accumulator[i] = 1;
         } else {
             // A_i = (I_i > t) (1 + A_i-1)
             for(int i=0; i<accumulator.length; i++) {
                 if (!curMask[i]) {
                     accumulator[i] = 0;
                 } else {
-                    accumulator[i]+=timeInterval;
+                    accumulator[i]++;
                 }
                 if (overflowMask[i])  {
                     overflow_counter++;

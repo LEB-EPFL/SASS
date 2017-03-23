@@ -61,13 +61,14 @@ public class AutoLase implements EvaluationAlgorithm {
     @Override
     public void setImageStack(ImageStack stack) {
         this.stack = stack;
+        
     }
     
     @Override
     public void processStack() {
         short[] next_image;
-        for (int i=1; i <= stack.getSize(); i++) {
-            next_image = (short[]) stack.getPixels(i);
+        for (int i=0; i < stack.getSize(); i++) {
+            next_image = (short[]) stack.getPixels(i+1);
             analyzer.nextImage(next_image);
             value_list.add(analyzer.getCurrentValue());
             raw_value_list.add(analyzer.getRawCurrentValue());
@@ -76,6 +77,7 @@ public class AutoLase implements EvaluationAlgorithm {
 
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
+        image_no--;
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
         map.put("on-time", value_list.get(image_no));
         map.put("raw-on-time", raw_value_list.get(image_no));

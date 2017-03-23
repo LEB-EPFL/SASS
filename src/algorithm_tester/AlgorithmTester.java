@@ -20,6 +20,7 @@
 package algorithm_tester;
 
 import algorithm_tester.autolase.AutoLase;
+import algorithm_tester.quickpalm.QuickPalm;
 import algorithm_tester.spotcounter.SpotCounter;
 import ij.ImageStack;
 import java.io.File;
@@ -63,9 +64,12 @@ public class AlgorithmTester {
         spotcounter_params.put("box-size", 5);
         spotcounter.setCustomParameters(spotcounter_params);
         
+        QuickPalm quickpalm = new QuickPalm();
+        
         
         addAnalyzer(autolase);
         addAnalyzer(spotcounter);
+        addAnalyzer(quickpalm);
         
         //*
         // File chooser dialog for choosing tif stack
@@ -162,7 +166,7 @@ public class AlgorithmTester {
         writer.println("#Columns:");
         String analyzer_names = "frame-id";
         for (EvaluationAlgorithm analyzer: analyzers) {
-            output_map = analyzer.getOutputValues(0);
+            output_map = analyzer.getOutputValues(1);
                 for (String key: output_map.keySet()) {
                     analyzer_names = analyzer_names.concat(",").
                     concat(analyzer.getName()).concat(":").concat(key);
@@ -171,8 +175,8 @@ public class AlgorithmTester {
         writer.println(analyzer_names);
         
         // Print data
-        for (int i=0; i<stack.getSize(); i++) {
-            String s = String.format("%d",i+1);
+        for (int i=1; i<=stack.getSize(); i++) {
+            String s = String.format("%d",i);
             for (EvaluationAlgorithm analyzer: analyzers) {
                 output_map = analyzer.getOutputValues(i);
                 for (String key: output_map.keySet()) {

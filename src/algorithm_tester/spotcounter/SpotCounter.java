@@ -86,6 +86,7 @@ public class SpotCounter implements EvaluationAlgorithm {
 
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
+        image_no--; //hack to get good array indexing
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
         map.put("spot-count", spot_counts.get(image_no));
         map.put("min-dist", min_dists.get(image_no));

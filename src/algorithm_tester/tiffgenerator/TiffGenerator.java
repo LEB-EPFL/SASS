@@ -42,7 +42,7 @@ public class TiffGenerator implements ImageGenerator {
     public ImageProcessor getNextImage() {
         count++;
         if (count > stack.getSize())
-            count = 1;
+            return null;
         return stack.getProcessor(count);
     }
 

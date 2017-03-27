@@ -102,28 +102,16 @@ public class AlgorithmTester {
         addAnalyzer(spotcounter);
         addAnalyzer(quickpalm);
         
-        
-        
-        for (EvaluationAlgorithm analyzer: analyzers) {
-            System.out.format("Starting analyzer: %s\n",analyzer.getClass().getName());
-            System.out.print("ImageStack set. Starting analysis...\n");
-            long time_start = System.currentTimeMillis();
-            image_count = 0;
-            ImageProcessor ip = generator.getNextImage();
-            while (ip != null) {
-                image_count++;
+        ImageProcessor ip = generator.getNextImage();
+        image_count = 0;
+        while (ip != null) {
+            image_count++;
+            for (EvaluationAlgorithm analyzer: analyzers)
                 analyzer.processImage(ip);
-            }
-            
-            long time_end = System.currentTimeMillis();
-            System.out.format("Analysis finished in %d ms.\n",time_end - time_start);
+            ip = generator.getNextImage();
         }
-        //*
         saveToCsv(csv_output);
-        /*/
-        saveToCsv(new File("C:\\Users\\stefko\\Desktop\\output.csv"));
-        //*/
-        
+        System.exit(0);
     }
     
     public void addAnalyzer(EvaluationAlgorithm analyzer) {

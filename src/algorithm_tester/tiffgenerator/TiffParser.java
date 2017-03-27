@@ -23,7 +23,6 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.Opener;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

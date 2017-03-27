@@ -21,6 +21,7 @@ package algorithm_tester.autolase;
 
 import algorithm_tester.EvaluationAlgorithm;
 import ij.ImageStack;
+import ij.process.ImageProcessor;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,24 +58,16 @@ public class AutoLase implements EvaluationAlgorithm {
     public String getName() {
         return "AutoLase";
     }
-    
-    @Override
-    public void setImageStack(ImageStack stack) {
-        this.stack = stack;
-        
-    }
-    
-    @Override
-    public void processStack() {
-        short[] next_image;
-        for (int i=0; i < stack.getSize(); i++) {
-            next_image = (short[]) stack.getPixels(i+1);
-            analyzer.nextImage(next_image);
-            value_list.add(analyzer.getCurrentValue());
-            raw_value_list.add(analyzer.getRawCurrentValue());
-        }
-    }
 
+    @Override
+    public void processImage(ImageProcessor ip) {
+        short[] next_image;
+        next_image = (short[]) ip.getPixels();
+        analyzer.nextImage(next_image);
+        value_list.add(analyzer.getCurrentValue());
+        raw_value_list.add(analyzer.getRawCurrentValue());
+    }
+    
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
         image_no--;

@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Federale de Lausanne
- *
- * Author: Marcel Stefko
+ * Copyright (C) 2017 stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,23 +18,15 @@ package algorithm_tester;
 
 import ij.process.ImageProcessor;
 import java.util.HashMap;
+
 /**
  *
  * @author stefko
  */
-
-
-
-public interface EvaluationAlgorithm {
-
-    public void processImage(ImageProcessor ip);
+public interface ImageGenerator {
+    public ImageProcessor getNextImage();
     
-    public void setCustomParameters(HashMap<String, Integer> map);
+    public void setCustomParameters(HashMap<String,Double> map);
     
-    public HashMap<String, Integer> getCustomParameters();
-    
-    public HashMap<String, Double> getOutputValues(int image_no);
-    
-    public String getName();
-    
+    public HashMap<String,Double> getCustomParameters();
 }

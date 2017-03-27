@@ -18,6 +18,7 @@ package algorithm_tester.quickpalm;
 
 import algorithm_tester.EvaluationAlgorithm;
 import ij.ImageStack;
+import ij.process.ImageProcessor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -27,7 +28,7 @@ import java.util.LinkedHashMap;
  * @author stefko
  */
 public class QuickPalm implements EvaluationAlgorithm {
-    private ImageStack stack;
+    private int count;
     private final QuickPalmCore core;
     private HashMap<String, Integer> parameters;
     
@@ -38,22 +39,15 @@ public class QuickPalm implements EvaluationAlgorithm {
         core = new QuickPalmCore();
         no_particles_list = new ArrayList<Integer>();
         parameters = new HashMap<String, Integer>();
+        count = 0;
     }
     
     @Override
-    public void setImageStack(ImageStack stack) {
-        this.stack = stack;
-        no_particles_list.clear();
-        no_particles_list.ensureCapacity(stack.getSize()+1);
+    public void processImage(ImageProcessor ip) {
+            count++;
+            no_particles_list.add(core.processImage(ip, count));
     }
-
-    @Override
-    public void processStack() {
-        for (int i=1; i<= stack.getSize(); i++) {
-            no_particles_list.add(core.processImage(stack.getProcessor(i), i));
-        }
-    }
-
+    
     @Override
     public void setCustomParameters(HashMap<String, Integer> map) {
         parameters = map;

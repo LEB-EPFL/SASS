@@ -19,10 +19,13 @@
  */
 package algorithm_tester;
 
+import algorithm_tester.tiffgenerator.TiffParser;
 import algorithm_tester.autolase.AutoLase;
 import algorithm_tester.quickpalm.QuickPalm;
 import algorithm_tester.spotcounter.SpotCounter;
+import algorithm_tester.tiffgenerator.TiffGenerator;
 import ij.ImageStack;
+import ij.process.ImageProcessor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -38,8 +41,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author stefko
  */
 public class AlgorithmTester {
-    ImageStack stack;
     ArrayList<EvaluationAlgorithm> analyzers;
+    ImageGenerator generator;
+    int image_count;
     
     /**
      * @param args the command line arguments
@@ -50,26 +54,6 @@ public class AlgorithmTester {
     }
     
     public void execute() {
-        analyzers = new ArrayList<EvaluationAlgorithm>();
-        
-        AutoLase autolase = new AutoLase();
-        HashMap<String, Integer> autolase_params = new HashMap<String, Integer>();
-        autolase_params.put("threshold", 70);
-        autolase_params.put("averaging", 30);
-        autolase.setCustomParameters(autolase_params);
-        
-        SpotCounter spotcounter = new SpotCounter();
-        HashMap<String, Integer> spotcounter_params = new HashMap<String, Integer>();
-        spotcounter_params.put("noise-tolerance", 90);
-        spotcounter_params.put("box-size", 5);
-        spotcounter.setCustomParameters(spotcounter_params);
-        
-        QuickPalm quickpalm = new QuickPalm();
-        
-        
-        addAnalyzer(autolase);
-        addAnalyzer(spotcounter);
-        addAnalyzer(quickpalm);
         
         //*
         // File chooser dialog for choosing tif stack
@@ -94,17 +78,45 @@ public class AlgorithmTester {
         
         /*/
         File tiff_file = new File("C:\\Users\\stefko\\Desktop\\sim400orig.tif");
+        File csv_output = new File("C:\\Users\\stefko\\Desktop\\output.csv");
         //*/
-        System.out.print("Loading selected .tif file.");
-        loadTiff(tiff_file);
-        System.out.format("Tif file loaded: %s\n",tiff_file.getAbsolutePath());
+        
+        generator = new TiffGenerator(tiff_file);
+        
+        analyzers = new ArrayList<EvaluationAlgorithm>();
+        
+        AutoLase autolase = new AutoLase();
+        HashMap<String, Integer> autolase_params = new HashMap<String, Integer>();
+        autolase_params.put("threshold", 70);
+        autolase_params.put("averaging", 30);
+        autolase.setCustomParameters(autolase_params);
+        
+        SpotCounter spotcounter = new SpotCounter();
+        HashMap<String, Integer> spotcounter_params = new HashMap<String, Integer>();
+        spotcounter_params.put("noise-tolerance", 90);
+        spotcounter_params.put("box-size", 5);
+        spotcounter.setCustomParameters(spotcounter_params);
+        
+        QuickPalm quickpalm = new QuickPalm();
+        
+        
+        addAnalyzer(autolase);
+        addAnalyzer(spotcounter);
+        addAnalyzer(quickpalm);
+        
+        
+        
         for (EvaluationAlgorithm analyzer: analyzers) {
             System.out.format("Starting analyzer: %s\n",analyzer.getClass().getName());
-            analyzer.setImageStack(stack);
             System.out.print("ImageStack set. Starting analysis...\n");
-            System.out.format("Stack size: %d\n", stack.getSize());
             long time_start = System.currentTimeMillis();
-            analyzer.processStack();
+            image_count = 0;
+            ImageProcessor ip = generator.getNextImage();
+            while (ip != null) {
+                image_count++;
+                analyzer.processImage(ip);
+            }
+            
             long time_end = System.currentTimeMillis();
             System.out.format("Analysis finished in %d ms.\n",time_end - time_start);
         }
@@ -118,22 +130,6 @@ public class AlgorithmTester {
     
     public void addAnalyzer(EvaluationAlgorithm analyzer) {
         analyzers.add(analyzer);
-    }
-    
-    private void loadTiff(final File file) {
-        final TiffParser parser = new TiffParser();
-        Thread t = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                stack = parser.loadGeneralTiff(file);
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AlgorithmTester.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     private void saveToCsv(File file) {
@@ -175,7 +171,7 @@ public class AlgorithmTester {
         writer.println(analyzer_names);
         
         // Print data
-        for (int i=1; i<=stack.getSize(); i++) {
+        for (int i=1; i<=image_count; i++) {
             String s = String.format("%d",i);
             for (EvaluationAlgorithm analyzer: analyzers) {
                 output_map = analyzer.getOutputValues(i);

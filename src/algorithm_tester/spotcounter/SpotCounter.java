@@ -41,7 +41,7 @@ import java.util.LinkedHashMap;
  * @author stefko
  */
 public class SpotCounter implements EvaluationAlgorithm {
-    ImageStack stack;
+    private int count;
     private ArrayList<Double> spot_counts;
     private ArrayList<Double> min_dists;
     private ArrayList<Double> mean_dists;
@@ -65,23 +65,18 @@ public class SpotCounter implements EvaluationAlgorithm {
         mean_dists = new ArrayList<Double>();
         p10_dists = new ArrayList<Double>();
         analyzer = new SpotCounterCore(noise_tolerance, box_size);
+        count = 0;
     } 
     
     @Override
-    public void setImageStack(ImageStack stack) {
-        this.stack = stack;
-    }
-
-    @Override
-    public void processStack() {
+    public void processImage(ImageProcessor ip) {
         ResultsTable result;
-        for (int i=1; i<=stack.getSize(); i++) {
-            result = analyzer.analyze(stack.getProcessor(i));
-            spot_counts.add(result.getValue("n", i-1));
-            min_dists.add(result.getValue("min-distance", i-1));
-            mean_dists.add(result.getValue("mean-distance", i-1));
-            p10_dists.add(result.getValue("p10-distance", i-1));
-        }
+        result = analyzer.analyze(ip);
+        spot_counts.add(result.getValue("n", count));
+        min_dists.add(result.getValue("min-distance", count));
+        mean_dists.add(result.getValue("mean-distance", count));
+        p10_dists.add(result.getValue("p10-distance", count));
+        count++;
     }
 
     @Override

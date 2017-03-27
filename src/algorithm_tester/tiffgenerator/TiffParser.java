@@ -17,8 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester;
+package algorithm_tester.tiffgenerator;
 
+import algorithm_tester.BusyIndicatorWindow;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.Opener;

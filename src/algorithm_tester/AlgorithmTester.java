@@ -19,12 +19,10 @@
  */
 package algorithm_tester;
 
-import algorithm_tester.tiffgenerator.TiffParser;
 import algorithm_tester.autolase.AutoLase;
 import algorithm_tester.quickpalm.QuickPalm;
 import algorithm_tester.spotcounter.SpotCounter;
 import algorithm_tester.tiffgenerator.TiffGenerator;
-import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.io.FileNotFoundException;

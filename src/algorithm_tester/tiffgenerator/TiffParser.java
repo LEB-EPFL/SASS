@@ -19,7 +19,6 @@
  */
 package algorithm_tester.tiffgenerator;
 
-import algorithm_tester.BusyIndicatorWindow;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.Opener;
@@ -27,14 +26,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 
 /**
  *
  * @author stefko
  */
 public class TiffParser {
-    private BusyIndicatorWindow window = new BusyIndicatorWindow(null, true);
     private File tiff_file;
     private ImageStack ram_stack;
     
@@ -57,34 +54,15 @@ public class TiffParser {
         
         ram_stack = new ImageStack(width, height);
         
-        // Set up progressbar
-        window.setMaximum(stack.getSize());
-        window.setProgress(0);
-        SwingUtilities.invokeLater( new Runnable() {
-            @Override
-            public void run() {
-                window.setVisible(true);
-            }
-        });
+
+
         for (int i=1; i<=stack.getSize(); i++) {
             ram_stack.addSlice(String.valueOf(i), stack.getPixels(i));
             // Log the process
             if (i%100==0) {
                 System.out.format("Loaded %d images from general tiff stack.\n",i);
             }
-            // Increment progressbar
-            SwingUtilities.invokeLater( new Runnable() {
-                public void run() {
-                    window.increment();
-                }
-            });
         }
-        
-        SwingUtilities.invokeLater( new Runnable() {
-            public void run() {
-                window.dispose();                
-            }
-        });
         return ram_stack;
     }
 }

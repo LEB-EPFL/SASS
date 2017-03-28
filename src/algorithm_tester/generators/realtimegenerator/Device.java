@@ -17,6 +17,7 @@
 package algorithm_tester.generators.realtimegenerator;
 
 import cern.jet.random.Gamma;
+import cern.jet.random.Normal;
 import ij.process.FloatProcessor;
 import ij.process.ShortProcessor;
 import static java.lang.Math.sqrt;
@@ -39,6 +40,7 @@ public class Device {
     private final Poisson poisson;
     private final Random random;
     private final Gamma gamma;
+    private final Normal gaussian;
     
     public Device() {
         camera = new Camera(400, //res_x
@@ -74,7 +76,7 @@ public class Device {
         random = new Random();
         poisson = new Poisson(1.0, new MersenneTwister(random.nextInt()));
         gamma = new Gamma(1.0, 5.0, new MersenneTwister(random.nextInt()));
-        
+        gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
     public void changeLaserPower(double laser_power) {
@@ -113,8 +115,7 @@ public class Device {
     public float[][] addPoissonNoise(float[][] image) {
         for (int x = 0; x < image.length; x++) {
             for (int y = 0; y < image[0].length; y++) {
-                float pixVal = image[x][y];
-                image[x][y] = (float) poisson.nextInt(pixVal);
+                image[x][y] = (float) poisson.nextInt(image[x][y]);
             }
         }
         return image;
@@ -135,8 +136,8 @@ public class Device {
         // Other noises
         for (int row=0; row < image.length; row++) {
             for (int col=0; col < image[row].length; col++) {
-                image[row][col] += camera.readout_noise*random.nextGaussian() +
-                                   camera.thermal_noise*random.nextGaussian() +
+                image[row][col] += camera.readout_noise*gaussian.nextDouble() +
+                                   camera.thermal_noise*gaussian.nextDouble() +
                                    gamma.nextDouble(image[row][col]+0.1f,camera.quantum_gain);
             }
         }

@@ -49,6 +49,6 @@ public class Runner {
         }
         ImagePlus imp = new ImagePlus("stack", stack);
         FileSaver fs = new FileSaver(imp);
-        fs.saveAsTiffStack("C:\\Users\\stefko\\Desktop\\stackb.tif");
+        fs.saveAsTiffStack("C:\\Users\\stefko\\Desktop\\stackd.tif");
     }
 }

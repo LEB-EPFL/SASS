@@ -16,7 +16,7 @@
 //               IN NO EVENT SHALL THE COPYRIGHT OWNER OR
 //               CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
 //               INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES.
-package algorithm_tester.spotcounter;
+package algorithm_tester.analyzers.spotcounter;
 
 import ij.ImagePlus;
 import ij.plugin.ImageCalculator;

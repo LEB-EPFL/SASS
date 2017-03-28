@@ -1,6 +1,6 @@
 /** Main container to all dialogs within the plugin, dialogs */
 
-package algorithm_tester.quickpalm;
+package algorithm_tester.analyzers.quickpalm;
 
 import ij.*;
 import ij.io.*;

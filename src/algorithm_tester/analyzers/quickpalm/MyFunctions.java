@@ -1,4 +1,4 @@
-package algorithm_tester.quickpalm;
+package algorithm_tester.analyzers.quickpalm;
 
 import ij.*;
 import ij.measure.*;

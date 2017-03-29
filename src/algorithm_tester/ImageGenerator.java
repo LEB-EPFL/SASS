@@ -20,8 +20,9 @@ import ij.process.ImageProcessor;
 import java.util.HashMap;
 
 /**
- *
- * @author stefko
+ * Interface through which AlgorithmTester generates new images to be
+ * analyzed by EvaluationAlgorithms.
+ * @author Marcel Stefko
  */
 public interface ImageGenerator {
     public ImageProcessor getNextImage();

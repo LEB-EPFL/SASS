@@ -21,23 +21,47 @@ package algorithm_tester;
 
 import ij.process.ImageProcessor;
 import java.util.HashMap;
+
+
 /**
- *
- * @author stefko
+ * Interface through which the AlgorithmTester extracts analysis results from
+ * and feeds images to individual algorithms.
+ * @author Marcel Stefko
  */
-
-
-
 public interface EvaluationAlgorithm {
 
+    /**
+     * Carry out analysis on the received image and modify your internal state
+     * accordingly.
+     * @param ip image to be processed
+     */
     public void processImage(ImageProcessor ip);
     
+    /**
+     * Set your internal configuration parameters to new values.
+     * @param map new configuration parameters
+     */
     public void setCustomParameters(HashMap<String, Integer> map);
     
+    /**
+     * Returns the current internal configuration parameters.
+     * @return current configuration parameters
+     */
     public HashMap<String, Integer> getCustomParameters();
     
+    /**
+     * Returns the output (various error signal candidate values) of the 
+     * algorithm for the specific image number.
+     * 
+     * @param image_no 1-based sequential number of the frame
+     * @return error signal values
+     */
     public HashMap<String, Double> getOutputValues(int image_no);
     
+    /**
+     * Returns custom name of the analyzer.
+     * @return name of the analyzer
+     */
     public String getName();
     
 }

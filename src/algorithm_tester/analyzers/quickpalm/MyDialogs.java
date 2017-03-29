@@ -1,4 +1,8 @@
-/** Main container to all dialogs within the plugin, dialogs */
+/** QuickPALM plugin developed by Ricardo Henriques @ Instituto de Medicina 
+ *  Molecular (PT)/Institut Pasteur (FR).
+ *  Adapted under GPL by Marcel Stefko, 2017.
+ *
+ * Main container to all dialogs within the plugin */
 
 package algorithm_tester.analyzers.quickpalm;
 

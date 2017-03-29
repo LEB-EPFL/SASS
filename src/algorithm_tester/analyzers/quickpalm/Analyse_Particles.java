@@ -1,4 +1,11 @@
+/** QuickPALM plugin developed by Ricardo Henriques @ Instituto de Medicina 
+ *  Molecular (PT)/Institut Pasteur (FR).
+ *  Adapted under GPL by Marcel Stefko, 2017.
+ */ 
+
 package algorithm_tester.analyzers.quickpalm;
+
+
 
 import ij.*;
 import ij.measure.*;

@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +23,10 @@ import ij.process.ImageProcessor;
 import java.util.ArrayList;
 
 /**
- *
- * @author stefko
+ * Wrapper for QuickPalm ImageJ plugin functionality developed by 
+ * Ricardo Henriques @ Instituto de Medicina Molecular (PT) / Institut 
+ * Pasteur (FR).
+ * @author Marcel Stefko
  */
 public class QuickPalmCore {
 	

@@ -26,9 +26,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 /**
- *
- * @author stefko
+ * Wrapper for Thomas Pengo's implementation of AutoLase algorithm.
+ * @author Marcel Stefko
  */
 public class AutoLase implements EvaluationAlgorithm {
     private ImageStack stack;
@@ -40,14 +41,20 @@ public class AutoLase implements EvaluationAlgorithm {
     private int threshold = 120;
     private int averaging = 30;
     
+    /**
+     * Initializes AutoLase with default threshold (120) and averaging (30) 
+     * values.
+     */
     public AutoLase() {
         parameters = new HashMap<String, Integer>();
         parameters.put("threshold", threshold);
         parameters.put("averaging", averaging);
-        
         init();
     }
     
+    /**
+     * Resets internal state.
+     */
     private void init() {
         analyzer = new AutoLaseAnalyzer(threshold, averaging);
         value_list = new ArrayList<Double>();
@@ -103,8 +110,8 @@ public class AutoLase implements EvaluationAlgorithm {
  * @author Thomas Pengo
  */
 class AutoLaseAnalyzer {
-    public static final int threshold = 120;
-    public static final int averaging = 30;
+    public final int threshold;
+    public final int averaging;
     
     boolean running = true;
     boolean stopping = false;
@@ -117,9 +124,15 @@ class AutoLaseAnalyzer {
     
     public AutoLaseAnalyzer(int threshold, int averaging ) {
         this.density_fifo = new ArrayDeque<Double>(averaging);
+        this.threshold = threshold;
+        this.averaging = averaging;
         lastTime = System.currentTimeMillis();
     }
     
+    /**
+     * Analyzes next image and adjusts internal state.
+     * @param image image to be analyzed
+     */
     public void nextImage(short[] image) {
 
         // Reset accumulator if image size has changed
@@ -128,8 +141,8 @@ class AutoLaseAnalyzer {
 
         // Threshold the image
         boolean[] curMask = new boolean[image.length];
+        // Mask which warns about short overflow
         boolean[] overflowMask = new boolean[image.length];
-        boolean[] largeMask = new boolean[image.length];
         for (int i=0; i<curMask.length; i++) {
             curMask[i]=image[i]>threshold;
             overflowMask[i]=image[i]<0;
@@ -150,12 +163,10 @@ class AutoLaseAnalyzer {
                 } else {
                     accumulator[i]++;
                 }
+                // If we have overflow, assign a special value
                 if (overflowMask[i])  {
                     overflow_counter++;
                     accumulator[i] = -1.0f;
-                }
-                if (largeMask[i]){
-                    accumulator[i] = -100.0f;
                 }
             }
         }
@@ -178,10 +189,18 @@ class AutoLaseAnalyzer {
         currentDensity = mean_density;  
     }
     
+    /**
+     * Returns error signal value from AutoLase
+     * @return estimated averaged max emitter density
+     */
     public double getCurrentValue() {
         return currentDensity;
     }
     
+    /**
+     * Returns raw error signal value from AutoLase
+     * @return estimated max emitter density for most recent frame
+     */
     public double getRawCurrentValue() {
         return density_fifo.getLast();
     }

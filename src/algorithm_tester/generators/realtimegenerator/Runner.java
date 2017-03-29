@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +25,15 @@ import ij.io.FileSaver;
 import ij.process.ShortProcessor;
 
 /**
- *
- * @author stefko
+ * Test class for RealTimeGenerator
+ * @author Marcel Stefko
  */
 public class Runner {
+
+    /**
+     * Generates some images and saves them to a .tif file.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         Device device = new Device();
         ImageStack stack = new ImageStack(400,400);

@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +20,8 @@
 package algorithm_tester.generators.realtimegenerator;
 
 /**
- *
- * @author stefko
+ * Fluorophore properties (signal, background values and time constants).
+ * @author Marcel Stefko
  */
 public class Fluorophore {
     public final double signal;
@@ -27,6 +30,14 @@ public class Fluorophore {
     public final double base_Toff;
     public final double base_Tbl;
     
+    /**
+     * Initialize fluorophore with given properties
+     * @param signal_per_frame photons emitted if fluorophore is fully on
+     * @param background_per_frame constant background of the fluorophore
+     * @param base_Ton_frames mean on-time with unit laser power [frames]
+     * @param base_Toff_frames mean off-time with unit laser power [frames]
+     * @param base_Tbl_frames mean bleaching time with unit laser power [frames]
+     */
     public Fluorophore(double signal_per_frame, double background_per_frame, 
             double base_Ton_frames, 
             double base_Toff_frames, double base_Tbl_frames) {

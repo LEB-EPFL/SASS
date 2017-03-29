@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +20,8 @@
 package algorithm_tester.generators.realtimegenerator;
 
 /**
- *
- * @author stefko
+ * Class representing the laser shining on the sample.
+ * @author Marcel Stefko
  */
 public class Laser {
     
@@ -26,7 +29,12 @@ public class Laser {
     private double max_power;
     private double min_power;
     
-    
+    /**
+     * Initialize laser with given parameters.
+     * @param start_power initial power of laser [W]
+     * @param max_power maximal laser power [W]
+     * @param min_power minimal laser power [W]
+     */
     public Laser(double start_power, double max_power,
             double min_power) {
         current_power = start_power;
@@ -36,6 +44,11 @@ public class Laser {
         
     }
     
+    /**
+     * Sets new laser power if it is within limits, or the closest allowed
+     * value if it is outside limits.
+     * @param new_power desired laser power [W]
+     */
     public void setPower(double new_power) {
         if (new_power > max_power)
             new_power = max_power;
@@ -44,6 +57,10 @@ public class Laser {
         current_power = new_power;
     }
     
+    /**
+     * Returns current laser power.
+     * @return current laser power [W]
+     */
     public double getPower() {
         return current_power;
     }

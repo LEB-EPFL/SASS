@@ -28,8 +28,8 @@ import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
 
 /**
- *
- * @author stefko
+ * Encapsulator class which contains all device objects (camera, laser...)
+ * @author Marcel Stefko
  */
 public class Device {
     private final Camera camera;
@@ -42,6 +42,9 @@ public class Device {
     private final Gamma gamma;
     private final Normal gaussian;
     
+    /**
+     * Initialize device with default parameters.
+     */
     public Device() {
         camera = new Camera(400, //res_x
                             400, //res_y
@@ -79,6 +82,10 @@ public class Device {
         gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
+    /**
+     * Modifies the laser power to desired value.
+     * @param laser_power new laser power [W]
+     */
     public void changeLaserPower(double laser_power) {
         laser.setPower(laser_power);
         for (Emitter e: emitters) {
@@ -86,6 +93,11 @@ public class Device {
         }
     }
     
+    /**
+     * Generates a new frame based on the current device state, and moves
+     * device state forward.
+     * @return simulated frame
+     */
     public ShortProcessor simulateFrame() {
         float[][] pixels = new float[camera.res_x][camera.res_y];
         for (int row = 0; row < pixels.length; row++)
@@ -112,6 +124,11 @@ public class Device {
         return fp.convertToShortProcessor(false);
     }
     
+    /**
+     * Adds Poisson noise to the image.
+     * @param image input image
+     * @return image with Poisson noise added
+     */
     public float[][] addPoissonNoise(float[][] image) {
         for (int x = 0; x < image.length; x++) {
             for (int y = 0; y < image[0].length; y++) {
@@ -121,7 +138,11 @@ public class Device {
         return image;
     }
     
-    
+    /**
+     * Adds Poisson, readout, thermal and quantum gain noise to the image.
+     * @param image image to be noised up
+     * @return image with noises added
+     */
     public float[][] addNoises(float[][] image) {
         // add background
         for (int row=0; row < image.length; row++) {

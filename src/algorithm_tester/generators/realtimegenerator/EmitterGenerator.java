@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +23,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
- * @author stefko
+ * Randomly populates the field of view with emitters.
+ * @author Marcel Stefko
  */
-
-
 public class EmitterGenerator {
+
+    /**
+     * Randomly populate the field of view with emitters.
+     * @param n_fluos number of emitters to be generated
+     * @param cam camera properties
+     * @param fluo fluorophore properties
+     * @return
+     */
     public static ArrayList<Emitter> generateEmittersRandom(int n_fluos, Camera cam, Fluorophore fluo) {
         Random rnd = new Random();
         ArrayList<Emitter> result = new ArrayList<Emitter>();

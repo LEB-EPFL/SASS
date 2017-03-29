@@ -27,13 +27,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author stefko
+ * Parses the ImageStack into RAM out of a .tiff file.
+ * @author Marcel Stefko
  */
 public class TiffParser {
     private File tiff_file;
     private ImageStack ram_stack;
     
+    /**
+     * Loads a tiff stack from a file on disk into RAM
+     * @param file tiff file to be loaded
+     * @return loaded image stack
+     */
     public final ImageStack loadGeneralTiff(File file) {
         // Open the tiff via ImageJ
         Logger.getLogger(TiffParser.class.getName()).log(Level.INFO, "Trying to open general tiff.");
@@ -41,6 +46,7 @@ public class TiffParser {
         ImagePlus win = o.openTiff(file.getParent().concat("\\"),file.getName());
         ImageStack stack = win.getImageStack();
         
+        // load dimensions and check bit depth
         int width = stack.getWidth();
         int height = stack.getHeight();
         int bytesPerPixel;
@@ -51,10 +57,10 @@ public class TiffParser {
             throw new ArrayStoreException("Wrong image bit depth.");
         }
         
+        // initialize ImageStack in RAM
         ram_stack = new ImageStack(width, height);
         
-
-
+        // load slices into new stack
         for (int i=1; i<=stack.getSize(); i++) {
             ram_stack.addSlice(String.valueOf(i), stack.getPixels(i));
             // Log the process

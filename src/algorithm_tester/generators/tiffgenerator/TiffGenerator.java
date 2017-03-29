@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +26,17 @@ import java.io.File;
 import java.util.HashMap;
 
 /**
- *
- * @author stefko
+ * Generates images from a .tiff stack image file.
+ * @author Marcel Stefko
  */
 public class TiffGenerator implements ImageGenerator {
     private ImageStack stack;
     private int count;
     
+    /**
+     * Initializes the TiffParser and loads up the image stack from a file.
+     * @param file tiff file to be loaded
+     */
     public TiffGenerator(File file) {
         TiffParser parser = new TiffParser();
         System.out.print("Loading selected .tif file.");

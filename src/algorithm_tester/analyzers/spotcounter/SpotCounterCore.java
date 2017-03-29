@@ -51,6 +51,12 @@ class SpotCounterCore {
         noiseTolerance_ = noiseTolerance;
     }
 
+    /**
+     * Analyzes the image and returns information about current state.
+     *
+     * @param ip - image to be analyzed
+     * @return ResultsTable which contains information about analysis results.
+     */
     public ResultsTable analyze(ImageProcessor ip) {
 
         Overlay ov = getSpotOverlay(ip);
@@ -70,42 +76,16 @@ class SpotCounterCore {
         HashMap<String, Double> map = getFrameStats(ov);
         for (String key: map.keySet())
             res_.addValue(key, map.get(key));
-        
-        /*if (ov.size() > 0) {
-            double sumRoiIntensities = 0;
-            Rectangle originalRoi = ip.getRoi();
-            for (int i = 0; i < ov.size(); i++) {
-                Roi roi = ov.get(i);
-                ip.setRoi(roi);
-                sumRoiIntensities += ip.getStatistics().mean;
-                if (outputAllSpots_) {
-                    res2_.incrementCounter();
-                    res2_.addValue("Image #", pasN_);
-                    res2_.addValue("Spot Intensity", ip.getStatistics().mean);
-                }
-            }
-            ip.setRoi(originalRoi);
-            double mean = sumRoiIntensities / ov.size();
-            res_.addValue("Spot mean", mean);
-        }
-        res_.addValue("Image mean", ip.getStatistics().mean);
-        
-        if (pasN_ == nPasses_) {
-            String output = new String();
-            // difficult way to get size of the resultstable to stay compatible
-            // with older ij.jar versions that do not have res_.size()
-            int size = res_.getColumn(0).length;
-            for (int i = 0; i < size; i++) {
-                output += "" + (i + 1) + "\t" + res_.getValue("n", i) + "\t"
-                        + res_.getValue("Spot mean", i) + "\t"
-                        + res_.getValue("Image mean", i) + "\n";
-            }
-        }
-        */
         return res_;
 
     }
     
+    /**
+     * Analyzes the overlay and returns statistics about spot positions.
+     *
+     * @param ov - Overlay which contains spot position information
+     * @return HashMap with spot position statistics.
+     */
     private HashMap<String, Double> getFrameStats(Overlay ov) {
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
         

@@ -37,8 +37,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
- *
- * @author stefko
+ * Wrapper for SpotCounter implementation.
+ * @author Marcel Stefko
  */
 public class SpotCounter implements EvaluationAlgorithm {
     private int count;
@@ -52,6 +52,9 @@ public class SpotCounter implements EvaluationAlgorithm {
     private int noise_tolerance = 100;
     private int box_size = 5;
     
+    /**
+     * Initializes the algorithm.
+     */
     public SpotCounter() {
         parameters = new HashMap<String, Integer>();
         parameters.put("noise-tolerance", noise_tolerance);
@@ -59,6 +62,9 @@ public class SpotCounter implements EvaluationAlgorithm {
         init();
     }
     
+    /**
+     * Resets the algorithm into default state (excluding config parameters).
+     */
     private void init() {
         spot_counts = new ArrayList<Double>();
         min_dists = new ArrayList<Double>();

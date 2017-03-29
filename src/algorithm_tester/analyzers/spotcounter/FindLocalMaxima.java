@@ -34,9 +34,6 @@ import java.awt.Rectangle;
  *
  * Jonas Ries brought this to my attention and send me C code implementing one of the
  * described algorithms
- *
- *
- *
  */
 public class FindLocalMaxima {
    private static final GaussianBlur FILTER = new GaussianBlur();

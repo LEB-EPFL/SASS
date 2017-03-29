@@ -69,9 +69,9 @@ public class AlgorithmTester {
         
         // File chooser dialog for saving output csv
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        //set a default filename (this is where you default extension first comes in)
+        //set a default filename 
         fc.setSelectedFile(new File("tester_output.csv"));
-        //Set an extension filter, so the user sees other XML files
+        //Set an extension filter
         fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
         returnVal = fc.showSaveDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {

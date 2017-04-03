@@ -211,7 +211,7 @@ class MyFunctions
 				else smartcounter++;
 			}
 		}
-		IJ.log("Processed frame: "+nframe);
+		//IJ.log("Processed frame: "+nframe);
                 return ok_nparticles;
 	}
 	

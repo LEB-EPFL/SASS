@@ -22,7 +22,8 @@ package algorithm_tester;
 import algorithm_tester.analyzers.autolase.AutoLase;
 import algorithm_tester.analyzers.quickpalm.QuickPalm;
 import algorithm_tester.analyzers.spotcounter.SpotCounter;
-import algorithm_tester.controllers.autolasecontroller.AutoLaseController;
+import algorithm_tester.controllers.pid.PIDController;
+import algorithm_tester.controllers.simple.SimpleController;
 import algorithm_tester.generators.realtimegenerator.STORMsim;
 import algorithm_tester.generators.tiffgenerator.TiffGenerator;
 import com.sun.media.sound.RealTimeSequencerProvider;
@@ -131,21 +132,23 @@ public class AlgorithmTester {
         // Real time generator
         generator = new STORMsim();
         
-        // AutoLase controller
-        controller = new AutoLaseController();
-        controller.setTarget(40.0);
-        controller.setAnalyzer(autolase);
+        // Set up controller
+        //controller = new SimpleController();
+        controller = new PIDController();
+        controller.setTarget(120.0);
+        controller.setAnalyzer(spotcounter);
         controller.setGenerator(generator);
         
         
         
         
+        
         ImageProcessor ip;
-        for (image_count = 0; image_count < 900; image_count++) {
+        for (image_count = 0; image_count < 1000; image_count++) {
             ip = generator.getNextImage();
             for (EvaluationAlgorithm analyzer: analyzers)
                 analyzer.processImage(ip.duplicate());
-            System.out.println(image_count);
+            //System.out.println(image_count);
             controller.adjust();
         }
         

@@ -60,14 +60,14 @@ public class Device {
                             8 * 1e-9); //radius)
         
         fluo = new Fluorophore(2500, //signal_per_frame, 
-                               25, //background_per_frame, 
+                               50, //background_per_frame, 
                                8, //base_Ton_frames, 
                                30, //base_Toff_frames, 
-                               400); //base_Tbl_frames)
+                               300); //base_Tbl_frames)
         
-        laser = new Laser(1.0, //start_power, 
+        laser = new Laser(0.1, //start_power, 
                           5.0, //max_power, 
-                          0.2); //min_power)
+                          0.1); //min_power)
         
         emitters = EmitterGenerator.generateEmittersRandom(
                 1600, //n_fluos, 

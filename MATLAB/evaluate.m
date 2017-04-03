@@ -26,11 +26,15 @@ clear all; close all;
 
 
 % Either give UI dialogs for file selection, or hardcoded values
-loadByDialogs = false;
+loadByDialogs = true;
 if loadByDialogs
+    [filename, pathname] = uigetfile('*.csv','Load emitter csv...');
+    if filename==0
+        error('You need an emitter csv!');
+    end
     algorithm_csv = fullfile(pathname,filename);
 else
-    algorithm_csv = 'C:\\Users\\stefko\\Documents\\sim9\\tester_output.csv';
+    algorithm_csv = 'C:\\Users\\stefko\\Documents\\sim11\\tester_output.csv';
 end
 
 % Print the file locations

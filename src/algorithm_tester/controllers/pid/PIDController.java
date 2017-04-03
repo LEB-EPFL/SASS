@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.controllers.autolasecontroller;
+package algorithm_tester.controllers.pid;
 
 import algorithm_tester.EvaluationAlgorithm;
 import algorithm_tester.FeedbackController;
@@ -25,54 +25,47 @@ import java.util.ArrayList;
  *
  * @author stefko
  */
-public class AutoLaseController implements FeedbackController {
+public class PIDController implements FeedbackController {
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
     private ArrayList<Double> history;
     double target;
     int counter;
+    int interval;
+    MiniPID miniPID;
     
-    
-    public AutoLaseController() {
+    public PIDController() {
         counter = 0;
         history = new ArrayList<Double>();
         history.add(0.0); // padding so we can number from 1
+        interval = 10;
+        
+        miniPID = new MiniPID(0.005,0.0025,0.0);
+        miniPID.setOutputLimits(0.2, 5.0);
+        miniPID.setOutputFilter(0.1);
     }
     
+    @Override
     public void setTarget(double target) {
         this.target = target;
+        miniPID.setSetpoint(target);
     }
-    
-    private void decrementPower() {
-        System.out.println("Decrementing power.");
-        double current = generator.getControlSignal();
-        generator.setControlSignal(current/1.2);
-    }
-    
-    private void incrementPower() {
-        System.out.println("Incrementing power.");
-        double current = generator.getControlSignal();
-        generator.setControlSignal(current*1.2);
-    }
-    
-    
+
     @Override
     public void adjust() {
         history.add(generator.getControlSignal());
         counter++;
-        if ((counter % 10) != 0) {
-            return;
-        }
+        
         double error = analyzer.getCurrentErrorSignal();
-        double r = error/target;
-        System.out.format("Error: %5.2f, target: %5.2f, r: %5.2f\n", error, target, r);
-        if (r>1.15) {
-            decrementPower();
-        } else if (r<0.9) {
-            incrementPower();
-        }
+        double output = miniPID.getOutput(error);
+        
+        System.out.format("No: %d\n", counter);
+        System.out.format(" Error signal: %5.2f\n", error);
+        System.out.format(" Output signal: %5.2f\n", output);
+        
+        generator.setControlSignal(output);
     }
-    
+
     @Override
     public double getHistory(int image_no) {
         return history.get(image_no);

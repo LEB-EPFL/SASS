@@ -19,6 +19,8 @@
  */
 package algorithm_tester;
 
+import java.util.HashMap;
+
 /**
  * Interface for a laser intensity controller.
  * @author Marcel Stefko
@@ -56,4 +58,10 @@ public interface FeedbackController {
      * @return controller output value at the time the image was acquired
      */
     public double getHistory(int image_no);
+    
+    /**
+     * Returns a list of all (constant) settings for the controller.
+     * @return HashMap of settings
+     */
+    public HashMap<String,Double> getSettings();
 }

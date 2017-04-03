@@ -198,12 +198,22 @@ public class AlgorithmTester {
         String parameters = "";
         for (EvaluationAlgorithm analyzer: analyzers) {
             parameter_map = analyzer.getCustomParameters();
-                for (String key: parameter_map.keySet()) {
-                    parameters = parameters.
-                        concat(analyzer.getName()).concat(".").concat(key).
-                        concat(":").concat(parameter_map.get(key).toString()).
-                        concat(",");
-                }
+            for (String key: parameter_map.keySet()) {
+                parameters = parameters.
+                    concat(analyzer.getName()).concat(".").concat(key).
+                    concat(":").concat(parameter_map.get(key).toString()).
+                    concat(",");
+            }
+        }
+        writer.println(parameters);
+        
+        HashMap<String,Double> setting_map;
+        writer.println("#Controller settings:");
+        String settings = "";
+        setting_map = controller.getSettings();
+        for (String key: setting_map.keySet()) {
+            settings = settings.concat(String.format(
+                "%s:%f,",key,setting_map.get(key)));
         }
         writer.println(parameters);
         

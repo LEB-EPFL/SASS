@@ -23,12 +23,14 @@ import algorithm_tester.EvaluationAlgorithm;
 import algorithm_tester.FeedbackController;
 import algorithm_tester.ImageGenerator;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller akin to one implemented by the original AutoLase plugin.
  * @author Marcel Stefko
  */
 public class SimpleController implements FeedbackController {
+    private HashMap<String,Double> settings;
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
     private final ArrayList<Double> history;
@@ -37,6 +39,9 @@ public class SimpleController implements FeedbackController {
     int interval;
     
     public SimpleController() {
+        settings = new HashMap<String,Double>();
+        settings.put("interval", 10.0);
+        
         counter = 0;
         history = new ArrayList<Double>();
         history.add(0.0); // padding so we can number from 1
@@ -92,6 +97,11 @@ public class SimpleController implements FeedbackController {
     @Override
     public void setGenerator(ImageGenerator generator) {
         this.generator = generator;
+    }
+
+    @Override
+    public HashMap<String, Double> getSettings() {
+        return settings;
     }
     
 }

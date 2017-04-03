@@ -46,8 +46,11 @@ fgetl(alg_file); % discard first line
 header_algorithm_settings = fgetl(alg_file)
 fgetl(alg_file); % discard third line
 header_algorithms = fgetl(alg_file);
+fgetl(alg_file); % discard fifth line
+header_controller = fgetl(alg_file);
 
-algorithm_data = csvread(algorithm_csv,4,0);
+
+algorithm_data = csvread(algorithm_csv,6,0);
 
 x = algorithm_data(:,1);
 

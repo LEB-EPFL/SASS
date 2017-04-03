@@ -8,15 +8,7 @@ package algorithm_tester.analyzers.quickpalm;
 
 
 import ij.*;
-import ij.measure.*;
-import ij.plugin.*;
-import ij.plugin.filter.*;
-import ij.plugin.frame.*;
 import ij.process.*;
-import ij.gui.*;
-import ij.measure.CurveFitter.*;
-import java.awt.*;
-import java.lang.*;
 
 /** This plugin detectes sub-diffraction particles in a sequence of images, it
  * is the main plugin for the QuickPALM package.

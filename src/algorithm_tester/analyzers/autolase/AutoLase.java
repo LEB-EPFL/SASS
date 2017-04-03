@@ -20,7 +20,6 @@
 package algorithm_tester.analyzers.autolase;
 
 import algorithm_tester.EvaluationAlgorithm;
-import algorithm_tester.generators.realtime.Emitter;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.util.ArrayDeque;

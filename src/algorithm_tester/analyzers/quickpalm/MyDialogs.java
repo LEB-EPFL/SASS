@@ -8,14 +8,8 @@ package algorithm_tester.analyzers.quickpalm;
 
 import ij.*;
 import ij.io.*;
-import ij.measure.*;
-import ij.plugin.*;
-import ij.plugin.filter.*;
 import ij.plugin.frame.*;
-import ij.process.*;
 import ij.gui.*;
-import ij.measure.CurveFitter.*;
-import java.awt.*;
 
 class MyDialogs
 {

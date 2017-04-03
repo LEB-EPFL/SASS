@@ -30,7 +30,7 @@ import java.util.HashMap;
  * @author Marcel Stefko
  */
 public class SimpleController implements FeedbackController {
-    private HashMap<String,Double> settings;
+    private final HashMap<String,Double> settings;
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
     private final ArrayList<Double> history;

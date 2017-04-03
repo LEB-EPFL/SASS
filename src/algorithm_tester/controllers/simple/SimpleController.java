@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +25,13 @@ import algorithm_tester.ImageGenerator;
 import java.util.ArrayList;
 
 /**
- *
- * @author stefko
+ * Controller akin to one implemented by the original AutoLase plugin.
+ * @author Marcel Stefko
  */
 public class SimpleController implements FeedbackController {
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
-    private ArrayList<Double> history;
+    private final ArrayList<Double> history;
     double target;
     int counter;
     int interval;
@@ -40,22 +43,24 @@ public class SimpleController implements FeedbackController {
         interval = 10;
     }
     
+    @Override
     public void setTarget(double target) {
         this.target = target;
     }
     
+    // Decreases power by 1/5th
     private void decrementPower() {
         System.out.println("Decrementing power.");
         double current = generator.getControlSignal();
         generator.setControlSignal(current/1.2);
     }
     
+    // Increases power by 1/5th
     private void incrementPower() {
         System.out.println("Incrementing power.");
         double current = generator.getControlSignal();
         generator.setControlSignal(current*1.2);
     }
-    
     
     @Override
     public void adjust() {
@@ -79,8 +84,6 @@ public class SimpleController implements FeedbackController {
         return history.get(image_no);
     }
     
-    
-
     @Override
     public void setAnalyzer(EvaluationAlgorithm analyzer) {
         this.analyzer = analyzer;

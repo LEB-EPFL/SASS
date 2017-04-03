@@ -58,6 +58,10 @@ public interface EvaluationAlgorithm {
      */
     public HashMap<String, Double> getOutputValues(int image_no);
     
+    /**
+     * Returns the current value of error signal for given analyzer.
+     * @return error signal value
+     */
     public double getCurrentErrorSignal();
     
     /**

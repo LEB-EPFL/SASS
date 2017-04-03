@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,18 +25,21 @@ import algorithm_tester.ImageGenerator;
 import java.util.ArrayList;
 
 /**
- *
- * @author stefko
+ * Wrapper around MiniPID controller.
+ * @author Marcel Stefko
  */
 public class PIDController implements FeedbackController {
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
-    private ArrayList<Double> history;
+    private final ArrayList<Double> history;
     double target;
     int counter;
     int interval;
     MiniPID miniPID;
     
+    /**
+     * Initialize PID controller with default settings.
+     */
     public PIDController() {
         counter = 0;
         history = new ArrayList<Double>();
@@ -71,8 +77,6 @@ public class PIDController implements FeedbackController {
         return history.get(image_no);
     }
     
-    
-
     @Override
     public void setAnalyzer(EvaluationAlgorithm analyzer) {
         this.analyzer = analyzer;

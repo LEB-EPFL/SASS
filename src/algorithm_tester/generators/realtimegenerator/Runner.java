@@ -43,13 +43,13 @@ public class Runner {
             ShortProcessor ip = device.simulateFrame();
             stack.addSlice(ip);
         }
-        device.changeLaserPower(0.3);
+        device.setLaserPower(0.3);
         for (int i=0; i<100; i++) {
             System.out.println(i);
             ShortProcessor ip = device.simulateFrame();
             stack.addSlice(ip);
         }
-        device.changeLaserPower(5);
+        device.setLaserPower(5);
         for (int i=0; i<100; i++) {
             System.out.println(i);
             ShortProcessor ip = device.simulateFrame();

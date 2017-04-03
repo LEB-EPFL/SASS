@@ -20,7 +20,12 @@
 package algorithm_tester.generators.realtimegenerator;
 
 import algorithm_tester.ImageGenerator;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.io.FileSaver;
 import ij.process.ImageProcessor;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -28,20 +33,58 @@ import java.util.HashMap;
  * @author Marcel Stefko
  */
 public class STORMsim implements ImageGenerator{
+    Device device;
+    HashMap<String,Double> parameters;
+    ImageStack stack;
+    ArrayList<Double> emitter_history;
+            
+    public STORMsim() {
+        device = new Device();
+        int[] res = device.getResolution();
+        stack = new ImageStack(res[0],res[1]);
+        parameters = new HashMap<String,Double>();
+        emitter_history = new ArrayList<Double>();
+        emitter_history.add(0.0);
+    }
+    
+    @Override
+    public double getTrueSignal(int image_no) {
+        return emitter_history.get(image_no);
+    }
 
     @Override
     public ImageProcessor getNextImage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ImageProcessor ip = device.simulateFrame();
+        stack.addSlice(ip);
+        emitter_history.add(device.getOnEmitterCount());
+        return ip;
     }
 
     @Override
     public void setCustomParameters(HashMap<String, Double> map) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        parameters = map;
     }
 
     @Override
     public HashMap<String, Double> getCustomParameters() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        parameters.put("real_laser_power", device.getLaserPower());
+        return parameters;
     }
     
+    public void saveStack(File file) {
+        ImagePlus imp = new ImagePlus("stack", stack);
+        FileSaver fs = new FileSaver(imp);
+        fs.saveAsTiffStack(file.getAbsolutePath());
+    }
+
+    @Override
+    public void setControlSignal(double value) {
+        parameters.put("target_laser_power", value);
+        device.setLaserPower(value);
+    }
+
+    @Override
+    public double getControlSignal() {
+        return device.getLaserPower();
+    }
 }

@@ -59,11 +59,11 @@ public class Device {
                             100, //magnification, 
                             8 * 1e-9); //radius)
         
-        fluo = new Fluorophore(500, //signal_per_frame, 
-                               5, //background_per_frame, 
+        fluo = new Fluorophore(2500, //signal_per_frame, 
+                               25, //background_per_frame, 
                                8, //base_Ton_frames, 
                                30, //base_Toff_frames, 
-                               600); //base_Tbl_frames)
+                               400); //base_Tbl_frames)
         
         laser = new Laser(1.0, //start_power, 
                           5.0, //max_power, 
@@ -82,15 +82,35 @@ public class Device {
         gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
+    public int[] getResolution() {
+        int[] result = new int[2];
+        result[0] = camera.res_x; result[1] = camera.res_y;
+        return result;
+    }
+    
     /**
      * Modifies the laser power to desired value.
      * @param laser_power new laser power [W]
      */
-    public void changeLaserPower(double laser_power) {
+    public void setLaserPower(double laser_power) {
         laser.setPower(laser_power);
         for (Emitter e: emitters) {
             e.recalculate_lifetimes(laser.getPower());
         }
+    }
+    
+    public double getLaserPower() {
+        return laser.getPower();
+    }
+    
+    public double getOnEmitterCount() {
+        int count = 0;
+        for (Emitter e: emitters) {
+            if (e.state) {
+                count++;
+            }
+        }
+        return count;
     }
     
     /**
@@ -129,7 +149,7 @@ public class Device {
      * @param image input image
      * @return image with Poisson noise added
      */
-    public float[][] addPoissonNoise(float[][] image) {
+    private float[][] addPoissonNoise(float[][] image) {
         for (int x = 0; x < image.length; x++) {
             for (int y = 0; y < image[0].length; y++) {
                 image[x][y] = (float) poisson.nextInt(image[x][y]);
@@ -143,7 +163,7 @@ public class Device {
      * @param image image to be noised up
      * @return image with noises added
      */
-    public float[][] addNoises(float[][] image) {
+    private float[][] addNoises(float[][] image) {
         // add background
         for (int row=0; row < image.length; row++) {
             for (int col=0; col < image[row].length; col++) {

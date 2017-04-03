@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
 import static java.lang.Math.sqrt;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -114,9 +115,15 @@ class SpotCounterCore {
             mean += val;
         mean /= ov.size();
         
+        // if no spots found
+        if (min_distances.length == 0) {
+            min_distances = new double[1];
+            min_distances[0] = 0.0;
+        }
+        
         map.put("min-distance", min_distances[0]);
         map.put("mean-distance", mean);
-        int p10 = (int) ceil((double) ov.size() / 10.0);
+        int p10 = (int) floor((double) ov.size() / 10.0);
         map.put("p10-distance", min_distances[p10]);
         return map;
     }

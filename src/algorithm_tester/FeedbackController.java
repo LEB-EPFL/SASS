@@ -16,27 +16,19 @@
  */
 package algorithm_tester;
 
-import ij.process.ImageProcessor;
-import java.io.File;
-import java.util.HashMap;
-
 /**
- * Interface through which AlgorithmTester generates new images to be
- * analyzed by EvaluationAlgorithms.
- * @author Marcel Stefko
+ *
+ * @author stefko
  */
-public interface ImageGenerator {
-    public ImageProcessor getNextImage();
+public interface FeedbackController {
     
-    public void setControlSignal(double value);
+    public void setTarget(double target);
     
-    public double getControlSignal();
+    public void setAnalyzer(EvaluationAlgorithm analyzer);
     
-    public double getTrueSignal(int image_no);
+    public void setGenerator(ImageGenerator generator);
     
-    public void setCustomParameters(HashMap<String,Double> map);
+    public void adjust();
     
-    public HashMap<String,Double> getCustomParameters();
-
-    public void saveStack(File selectedFile);
+    public double getHistory(int image_no);
 }

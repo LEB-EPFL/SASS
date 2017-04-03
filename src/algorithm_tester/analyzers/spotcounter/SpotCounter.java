@@ -20,21 +20,13 @@
 package algorithm_tester.analyzers.spotcounter;
 
 import algorithm_tester.EvaluationAlgorithm;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.gui.Overlay;
-import ij.gui.Roi;
 import ij.measure.ResultsTable;
 import ij.process.ImageProcessor;
-import java.awt.Color;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import static java.lang.Math.ceil;
-import static java.lang.Math.sqrt;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Wrapper for SpotCounter implementation.
@@ -60,6 +52,18 @@ public class SpotCounter implements EvaluationAlgorithm {
         parameters.put("noise-tolerance", noise_tolerance);
         parameters.put("box-size", box_size);
         init();
+    }
+    
+    @Override
+    public double getCurrentErrorSignal() {
+        double signal;
+        try {
+            signal = spot_counts.get(spot_counts.size()-1);
+        } catch (IndexOutOfBoundsException ex) {
+            Logger.getLogger(SpotCounter.class.getName()).log(Level.SEVERE, null, ex);
+            signal = 0.0;
+        }
+        return signal;
     }
     
     /**

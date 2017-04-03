@@ -20,7 +20,9 @@
 package algorithm_tester.generators.tiffgenerator;
 
 import algorithm_tester.ImageGenerator;
+import ij.ImagePlus;
 import ij.ImageStack;
+import ij.io.FileSaver;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.util.HashMap;
@@ -61,6 +63,28 @@ public class TiffGenerator implements ImageGenerator {
     @Override
     public HashMap<String, Double> getCustomParameters() {
         return new HashMap<String, Double>();
+    }
+
+    @Override
+    public void saveStack(File file) {
+        ImagePlus imp = new ImagePlus("stack", stack);
+        FileSaver fs = new FileSaver(imp);
+        fs.saveAsTiffStack(file.getAbsolutePath());
+    }
+
+    @Override
+    public void setControlSignal(double value) {
+        return;
+    }
+
+    @Override
+    public double getControlSignal() {
+        return 0.0;
+    }
+    
+    @Override
+    public double getTrueSignal(int image_no) {
+        return 0.0;
     }
     
 }

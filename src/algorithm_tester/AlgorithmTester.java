@@ -22,7 +22,10 @@ package algorithm_tester;
 import algorithm_tester.analyzers.autolase.AutoLase;
 import algorithm_tester.analyzers.quickpalm.QuickPalm;
 import algorithm_tester.analyzers.spotcounter.SpotCounter;
+import algorithm_tester.controllers.autolasecontroller.AutoLaseController;
+import algorithm_tester.generators.realtimegenerator.STORMsim;
 import algorithm_tester.generators.tiffgenerator.TiffGenerator;
+import com.sun.media.sound.RealTimeSequencerProvider;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,6 +44,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class AlgorithmTester {
     ArrayList<EvaluationAlgorithm> analyzers;
     ImageGenerator generator;
+    FeedbackController controller;
     int image_count;
     
     /**
@@ -58,15 +62,11 @@ public class AlgorithmTester {
      */
     public void execute() {
         
-        //*
-        // File chooser dialog for choosing tif stack
-        JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(null);
-        if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        File tiff_file = fc.getSelectedFile();
         
+        JFileChooser fc = new JFileChooser();
+        int returnVal;
+        
+        //*
         // File chooser dialog for saving output csv
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         //set a default filename 
@@ -83,9 +83,6 @@ public class AlgorithmTester {
         File tiff_file = new File("C:\\Users\\stefko\\Desktop\\sim400orig.tif");
         File csv_output = new File("C:\\Users\\stefko\\Desktop\\output.csv");
         //*/
-        
-        generator = new TiffGenerator(tiff_file);
-        
         
         analyzers = new ArrayList<EvaluationAlgorithm>();
         
@@ -108,9 +105,19 @@ public class AlgorithmTester {
         addAnalyzer(autolase);
         addAnalyzer(spotcounter);
         addAnalyzer(quickpalm);
-        
+        /* Tiff generator
         // Analyze all images from the generator. End of analysis is marked
         // by a null pointer.
+        fc.setFileFilter(new FileNameExtensionFilter("TIF file","tif"));
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+        returnVal = fc.showOpenDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File tiff_file = fc.getSelectedFile();
+        
+        
+        generator = new TiffGenerator(tiff_file);
         ImageProcessor ip = generator.getNextImage();
         image_count = 0;
         while (ip != null) {
@@ -119,6 +126,41 @@ public class AlgorithmTester {
                 analyzer.processImage(ip);
             ip = generator.getNextImage();
         }
+        
+        /*/
+        // Real time generator
+        generator = new STORMsim();
+        
+        // AutoLase controller
+        controller = new AutoLaseController();
+        controller.setTarget(40.0);
+        controller.setAnalyzer(autolase);
+        controller.setGenerator(generator);
+        
+        
+        
+        
+        ImageProcessor ip;
+        for (image_count = 0; image_count < 900; image_count++) {
+            ip = generator.getNextImage();
+            for (EvaluationAlgorithm analyzer: analyzers)
+                analyzer.processImage(ip.duplicate());
+            System.out.println(image_count);
+            controller.adjust();
+        }
+        
+        fc.setFileFilter(new FileNameExtensionFilter("TIF file","tif"));
+        fc.setSelectedFile(new File("gen_stack.tif"));
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        returnVal = fc.showSaveDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        generator.saveStack(fc.getSelectedFile());
+        
+        
+        //*/
+        
         // Save analysis results to a csv file.
         saveToCsv(csv_output);
         System.exit(0);
@@ -165,7 +207,7 @@ public class AlgorithmTester {
         HashMap<String, Double> output_map;
         // Print header: Column description
         writer.println("#Columns:");
-        String analyzer_names = "frame-id";
+        String analyzer_names = "frame-id,true-signal,laser-power";
         for (EvaluationAlgorithm analyzer: analyzers) {
             output_map = analyzer.getOutputValues(1);
                 for (String key: output_map.keySet()) {
@@ -177,7 +219,9 @@ public class AlgorithmTester {
         
         // Print data - one line for each frame
         for (int i=1; i<=image_count; i++) {
-            String s = String.format("%d",i);
+            String s = String.format("%d,%5.2f,%5.2f",
+                    i,generator.getTrueSignal(i),controller.getHistory(i));
+            
             for (EvaluationAlgorithm analyzer: analyzers) {
                 output_map = analyzer.getOutputValues(i);
                 for (String key: output_map.keySet()) {

@@ -20,12 +20,15 @@
 package algorithm_tester.analyzers.autolase;
 
 import algorithm_tester.EvaluationAlgorithm;
+import algorithm_tester.generators.realtimegenerator.Emitter;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Wrapper for Thomas Pengo's implementation of AutoLase algorithm.
@@ -95,6 +98,18 @@ public class AutoLase implements EvaluationAlgorithm {
     @Override
     public HashMap<String, Integer> getCustomParameters() {
         return parameters;
+    }
+
+    @Override
+    public double getCurrentErrorSignal() {
+        double signal;
+        try {
+            signal = value_list.get(value_list.size()-1);
+        } catch (IndexOutOfBoundsException ex) {
+            Logger.getLogger(AutoLase.class.getName()).log(Level.SEVERE, null, ex);
+            signal = 0.0;
+        }
+        return signal;
     }
 
 

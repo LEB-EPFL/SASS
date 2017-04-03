@@ -25,6 +25,8 @@ import ij.process.ImageProcessor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * QuickPalm implementation interface.
@@ -44,6 +46,18 @@ public class QuickPalm implements EvaluationAlgorithm {
         no_particles_list = new ArrayList<Integer>();
         parameters = new HashMap<String, Integer>();
         count = 0;
+    }
+    
+    @Override
+    public double getCurrentErrorSignal() {
+        double signal;
+        try {
+            signal = no_particles_list.get(no_particles_list.size()-1);
+        } catch (IndexOutOfBoundsException ex) {
+            Logger.getLogger(QuickPalm.class.getName()).log(Level.SEVERE, null, ex);
+            signal = 0.0;
+        }
+        return signal;
     }
     
     @Override

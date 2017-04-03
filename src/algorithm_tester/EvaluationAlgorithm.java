@@ -58,6 +58,8 @@ public interface EvaluationAlgorithm {
      */
     public HashMap<String, Double> getOutputValues(int image_no);
     
+    public double getCurrentErrorSignal();
+    
     /**
      * Returns custom name of the analyzer.
      * @return name of the analyzer

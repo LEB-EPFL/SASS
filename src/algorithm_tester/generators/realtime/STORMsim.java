@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.tiffgenerator;
+package algorithm_tester.generators.realtime;
 
 import algorithm_tester.ImageGenerator;
 import ij.ImagePlus;
@@ -25,47 +25,52 @@ import ij.ImageStack;
 import ij.io.FileSaver;
 import ij.process.ImageProcessor;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Generates images from a .tiff stack image file.
+ * ImageGenerator wrapper around the RealTimeGenerator implementation.
  * @author Marcel Stefko
  */
-public class TiffGenerator implements ImageGenerator {
-    private ImageStack stack;
-    private int count;
-    
-    /**
-     * Initializes the TiffParser and loads up the image stack from a file.
-     * @param file tiff file to be loaded
-     */
-    public TiffGenerator(File file) {
-        TiffParser parser = new TiffParser();
-        System.out.print("Loading selected .tif file.");
-        stack = parser.loadGeneralTiff(file);
-        System.out.format("Tif file loaded: %s\n",file.getAbsolutePath());
-        count = 0;
+public class STORMsim implements ImageGenerator{
+    Device device;
+    HashMap<String,Double> parameters;
+    ImageStack stack;
+    ArrayList<Double> emitter_history;
+            
+    public STORMsim() {
+        device = new Device();
+        int[] res = device.getResolution();
+        stack = new ImageStack(res[0],res[1]);
+        parameters = new HashMap<String,Double>();
+        emitter_history = new ArrayList<Double>();
+        emitter_history.add(0.0);
     }
     
     @Override
+    public double getTrueSignal(int image_no) {
+        return emitter_history.get(image_no);
+    }
+
+    @Override
     public ImageProcessor getNextImage() {
-        count++;
-        if (count > stack.getSize())
-            return null;
-        return stack.getProcessor(count);
+        ImageProcessor ip = device.simulateFrame();
+        stack.addSlice(ip);
+        emitter_history.add(device.getOnEmitterCount());
+        return ip;
     }
 
     @Override
     public void setCustomParameters(HashMap<String, Double> map) {
-        return;
+        parameters = map;
     }
 
     @Override
     public HashMap<String, Double> getCustomParameters() {
-        return new HashMap<String, Double>();
+        parameters.put("real_laser_power", device.getLaserPower());
+        return parameters;
     }
-
-    @Override
+    
     public void saveStack(File file) {
         ImagePlus imp = new ImagePlus("stack", stack);
         FileSaver fs = new FileSaver(imp);
@@ -74,17 +79,12 @@ public class TiffGenerator implements ImageGenerator {
 
     @Override
     public void setControlSignal(double value) {
-        return;
+        parameters.put("target_laser_power", value);
+        device.setLaserPower(value);
     }
 
     @Override
     public double getControlSignal() {
-        return 0.0;
+        return device.getLaserPower();
     }
-    
-    @Override
-    public double getTrueSignal(int image_no) {
-        return 0.0;
-    }
-    
 }

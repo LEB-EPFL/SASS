@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.realtimegenerator;
+package algorithm_tester.generators.realtime;
 
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;

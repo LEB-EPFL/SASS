@@ -56,9 +56,14 @@ public class SpotCounter implements EvaluationAlgorithm {
     
     @Override
     public double getCurrentErrorSignal() {
+        return getErrorSignal(spot_counts.size()-1);
+    }
+    
+    @Override
+    public double getErrorSignal(int image_no) {
         double signal;
         try {
-            signal = spot_counts.get(spot_counts.size()-1);
+            signal = spot_counts.get(image_no);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(SpotCounter.class.getName()).log(Level.SEVERE, null, ex);
             signal = 0.0;

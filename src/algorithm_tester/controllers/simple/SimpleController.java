@@ -34,6 +34,7 @@ public class SimpleController implements FeedbackController {
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
     private final ArrayList<Double> history;
+    private final ArrayList<Double> setpoint_history;
     double target;
     int counter;
     int interval;
@@ -45,6 +46,10 @@ public class SimpleController implements FeedbackController {
         counter = 0;
         history = new ArrayList<Double>();
         history.add(0.0); // padding so we can number from 1
+        
+        setpoint_history = new ArrayList<Double>();
+        setpoint_history.add(0.0); // padding so we can number from 1
+        
         interval = 10;
     }
     
@@ -70,6 +75,7 @@ public class SimpleController implements FeedbackController {
     @Override
     public void adjust() {
         history.add(generator.getControlSignal());
+        setpoint_history.add(target);
         counter++;
         if ((counter % interval) != 0) {
             return;
@@ -85,13 +91,18 @@ public class SimpleController implements FeedbackController {
     }
     
     @Override
-    public double getHistory(int image_no) {
+    public double getOutputHistory(int image_no) {
         return history.get(image_no);
     }
     
     @Override
     public void setAnalyzer(EvaluationAlgorithm analyzer) {
         this.analyzer = analyzer;
+    }
+    
+    @Override
+    public EvaluationAlgorithm getAnalyzer() {
+        return analyzer;
     }
 
     @Override
@@ -102,6 +113,11 @@ public class SimpleController implements FeedbackController {
     @Override
     public HashMap<String, Double> getSettings() {
         return settings;
+    }
+
+    @Override
+    public double getSetpointHistory(int image_no) {
+        return setpoint_history.get(image_no);
     }
     
 }

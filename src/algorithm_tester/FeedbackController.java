@@ -45,6 +45,8 @@ public interface FeedbackController {
      */
     public void setGenerator(ImageGenerator generator);
     
+    public EvaluationAlgorithm getAnalyzer();
+    
     /**
      * Update internal state after new image has been generated, and send
      * feedback to the generator.
@@ -57,7 +59,9 @@ public interface FeedbackController {
      * @param image_no 1-based number of desired image
      * @return controller output value at the time the image was acquired
      */
-    public double getHistory(int image_no);
+    public double getOutputHistory(int image_no);
+    
+    public double getSetpointHistory(int image_no);
     
     /**
      * Returns a list of all (constant) settings for the controller.

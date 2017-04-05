@@ -50,9 +50,14 @@ public class QuickPalm implements EvaluationAlgorithm {
     
     @Override
     public double getCurrentErrorSignal() {
+        return getErrorSignal(no_particles_list.size()-1);
+    }
+    
+    @Override
+    public double getErrorSignal(int image_no) {
         double signal;
         try {
-            signal = no_particles_list.get(no_particles_list.size()-1);
+            signal = no_particles_list.get(image_no);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(QuickPalm.class.getName()).log(Level.SEVERE, null, ex);
             signal = 0.0;

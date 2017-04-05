@@ -147,7 +147,7 @@ public class AlgorithmTester {
         
         
         ImageProcessor ip;
-        for (image_count = 0; image_count < 1000; image_count++) {
+        for (image_count = 0; image_count < 25; image_count++) {
             ip = generator.getNextImage();
             for (EvaluationAlgorithm analyzer: analyzers.values())
                 analyzer.processImage(ip.duplicate());
@@ -236,7 +236,7 @@ public class AlgorithmTester {
         // Print data - one line for each frame
         for (int i=1; i<=image_count; i++) {
             String s = String.format("%d,%5.2f,%5.2f",
-                    i,generator.getTrueSignal(i),controller.getHistory(i));
+                    i,generator.getTrueSignal(i),controller.getOutputHistory(i));
             
             for (EvaluationAlgorithm analyzer: analyzers.values()) {
                 output_map = analyzer.getOutputValues(i);
@@ -253,5 +253,9 @@ public class AlgorithmTester {
     
     public void incrementCounter() {
     image_count++;
+    }
+    
+    public int getImageCount() {
+        return image_count;
     }
 }

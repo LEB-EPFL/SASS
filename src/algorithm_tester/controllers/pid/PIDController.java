@@ -35,6 +35,7 @@ public class PIDController implements FeedbackController {
     private EvaluationAlgorithm analyzer;
     private ImageGenerator generator;
     private final ArrayList<Double> history;
+    private final ArrayList<Double> setpoint_history;
     double target;
     int counter;
     int interval;
@@ -58,6 +59,8 @@ public class PIDController implements FeedbackController {
         counter = 0;
         history = new ArrayList<Double>();
         history.add(0.0); // padding so we can number from 1
+        setpoint_history = new ArrayList<Double>();
+        setpoint_history.add(0.0); // padding so we can number from 1
         interval = 10;
         
         miniPID = new MiniPID(settings.get("P"),
@@ -76,6 +79,7 @@ public class PIDController implements FeedbackController {
     @Override
     public void adjust() {
         history.add(generator.getControlSignal());
+        setpoint_history.add(target);
         counter++;
         
         double error = analyzer.getCurrentErrorSignal();
@@ -89,13 +93,23 @@ public class PIDController implements FeedbackController {
     }
 
     @Override
-    public double getHistory(int image_no) {
+    public double getOutputHistory(int image_no) {
         return history.get(image_no);
+    }
+    
+    @Override
+    public double getSetpointHistory(int image_no) {
+        return setpoint_history.get(image_no);
     }
     
     @Override
     public void setAnalyzer(EvaluationAlgorithm analyzer) {
         this.analyzer = analyzer;
+    }
+    
+    @Override
+    public EvaluationAlgorithm getAnalyzer() {
+        return analyzer;
     }
 
     @Override

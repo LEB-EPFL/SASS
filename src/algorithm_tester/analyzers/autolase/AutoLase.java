@@ -101,9 +101,14 @@ public class AutoLase implements EvaluationAlgorithm {
 
     @Override
     public double getCurrentErrorSignal() {
+        return getErrorSignal(value_list.size()-1);
+    }
+
+    @Override
+    public double getErrorSignal(int image_no) {
         double signal;
         try {
-            signal = value_list.get(value_list.size()-1);
+            signal = value_list.get(image_no);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(AutoLase.class.getName()).log(Level.SEVERE, null, ex);
             signal = 0.0;

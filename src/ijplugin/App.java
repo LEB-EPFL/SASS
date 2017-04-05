@@ -22,7 +22,9 @@ import algorithm_tester.FeedbackController;
 import algorithm_tester.ImageGenerator;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
+import ij.gui.Plot;
 import ij.process.ImageProcessor;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -35,6 +37,7 @@ import java.util.logging.Logger;
  */
 public class App extends AlgorithmTester {
     private ImagePlus imp;
+    private Plot plot;
     private Worker worker;
     
     public App() {
@@ -43,6 +46,9 @@ public class App extends AlgorithmTester {
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
+        plot = new Plot("Controller history", "Frame id.", "Value");
+        plot.show();
+        
     }
     
     public void startSimulating() {
@@ -61,6 +67,10 @@ public class App extends AlgorithmTester {
     
     public void setSetpoint(double value) {
         controller.setTarget(value);
+    }
+    
+    public Plot getPlot() {
+        return plot;
     }
     
     public void analyzerSetupDialog() {
@@ -125,6 +135,39 @@ class Worker extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (app.getImageCount()%10==0) {
+                updatePlot();
+            }
         }
+    }
+    
+    public void updatePlot() {
+        Plot plot = app.getPlot();
+        
+        int count = app.getImageCount();
+        double[] x = new double[count]; 
+        double[] real = new double[count];
+        double[] laser = new double[count]; 
+        double[] spot = new double[count];
+        double[] set_point = new double[count];
+        for (int i=1; i<=app.getImageCount(); i++) {
+            x[i-1] = (double) i;
+            real[i-1] = generator.getTrueSignal(i);
+            laser[i-1] = controller.getOutputHistory(i)*200;
+            spot[i-1] = controller.getAnalyzer().getErrorSignal(i-1);
+            set_point[i-1] = controller.getSetpointHistory(i);
+        }
+        plot.setColor(Color.black);
+        plot.addPoints(x, real, Plot.LINE);
+        plot.setColor(Color.red);
+        plot.addPoints(x, spot, Plot.LINE);
+        plot.setColor(Color.blue);
+        plot.addPoints(x, set_point, Plot.LINE);
+        plot.setColor(Color.orange);
+        plot.addPoints(x, laser, Plot.LINE);
+        plot.setLimits(0, 5, 0, 3); // hack to get a correct rescale
+        plot.setLimitsToFit(true);
+        plot.draw();
+        
     }
 }

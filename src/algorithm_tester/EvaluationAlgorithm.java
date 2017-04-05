@@ -65,6 +65,8 @@ public interface EvaluationAlgorithm {
      */
     public double getCurrentErrorSignal();
     
+    public double getErrorSignal(int image_no);
+    
     /**
      * Returns custom name of the analyzer.
      * @return name of the analyzer

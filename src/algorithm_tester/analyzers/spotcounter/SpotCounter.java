@@ -40,7 +40,7 @@ public class SpotCounter implements EvaluationAlgorithm {
     private ArrayList<Double> p10_dists;
     SpotCounterCore analyzer;
     
-    private HashMap<String, Integer> parameters;
+    private LinkedHashMap<String, Integer> parameters;
     private int noise_tolerance = 100;
     private int box_size = 5;
     
@@ -48,7 +48,7 @@ public class SpotCounter implements EvaluationAlgorithm {
      * Initializes the algorithm.
      */
     public SpotCounter() {
-        parameters = new HashMap<String, Integer>();
+        parameters = new LinkedHashMap<String, Integer>();
         parameters.put("noise-tolerance", noise_tolerance);
         parameters.put("box-size", box_size);
         init();
@@ -107,7 +107,7 @@ public class SpotCounter implements EvaluationAlgorithm {
     }
 
     @Override
-    public void setCustomParameters(HashMap<String, Integer> map) {
+    public void setCustomParameters(LinkedHashMap<String, Integer> map) {
         noise_tolerance = map.get("noise-tolerance");
         box_size = map.get("box-size");
         parameters = map;
@@ -115,7 +115,7 @@ public class SpotCounter implements EvaluationAlgorithm {
     }
 
     @Override
-    public HashMap<String, Integer> getCustomParameters() {
+    public LinkedHashMap<String, Integer> getCustomParameters() {
         return parameters;
     }
     

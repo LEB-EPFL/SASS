@@ -19,6 +19,7 @@
  */
 package algorithm_tester;
 
+import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.util.HashMap;
@@ -42,4 +43,6 @@ public interface ImageGenerator {
     public HashMap<String,Double> getCustomParameters();
 
     public void saveStack(File selectedFile);
+    
+    public ImageStack getStack();
 }

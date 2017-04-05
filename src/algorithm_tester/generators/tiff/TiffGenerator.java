@@ -71,6 +71,11 @@ public class TiffGenerator implements ImageGenerator {
         FileSaver fs = new FileSaver(imp);
         fs.saveAsTiffStack(file.getAbsolutePath());
     }
+    
+    @Override
+    public ImageStack getStack() {
+        return stack;
+    }
 
     @Override
     public void setControlSignal(double value) {

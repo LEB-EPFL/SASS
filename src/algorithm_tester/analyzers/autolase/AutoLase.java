@@ -38,7 +38,7 @@ public class AutoLase implements EvaluationAlgorithm {
     private AutoLaseAnalyzer analyzer;
     private ArrayList<Double> value_list;
     private ArrayList<Double> raw_value_list;
-    private HashMap<String, Integer> parameters;
+    private LinkedHashMap<String, Integer> parameters;
     
     private int threshold = 120;
     private int averaging = 30;
@@ -48,7 +48,7 @@ public class AutoLase implements EvaluationAlgorithm {
      * values.
      */
     public AutoLase() {
-        parameters = new HashMap<String, Integer>();
+        parameters = new LinkedHashMap<String, Integer>();
         parameters.put("threshold", threshold);
         parameters.put("averaging", averaging);
         init();
@@ -87,7 +87,7 @@ public class AutoLase implements EvaluationAlgorithm {
     }
 
     @Override
-    public void setCustomParameters(HashMap<String, Integer> map) {
+    public void setCustomParameters(LinkedHashMap<String, Integer> map) {
         threshold = map.get("threshold");
         averaging = map.get("averaging");
         parameters = map;
@@ -95,7 +95,7 @@ public class AutoLase implements EvaluationAlgorithm {
     }
 
     @Override
-    public HashMap<String, Integer> getCustomParameters() {
+    public LinkedHashMap<String, Integer> getCustomParameters() {
         return parameters;
     }
 

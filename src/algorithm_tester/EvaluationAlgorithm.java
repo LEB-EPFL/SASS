@@ -21,6 +21,7 @@ package algorithm_tester;
 
 import ij.process.ImageProcessor;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 /**
@@ -41,13 +42,13 @@ public interface EvaluationAlgorithm {
      * Set your internal configuration parameters to new values.
      * @param map new configuration parameters
      */
-    public void setCustomParameters(HashMap<String, Integer> map);
+    public void setCustomParameters(LinkedHashMap<String, Integer> map);
     
     /**
      * Returns the current internal configuration parameters.
-     * @return current configuration parameters
+     * @return
      */
-    public HashMap<String, Integer> getCustomParameters();
+    public LinkedHashMap<String, Integer> getCustomParameters();
     
     /**
      * Returns the output (various error signal candidate values) of the 

@@ -23,16 +23,14 @@ import algorithm_tester.analyzers.autolase.AutoLase;
 import algorithm_tester.analyzers.quickpalm.QuickPalm;
 import algorithm_tester.analyzers.spotcounter.SpotCounter;
 import algorithm_tester.controllers.pid.PIDController;
-import algorithm_tester.controllers.simple.SimpleController;
 import algorithm_tester.generators.realtime.STORMsim;
-import algorithm_tester.generators.tiff.TiffGenerator;
-import com.sun.media.sound.RealTimeSequencerProvider;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -43,10 +41,43 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author stefko
  */
 public class AlgorithmTester {
-    ArrayList<EvaluationAlgorithm> analyzers;
-    ImageGenerator generator;
-    FeedbackController controller;
-    int image_count;
+    protected final HashMap<String,EvaluationAlgorithm> analyzers;
+    protected final ImageGenerator generator;
+    protected final FeedbackController controller;
+    protected int image_count;
+    
+    public AlgorithmTester() {
+        analyzers = new LinkedHashMap<String,EvaluationAlgorithm>();
+        // Instantiate all analyzers and add them to the list.
+        AutoLase autolase = new AutoLase();
+        LinkedHashMap<String, Integer> autolase_params = new LinkedHashMap<String, Integer>();
+        autolase_params.put("threshold", 70);
+        autolase_params.put("averaging", 30);
+        autolase.setCustomParameters(autolase_params);
+        
+        SpotCounter spotcounter = new SpotCounter();
+        LinkedHashMap<String, Integer> spotcounter_params = new LinkedHashMap<String, Integer>();
+        spotcounter_params.put("noise-tolerance", 90);
+        spotcounter_params.put("box-size", 5);
+        spotcounter.setCustomParameters(spotcounter_params);
+        
+        QuickPalm quickpalm = new QuickPalm();
+        
+        addAnalyzer(autolase);
+        addAnalyzer(spotcounter);
+        addAnalyzer(quickpalm);
+        
+        
+        // Real time generator
+        generator = new STORMsim(true);
+        
+        // Set up controller
+        //controller = new SimpleController();
+        controller = new PIDController(true);
+        controller.setTarget(120.0);
+        controller.setAnalyzer(spotcounter);
+        controller.setGenerator(generator);
+    }
     
     /**
      * Main function which executes the testing procedure.
@@ -85,27 +116,7 @@ public class AlgorithmTester {
         File csv_output = new File("C:\\Users\\stefko\\Desktop\\output.csv");
         //*/
         
-        analyzers = new ArrayList<EvaluationAlgorithm>();
         
-        // Instantiate all analyzers and add them to the list.
-        AutoLase autolase = new AutoLase();
-        HashMap<String, Integer> autolase_params = new HashMap<String, Integer>();
-        autolase_params.put("threshold", 70);
-        autolase_params.put("averaging", 30);
-        autolase.setCustomParameters(autolase_params);
-        
-        SpotCounter spotcounter = new SpotCounter();
-        HashMap<String, Integer> spotcounter_params = new HashMap<String, Integer>();
-        spotcounter_params.put("noise-tolerance", 90);
-        spotcounter_params.put("box-size", 5);
-        spotcounter.setCustomParameters(spotcounter_params);
-        
-        QuickPalm quickpalm = new QuickPalm();
-        
-        
-        addAnalyzer(autolase);
-        addAnalyzer(spotcounter);
-        addAnalyzer(quickpalm);
         /* Tiff generator
         // Analyze all images from the generator. End of analysis is marked
         // by a null pointer.
@@ -129,15 +140,7 @@ public class AlgorithmTester {
         }
         
         /*/
-        // Real time generator
-        generator = new STORMsim();
-        
-        // Set up controller
-        //controller = new SimpleController();
-        controller = new PIDController();
-        controller.setTarget(120.0);
-        controller.setAnalyzer(spotcounter);
-        controller.setGenerator(generator);
+
         
         
         
@@ -146,7 +149,7 @@ public class AlgorithmTester {
         ImageProcessor ip;
         for (image_count = 0; image_count < 1000; image_count++) {
             ip = generator.getNextImage();
-            for (EvaluationAlgorithm analyzer: analyzers)
+            for (EvaluationAlgorithm analyzer: analyzers.values())
                 analyzer.processImage(ip.duplicate());
             //System.out.println(image_count);
             controller.adjust();
@@ -173,15 +176,15 @@ public class AlgorithmTester {
      * Adds the analyzer to list of all analyzers to be evaluated.
      * @param analyzer initialized and configured EvaluationAlgorithm
      */
-    public void addAnalyzer(EvaluationAlgorithm analyzer) {
-        analyzers.add(analyzer);
+    public final void addAnalyzer(EvaluationAlgorithm analyzer) {
+        analyzers.put(analyzer.getName(), analyzer);
     }
     
     /**
      * Saves the data generated by analyzers for each frame into a .csv file
      * @param file destination csv file
      */
-    private void saveToCsv(File file) {
+    public void saveToCsv(File file) {
         // Open the file for writing
         PrintWriter writer;
         try {
@@ -196,7 +199,7 @@ public class AlgorithmTester {
         // Print header: analyzer settings
         writer.println("#Analyzer settings:");
         String parameters = "";
-        for (EvaluationAlgorithm analyzer: analyzers) {
+        for (EvaluationAlgorithm analyzer: analyzers.values()) {
             parameter_map = analyzer.getCustomParameters();
             for (String key: parameter_map.keySet()) {
                 parameters = parameters.
@@ -221,7 +224,7 @@ public class AlgorithmTester {
         // Print header: Column description
         writer.println("#Columns:");
         String analyzer_names = "frame-id,true-signal,laser-power";
-        for (EvaluationAlgorithm analyzer: analyzers) {
+        for (EvaluationAlgorithm analyzer: analyzers.values()) {
             output_map = analyzer.getOutputValues(1);
                 for (String key: output_map.keySet()) {
                     analyzer_names = analyzer_names.concat(",").
@@ -235,7 +238,7 @@ public class AlgorithmTester {
             String s = String.format("%d,%5.2f,%5.2f",
                     i,generator.getTrueSignal(i),controller.getHistory(i));
             
-            for (EvaluationAlgorithm analyzer: analyzers) {
+            for (EvaluationAlgorithm analyzer: analyzers.values()) {
                 output_map = analyzer.getOutputValues(i);
                 for (String key: output_map.keySet()) {
                     s = s.concat(String.format(",%f",output_map.get(key)));
@@ -246,5 +249,9 @@ public class AlgorithmTester {
         }
         writer.close();
         
+    }
+    
+    public void incrementCounter() {
+    image_count++;
     }
 }

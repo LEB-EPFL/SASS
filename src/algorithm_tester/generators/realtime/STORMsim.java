@@ -20,8 +20,10 @@
 package algorithm_tester.generators.realtime;
 
 import algorithm_tester.ImageGenerator;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.gui.GenericDialog;
 import ij.io.FileSaver;
 import ij.process.ImageProcessor;
 import java.io.File;
@@ -38,8 +40,12 @@ public class STORMsim implements ImageGenerator{
     ImageStack stack;
     ArrayList<Double> emitter_history;
             
-    public STORMsim() {
-        device = new Device();
+    public STORMsim(boolean showDialog) {
+        if (showDialog) {
+            initDeviceFromDialog();
+        } else {
+            device = new Device();
+        }
         int[] res = device.getResolution();
         stack = new ImageStack(res[0],res[1]);
         parameters = new HashMap<String,Double>();
@@ -71,10 +77,16 @@ public class STORMsim implements ImageGenerator{
         return parameters;
     }
     
+    @Override
     public void saveStack(File file) {
         ImagePlus imp = new ImagePlus("stack", stack);
         FileSaver fs = new FileSaver(imp);
         fs.saveAsTiffStack(file.getAbsolutePath());
+    }
+    
+    @Override
+    public ImageStack getStack() {
+        return stack;
     }
 
     @Override
@@ -86,5 +98,73 @@ public class STORMsim implements ImageGenerator{
     @Override
     public double getControlSignal() {
         return device.getLaserPower();
+    }
+    
+    private void initDeviceFromDialog() {
+        GenericDialog gd = new GenericDialog("Device initialization");
+        gd.addMessage("Camera:");
+        gd.addNumericField("Resolution X", 400, 0);
+        gd.addNumericField("Resolution Y", 400, 0);
+        gd.addNumericField("Framerate [fps]", 100, 0);
+        gd.addNumericField("Readout noise [rms]", 1.6, 1);
+        gd.addNumericField("Dark current [e/px/frame]",0.06,3);
+        gd.addNumericField("Quantum efficiency", 0.8, 2);
+        gd.addNumericField("Gain", 6, 1);
+        gd.addNumericField("Pixel size [um]", 6.45, 3);
+        gd.addNumericField("Numerical aperture", 1.3, 2);
+        gd.addNumericField("Wavelength [nm]", 600, 0);
+        gd.addNumericField("Magnification", 100, 0);
+        gd.addNumericField("Cross-section radius [nm]", 8, 1);
+        /*
+        gd.addMessage("Fluorophore:");
+        gd.addNumericField("Fluo signal", 2500, 0);
+        gd.addNumericField("Fluo background", 50, 0);
+        gd.addNumericField("Base Ton", 8, 0);
+        gd.addNumericField("Base Toff", 30, 0);
+        gd.addNumericField("Base Tbl", 300, 0);
+        */
+        gd.addMessage("Laser:");
+        gd.addNumericField("Laser start", 1.0, 2);
+        gd.addNumericField("Laser max", 5.0, 2);
+        gd.addNumericField("Laser min", 0.1, 2);
+        
+        gd.addMessage("Emitter:");
+        gd.addNumericField("Emitter no.", 1600, 0);
+        gd.showDialog();
+        
+        Camera camera = new Camera((int)gd.getNextNumber(), //res_x
+                            (int)gd.getNextNumber(), //res_y
+                            (int)gd.getNextNumber(), //acq_speed, 
+                            gd.getNextNumber(), //readout_noise, 
+                            gd.getNextNumber(), //dark_current, 
+                            gd.getNextNumber(), //quantum_efficiency, 
+                            gd.getNextNumber(), //gain, 
+                            gd.getNextNumber() * 1e-6, //pixel_size, 
+                            gd.getNextNumber(), //NA, 
+                            gd.getNextNumber() * 1e-9, //wavelength, 
+                            gd.getNextNumber(), //magnification, 
+                            gd.getNextNumber() * 1e-9); //radius)
+        
+        Fluorophore fluo = new Fluorophore(2500, //signal_per_frame, 
+                               50, //background_per_frame, 
+                               8, //base_Ton_frames, 
+                               30, //base_Toff_frames, 
+                               300); //base_Tbl_frames)
+                
+                /*new Fluorophore(gd.getNextNumber(), //signal_per_frame, 
+                gd.getNextNumber(), //background_per_frame, 
+                gd.getNextNumber(), //base_Ton_frames, 
+                gd.getNextNumber(), //base_Toff_frames, 
+                gd.getNextNumber()); //base_Tbl_frames)*/
+        
+        Laser laser = new Laser(gd.getNextNumber(), //start_power, 
+                          gd.getNextNumber(), //max_power, 
+                          gd.getNextNumber()); //min_power)
+        
+        ArrayList<Emitter> emitters = EmitterGenerator.generateEmittersRandom(
+                (int)gd.getNextNumber(), //n_fluos, 
+                camera,
+                fluo);
+        device = new Device(camera, fluo, laser, emitters);
     }
 }

@@ -10,6 +10,12 @@
 <project name="STEADIER-SAILOR" default="default" basedir=".">
     <description>Builds, tests, and runs the project STEADIER-SAILOR.</description>
     <import file="nbproject/build-impl.xml"/>
+    <property name="pluginsDir"  location="C:\Users\stefko\Fiji.app\plugins" />
+       <target name="-post-jar">
+       <echo message="--Copied MM plugin JAR from: ${basedir}/${dist.jar} to ${pluginsDir}" />
+       <copy file="${basedir}/${dist.jar}" toDir="${pluginsDir}" />
+       <move file="${pluginsDir}/STEADIER-SAILOR.jar" tofile="C:\Users\stefko\Fiji.app\plugins\STEADIER_SAILOR.jar"/>
+       </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

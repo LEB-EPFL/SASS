@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2017 stefko
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ *
+ * Author: Marcel Stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,6 +76,21 @@ public class Device {
                 1600, //n_fluos, 
                 camera,
                 fluo);
+        for (Emitter e: emitters) {
+            e.recalculate_lifetimes(laser.getPower());
+        }
+        random = new Random();
+        poisson = new Poisson(1.0, new MersenneTwister(random.nextInt()));
+        gamma = new Gamma(1.0, 5.0, new MersenneTwister(random.nextInt()));
+        gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
+    }
+    
+    public Device(Camera cam, Fluorophore fluo, Laser laser, ArrayList<Emitter>emitters) {
+        camera = cam;
+        this.fluo = fluo;
+        this.laser = laser;
+        this.emitters = emitters;
+        
         for (Emitter e: emitters) {
             e.recalculate_lifetimes(laser.getPower());
         }

@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 public class QuickPalm implements EvaluationAlgorithm {
     private int count;
     private final QuickPalmCore core;
-    private HashMap<String, Integer> parameters;
+    private LinkedHashMap<String, Integer> parameters;
     
     private ArrayList<Integer> no_particles_list;
     
@@ -44,7 +44,7 @@ public class QuickPalm implements EvaluationAlgorithm {
     public QuickPalm() {
         core = new QuickPalmCore();
         no_particles_list = new ArrayList<Integer>();
-        parameters = new HashMap<String, Integer>();
+        parameters = new LinkedHashMap<String, Integer>();
         count = 0;
     }
     
@@ -67,12 +67,12 @@ public class QuickPalm implements EvaluationAlgorithm {
     }
     
     @Override
-    public void setCustomParameters(HashMap<String, Integer> map) {
+    public void setCustomParameters(LinkedHashMap<String, Integer> map) {
         parameters = map;
     }
 
     @Override
-    public HashMap<String, Integer> getCustomParameters() {
+    public LinkedHashMap<String, Integer> getCustomParameters() {
         return parameters;
     }
 

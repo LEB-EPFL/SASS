@@ -22,6 +22,7 @@ package algorithm_tester.controllers.pid;
 import algorithm_tester.EvaluationAlgorithm;
 import algorithm_tester.FeedbackController;
 import algorithm_tester.ImageGenerator;
+import ij.gui.GenericDialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,15 +43,18 @@ public class PIDController implements FeedbackController {
     /**
      * Initialize PID controller with default settings.
      */
-    public PIDController() {
+    public PIDController(boolean showDialog) {
         settings = new HashMap<String,Double>();
-        settings.put("P", 0.005);
-        settings.put("I", 0.0025);
-        settings.put("D", 0.0);
-        settings.put("limit-low", 0.2);
-        settings.put("limit-high", 5.0);
-        settings.put("output-filter", 0.1);
-        
+        if (!(showDialog)) {
+            settings.put("P", 0.005);
+            settings.put("I", 0.0025);
+            settings.put("D", 0.0);
+            settings.put("limit-low", 0.2);
+            settings.put("limit-high", 5.0);
+            settings.put("output-filter", 0.1);
+        } else {
+            getSettingsFromDialog();
+        }
         counter = 0;
         history = new ArrayList<Double>();
         history.add(0.0); // padding so we can number from 1
@@ -104,4 +108,27 @@ public class PIDController implements FeedbackController {
         return settings;
     }
     
+    private void getSettingsFromDialog() {
+        GenericDialog gd = new GenericDialog("Device initialization");
+        gd.addMessage("PID controller");
+        
+        gd.addNumericField("P", 0.005, 5);
+        gd.addNumericField("I", 0.0025, 5);
+        gd.addNumericField("D", 0.0, 5);
+        gd.addNumericField("limit-low", 0.2, 2);
+        gd.addNumericField("limit-high",5.0,2);
+        gd.addNumericField("output-filter",0.1,3);
+        gd.showDialog();
+        
+        
+        
+        
+        settings.put("P", gd.getNextNumber());
+        settings.put("I", gd.getNextNumber());
+        settings.put("D", gd.getNextNumber());
+        settings.put("limit-low", gd.getNextNumber());
+        settings.put("limit-high", gd.getNextNumber());
+        settings.put("output-filter", gd.getNextNumber());
+        
+    }
 }

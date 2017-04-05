@@ -19,7 +19,7 @@
  */
 package algorithm_tester.analyzers.spotcounter;
 
-import algorithm_tester.EvaluationAlgorithm;
+import algorithm_tester.analyzers.AbstractAnalyzer;
 import ij.measure.ResultsTable;
 import ij.process.ImageProcessor;
 import java.util.ArrayList;
@@ -32,9 +32,9 @@ import java.util.logging.Logger;
  * Wrapper for SpotCounter implementation.
  * @author Marcel Stefko
  */
-public class SpotCounter implements EvaluationAlgorithm {
+public class SpotCounter extends AbstractAnalyzer {
     private int count;
-    private ArrayList<Double> spot_counts;
+    
     private ArrayList<Double> min_dists;
     private ArrayList<Double> mean_dists;
     private ArrayList<Double> p10_dists;
@@ -54,28 +54,11 @@ public class SpotCounter implements EvaluationAlgorithm {
         init();
     }
     
-    @Override
-    public double getCurrentErrorSignal() {
-        return getErrorSignal(spot_counts.size()-1);
-    }
-    
-    @Override
-    public double getErrorSignal(int image_no) {
-        double signal;
-        try {
-            signal = spot_counts.get(image_no);
-        } catch (IndexOutOfBoundsException ex) {
-            Logger.getLogger(SpotCounter.class.getName()).log(Level.SEVERE, null, ex);
-            signal = 0.0;
-        }
-        return signal;
-    }
-    
     /**
      * Resets the algorithm into default state (excluding config parameters).
      */
     private void init() {
-        spot_counts = new ArrayList<Double>();
+        output_history = new ArrayList<Double>();
         min_dists = new ArrayList<Double>();
         mean_dists = new ArrayList<Double>();
         p10_dists = new ArrayList<Double>();
@@ -87,7 +70,7 @@ public class SpotCounter implements EvaluationAlgorithm {
     public void processImage(ImageProcessor ip) {
         ResultsTable result;
         result = analyzer.analyze(ip);
-        spot_counts.add(result.getValue("n", count));
+        output_history.add(result.getValue("n", count));
         min_dists.add(result.getValue("min-distance", count));
         mean_dists.add(result.getValue("mean-distance", count));
         p10_dists.add(result.getValue("p10-distance", count));
@@ -98,7 +81,7 @@ public class SpotCounter implements EvaluationAlgorithm {
     public HashMap<String, Double> getOutputValues(int image_no) {
         image_no--; //hack to get good array indexing
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
-        map.put("spot-count", spot_counts.get(image_no));
+        map.put("spot-count", output_history.get(image_no));
         map.put("min-dist", min_dists.get(image_no));
         map.put("mean-dist", mean_dists.get(image_no));
         map.put("p10-dist", p10_dists.get(image_no));
@@ -117,11 +100,6 @@ public class SpotCounter implements EvaluationAlgorithm {
         box_size = map.get("box-size");
         parameters = map;
         init();
-    }
-
-    @Override
-    public LinkedHashMap<String, Integer> getCustomParameters() {
-        return parameters;
     }
     
 }

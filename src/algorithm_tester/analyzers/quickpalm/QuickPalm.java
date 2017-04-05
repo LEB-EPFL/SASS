@@ -19,7 +19,7 @@
  */
 package algorithm_tester.analyzers.quickpalm;
 
-import algorithm_tester.EvaluationAlgorithm;
+import algorithm_tester.analyzers.AbstractAnalyzer;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.util.ArrayList;
@@ -33,42 +33,25 @@ import java.util.logging.Logger;
  * 
  * @author Marcel Stefko
  */
-public class QuickPalm implements EvaluationAlgorithm {
+public class QuickPalm extends AbstractAnalyzer {
     private int count;
     private final QuickPalmCore core;
     private LinkedHashMap<String, Integer> parameters;
     
-    private ArrayList<Integer> no_particles_list;
     
     
     public QuickPalm() {
         core = new QuickPalmCore();
-        no_particles_list = new ArrayList<Integer>();
+        output_history = new ArrayList<Double>();
         parameters = new LinkedHashMap<String, Integer>();
         count = 0;
     }
     
-    @Override
-    public double getCurrentErrorSignal() {
-        return getErrorSignal(no_particles_list.size()-1);
-    }
-    
-    @Override
-    public double getErrorSignal(int image_no) {
-        double signal;
-        try {
-            signal = no_particles_list.get(image_no);
-        } catch (IndexOutOfBoundsException ex) {
-            Logger.getLogger(QuickPalm.class.getName()).log(Level.SEVERE, null, ex);
-            signal = 0.0;
-        }
-        return signal;
-    }
     
     @Override
     public void processImage(ImageProcessor ip) {
             count++;
-            no_particles_list.add(core.processImage(ip, count));
+            output_history.add((double) core.processImage(ip, count));
     }
     
     @Override
@@ -77,21 +60,15 @@ public class QuickPalm implements EvaluationAlgorithm {
     }
 
     @Override
-    public LinkedHashMap<String, Integer> getCustomParameters() {
-        return parameters;
-    }
-
-    @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
         image_no--;
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
-        map.put("n-particles", (double) no_particles_list.get(image_no));
+        map.put("n-particles", output_history.get(image_no));
         return map;
     }
 
     @Override
     public String getName() {
         return "QuickPalm";
-    }
-    
+    }   
 }

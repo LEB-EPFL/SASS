@@ -19,7 +19,7 @@
  */
 package algorithm_tester.analyzers.autolase;
 
-import algorithm_tester.EvaluationAlgorithm;
+import algorithm_tester.analyzers.AbstractAnalyzer;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.util.ArrayDeque;
@@ -33,12 +33,11 @@ import java.util.logging.Logger;
  * Wrapper for Thomas Pengo's implementation of AutoLase algorithm.
  * @author Marcel Stefko
  */
-public class AutoLase implements EvaluationAlgorithm {
+public class AutoLase extends AbstractAnalyzer {
     private ImageStack stack;
     private AutoLaseAnalyzer analyzer;
-    private ArrayList<Double> value_list;
-    private ArrayList<Double> raw_value_list;
-    private LinkedHashMap<String, Integer> parameters;
+    private ArrayList<Double> raw_value_history;
+
     
     private int threshold = 120;
     private int averaging = 30;
@@ -59,8 +58,8 @@ public class AutoLase implements EvaluationAlgorithm {
      */
     private void init() {
         analyzer = new AutoLaseAnalyzer(threshold, averaging);
-        value_list = new ArrayList<Double>();
-        raw_value_list = new ArrayList<Double>();
+        output_history = new ArrayList<Double>();
+        raw_value_history = new ArrayList<Double>();
     }
     
     @Override
@@ -73,16 +72,16 @@ public class AutoLase implements EvaluationAlgorithm {
         short[] next_image;
         next_image = (short[]) ip.getPixels();
         analyzer.nextImage(next_image);
-        value_list.add(analyzer.getCurrentValue());
-        raw_value_list.add(analyzer.getRawCurrentValue());
+        output_history.add(analyzer.getCurrentValue());
+        raw_value_history.add(analyzer.getRawCurrentValue());
     }
     
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
         image_no--;
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
-        map.put("on-time", value_list.get(image_no));
-        map.put("raw-on-time", raw_value_list.get(image_no));
+        map.put("on-time", output_history.get(image_no));
+        map.put("raw-on-time", raw_value_history.get(image_no));
         return map;
     }
 
@@ -93,31 +92,9 @@ public class AutoLase implements EvaluationAlgorithm {
         parameters = map;
         init();
     }
-
-    @Override
-    public LinkedHashMap<String, Integer> getCustomParameters() {
-        return parameters;
-    }
-
-    @Override
-    public double getCurrentErrorSignal() {
-        return getErrorSignal(value_list.size()-1);
-    }
-
-    @Override
-    public double getErrorSignal(int image_no) {
-        double signal;
-        try {
-            signal = value_list.get(image_no);
-        } catch (IndexOutOfBoundsException ex) {
-            Logger.getLogger(AutoLase.class.getName()).log(Level.SEVERE, null, ex);
-            signal = 0.0;
-        }
-        return signal;
-    }
-
-
 }
+
+
 /**
  * This class estimates the density of activations. The density at a particular 
  * point relates 

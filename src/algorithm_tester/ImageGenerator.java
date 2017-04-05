@@ -30,19 +30,55 @@ import java.util.HashMap;
  * @author Marcel Stefko
  */
 public interface ImageGenerator {
+
+    /**
+     * Generates a new image and adds it to the internal stack.
+     * @return newly generated image
+     */
     public ImageProcessor getNextImage();
     
+    /**
+     * Sets control signal of the generator (e.g. laser power). This should be
+     * used by the controller.
+     * @param value new value of the control signal
+     */
     public void setControlSignal(double value);
     
+    /**
+     * Returns currently set control signal of the generator (e.g. laser power 
+     * settings).
+     * @return control signal value
+     */
     public double getControlSignal();
     
+    /**
+     * Returns the actual value of signal (if applicable) for given image.
+     * @param image_no image number in history
+     * @return value of signal (e.g. no. of active emitters)
+     */
     public double getTrueSignal(int image_no);
     
+    /**
+     * Sets custom parameters of the generator.
+     * @param map map of custom parameters
+     */
     public void setCustomParameters(HashMap<String,Double> map);
     
+    /**
+     * Returns custom parameters of the generator.
+     * @return map of custom parameters
+     */
     public HashMap<String,Double> getCustomParameters();
 
+    /**
+     * Saves .tif stack to selected file.
+     * @param selectedFile file to save to
+     */
     public void saveStack(File selectedFile);
     
+    /**
+     * Returns internal stack with all generated images.
+     * @return internal stack
+     */
     public ImageStack getStack();
 }

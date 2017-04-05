@@ -20,6 +20,7 @@
 package algorithm_tester.generators.tiff;
 
 import algorithm_tester.ImageGenerator;
+import algorithm_tester.generators.AbstractGenerator;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.FileSaver;
@@ -31,8 +32,7 @@ import java.util.HashMap;
  * Generates images from a .tiff stack image file.
  * @author Marcel Stefko
  */
-public class TiffGenerator implements ImageGenerator {
-    private ImageStack stack;
+public class TiffGenerator extends AbstractGenerator {
     private int count;
     
     /**
@@ -63,18 +63,6 @@ public class TiffGenerator implements ImageGenerator {
     @Override
     public HashMap<String, Double> getCustomParameters() {
         return new HashMap<String, Double>();
-    }
-
-    @Override
-    public void saveStack(File file) {
-        ImagePlus imp = new ImagePlus("stack", stack);
-        FileSaver fs = new FileSaver(imp);
-        fs.saveAsTiffStack(file.getAbsolutePath());
-    }
-    
-    @Override
-    public ImageStack getStack() {
-        return stack;
     }
 
     @Override

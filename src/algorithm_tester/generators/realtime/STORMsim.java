@@ -19,7 +19,7 @@
  */
 package algorithm_tester.generators.realtime;
 
-import algorithm_tester.ImageGenerator;
+import algorithm_tester.generators.AbstractGenerator;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -34,10 +34,9 @@ import java.util.HashMap;
  * ImageGenerator wrapper around the RealTimeGenerator implementation.
  * @author Marcel Stefko
  */
-public class STORMsim implements ImageGenerator{
+public class STORMsim extends AbstractGenerator {
     Device device;
-    HashMap<String,Double> parameters;
-    ImageStack stack;
+
     ArrayList<Double> emitter_history;
             
     public STORMsim(boolean showDialog) {
@@ -48,7 +47,7 @@ public class STORMsim implements ImageGenerator{
         }
         int[] res = device.getResolution();
         stack = new ImageStack(res[0],res[1]);
-        parameters = new HashMap<String,Double>();
+
         emitter_history = new ArrayList<Double>();
         emitter_history.add(0.0);
     }
@@ -75,18 +74,6 @@ public class STORMsim implements ImageGenerator{
     public HashMap<String, Double> getCustomParameters() {
         parameters.put("real_laser_power", device.getLaserPower());
         return parameters;
-    }
-    
-    @Override
-    public void saveStack(File file) {
-        ImagePlus imp = new ImagePlus("stack", stack);
-        FileSaver fs = new FileSaver(imp);
-        fs.saveAsTiffStack(file.getAbsolutePath());
-    }
-    
-    @Override
-    public ImageStack getStack() {
-        return stack;
     }
 
     @Override

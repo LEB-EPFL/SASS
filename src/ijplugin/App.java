@@ -25,6 +25,7 @@ import ij.gui.GenericDialog;
 import ij.gui.Plot;
 import ij.process.ImageProcessor;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -161,12 +162,17 @@ class Worker extends Thread {
         }
         plot.setColor(Color.black);
         plot.addPoints(x, real, Plot.LINE);
+        plot.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        plot.addLabel(0.02,0.1,"True signal");
         plot.setColor(Color.red);
         plot.addPoints(x, spot, Plot.LINE);
+        plot.addLabel(0.02,0.2,"SpotCounter");
         plot.setColor(Color.blue);
         plot.addPoints(x, set_point, Plot.LINE);
+        plot.addLabel(0.02,0.3,"Setpoint");
         plot.setColor(Color.orange);
         plot.addPoints(x, laser, Plot.LINE);
+        plot.addLabel(0.02,0.4,"Laser power");
         plot.setLimits(0, 5, 0, 3); // hack to get a correct rescale
         plot.setLimitsToFit(true);
         plot.draw();

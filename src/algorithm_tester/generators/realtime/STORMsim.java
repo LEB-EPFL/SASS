@@ -127,9 +127,9 @@ public class STORMsim extends AbstractGenerator {
         gd.addNumericField("Base Tbl", 300, 0);
         
         gd.addMessage("Laser:");
-        gd.addNumericField("Laser start", 1.0, 2);
+        gd.addNumericField("Laser start", 0.0, 2);
         gd.addNumericField("Laser max", 5.0, 2);
-        gd.addNumericField("Laser min", 0.1, 2);
+        gd.addNumericField("Laser min", 0.0, 2);
         
         gd.addMessage("Emitter:");
         gd.addNumericField("Emitter no.", 1600, 0);

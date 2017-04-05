@@ -40,7 +40,7 @@ public class PIDController extends AbstractController {
             settings.put("P", 0.005);
             settings.put("I", 0.0025);
             settings.put("D", 0.0);
-            settings.put("limit-low", 0.2);
+            settings.put("limit-low", 0.0);
             settings.put("limit-high", 5.0);
             settings.put("output-filter", 0.1);
         } else {

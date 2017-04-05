@@ -63,9 +63,9 @@ public class AlgorithmTester {
         
         QuickPalm quickpalm = new QuickPalm();
         
-        addAnalyzer(autolase);
+        //addAnalyzer(autolase);
         addAnalyzer(spotcounter);
-        addAnalyzer(quickpalm);
+        //addAnalyzer(quickpalm);
         
         
         // Real time generator

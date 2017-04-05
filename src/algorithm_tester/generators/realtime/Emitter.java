@@ -79,6 +79,9 @@ public class Emitter extends Point2D.Double {
      * @param laser_power current laser power
      */
     public void recalculate_lifetimes(double laser_power) {
+        if (laser_power < 0.0000001) {
+            laser_power = 0.0000001;
+        }
         // Calculate time constants
         Ton = fluo.base_Ton;
         Toff = fluo.base_Toff / laser_power;

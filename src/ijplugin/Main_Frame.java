@@ -138,7 +138,7 @@ public class Main_Frame extends PlugInFrame {
      * Exit the Application
      */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
-        System.exit(0);
+        //System.exit(0);
     }//GEN-LAST:event_exitForm
 
     private void analyzerSettingsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analyzerSettingsButtonMouseClicked

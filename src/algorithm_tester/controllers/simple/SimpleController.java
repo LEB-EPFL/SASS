@@ -19,57 +19,19 @@
  */
 package algorithm_tester.controllers.simple;
 
-import algorithm_tester.EvaluationAlgorithm;
-import algorithm_tester.FeedbackController;
-import algorithm_tester.ImageGenerator;
-import java.util.ArrayList;
-import java.util.HashMap;
+import algorithm_tester.controllers.AbstractController;
 
 /**
  * Controller akin to one implemented by the original AutoLase plugin.
  * @author Marcel Stefko
  */
-public class SimpleController implements FeedbackController {
-    private final HashMap<String,Double> settings;
-    private EvaluationAlgorithm analyzer;
-    private ImageGenerator generator;
-    private final ArrayList<Double> history;
-    private final ArrayList<Double> setpoint_history;
-    double target;
-    int counter;
+public class SimpleController extends AbstractController {
     int interval;
     
     public SimpleController() {
-        settings = new HashMap<String,Double>();
+        super();
         settings.put("interval", 10.0);
-        
-        counter = 0;
-        history = new ArrayList<Double>();
-        history.add(0.0); // padding so we can number from 1
-        
-        setpoint_history = new ArrayList<Double>();
-        setpoint_history.add(0.0); // padding so we can number from 1
-        
         interval = 10;
-    }
-    
-    @Override
-    public void setTarget(double target) {
-        this.target = target;
-    }
-    
-    // Decreases power by 1/5th
-    private void decrementPower() {
-        System.out.println("Decrementing power.");
-        double current = generator.getControlSignal();
-        generator.setControlSignal(current/1.2);
-    }
-    
-    // Increases power by 1/5th
-    private void incrementPower() {
-        System.out.println("Incrementing power.");
-        double current = generator.getControlSignal();
-        generator.setControlSignal(current*1.2);
     }
     
     @Override
@@ -91,33 +53,24 @@ public class SimpleController implements FeedbackController {
     }
     
     @Override
-    public double getOutputHistory(int image_no) {
-        return history.get(image_no);
+    public void setTarget(double target) {
+        this.target = target;
     }
     
-    @Override
-    public void setAnalyzer(EvaluationAlgorithm analyzer) {
-        this.analyzer = analyzer;
+    // Decreases power by 1/5th
+    private void decrementPower() {
+        System.out.println("Decrementing power.");
+        double current = generator.getControlSignal();
+        generator.setControlSignal(current/1.2);
     }
     
-    @Override
-    public EvaluationAlgorithm getAnalyzer() {
-        return analyzer;
+    // Increases power by 1/5th
+    private void incrementPower() {
+        System.out.println("Incrementing power.");
+        double current = generator.getControlSignal();
+        generator.setControlSignal(current*1.2);
     }
+    
 
-    @Override
-    public void setGenerator(ImageGenerator generator) {
-        this.generator = generator;
-    }
-
-    @Override
-    public HashMap<String, Double> getSettings() {
-        return settings;
-    }
-
-    @Override
-    public double getSetpointHistory(int image_no) {
-        return setpoint_history.get(image_no);
-    }
     
 }

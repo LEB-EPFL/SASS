@@ -19,25 +19,15 @@
  */
 package algorithm_tester.controllers.pid;
 
-import algorithm_tester.EvaluationAlgorithm;
-import algorithm_tester.FeedbackController;
-import algorithm_tester.ImageGenerator;
+
+import algorithm_tester.controllers.AbstractController;
 import ij.gui.GenericDialog;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Wrapper around MiniPID controller.
  * @author Marcel Stefko
  */
-public class PIDController implements FeedbackController {
-    private final HashMap<String,Double> settings;
-    private EvaluationAlgorithm analyzer;
-    private ImageGenerator generator;
-    private final ArrayList<Double> history;
-    private final ArrayList<Double> setpoint_history;
-    double target;
-    int counter;
+public class PIDController extends AbstractController {
     int interval;
     MiniPID miniPID;
     
@@ -45,7 +35,7 @@ public class PIDController implements FeedbackController {
      * Initialize PID controller with default settings.
      */
     public PIDController(boolean showDialog) {
-        settings = new HashMap<String,Double>();
+        super();      
         if (!(showDialog)) {
             settings.put("P", 0.005);
             settings.put("I", 0.0025);
@@ -54,15 +44,10 @@ public class PIDController implements FeedbackController {
             settings.put("limit-high", 5.0);
             settings.put("output-filter", 0.1);
         } else {
-            getSettingsFromDialog();
+            setSettingsFromDialog();
         }
-        counter = 0;
-        history = new ArrayList<Double>();
-        history.add(0.0); // padding so we can number from 1
-        setpoint_history = new ArrayList<Double>();
-        setpoint_history.add(0.0); // padding so we can number from 1
+
         interval = 10;
-        
         miniPID = new MiniPID(settings.get("P"),
                 settings.get("I"),settings.get("D"));
         miniPID.setOutputLimits(settings.get("limit-low"), settings.get("limit-high"));
@@ -92,37 +77,8 @@ public class PIDController implements FeedbackController {
         generator.setControlSignal(output);
     }
 
-    @Override
-    public double getOutputHistory(int image_no) {
-        return history.get(image_no);
-    }
     
-    @Override
-    public double getSetpointHistory(int image_no) {
-        return setpoint_history.get(image_no);
-    }
-    
-    @Override
-    public void setAnalyzer(EvaluationAlgorithm analyzer) {
-        this.analyzer = analyzer;
-    }
-    
-    @Override
-    public EvaluationAlgorithm getAnalyzer() {
-        return analyzer;
-    }
-
-    @Override
-    public void setGenerator(ImageGenerator generator) {
-        this.generator = generator;
-    }
-
-    @Override
-    public HashMap<String, Double> getSettings() {
-        return settings;
-    }
-    
-    private void getSettingsFromDialog() {
+    private void setSettingsFromDialog() {
         GenericDialog gd = new GenericDialog("Device initialization");
         gd.addMessage("PID controller");
         
@@ -133,9 +89,6 @@ public class PIDController implements FeedbackController {
         gd.addNumericField("limit-high",5.0,2);
         gd.addNumericField("output-filter",0.1,3);
         gd.showDialog();
-        
-        
-        
         
         settings.put("P", gd.getNextNumber());
         settings.put("I", gd.getNextNumber());

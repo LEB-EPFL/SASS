@@ -40,7 +40,6 @@ public class SpotCounter extends AbstractAnalyzer {
     private ArrayList<Double> p10_dists;
     SpotCounterCore analyzer;
     
-    private LinkedHashMap<String, Integer> parameters;
     private int noise_tolerance = 100;
     private int box_size = 5;
     

@@ -76,8 +76,10 @@ public class App extends AlgorithmTester {
     public void analyzerSetupDialog() {
         GenericDialog gd = new GenericDialog("Analyzer setup");
         for (String key: analyzers.keySet()) {
+            System.out.println(analyzers.get(key).getName());
             gd.addMessage(String.format("%s:",key));
             LinkedHashMap<String,Integer> settings = analyzers.get(key).getCustomParameters();
+            System.out.println(settings.keySet().isEmpty());
             for (String s_key: settings.keySet()) {
                 gd.addNumericField(s_key, settings.get(s_key), 0);
             }

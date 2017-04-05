@@ -36,7 +36,6 @@ import java.util.logging.Logger;
 public class QuickPalm extends AbstractAnalyzer {
     private int count;
     private final QuickPalmCore core;
-    private LinkedHashMap<String, Integer> parameters;
     
     
     

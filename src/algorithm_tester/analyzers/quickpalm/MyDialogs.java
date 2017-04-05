@@ -364,9 +364,9 @@ class MyDialogs
 		gd.addNumericField("Threads (each takes ~3*[frame size] in memory)", prefs.get("QuickPALM.nthreads", 50), 0);
 		gd.addMessage("\n\nDon't forget to save the table in the end...");
 		
-		gd.showDialog();
+		/*gd.showDialog();
 		if (gd.wasCanceled())
-                    return false;
+                    return false;*/
 
 		snr = (int) gd.getNextNumber();
 		prefs.set("QuickPALM.snr", snr);

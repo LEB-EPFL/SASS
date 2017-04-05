@@ -88,7 +88,7 @@ public class STORMsim extends AbstractGenerator {
     }
     
     private void initDeviceFromDialog() {
-        GenericDialog gd = new GenericDialog("Device initialization");
+        GenericDialog gd = new GenericDialog("Camera initialization");
         gd.addMessage("Camera:");
         gd.addNumericField("Resolution X", 400, 0);
         gd.addNumericField("Resolution Y", 400, 0);
@@ -102,21 +102,6 @@ public class STORMsim extends AbstractGenerator {
         gd.addNumericField("Wavelength [nm]", 600, 0);
         gd.addNumericField("Magnification", 100, 0);
         gd.addNumericField("Cross-section radius [nm]", 8, 1);
-        /*
-        gd.addMessage("Fluorophore:");
-        gd.addNumericField("Fluo signal", 2500, 0);
-        gd.addNumericField("Fluo background", 50, 0);
-        gd.addNumericField("Base Ton", 8, 0);
-        gd.addNumericField("Base Toff", 30, 0);
-        gd.addNumericField("Base Tbl", 300, 0);
-        */
-        gd.addMessage("Laser:");
-        gd.addNumericField("Laser start", 1.0, 2);
-        gd.addNumericField("Laser max", 5.0, 2);
-        gd.addNumericField("Laser min", 0.1, 2);
-        
-        gd.addMessage("Emitter:");
-        gd.addNumericField("Emitter no.", 1600, 0);
         gd.showDialog();
         
         Camera camera = new Camera((int)gd.getNextNumber(), //res_x
@@ -132,17 +117,29 @@ public class STORMsim extends AbstractGenerator {
                             gd.getNextNumber(), //magnification, 
                             gd.getNextNumber() * 1e-9); //radius)
         
-        Fluorophore fluo = new Fluorophore(2500, //signal_per_frame, 
-                               50, //background_per_frame, 
-                               8, //base_Ton_frames, 
-                               30, //base_Toff_frames, 
-                               300); //base_Tbl_frames)
+        gd = new GenericDialog("Device initialization");
+        
+        gd.addMessage("Fluorophore:");
+        gd.addNumericField("Fluo signal", 2500, 0);
+        gd.addNumericField("Fluo background", 50, 0);
+        gd.addNumericField("Base Ton", 8, 0);
+        gd.addNumericField("Base Toff", 30, 0);
+        gd.addNumericField("Base Tbl", 300, 0);
+        
+        gd.addMessage("Laser:");
+        gd.addNumericField("Laser start", 1.0, 2);
+        gd.addNumericField("Laser max", 5.0, 2);
+        gd.addNumericField("Laser min", 0.1, 2);
+        
+        gd.addMessage("Emitter:");
+        gd.addNumericField("Emitter no.", 1600, 0);
+        gd.showDialog();
                 
-                /*new Fluorophore(gd.getNextNumber(), //signal_per_frame, 
+        Fluorophore fluo = new Fluorophore(gd.getNextNumber(), //signal_per_frame, 
                 gd.getNextNumber(), //background_per_frame, 
                 gd.getNextNumber(), //base_Ton_frames, 
                 gd.getNextNumber(), //base_Toff_frames, 
-                gd.getNextNumber()); //base_Tbl_frames)*/
+                gd.getNextNumber()); //base_Tbl_frames)
         
         Laser laser = new Laser(gd.getNextNumber(), //start_power, 
                           gd.getNextNumber(), //max_power, 

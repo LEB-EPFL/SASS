@@ -20,6 +20,7 @@
 package algorithm_tester.generators.realtime;
 
 import algorithm_tester.generators.AbstractGenerator;
+import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
 import algorithm_tester.generators.realtime.obstructors.GoldBeads;
 import ij.IJ;
 import ij.ImagePlus;
@@ -28,8 +29,11 @@ import ij.gui.GenericDialog;
 import ij.io.FileSaver;
 import ij.process.ImageProcessor;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ImageGenerator wrapper around the RealTimeGenerator implementation.
@@ -156,16 +160,36 @@ public class STORMsim extends AbstractGenerator {
                           gd.getNextNumber(), //max_power, 
                           gd.getNextNumber()); //min_power)
         
-        ArrayList<Fluorophore> emitters = FluorophoreGenerator.generateFluorophoresRandom(
-                (int)gd.getNextNumber(), //n_fluos, 
+        
+        ArrayList<Fluorophore> emitters;
+        int emitter_no = (int) gd.getNextNumber();
+        if (emitter_no == 0) {
+            try {
+                emitters = FluorophoreGenerator.parseFluorophoresFromCsv(null, camera, fluo, true);
+            } catch (IOException ex) {
+                Logger.getLogger(STORMsim.class.getName()).log(Level.SEVERE, null, ex);
+                emitters = FluorophoreGenerator.generateFluorophoresRandom(
+                    (int)100, //n_fluos, 
+                    camera,
+                    fluo);
+            }
+        } else {
+            emitters = FluorophoreGenerator.generateFluorophoresRandom(
+                emitter_no, //n_fluos, 
                 camera,
                 fluo);
+        }
         
         ArrayList<Obstructor> obstructors = new ArrayList<Obstructor>();
         obstructors.add(new GoldBeads((int)gd.getNextNumber(), //beadCount
                                       camera,
                                       (int)gd.getNextNumber())); // bead brightness
-        
+        try {
+            obstructors.add(new ConstantBackground(camera));
+        } catch (RuntimeException ex) {
+            Logger.getLogger(STORMsim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
         
         device = new Device(camera, fluo, laser, emitters, obstructors);
     }

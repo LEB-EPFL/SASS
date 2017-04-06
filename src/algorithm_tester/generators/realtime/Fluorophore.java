@@ -19,6 +19,9 @@
  */
 package algorithm_tester.generators.realtime;
 
+import cern.jet.random.Exponential;
+import cern.jet.random.engine.MersenneTwister;
+import java.util.Random;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 /**
@@ -27,7 +30,8 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  * @author Marcel Stefko
  */
 public class Fluorophore extends Emitter {
-
+    private double current_laser_power;
+    
     private final FluorophoreProperties fluo;
     
     private boolean state;
@@ -37,9 +41,7 @@ public class Fluorophore extends Emitter {
     private double Toff;
     private double Tbl;
     
-    private ExponentialDistribution gen_Ton;
-    private ExponentialDistribution gen_Toff;
-    private ExponentialDistribution gen_Tbl;
+    private Random random;
     
     
     /**
@@ -54,6 +56,9 @@ public class Fluorophore extends Emitter {
         this.fluo = fluorophore;
         this.state = false;
         this.is_bleached = false;
+        this.current_laser_power = 0.0;
+        this.random = new Random();
+        this.recalculate_lifetimes(0.0001);
     }
     
     /**
@@ -61,18 +66,23 @@ public class Fluorophore extends Emitter {
      * @param laser_power current laser power
      */
     public void recalculate_lifetimes(double laser_power) {
+        if (current_laser_power == laser_power) {
+            return;
+        }
+        
         if (laser_power < 0.0000001) {
             laser_power = 0.0000001;
         }
+        
+        current_laser_power = laser_power;
         // Calculate time constants
         Ton = fluo.base_Ton;
         Toff = fluo.base_Toff / laser_power;
         Tbl = fluo.base_Tbl / laser_power;
-        
-        // Initialize new RNGs
-        gen_Ton = new ExponentialDistribution(Ton);
-        gen_Toff = new ExponentialDistribution(Toff);
-        gen_Tbl = new ExponentialDistribution(Tbl);
+    }
+    
+    private double nextExponential(double mean) {
+        return Math.log(1-random.nextDouble()) * (-mean);
     }
     
     
@@ -87,16 +97,16 @@ public class Fluorophore extends Emitter {
             return 0.0;
         double t=0.0;
         double on_time = 0.0;
-        double bleach_time = gen_Tbl.sample();
+        double bleach_time = nextExponential(Tbl);
         boolean does_bleach = (bleach_time < 1.0);
         double limit = does_bleach ? bleach_time : 1.0;
         while (t<limit) {
             double lifetime;
             if (state) {
-                lifetime = gen_Ton.sample();
+                lifetime = nextExponential(Ton);
                 on_time += ((lifetime < limit-t) ? lifetime : limit-t);
             } else {
-                lifetime = gen_Toff.sample();
+                lifetime = nextExponential(Toff);
             }
             t += lifetime;
             if (t<limit)

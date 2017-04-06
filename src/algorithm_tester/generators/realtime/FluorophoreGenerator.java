@@ -19,8 +19,17 @@
  */
 package algorithm_tester.generators.realtime;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Randomly populates the field of view with fluorophores.
@@ -45,5 +54,61 @@ public class FluorophoreGenerator {
             result.add(new Fluorophore(fluo, cam, x, y));
         }
         return result;
+    }
+    
+    public static ArrayList<Fluorophore> parseFluorophoresFromCsv(File file, Camera camera, FluorophoreProperties fluo, boolean rescale) throws FileNotFoundException, IOException {
+        if (file==null) {
+            file = getFileFromDialog();
+        }
+        
+        ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
+        double x; double y;
+        BufferedReader br;
+        String line = "";
+        String splitBy = ",";
+        br = new BufferedReader(new FileReader(file));
+        while ((line = br.readLine()) != null) {
+            if (line.startsWith("#")) {
+                continue;
+            }
+            String[] entries = line.split(splitBy);
+            x = Double.parseDouble(entries[0]);
+            y = Double.parseDouble(entries[1]);
+            if (x>=0.0 && y>=0.0)
+                result.add(new Fluorophore(fluo, camera, x, y));
+        }
+        
+        if (rescale) {
+            ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
+            double max_x_coord = 0.0;
+            for (Fluorophore f: result) {
+                if (f.x>max_x_coord)
+                    max_x_coord = f.x;
+            }
+            double factor = camera.res_x/max_x_coord;
+            for (Fluorophore f: result) {
+                result_rescaled.add(new Fluorophore(fluo, camera, 
+                        f.x*factor,
+                        f.y*factor));
+            }
+            return result_rescaled;
+        } else {
+            return result;
+        }
+    }
+    
+    private static File getFileFromDialog() {
+        JFileChooser fc = new JFileChooser();
+        int returnVal;
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+        //set a default filename 
+        fc.setSelectedFile(new File("emitters.csv"));
+        //Set an extension filter
+        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
+        returnVal = fc.showOpenDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            throw new RuntimeException("You need to select an emitter file!");
+        }
+        return fc.getSelectedFile();
     }
 }

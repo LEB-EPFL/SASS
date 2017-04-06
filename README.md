@@ -11,5 +11,6 @@ STEADIER-SAILOR uses adapted code and algorithms under GPL from following projec
  - [QuickPalm](http://imagej.net/QuickPALM) by Ricardo Henriques
  - [SpotCounter](http://imagej.net/SpotCounter) by Nico Stuurman
  - [SOFIsim](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes
+ - [MiniPID](https://github.com/tekdemo/MiniPID-Java) by Dan Sheadel
  
  Many thanks to Dr. Kyle M. Douglass for guidance during this project.

@@ -40,8 +40,8 @@ public class FluorophoreGenerator {
         ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
         double x; double y;
         for (int i=0; i<n_fluos; i++) {
-            x = 2 + (cam.res_x - 3)*rnd.nextDouble();
-            y = 2 + (cam.res_y - 3)*rnd.nextDouble();
+            x = cam.res_x*rnd.nextDouble();
+            y = cam.res_y*rnd.nextDouble();
             result.add(new Fluorophore(fluo, cam, x, y));
         }
         return result;

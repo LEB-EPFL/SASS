@@ -20,6 +20,7 @@
 package algorithm_tester.generators.realtime;
 
 import algorithm_tester.generators.AbstractGenerator;
+import algorithm_tester.generators.realtime.obstructors.GoldBeads;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -133,9 +134,15 @@ public class STORMsim extends AbstractGenerator {
         
         gd.addMessage("Emitter:");
         gd.addNumericField("Emitter no.", 1600, 0);
+
+        
+        gd.addMessage("Obstructors:");
+        gd.addNumericField("Gold bead no.", 10, 0);
+        gd.addNumericField("Gold bead brightness", 4000, 0);
         gd.showDialog();
+        
                 
-        Fluorophore fluo = new Fluorophore(gd.getNextNumber(), //signal_per_frame, 
+        FluorophoreProperties fluo = new FluorophoreProperties(gd.getNextNumber(), //signal_per_frame, 
                 gd.getNextNumber(), //background_per_frame, 
                 gd.getNextNumber(), //base_Ton_frames, 
                 gd.getNextNumber(), //base_Toff_frames, 
@@ -145,10 +152,17 @@ public class STORMsim extends AbstractGenerator {
                           gd.getNextNumber(), //max_power, 
                           gd.getNextNumber()); //min_power)
         
-        ArrayList<Emitter> emitters = EmitterGenerator.generateEmittersRandom(
+        ArrayList<Fluorophore> emitters = FluorophoreGenerator.generateFluorophoresRandom(
                 (int)gd.getNextNumber(), //n_fluos, 
                 camera,
                 fluo);
-        device = new Device(camera, fluo, laser, emitters);
+        
+        ArrayList<Obstructor> obstructors = new ArrayList<Obstructor>();
+        obstructors.add(new GoldBeads((int)gd.getNextNumber(), //beadCount
+                                      camera,
+                                      (int)gd.getNextNumber())); // bead brightness
+        
+        
+        device = new Device(camera, fluo, laser, emitters, obstructors);
     }
 }

@@ -26,7 +26,6 @@ import ij.gui.Plot;
 import ij.process.ImageProcessor;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -37,8 +36,8 @@ import java.util.logging.Logger;
  * @author stefko
  */
 public class App extends AlgorithmTester {
-    private ImagePlus imp;
-    private Plot plot;
+    private final ImagePlus imp;
+    private final Plot plot;
     private Worker worker;
     
     public App() {
@@ -105,11 +104,11 @@ public class App extends AlgorithmTester {
 
 class Worker extends Thread {
     public boolean stop;
-    private App app;
-    private ImageGenerator generator;
-    private FeedbackController controller;
-    private HashMap<String,EvaluationAlgorithm> analyzers;
-    private ImagePlus imp;
+    private final App app;
+    private final ImageGenerator generator;
+    private final FeedbackController controller;
+    private final HashMap<String,EvaluationAlgorithm> analyzers;
+    private final ImagePlus imp;
     
     public Worker(App app, ImageGenerator generator, FeedbackController controller, HashMap<String,EvaluationAlgorithm> analyzers, ImagePlus imp) {
         this.app = app;

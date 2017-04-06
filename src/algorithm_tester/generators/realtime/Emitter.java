@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Federale de Lausanne
- *
- * Author: Marcel Stefko
+ * Copyright (C) 2017 stefko
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +16,6 @@
  */
 package algorithm_tester.generators.realtime;
 
-import cern.jet.random.Poisson;
-import cern.jet.random.engine.MersenneTwister;
-import ij.process.ImageProcessor;
 import java.awt.geom.Point2D;
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
@@ -29,111 +23,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
-import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 /**
- * Emitter defined by its coordinates and underlying fluorophore 
- * state time constants.
- * @author Marcel Stefko
+ *
+ * @author stefko
  */
-public class Emitter extends Point2D.Double {
-    public final Fluorophore fluo;
+public abstract class Emitter extends Point2D.Double  {
+    protected final ArrayList<Pixel> pixel_list;    
     
-    public boolean state;
-    public boolean is_bleached;
-    
-    private double Ton;
-    private double Toff;
-    private double Tbl;
-    
-    private final ArrayList<Pixel> pixel_list;
-    
-    private ExponentialDistribution gen_Ton;
-    private ExponentialDistribution gen_Toff;
-    private ExponentialDistribution gen_Tbl;
-    private Poisson poisson;
-    
-    /**
-     * Creates new emitter and precalculates its projection on the camera.
-     * @param fluorophore underlying fluorophore properties
-     * @param camera camera properties (for projection calculations)
-     * @param x x-position [pixels]
-     * @param y y-position [pixels]
-     */
-    public Emitter(Fluorophore fluorophore, Camera camera, double x, double y) {
+    public Emitter(Camera camera, double x, double y) {
         super(x, y);
-        this.fluo = fluorophore;
-        this.state = false;
-        this.is_bleached = false;
-        
         // radius cutoff
         double r = 3 * camera.fwhm_digital / 2.3548;
         // generate pixels which will be added to image when emitter is on
         this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
-        // Poisson RNG
-        poisson = new Poisson(1.0, new MersenneTwister(11*(int)x + 17*(int)y));
     }
-    
-    /**
-     * Recalculates the lifetimes of this emitter based on current laser power.
-     * @param laser_power current laser power
-     */
-    public void recalculate_lifetimes(double laser_power) {
-        if (laser_power < 0.0000001) {
-            laser_power = 0.0000001;
-        }
-        // Calculate time constants
-        Ton = fluo.base_Ton;
-        Toff = fluo.base_Toff / laser_power;
-        Tbl = fluo.base_Tbl / laser_power;
-        
-        // Initialize new RNGs
-        gen_Ton = new ExponentialDistribution(Ton);
-        gen_Toff = new ExponentialDistribution(Toff);
-        gen_Tbl = new ExponentialDistribution(Tbl);
-    }
-    
-    /**
-     * Simulates the state of the emitter for the next frame and returns its
-     * integrated brightness over the duration of the frame.
-     * @return emitter brightness in this frame [photons]
-     */
-    public double simulate_brightness() {
-        if (is_bleached)
-            return 0.0;
-        double t=0.0;
-        double on_time = 0.0;
-        double bleach_time = gen_Tbl.sample();
-        boolean does_bleach = (bleach_time < 1.0);
-        double limit = does_bleach ? bleach_time : 1.0;
-        while (t<limit) {
-            double lifetime;
-            if (state) {
-                lifetime = gen_Ton.sample();
-                on_time += ((lifetime < limit-t) ? lifetime : limit-t);
-            } else {
-                lifetime = gen_Toff.sample();
-            }
-            t += lifetime;
-            if (t<limit)
-                state = !state;
-        }
-        if (does_bleach) {
-            is_bleached = true;
-            state = false;
-        }
-        return poisson.nextInt(on_time*fluo.signal);
-    }
-    
-    /**
-     * Returns list of pixels which need to be drawn on the image to accurately
-     * render the emitter.
-     * @return list of Pixels
-     */
-    public ArrayList<Pixel> getPixelList() {
-        return this.pixel_list;
-    }
-    
+
     /**
      * Returns the signature that this emitter leaves on a given pixel (what
      * fraction of this emitter's photons hits this particular pixel).
@@ -143,11 +48,12 @@ public class Emitter extends Point2D.Double {
      * @return signature value for this pixel
      * @throws MathException
      */
-    public double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
+    private double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
         double denom = sqrt(2.0)*camera_fwhm_digital / 2.3548;
         return (Erf.erf((x-this.x+0.5)/denom) - Erf.erf((x-this.x-0.5)/denom)) *
                (Erf.erf((y-this.y+0.5)/denom) - Erf.erf((y-this.y-0.5)/denom));
     }
+    
     
     /**
      * Returns a list of pixels within a certain radius from this emitter 
@@ -180,7 +86,7 @@ public class Emitter extends Point2D.Double {
                         signature = generate_signature_for_pixel(i, j, camera_fwhm_digital);
                     } catch (MathException ex) {
                         signature = 0.0;
-                        Logger.getLogger(Emitter.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Fluorophore.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     result.add(new Pixel(i,j,signature));
                 }
@@ -189,5 +95,14 @@ public class Emitter extends Point2D.Double {
         return result;
     }
     
+    /**
+     * Returns list of pixels which need to be drawn on the image to accurately
+     * render the emitter.
+     * @return list of Pixels
+     */
+    public ArrayList<Pixel> getPixelList() {
+        return this.pixel_list;
+    }
+    
+    public abstract float[][] applyTo(float[][] pixels);
 }
-

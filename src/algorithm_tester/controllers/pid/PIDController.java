@@ -85,7 +85,7 @@ public class PIDController extends AbstractController {
         gd.addNumericField("P", 0.005, 5);
         gd.addNumericField("I", 0.0025, 5);
         gd.addNumericField("D", 0.0, 5);
-        gd.addNumericField("limit-low", 0.2, 2);
+        gd.addNumericField("limit-low", 0.0, 2);
         gd.addNumericField("limit-high",5.0,2);
         gd.addNumericField("output-filter",0.1,3);
         gd.showDialog();

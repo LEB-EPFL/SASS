@@ -23,26 +23,26 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Randomly populates the field of view with emitters.
+ * Randomly populates the field of view with fluorophores.
  * @author Marcel Stefko
  */
-public class EmitterGenerator {
+public class FluorophoreGenerator {
 
     /**
-     * Randomly populate the field of view with emitters.
+     * Randomly populate the field of view with fluorophores.
      * @param n_fluos number of emitters to be generated
      * @param cam camera properties
      * @param fluo fluorophore properties
      * @return
      */
-    public static ArrayList<Emitter> generateEmittersRandom(int n_fluos, Camera cam, Fluorophore fluo) {
+    public static ArrayList<Fluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, FluorophoreProperties fluo) {
         Random rnd = new Random();
-        ArrayList<Emitter> result = new ArrayList<Emitter>();
+        ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
         double x; double y;
         for (int i=0; i<n_fluos; i++) {
             x = 2 + (cam.res_x - 3)*rnd.nextDouble();
             y = 2 + (cam.res_y - 3)*rnd.nextDouble();
-            result.add(new Emitter(fluo, cam, x, y));
+            result.add(new Fluorophore(fluo, cam, x, y));
         }
         return result;
     }

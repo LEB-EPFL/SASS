@@ -19,6 +19,7 @@
  */
 package algorithm_tester.generators.realtime;
 
+import algorithm_tester.generators.realtime.obstructors.GoldBeads;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import ij.process.FloatProcessor;
@@ -36,9 +37,11 @@ import cern.jet.random.engine.MersenneTwister;
  */
 public class Device {
     private final Camera camera;
-    private final Fluorophore fluo;
-    private final ArrayList<Emitter> emitters;
+    private final FluorophoreProperties fluo;
+    private final ArrayList<Fluorophore> fluorophores;
     private final Laser laser;
+    
+    private final ArrayList<Obstructor> obstructors;
     
     private final Poisson poisson;
     private final Random random;
@@ -62,7 +65,7 @@ public class Device {
                             100, //magnification, 
                             8 * 1e-9); //radius)
         
-        fluo = new Fluorophore(2500, //signal_per_frame, 
+        fluo = new FluorophoreProperties(2500, //signal_per_frame, 
                                50, //background_per_frame, 
                                8, //base_Ton_frames, 
                                30, //base_Toff_frames, 
@@ -72,11 +75,14 @@ public class Device {
                           5.0, //max_power, 
                           0.1); //min_power)
         
-        emitters = EmitterGenerator.generateEmittersRandom(
+        fluorophores = FluorophoreGenerator.generateFluorophoresRandom(
                 1600, //n_fluos, 
                 camera,
                 fluo);
-        for (Emitter e: emitters) {
+        
+        obstructors = new ArrayList<Obstructor>();
+        
+        for (Fluorophore e: fluorophores) {
             e.recalculate_lifetimes(laser.getPower());
         }
         random = new Random();
@@ -85,13 +91,14 @@ public class Device {
         gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
-    public Device(Camera cam, Fluorophore fluo, Laser laser, ArrayList<Emitter>emitters) {
+    public Device(Camera cam, FluorophoreProperties fluo, Laser laser, ArrayList<Fluorophore>emitters,
+            ArrayList<Obstructor> obstructors) {
         camera = cam;
         this.fluo = fluo;
         this.laser = laser;
-        this.emitters = emitters;
-        
-        for (Emitter e: emitters) {
+        this.fluorophores = emitters;
+        this.obstructors = obstructors;
+        for (Fluorophore e: emitters) {
             e.recalculate_lifetimes(laser.getPower());
         }
         random = new Random();
@@ -112,7 +119,7 @@ public class Device {
      */
     public void setLaserPower(double laser_power) {
         laser.setPower(laser_power);
-        for (Emitter e: emitters) {
+        for (Fluorophore e: fluorophores) {
             e.recalculate_lifetimes(laser.getPower());
         }
     }
@@ -123,7 +130,7 @@ public class Device {
     
     public double getOnEmitterCount() {
         int count = 0;
-        for (Emitter e: emitters) {
+        for (Fluorophore e: fluorophores) {
             if (e.state) {
                 count++;
             }
@@ -141,20 +148,12 @@ public class Device {
         for (int row = 0; row < pixels.length; row++)
             Arrays.fill(pixels[row], 0.0f);
         
-        double s_xy = camera.fwhm_digital / 2.3548;
-        double r = 3*s_xy;
-        double denom = sqrt(2.0)*s_xy;
+        for (Obstructor o: obstructors) {
+            pixels = o.applyTo(pixels);
+        }
         // Diffraction
-        for (Emitter e: emitters) {
-            double brightness = e.simulate_brightness();
-            for (Pixel p: e.getPixelList()) {
-                try {
-                    pixels[p.x][p.y] += 0.25* brightness * p.getSignature();
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    //Logger.getLogger(Device.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            }
+        for (Fluorophore f: fluorophores) {
+            pixels = f.applyTo(pixels);
         }
         
         pixels = addNoises(pixels);

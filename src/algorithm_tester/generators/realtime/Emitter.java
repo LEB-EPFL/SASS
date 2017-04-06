@@ -16,6 +16,8 @@
  */
 package algorithm_tester.generators.realtime;
 
+import cern.jet.random.Poisson;
+import cern.jet.random.engine.MersenneTwister;
 import java.awt.geom.Point2D;
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
@@ -30,13 +32,15 @@ import org.apache.commons.math.special.Erf;
  */
 public abstract class Emitter extends Point2D.Double  {
     protected final ArrayList<Pixel> pixel_list;    
-    
+    protected Poisson poisson;
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
+        this.poisson = new Poisson(1.0, new MersenneTwister(11*(int)x + 17*(int)y));
         // radius cutoff
         double r = 3 * camera.fwhm_digital / 2.3548;
         // generate pixels which will be added to image when emitter is on
         this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
+        
     }
 
     /**
@@ -95,6 +99,10 @@ public abstract class Emitter extends Point2D.Double  {
         return result;
     }
     
+    protected double flicker(double base_brightness) {
+        return poisson.nextInt(base_brightness);
+    }
+    
     /**
      * Returns list of pixels which need to be drawn on the image to accurately
      * render the emitter.
@@ -104,5 +112,17 @@ public abstract class Emitter extends Point2D.Double  {
         return this.pixel_list;
     }
     
-    public abstract float[][] applyTo(float[][] pixels);
+    public float[][] applyTo(float[][] pixels) {
+        double brightness = this.simulateBrightness();
+        for (Pixel p: this.getPixelList()) {
+            try {
+                pixels[p.x][p.y] += 0.25* brightness * p.getSignature();
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                //Logger.getLogger(Device.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pixels;
+    }
+    
+    protected abstract double simulateBrightness();
 }

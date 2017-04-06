@@ -61,17 +61,7 @@ class GoldBead extends Emitter {
     }
 
     @Override
-    public float[][] applyTo(float[][] pixels) {
-        for (Pixel p: this.getPixelList()) {
-            try {
-                pixels[p.x][p.y] += 0.25* brightness * p.getSignature();
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                //Logger.getLogger(Device.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return pixels;
+    protected double simulateBrightness() {
+        return flicker(brightness);
     }
-
-
-    
 }

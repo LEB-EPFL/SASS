@@ -49,7 +49,7 @@ public class Fluorophore extends Emitter {
     private ExponentialDistribution gen_Ton;
     private ExponentialDistribution gen_Toff;
     private ExponentialDistribution gen_Tbl;
-    private Poisson poisson;
+    
     
     /**
      * Creates new emitter and precalculates its projection on the camera.
@@ -63,10 +63,6 @@ public class Fluorophore extends Emitter {
         this.fluo = fluorophore;
         this.state = false;
         this.is_bleached = false;
-        
-
-        // Poisson RNG
-        poisson = new Poisson(1.0, new MersenneTwister(11*(int)x + 17*(int)y));
     }
     
     /**
@@ -88,12 +84,14 @@ public class Fluorophore extends Emitter {
         gen_Tbl = new ExponentialDistribution(Tbl);
     }
     
+    
     /**
      * Simulates the state of the emitter for the next frame and returns its
      * integrated brightness over the duration of the frame.
      * @return emitter brightness in this frame [photons]
      */
-    public double simulate_brightness() {
+    @Override
+    protected double simulateBrightness() {
         if (is_bleached)
             return 0.0;
         double t=0.0;
@@ -117,20 +115,8 @@ public class Fluorophore extends Emitter {
             is_bleached = true;
             state = false;
         }
-        return poisson.nextInt(on_time*fluo.signal);
-    }
-
-    @Override
-    public float[][] applyTo(float[][] pixels) {
-        double brightness = this.simulate_brightness();
-        for (Pixel p: this.getPixelList()) {
-            try {
-                pixels[p.x][p.y] += 0.25* brightness * p.getSignature();
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                //Logger.getLogger(Device.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return pixels;
+        return flicker(on_time*fluo.signal);
     }
 }
+
 

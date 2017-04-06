@@ -91,6 +91,14 @@ public class Device {
         gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
+    /**
+     * Initializes the device with given parameters.
+     * @param cam camera properties
+     * @param fluo fluorophore properties
+     * @param laser laser settings
+     * @param emitters list of fluorophores
+     * @param obstructors list of obstructors
+     */
     public Device(Camera cam, FluorophoreProperties fluo, Laser laser, ArrayList<Fluorophore>emitters,
             ArrayList<Obstructor> obstructors) {
         camera = cam;
@@ -107,6 +115,10 @@ public class Device {
         gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
+    /**
+     * Return the camera resolution
+     * @return [res_x, res_y] int array
+     */
     public int[] getResolution() {
         int[] result = new int[2];
         result[0] = camera.res_x; result[1] = camera.res_y;
@@ -124,14 +136,22 @@ public class Device {
         }
     }
     
+    /**
+     * Return current power of the laser.
+     * @return laser power
+     */
     public double getLaserPower() {
         return laser.getPower();
     }
     
+    /**
+     * Returns the number of currently active emitters.
+     * @return number of shining emitters
+     */
     public double getOnEmitterCount() {
         int count = 0;
         for (Fluorophore e: fluorophores) {
-            if (e.state) {
+            if (e.getState()) {
                 count++;
             }
         }
@@ -141,6 +161,8 @@ public class Device {
     /**
      * Generates a new frame based on the current device state, and moves
      * device state forward.
+     * First the obstructions are drawn on the frame, then the fluorophores,
+     * and afterwards noise is added.
      * @return simulated frame
      */
     public ShortProcessor simulateFrame() {
@@ -148,15 +170,20 @@ public class Device {
         for (int row = 0; row < pixels.length; row++)
             Arrays.fill(pixels[row], 0.0f);
         
+        // Add obstructions
         for (Obstructor o: obstructors) {
-            pixels = o.applyTo(pixels);
-        }
-        // Diffraction
-        for (Fluorophore f: fluorophores) {
-            pixels = f.applyTo(pixels);
+            o.applyTo(pixels);
         }
         
-        pixels = addNoises(pixels);
+        // Add emitters
+        for (Fluorophore f: fluorophores) {
+            f.applyTo(pixels);
+        }
+        
+        // Add noise
+        addNoises(pixels);
+        
+        // Convert to short array
         FloatProcessor fp = new FloatProcessor(pixels);
         return fp.convertToShortProcessor(false);
     }
@@ -164,23 +191,20 @@ public class Device {
     /**
      * Adds Poisson noise to the image.
      * @param image input image
-     * @return image with Poisson noise added
      */
-    private float[][] addPoissonNoise(float[][] image) {
+    private void addPoissonNoise(float[][] image) {
         for (int x = 0; x < image.length; x++) {
             for (int y = 0; y < image[0].length; y++) {
                 image[x][y] = (float) poisson.nextInt(image[x][y]);
             }
         }
-        return image;
     }
     
     /**
      * Adds Poisson, readout, thermal and quantum gain noise to the image.
      * @param image image to be noised up
-     * @return image with noises added
      */
-    private float[][] addNoises(float[][] image) {
+    private void addNoises(float[][] image) {
         // add background
         for (int row=0; row < image.length; row++) {
             for (int col=0; col < image[row].length; col++) {
@@ -189,7 +213,7 @@ public class Device {
         }
         
         // Poisson noise
-        image = addPoissonNoise(image);
+        addPoissonNoise(image);
         
         // Other noises
         for (int row=0; row < image.length; row++) {
@@ -199,7 +223,6 @@ public class Device {
                                    gamma.nextDouble(image[row][col]+0.1f,camera.quantum_gain);
             }
         }
-        return image;
     }
     
 }

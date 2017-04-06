@@ -22,7 +22,11 @@ public class Analyse_Particles
 	MyFunctions f = new MyFunctions();
 	MyIO io = new MyIO();
 
-	public void run(String arg) 
+    /**
+     * Analyzes particles
+     * @param arg
+     */
+    public void run(String arg) 
 	{
 		IJ.register(Analyse_Particles.class);
 		if (!dg.analyseParticles(f)) return;

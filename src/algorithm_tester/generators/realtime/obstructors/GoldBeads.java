@@ -19,21 +19,24 @@ package algorithm_tester.generators.realtime.obstructors;
 import algorithm_tester.generators.realtime.Camera;
 import algorithm_tester.generators.realtime.Emitter;
 import algorithm_tester.generators.realtime.Obstructor;
-import algorithm_tester.generators.realtime.Pixel;
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
- * @author stefko
+ * A number of constantly-shining gold beads interspersed in the frame.
+ * @author Marcel Stefko
  */
 public class GoldBeads implements Obstructor {
-    ArrayList<GoldBead> beads;
-    Random random;
+    private final ArrayList<GoldBead> beads;
+    private final Random random;
     
-    
+    /**
+     * Randomly places gold beads into the camera field of view.
+     * @param beadCount number of gold beads
+     * @param camera camera properties
+     * @param brightness how bright the beads are [photons/frame]
+     */
     public GoldBeads(int beadCount, Camera camera, double brightness) {
-        
         random = new Random();
         beads = new ArrayList<GoldBead>();
         for (int i=0; i<beadCount; i++) {
@@ -44,11 +47,10 @@ public class GoldBeads implements Obstructor {
     }
     
     @Override
-    public float[][] applyTo(float[][] pixels) {
+    public void applyTo(float[][] pixels) {
         for (GoldBead b: beads) {
-            pixels = b.applyTo(pixels);
+            b.applyTo(pixels);
         }
-        return pixels;
     }
     
 }

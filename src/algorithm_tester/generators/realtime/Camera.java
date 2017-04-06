@@ -26,26 +26,95 @@ import static java.lang.Math.exp;
  * @author Marcel Stefko
  */
 public class Camera {
+
+    /**
+     * framerate [frames/second]
+     */
     public final int acq_speed;
+
+    /**
+     * readout noise of camera [RMS]
+     */
     public final double readout_noise;
+
+    /**
+     * dark current [electrons/second/pixel]
+     */
     public final double dark_current;
+
+    /**
+     * quantum efficiency [0.0-1.0]
+     */
     public final double quantum_efficiency;
+
+    /**
+     * gain [-]
+     */
     public final double gain;
+
+    /**
+     * physical size of pixel [m]
+     */
     public final double pixel_size;
+
+    /**
+     * numerical aperture [-]
+     */
     public final double NA;
+
+    /**
+     * light wavelength [m]
+     */
     public final double wavelength;
+
+    /**
+     * magnification of camera [-]
+     */
     public final double magnification;
+
+    /**
+     * square root of absorption cross-section [m]
+     */
     public final double radius;
     
+    /**
+     * noise in frame caused by dark current [electrons/frame/pixel]
+     */
     public final double thermal_noise;
+
+    /**
+     * gain multiplied by quantum efficiency
+     */
     public final double quantum_gain;
     
+    /**
+     * point-spread function of the optics
+     */
     public final double[][] psf;
+
+    /**
+     * digital representation of the PSF?
+     */
     public final double[][] psf_digital;
+
+    /**
+     * FWHM of the PSF
+     */
     public final double fwhm;
+
+    /**
+     * digital representation of the FWHM?
+     */
     public final double fwhm_digital;
     
+    /**
+     * horizontal resolution [pixels]
+     */
     public final int res_x;
+
+    /**
+     * vertical resolution [pixels]
+     */
     public final int res_y;
     
     /**

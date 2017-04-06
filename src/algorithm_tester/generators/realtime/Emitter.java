@@ -27,12 +27,29 @@ import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
 
 /**
- *
- * @author stefko
+ * Any 2D point that emits (or reflects) light when shined on by laser.
+ * @author Marcel Stefko
  */
 public abstract class Emitter extends Point2D.Double  {
+
+    /**
+     * List of pixels which are affected by this emitter's light (these pixels
+     * need to be updated when the emitter is on).
+     */
     protected final ArrayList<Pixel> pixel_list;    
+
+    /**
+     * Poisson RNG for flickering simulation.
+     */
     protected Poisson poisson;
+
+    /**
+     * Creates emitter at given position, and calculates its signature on the
+     * image (what does it look like when it is turned on).
+     * @param camera camera properties (needed for PSF calculation)
+     * @param x x-position in image [pixels, with sub-pixel precision]
+     * @param y y-position in image [pixels, with sub-pixel precision]
+     */
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
         this.poisson = new Poisson(1.0, new MersenneTwister(11*(int)x + 17*(int)y));
@@ -99,6 +116,11 @@ public abstract class Emitter extends Point2D.Double  {
         return result;
     }
     
+    /**
+     * Applies Poisson statistics to simulate flickering of emitter.
+     * @param base_brightness mean of poisson distribution to draw from
+     * @return actual brightness of this emitter for this frame
+     */
     protected double flicker(double base_brightness) {
         return poisson.nextInt(base_brightness);
     }
@@ -112,7 +134,12 @@ public abstract class Emitter extends Point2D.Double  {
         return this.pixel_list;
     }
     
-    public float[][] applyTo(float[][] pixels) {
+    /**
+     * Simulates the brightness pattern of this emitter for the next frame
+     * duration, and renders the emitter onto the image.
+     * @param pixels image to be drawn on
+     */
+    public void applyTo(float[][] pixels) {
         double brightness = this.simulateBrightness();
         for (Pixel p: this.getPixelList()) {
             try {
@@ -121,8 +148,12 @@ public abstract class Emitter extends Point2D.Double  {
                 //Logger.getLogger(Device.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return pixels;
     }
     
+    /**
+     * Simulates the state evolution of the emitter for the next frame, and
+     * returns the integrated brightness of this emitter for this frame.
+     * @return brightness of emitter in this frame
+     */
     protected abstract double simulateBrightness();
 }

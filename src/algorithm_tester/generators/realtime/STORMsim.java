@@ -36,10 +36,14 @@ import java.util.HashMap;
  * @author Marcel Stefko
  */
 public class STORMsim extends AbstractGenerator {
-    Device device;
+    private Device device;
 
-    ArrayList<Double> emitter_history;
+    private ArrayList<Double> emitter_history;
             
+    /**
+     * Initialize the generator, either from GUI dialog or use default params.
+     * @param showDialog if true, dialog is shown, otherwise default params
+     */
     public STORMsim(boolean showDialog) {
         if (showDialog) {
             initDeviceFromDialog();

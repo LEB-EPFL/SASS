@@ -45,6 +45,10 @@ public interface FeedbackController {
      */
     public void setGenerator(ImageGenerator generator);
     
+    /**
+     * Returns the currently active analyzer.
+     * @return analyzer whose output is used by the controller
+     */
     public EvaluationAlgorithm getAnalyzer();
     
     /**
@@ -61,6 +65,11 @@ public interface FeedbackController {
      */
     public double getOutputHistory(int image_no);
     
+    /**
+     * Returns the controller setpoint for given image number.
+     * @param image_no 1-based number of desired image
+     * @return controller setpoint value at the time the image was acquired
+     */
     public double getSetpointHistory(int image_no);
     
     /**

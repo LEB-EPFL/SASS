@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * QuickPalm implementation interface.
+ * QuickPalm implementation wrapper.
  * 
  * @author Marcel Stefko
  */
@@ -37,8 +37,9 @@ public class QuickPalm extends AbstractAnalyzer {
     private int count;
     private final QuickPalmCore core;
     
-    
-    
+    /**
+     * Initializes the QuickPalm analyzer.
+     */
     public QuickPalm() {
         core = new QuickPalmCore();
         output_history = new ArrayList<Double>();

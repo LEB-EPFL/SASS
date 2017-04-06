@@ -19,16 +19,6 @@
  */
 package algorithm_tester.generators.realtime;
 
-import cern.jet.random.Poisson;
-import cern.jet.random.engine.MersenneTwister;
-import ij.process.ImageProcessor;
-import java.awt.geom.Point2D;
-import static java.lang.Math.sqrt;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.special.Erf;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 /**
@@ -37,10 +27,11 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  * @author Marcel Stefko
  */
 public class Fluorophore extends Emitter {
-    public final FluorophoreProperties fluo;
+
+    private final FluorophoreProperties fluo;
     
-    public boolean state;
-    public boolean is_bleached;
+    private boolean state;
+    private boolean is_bleached;
     
     private double Ton;
     private double Toff;
@@ -116,6 +107,23 @@ public class Fluorophore extends Emitter {
             state = false;
         }
         return flicker(on_time*fluo.signal);
+    }
+    
+    /**
+     * Returns the current state of the emitter (on or off), but does not
+     * inform if this emitter is also bleached!
+     * @return true-emitter is on, false-emitter is off
+     */
+    public boolean getState() {
+        return state;
+    }
+    
+    /**
+     * Informs if this emitter switched into the irreversible bleached state.
+     * @return boolean, true if emitter is bleached
+     */
+    public boolean isBleached() {
+        return is_bleached;
     }
 }
 

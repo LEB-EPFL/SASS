@@ -32,14 +32,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author stefko
+ * Backend for the FIJI plugin GUI
+ * @author Marcel Stefko
  */
 public class App extends AlgorithmTester {
     private final ImagePlus imp;
     private final Plot plot;
     private Worker worker;
     
+    /**
+     * Initialize simulation, generate 2 images for correct 
+     * stack display, then display the stack
+     * and plot of controller state.
+     */
     public App() {
         super();
         generator.getNextImage();
@@ -51,11 +56,17 @@ public class App extends AlgorithmTester {
         
     }
     
+    /**
+     * Start continuously generating new images until stopped.
+     */
     public void startSimulating() {
         worker = new Worker(this, generator, controller, analyzers, imp);
         worker.start();
     }
     
+    /**
+     * Stop generating new images.
+     */
     public void stopSimulating() {
         worker.stop = true;
         try {
@@ -65,14 +76,26 @@ public class App extends AlgorithmTester {
         }
     }
     
+    /**
+     * Set new setpoint for the controller
+     * @param value new setpoint value
+     */
     public void setSetpoint(double value) {
         controller.setTarget(value);
     }
     
+    /**
+     * Return the controller plot handle
+     * @return plot with controller history
+     */
     public Plot getPlot() {
         return plot;
     }
     
+    /**
+     * Automatically generates the setup frame for all active analyzers,
+     * by looking at the key-value pairs of each analyzer's parameter map.
+     */
     public void analyzerSetupDialog() {
         GenericDialog gd = new GenericDialog("Analyzer setup");
         for (String key: analyzers.keySet()) {

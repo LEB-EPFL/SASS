@@ -16,14 +16,17 @@
  */
 package algorithm_tester.generators.realtime;
 
-import ij.process.ImageProcessor;
 
 /**
- *
- * @author stefko
+ * This object is a constant obstruction of the field of view (for example gold
+ * bead, foreign object in field of view, dirt, etc.)
+ * @author Marcel Stefko
  */
 public interface Obstructor {
-    public float[][] applyTo(float[][] pixels);
-    
-    
+
+    /**
+     * Draws the obstruction onto the given float array representing an image.
+     * @param pixels image to be drawn on
+     */
+    public void applyTo(float[][] pixels);
 }

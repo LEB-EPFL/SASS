@@ -32,7 +32,9 @@ public class PIDController extends AbstractController {
     MiniPID miniPID;
     
     /**
-     * Initialize PID controller with default settings.
+     * Initialize PID controller with default settings or via dialog.
+     * @param showDialog if true, dialog is shown, otherwise default settings
+     * are used
      */
     public PIDController(boolean showDialog) {
         super();      
@@ -56,21 +58,21 @@ public class PIDController extends AbstractController {
     
     @Override
     public void setTarget(double target) {
-        this.target = target;
+        this.setpoint = target;
         miniPID.setSetpoint(target);
         settings.put("setpoint", target);
     }
 
     @Override
     public void adjust() {
-        history.add(generator.getControlSignal());
-        setpoint_history.add(target);
-        counter++;
+        output_history.add(generator.getControlSignal());
+        setpoint_history.add(setpoint);
+        image_count++;
         
         double error = analyzer.getCurrentErrorSignal();
         double output = miniPID.getOutput(error);
         
-        System.out.format("No: %d\n", counter);
+        System.out.format("No: %d\n", image_count);
         System.out.format(" Error signal: %5.2f\n", error);
         System.out.format(" Output signal: %5.2f\n", output);
         

@@ -27,23 +27,54 @@ import java.util.HashMap;
  * @author stefko
  */
 public abstract class AbstractController implements FeedbackController {
-    protected final ArrayList<Double> history;
+
+    /**
+     * History of output values of the controller(i.e. laser power values).
+     * 1-based
+     */
+    protected final ArrayList<Double> output_history;
+
+    /**
+     * History of setpoint of the controller. 1-based
+     */
     protected final ArrayList<Double> setpoint_history;
     
+    /**
+     * Custom settings map of the controller.
+     */
     protected final HashMap<String,Double> settings;
     
-    protected double target;
-    protected int counter;
+    /**
+     * Current setpoint value for the controller.
+     */
+    protected double setpoint;
+
+    /**
+     * Number of analyzed images.
+     */
+    protected int image_count;
     
+    /**
+     * Analyzer whose output value is compared with the setpoint to derive
+     * the error signal.
+     */
     protected EvaluationAlgorithm analyzer;
+
+    /**
+     * Generator to which the controller output will be fed.
+     */
     protected ImageGenerator generator;
     
+    /**
+     * Initializes the history arrays and ensures 1-based indexing, sets up
+     * image counter and settings.
+     */
     public AbstractController() {
-        history = new ArrayList<Double>();
-        history.add(0.0); // padding so we can number from 1
+        output_history = new ArrayList<Double>();
+        output_history.add(0.0); // padding so we can number from 1
         setpoint_history = new ArrayList<Double>();
         setpoint_history.add(0.0); // padding so we can number from 1
-        counter = 0;
+        image_count = 0;
         
         settings = new HashMap<String,Double>();
     }
@@ -65,7 +96,7 @@ public abstract class AbstractController implements FeedbackController {
     
     @Override
     public double getOutputHistory(int image_no) {
-        return history.get(image_no);
+        return output_history.get(image_no);
     }
     
     @Override

@@ -26,7 +26,15 @@ import static java.lang.Math.sqrt;
  * @author Marcel Stefko
  */
 public class Pixel {
+
+    /**
+     * X-position of pixel in image.
+     */
     public final int x;
+
+    /**
+     * Y-position of pixel in image.
+     */
     public final int y;
     private final double signature;
     

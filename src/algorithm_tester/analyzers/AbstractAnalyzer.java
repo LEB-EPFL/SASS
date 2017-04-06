@@ -28,7 +28,14 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractAnalyzer implements EvaluationAlgorithm {
     
+    /**
+     * 1-based ArrayList for storing history of output values.
+     */
     protected ArrayList<Double> output_history;
+
+    /**
+     * Custom parameter map.
+     */
     protected LinkedHashMap<String, Integer> parameters;
     
     @Override

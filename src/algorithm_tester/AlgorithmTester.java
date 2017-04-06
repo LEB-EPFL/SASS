@@ -37,15 +37,35 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author stefko
+ * Carries out the actual simulation.
+ * @author Marcel Stefko
  */
 public class AlgorithmTester {
+
+    /**
+     * Map of all analyzers to be applied to the generated images.
+     */
     protected final HashMap<String,EvaluationAlgorithm> analyzers;
+
+    /**
+     * Generator which is the source of images to be analyzed.
+     */
     protected final ImageGenerator generator;
+
+    /**
+     * Takes the output of a single analyzer, processes it, and outputs a
+     * signal to the generator, for feedback loop control.
+     */
     protected final FeedbackController controller;
+
+    /**
+     * Number of already-generated images.
+     */
     protected int image_count;
     
+    /**
+     * Initializes all analyzers, the generator and controller.
+     */
     public AlgorithmTester() {
         analyzers = new LinkedHashMap<String,EvaluationAlgorithm>();
         // Instantiate all analyzers and add them to the list.
@@ -251,10 +271,18 @@ public class AlgorithmTester {
         
     }
     
+    /**
+     * Increments image counter in case an image was generated outside of
+     * this class.
+     */
     public void incrementCounter() {
     image_count++;
     }
     
+    /**
+     * Returns the number of generated images since simulation start.
+     * @return number of generated images
+     */
     public int getImageCount() {
         return image_count;
     }

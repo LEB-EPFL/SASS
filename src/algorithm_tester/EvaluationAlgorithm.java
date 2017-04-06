@@ -65,6 +65,11 @@ public interface EvaluationAlgorithm {
      */
     public double getCurrentErrorSignal();
     
+    /**
+     * Returns the value of error signal from history for given image no
+     * @param image_no 1-based image no
+     * @return error signal for given image
+     */
     public double getErrorSignal(int image_no);
     
     /**

@@ -26,23 +26,32 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author stefko
+ * Main FIJI plugin frame.
+ * @author Marcel Stefko
  */
 public class Main_Frame extends PlugInFrame {
     App app;
     /**
      * Creates new form MainFrame
+     * @param title title of the window
      */
     public Main_Frame(String title) {
         super(title);
+        initComponents();
     }
     
+    /**
+     * Initialize the new frame
+     */
     public Main_Frame() {
         super("AAA");
         initComponents();
     }
     
+    /**
+     * Show the frame and initialize backend.
+     * @param arg
+     */
     @Override
     public void run(String arg) {
         setSize(200, 200);
@@ -135,7 +144,7 @@ public class Main_Frame extends PlugInFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Exit the Application
+     * Exit the plugin
      */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         //System.exit(0);

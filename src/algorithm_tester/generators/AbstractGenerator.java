@@ -25,12 +25,23 @@ import java.util.HashMap;
 
 /**
  *
- * @author stefko
+ * @author Marcel Stefko
  */
 public abstract class AbstractGenerator implements ImageGenerator {
+
+    /**
+     * Map of custom parameters for the generator.
+     */
     protected HashMap<String,Double> parameters;
+
+    /**
+     * Stack to which the generated images are appended.
+     */
     protected ImageStack stack;    
     
+    /**
+     * Initializes the empty parameters map.
+     */
     public AbstractGenerator() {
         parameters = new HashMap<String,Double>();        
     }

@@ -135,10 +135,10 @@ public class MiniPID{
 	/**
 	 * Changes the D parameter <br>
 	 * This has two primary effects:
-	 * <list>
-	 * <li> Adds a "startup kick" and speeds up system response during setpoint changes
-	 * <li> Adds "drag" and slows the system when moving toward the target
-	 * </list>
+	 * 
+	 * Adds a "startup kick" and speeds up system response during setpoint changes
+	 * Adds "drag" and slows the system when moving toward the target
+	 * 
 	 * A small D value can be useful for both improving response times, and preventing overshoot.
 	 * However, in many systems a large D value will cause significant instability, particularly 
 	 * for large setpoint changes.
@@ -375,7 +375,6 @@ public class MiniPID{
 	 * In one parameter mode, the last configured setpoint will be used.<br>
 	 * @see MiniPID#setSetpoint()
 	 * @param actual The monitored value, typically as a sensor input.
-	 * @param setpoint The target value for the system
 	 * @return calculated output value for driving the system
 	 */
 	public double getOutput(double actual){
@@ -420,7 +419,7 @@ public class MiniPID{
 	}
 
 	/**
-     * Set a filter on the output to reduce sharp oscillations. <br>
+         * Set a filter on the output to reduce sharp oscillations. <br>
 	 * 0.1 is likely a sane starting value. Larger values use historical data
 	 * more heavily, with low values weigh newer data. 0 will disable, filtering, and use 
 	 * only the most recent value. <br>
@@ -428,7 +427,7 @@ public class MiniPID{
 	 * values and increase I term overshoot.<br>
 	 * Uses an exponential wieghted rolling sum filter, according to a simple <br>
 	 * <pre>output*(1-strength)*sum(0..n){output*strength^n}</pre> algorithm.
-	 * @param output valid between [0..1), meaning [current output only.. historical output only)
+         * @param strength
 	 */
 	public void setOutputFilter(double strength){
 		if(strength==0 || bounded(strength,0,1)){

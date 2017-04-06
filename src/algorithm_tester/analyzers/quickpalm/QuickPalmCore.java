@@ -34,8 +34,9 @@ public class QuickPalmCore {
     private final MyFunctions f;
     private final MyIO io;
     
-    
-        
+    /**
+     * Initializes the core and launches a dialog for parameter setup.
+     */
     public QuickPalmCore() {
         dg = new MyDialogs();
         f = new MyFunctions();
@@ -46,6 +47,12 @@ public class QuickPalmCore {
             throw new RuntimeException("Error in analysis setup.");
     }
         
+    /**
+     * Counts particles in the image.
+     * @param ip image to be processed
+     * @param frame id of the image
+     * @return no. of detected particles
+     */
     public int processImage( ImageProcessor ip, int frame ) {
         if (!((ip.getBitDepth() == 8) || (ip.getBitDepth() == 16))) {
             System.out.format("Image depth: %d",ip.getBitDepth());

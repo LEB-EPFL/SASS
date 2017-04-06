@@ -28,6 +28,9 @@ import algorithm_tester.controllers.AbstractController;
 public class SimpleController extends AbstractController {
     int interval;
     
+    /**
+     * Simple constructor.
+     */
     public SimpleController() {
         super();
         settings.put("interval", 10.0);
@@ -36,15 +39,15 @@ public class SimpleController extends AbstractController {
     
     @Override
     public void adjust() {
-        history.add(generator.getControlSignal());
-        setpoint_history.add(target);
-        counter++;
-        if ((counter % interval) != 0) {
+        output_history.add(generator.getControlSignal());
+        setpoint_history.add(setpoint);
+        image_count++;
+        if ((image_count % interval) != 0) {
             return;
         }
         double error = analyzer.getCurrentErrorSignal();
-        double r = error/target;
-        System.out.format("Error: %5.2f, target: %5.2f, r: %5.2f\n", error, target, r);
+        double r = error/setpoint;
+        System.out.format("Error: %5.2f, target: %5.2f, r: %5.2f\n", error, setpoint, r);
         if (r>1.15) {
             decrementPower();
         } else if (r<0.9) {
@@ -54,7 +57,7 @@ public class SimpleController extends AbstractController {
     
     @Override
     public void setTarget(double target) {
-        this.target = target;
+        this.setpoint = target;
     }
     
     // Decreases power by 1/5th

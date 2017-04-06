@@ -24,10 +24,30 @@ package algorithm_tester.generators.realtime;
  * @author Marcel Stefko
  */
 public class FluorophoreProperties {
+
+    /**
+     * photons emitted if fluorophore is fully on
+     */
     public final double signal;
+
+    /**
+     * constant background of the fluorophore
+     */
     public final double background;
+
+    /** 
+     * mean on-time with unit laser power [frames]
+     */
     public final double base_Ton;
+
+    /**
+     * mean off-time with unit laser power [frames]
+     */
     public final double base_Toff;
+
+    /**
+     * mean bleaching time with unit laser power [frames]
+     */
     public final double base_Tbl;
     
     /**

@@ -39,9 +39,19 @@ public class FindLocalMaxima {
    private static final GaussianBlur FILTER = new GaussianBlur();
    private static final ImageCalculator IC = new ImageCalculator();
    
-   public enum FilterType {
-      NONE ("None"),
-      GAUSSIAN1_5("Gaussian1_5");
+    /**
+     * Different filters for image preprocessing.
+     */
+    public enum FilterType {
+
+       /**
+        * No preprocessing.
+        */
+       NONE ("None"),
+
+       /**
+        */
+       GAUSSIAN1_5("Gaussian1_5");
       
       private final String s_;
       
@@ -49,12 +59,21 @@ public class FindLocalMaxima {
          this.s_ = s;
       }
       
-      @Override
+       /**
+        *
+        * @return
+        */
+       @Override
       public String toString() {
          return s_;
       }
       
-      public static FilterType equals (String s) {
+       /**
+        *
+        * @param s
+        * @return
+        */
+       public static FilterType equals (String s) {
          if (s.equals(NONE.toString())) {
             return NONE;
          }
@@ -178,7 +197,15 @@ public class FindLocalMaxima {
 
 
    // Filters local maxima list using the ImageJ findMaxima Threshold algorithm
-   public static Polygon noiseFilter(ImageProcessor iProc, Polygon inputPoints, int threshold)
+
+    /**
+     *
+     * @param iProc
+     * @param inputPoints
+     * @param threshold
+     * @return
+     */
+       public static Polygon noiseFilter(ImageProcessor iProc, Polygon inputPoints, int threshold)
    {
       Polygon outputPoints = new Polygon();
 

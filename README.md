@@ -12,4 +12,4 @@ STEADIER-SAILOR uses adapted code and algorithms under GPL from following projec
  - [SpotCounter](http://imagej.net/SpotCounter) by Nico Stuurman
  - [SOFIsim](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes
  
- Many thanks for Dr. Kyle M. Douglass for guidance during this project.
+ Many thanks to Dr. Kyle M. Douglass for guidance during this project.

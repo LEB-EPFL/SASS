@@ -56,28 +56,48 @@ public class FluorophoreGenerator {
         return result;
     }
     
+    /**
+     * Parses fluorophore positions from csv file.
+     * All lines which don't start with "#" have to contain at least 2 doubles,
+     * which are interpreted as x and y positions in pixels.
+     * @param file csv file, if null, a dialog is opened
+     * @param camera camera settings
+     * @param fluo fluorophore settings
+     * @param rescale if true, positions are rescaled to fit into frame,
+     *  otherwise positions outside of frame are cropped
+     * @return list of fluorophores
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static ArrayList<Fluorophore> parseFluorophoresFromCsv(File file, Camera camera, FluorophoreProperties fluo, boolean rescale) throws FileNotFoundException, IOException {
         if (file==null) {
             file = getFileFromDialog();
         }
         
+        // load all fluorophores
         ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
         double x; double y;
         BufferedReader br;
-        String line = "";
+        String line;
         String splitBy = ",";
         br = new BufferedReader(new FileReader(file));
+        // read all lines
         while ((line = br.readLine()) != null) {
+            // skip comments
             if (line.startsWith("#")) {
                 continue;
             }
+            
+            // read 2 doubles from beginning of line
             String[] entries = line.split(splitBy);
             x = Double.parseDouble(entries[0]);
             y = Double.parseDouble(entries[1]);
+            // ignore ones with negative positions
             if (x>=0.0 && y>=0.0)
                 result.add(new Fluorophore(fluo, camera, x, y));
         }
         
+        // rescale positions to fit into frame        
         if (rescale) {
             ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
             double max_x_coord = 0.0;
@@ -92,8 +112,16 @@ public class FluorophoreGenerator {
                         f.y*factor));
             }
             return result_rescaled;
+        // or crop fluorophores outside of frame
         } else {
-            return result;
+            ArrayList<Fluorophore> result_cropped = new ArrayList<Fluorophore>();
+            for (Fluorophore f: result) {
+                if (f.x < camera.res_x && f.y < camera.res_y) {
+                    result_cropped.add(new Fluorophore(fluo, camera, 
+                        f.x, f.y));
+                }
+            }
+            return result_cropped;
         }
     }
     

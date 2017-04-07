@@ -31,15 +31,25 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author stefko
+ * Constant overlay loaded from an image
+ * @author Marcel Stefko
  */
 public class ConstantBackground implements Obstructor  {
+    /**
+     * Image which will be added to every image.
+     */
     private float[][] pixels;
     
+    /**
+     * Load the background image by a file selection dialog
+     * @param camera camera settings
+     */
     public ConstantBackground(Camera camera) {
+        // initialize array with zeros
         pixels = new float[camera.res_x][camera.res_y];
         zeroPixels();
+        
+        // choose file
         JFileChooser fc = new JFileChooser();
         int returnVal;
         fc.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -52,17 +62,27 @@ public class ConstantBackground implements Obstructor  {
             throw new RuntimeException("You need to select a background image!");
         }
         File tif_file = fc.getSelectedFile();
+        // load the file
         loadFile(tif_file);
+        
+        // verify that the image is larger or equal to camera resolution
         verifyDimensions(camera, pixels);
     }
     
+    /**
+     * Load background image from specified file
+     * @param camera camera settings
+     * @param file tiff file to be loaded
+     */
     public ConstantBackground(Camera camera, File file) {
         pixels = new float[camera.res_x][camera.res_y];
         zeroPixels();
         loadFile(file);
         verifyDimensions(camera, pixels);
     }
-    
+    /**
+     * Set all pixels in source image to zero.
+     */
     private void zeroPixels() {
         for (int row=0; row<pixels.length; row++) {
             for (int col=0; col<pixels[row].length; col++) {
@@ -80,6 +100,10 @@ public class ConstantBackground implements Obstructor  {
         }
     }
     
+    /**
+     * Load selected tif stack
+     * @param file tif stack file
+     */
     private void loadFile(File file) {
         Opener o = new Opener();
         ImagePlus win = o.openTiff(file.getParent().concat("\\"),file.getName());
@@ -89,6 +113,12 @@ public class ConstantBackground implements Obstructor  {
         pixels = fp.getFloatArray();
     }
     
+    /**
+     * Check if image is big enough to cover the camera field of view. Raises
+     * an exception if it is not.
+     * @param camera camera settings
+     * @param pixels image to be checked
+     */
     private void verifyDimensions(Camera camera, float[][] pixels) {
         if (camera.res_x>pixels.length) {
             throw new ArrayIndexOutOfBoundsException("Background image is too small!");

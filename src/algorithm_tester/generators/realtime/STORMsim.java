@@ -48,11 +48,11 @@ public class STORMsim extends AbstractGenerator {
      * Initialize the generator, either from GUI dialog or use default params.
      * @param showDialog if true, dialog is shown, otherwise default params
      */
-    public STORMsim(boolean showDialog) {
-        if (showDialog) {
+    public STORMsim(Device device) {
+        if (device == null) {
             initDeviceFromDialog();
         } else {
-            device = new Device();
+            this.device = device;
         }
         int[] res = device.getResolution();
         stack = new ImageStack(res[0],res[1]);

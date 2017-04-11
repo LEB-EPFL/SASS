@@ -59,6 +59,17 @@ public class App extends AlgorithmTester {
         
     }
     
+    public App(LinkedHashMap<String, EvaluationAlgorithm> analyzers,
+            ImageGenerator generator, FeedbackController controller) {
+        super(analyzers, generator, controller);
+        generator.getNextImage();
+        generator.getNextImage();
+        imp = new ImagePlus("Sim window", generator.getStack());
+        imp.show();
+        plot = new Plot("Controller history", "Frame id.", "Value");
+        plot.show();
+    }
+    
     /**
      * Start continuously generating new images until stopped.
      */

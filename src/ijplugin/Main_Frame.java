@@ -48,7 +48,13 @@ public class Main_Frame extends PlugInFrame {
      */
     public Main_Frame() {
         super("AAA");
+        setSize(200, 200);
         initComponents();
+        setVisible(true);
+        InitSettingsFrame f = new InitSettingsFrame(null, false, this);
+        f.setVisible(true);
+
+        
     }
     
     /**
@@ -57,10 +63,11 @@ public class Main_Frame extends PlugInFrame {
      */
     @Override
     public void run(String arg) {
-        setSize(200, 200);
-        setVisible(true);
-        app = new App();
         
+    }
+    
+    public void setApp(App app) {
+        this.app = app;
     }
 
 

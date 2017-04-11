@@ -89,7 +89,7 @@ public class AlgorithmTester {
         
         
         // Real time generator
-        generator = new STORMsim(true);
+        generator = new STORMsim(null);
         
         // Set up controller
         //controller = new SimpleController();
@@ -97,6 +97,13 @@ public class AlgorithmTester {
         controller.setTarget(120.0);
         controller.setAnalyzer(spotcounter);
         controller.setGenerator(generator);
+    }
+    
+    public AlgorithmTester(LinkedHashMap<String, EvaluationAlgorithm> analyzers,
+            ImageGenerator generator, FeedbackController controller) {
+        this.analyzers = analyzers;
+        this.generator = generator;
+        this.controller = controller;
     }
     
     /**

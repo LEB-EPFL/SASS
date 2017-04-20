@@ -53,7 +53,7 @@ public interface ImageGenerator {
     
     /**
      * Returns the actual value of signal (if applicable) for given image.
-     * @param image_no image number in history
+     * @param image_no 1-based image number in history
      * @return value of signal (e.g. no. of active emitters)
      */
     public double getTrueSignal(int image_no);

@@ -49,6 +49,7 @@ public class STORMsim extends AbstractGenerator {
      * @param showDialog if true, dialog is shown, otherwise default params
      */
     public STORMsim(Device device) {
+        super();
         if (device == null) {
             initDeviceFromDialog();
         } else {
@@ -68,9 +69,11 @@ public class STORMsim extends AbstractGenerator {
 
     @Override
     public ImageProcessor getNextImage() {
+        // we calculate emitter count first so it corresponds with the beginning
+        // of the frame rather than end of the frame
+        emitter_history.add(device.getOnEmitterCount());
         ImageProcessor ip = device.simulateFrame();
         stack.addSlice(ip);
-        emitter_history.add(device.getOnEmitterCount());
         return ip;
     }
 

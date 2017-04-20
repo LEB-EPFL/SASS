@@ -183,17 +183,17 @@ class Worker extends Thread {
     public void updatePlot() {
         Plot plot = app.getPlot();
         
-        int count = app.getImageCount();
+        int count = app.getImageCount()-1;
         double[] x = new double[count]; 
         double[] real = new double[count];
         double[] laser = new double[count]; 
         double[] spot = new double[count];
         double[] set_point = new double[count];
-        for (int i=1; i<=app.getImageCount(); i++) {
+        for (int i=1; i<=count; i++) {
             x[i-1] = (double) i;
             real[i-1] = generator.getTrueSignal(i);
             laser[i-1] = controller.getOutputHistory(i)*200;
-            spot[i-1] = controller.getAnalyzer().getErrorSignal(i-1);
+            spot[i-1] = controller.getAnalyzer().getErrorSignal(i);
             set_point[i-1] = controller.getSetpointHistory(i);
         }
         plot.setColor(Color.black);

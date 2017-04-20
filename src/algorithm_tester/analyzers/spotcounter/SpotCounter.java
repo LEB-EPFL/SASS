@@ -58,9 +58,13 @@ public class SpotCounter extends AbstractAnalyzer {
      */
     private void init() {
         output_history = new ArrayList<Double>();
+        output_history.add(0.0);
         min_dists = new ArrayList<Double>();
+        min_dists.add(0.0);
         mean_dists = new ArrayList<Double>();
+        mean_dists.add(0.0);
         p10_dists = new ArrayList<Double>();
+        p10_dists.add(0.0);
         analyzer = new SpotCounterCore(noise_tolerance, box_size);
         count = 0;
     } 
@@ -78,7 +82,6 @@ public class SpotCounter extends AbstractAnalyzer {
 
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
-        image_no--; //hack to get good array indexing
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
         map.put("spot-count", output_history.get(image_no));
         map.put("min-dist", min_dists.get(image_no));

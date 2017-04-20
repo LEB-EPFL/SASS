@@ -192,7 +192,7 @@ class Worker extends Thread {
         for (int i=1; i<=count; i++) {
             x[i-1] = (double) i;
             real[i-1] = generator.getTrueSignal(i);
-            laser[i-1] = controller.getOutputHistory(i)*200;
+            laser[i-1] = controller.getOutputHistory(i);
             spot[i-1] = controller.getAnalyzer().getErrorSignal(i);
             set_point[i-1] = controller.getSetpointHistory(i);
         }
@@ -202,14 +202,14 @@ class Worker extends Thread {
         plot.addLabel(0.02,0.1,"True signal");
         plot.setColor(Color.red);
         plot.addPoints(x, spot, Plot.LINE);
-        plot.addLabel(0.02,0.2,"SpotCounter");
+        plot.addLabel(0.02,0.2,"Measured signal");
         plot.setColor(Color.blue);
         plot.addPoints(x, set_point, Plot.LINE);
         plot.addLabel(0.02,0.3,"Setpoint");
         plot.setColor(Color.orange);
         plot.addPoints(x, laser, Plot.LINE);
         plot.addLabel(0.02,0.4,"Laser power");
-        plot.setLimits(0, 5, 0, 3); // hack to get a correct rescale
+        plot.setLimits(0, 0.5, 0, 0.5); // hack to get a correct rescale
         plot.setLimitsToFit(true);
         plot.draw();
         

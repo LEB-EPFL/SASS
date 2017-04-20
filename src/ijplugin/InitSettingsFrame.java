@@ -21,6 +21,7 @@ import algorithm_tester.FeedbackController;
 import algorithm_tester.analyzers.autolase.AutoLase;
 import algorithm_tester.analyzers.quickpalm.QuickPalm;
 import algorithm_tester.analyzers.spotcounter.SpotCounter;
+import algorithm_tester.analyzers.ultimate.UltimateAnalyzer;
 import algorithm_tester.controllers.manual.ManualController;
 import algorithm_tester.controllers.pid.PIDController;
 import algorithm_tester.controllers.simple.SimpleController;
@@ -863,9 +864,9 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         label54.setText("D");
 
-        entry_PID_P.setText("0.005");
+        entry_PID_P.setText("0.5");
 
-        entry_PID_I.setText("0.0025");
+        entry_PID_I.setText("0.25");
 
         entry_PID_D.setText("0.0");
 
@@ -1190,6 +1191,12 @@ public class InitSettingsFrame extends java.awt.Dialog {
             analyzers.put(quickpalm.getName(), quickpalm);
         }
         
+        if (checkbox_analyzer_ultimate.getState()) {
+            UltimateAnalyzer ultimate = new UltimateAnalyzer(
+                    Double.parseDouble(cam_px_size.getText()) / Double.parseDouble(cam_magnification.getText()));
+            analyzers.put(ultimate.getName(), ultimate);
+        }
+        
         if (analyzers.isEmpty()) {
             IJ.showMessage("You have to select at least one analyzer.");
             return;
@@ -1212,7 +1219,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         } else {
             controller = new SimpleController();
         }
-        controller.setTarget(1.0);
+        controller.setTarget(0.0);
         
         if (analyzers.size() > 1) {
             GenericDialog gd = new GenericDialog("Analyzer selection");

@@ -1283,12 +1283,12 @@
         </Component>
         <Component class="java.awt.TextField" name="entry_PID_P">
           <Properties>
-            <Property name="text" type="java.lang.String" value="0.005"/>
+            <Property name="text" type="java.lang.String" value="0.5"/>
           </Properties>
         </Component>
         <Component class="java.awt.TextField" name="entry_PID_I">
           <Properties>
-            <Property name="text" type="java.lang.String" value="0.0025"/>
+            <Property name="text" type="java.lang.String" value="0.25"/>
           </Properties>
         </Component>
         <Component class="java.awt.TextField" name="entry_PID_D">

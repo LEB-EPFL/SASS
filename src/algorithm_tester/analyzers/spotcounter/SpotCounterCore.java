@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 //               IN NO EVENT SHALL THE COPYRIGHT OWNER OR
 //               CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
 //               INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES.
-class SpotCounterCore {
+public class SpotCounterCore {
 
     private final int nPasses_ = 1;
     private int pasN_ = 0;
@@ -44,10 +44,15 @@ class SpotCounterCore {
     private static final boolean outputAllSpots_ = false;
     private static final FindLocalMaxima.FilterType filter_
             = FindLocalMaxima.FilterType.NONE;
-    private final int boxSize_;
-    private final int noiseTolerance_;
+    private int boxSize_;
+    private int noiseTolerance_;
     
     public SpotCounterCore(int noiseTolerance, int boxSize) {
+        boxSize_ = boxSize;
+        noiseTolerance_ = noiseTolerance;
+    }
+    
+    public void setParams(int noiseTolerance, int boxSize) {
         boxSize_ = boxSize;
         noiseTolerance_ = noiseTolerance;
     }

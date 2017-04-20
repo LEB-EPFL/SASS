@@ -33,12 +33,13 @@ import java.util.logging.Logger;
  * @author Marcel Stefko
  */
 public class SpotCounter extends AbstractAnalyzer {
-    private int count;
+    protected int count;
     
-    private ArrayList<Double> min_dists;
-    private ArrayList<Double> mean_dists;
-    private ArrayList<Double> p10_dists;
-    SpotCounterCore analyzer;
+    protected ArrayList<Double> min_dists;
+    protected ArrayList<Double> mean_dists;
+    protected ArrayList<Double> p10_dists;
+    protected ArrayList<Double> spot_counts;
+    protected SpotCounterCore analyzer;
     
     private int noise_tolerance = 100;
     private int box_size = 5;
@@ -47,9 +48,11 @@ public class SpotCounter extends AbstractAnalyzer {
      * Initializes the algorithm.
      */
     public SpotCounter() {
+        super();
         parameters = new LinkedHashMap<String, Integer>();
         parameters.put("noise-tolerance", noise_tolerance);
         parameters.put("box-size", box_size);
+        analyzer = new SpotCounterCore(noise_tolerance, box_size);
         init();
     }
     
@@ -65,7 +68,8 @@ public class SpotCounter extends AbstractAnalyzer {
         mean_dists.add(0.0);
         p10_dists = new ArrayList<Double>();
         p10_dists.add(0.0);
-        analyzer = new SpotCounterCore(noise_tolerance, box_size);
+        spot_counts = new ArrayList<Double>();
+        spot_counts.add(0.0);
         count = 0;
     } 
     
@@ -73,6 +77,7 @@ public class SpotCounter extends AbstractAnalyzer {
     public void processImage(ImageProcessor ip) {
         ResultsTable result;
         result = analyzer.analyze(ip);
+        spot_counts.add(result.getValue("n", count));
         output_history.add(result.getValue("n", count));
         min_dists.add(result.getValue("min-distance", count));
         mean_dists.add(result.getValue("mean-distance", count));
@@ -83,10 +88,11 @@ public class SpotCounter extends AbstractAnalyzer {
     @Override
     public HashMap<String, Double> getOutputValues(int image_no) {
         HashMap<String, Double> map = new LinkedHashMap<String, Double>();
-        map.put("spot-count", output_history.get(image_no));
+        map.put("spot-count", spot_counts.get(image_no));
         map.put("min-dist", min_dists.get(image_no));
         map.put("mean-dist", mean_dists.get(image_no));
         map.put("p10-dist", p10_dists.get(image_no));
+        map.put("spot-density_um2", output_history.get(image_no));
         return map;
     }
 
@@ -101,7 +107,7 @@ public class SpotCounter extends AbstractAnalyzer {
         noise_tolerance = map.get("noise-tolerance");
         box_size = map.get("box-size");
         parameters = map;
-        init();
+        analyzer.setParams(noise_tolerance, box_size);
     }
     
 }

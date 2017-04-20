@@ -23,7 +23,13 @@ import algorithm_tester.controllers.AbstractController;
  * @author stefko
  */
 public class ManualController extends AbstractController {
+    
     private double setpoint;
+    
+    public ManualController() {
+        super();
+    }
+    
     @Override
     public void setTarget(double target) {
         this.setpoint = target;

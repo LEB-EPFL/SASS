@@ -125,6 +125,10 @@ public class Device {
         return result;
     }
     
+    public double getFOVsize_um() {
+        return (camera.pixel_size*1e6/camera.magnification)*(camera.pixel_size*1e6/camera.magnification)*camera.res_x*camera.res_y;
+    }
+    
     /**
      * Modifies the laser power to desired value.
      * @param laser_power new laser power [W]

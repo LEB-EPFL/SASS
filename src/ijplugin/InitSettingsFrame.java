@@ -21,6 +21,7 @@ import algorithm_tester.FeedbackController;
 import algorithm_tester.analyzers.autolase.AutoLase;
 import algorithm_tester.analyzers.quickpalm.QuickPalm;
 import algorithm_tester.analyzers.spotcounter.SpotCounter;
+import algorithm_tester.controllers.manual.ManualController;
 import algorithm_tester.controllers.pid.PIDController;
 import algorithm_tester.controllers.simple.SimpleController;
 import algorithm_tester.generators.realtime.Camera;
@@ -1207,7 +1208,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                 return;
             }
         } else if (cb_controller_manual.getState()) {
-            controller = new SimpleController();
+            controller = new ManualController();
         } else {
             controller = new SimpleController();
         }

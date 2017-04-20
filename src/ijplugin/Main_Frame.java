@@ -80,27 +80,20 @@ public class Main_Frame extends PlugInFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel5 = new java.awt.Panel();
         analyzerSettingsButton = new java.awt.Button();
-        panel4 = new java.awt.Panel();
         label1 = new java.awt.Label();
         setpointEntry = new java.awt.TextField();
-        panel1 = new java.awt.Panel();
         startSimButton = new java.awt.Button();
         stopSimButton = new java.awt.Button();
-        panel2 = new java.awt.Panel();
         saveCsvButton = new java.awt.Button();
 
-        setMinimumSize(new java.awt.Dimension(240, 180));
-        setPreferredSize(new java.awt.Dimension(240, 180));
-        setResizable(false);
+        setMinimumSize(new java.awt.Dimension(260, 180));
         setTitle("STORMsim");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });
-        setLayout(new java.awt.GridLayout(4, 0, 0, 5));
 
         analyzerSettingsButton.setLabel("Analyzer settings");
         analyzerSettingsButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -108,19 +101,10 @@ public class Main_Frame extends PlugInFrame {
                 analyzerSettingsButtonMouseClicked(evt);
             }
         });
-        panel5.add(analyzerSettingsButton);
-
-        add(panel5);
 
         label1.setText("Setpoint:");
-        panel4.add(label1);
 
         setpointEntry.setText("100");
-        panel4.add(setpointEntry);
-
-        add(panel4);
-
-        panel1.setMinimumSize(new java.awt.Dimension(10, 30));
 
         startSimButton.setLabel("Start");
         startSimButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -128,7 +112,6 @@ public class Main_Frame extends PlugInFrame {
                 startSimButtonMouseClicked(evt);
             }
         });
-        panel1.add(startSimButton);
 
         stopSimButton.setLabel("Stop");
         stopSimButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -136,9 +119,6 @@ public class Main_Frame extends PlugInFrame {
                 stopSimButtonMouseClicked(evt);
             }
         });
-        panel1.add(stopSimButton);
-
-        add(panel1);
 
         saveCsvButton.setLabel("Save CSV");
         saveCsvButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -146,9 +126,55 @@ public class Main_Frame extends PlugInFrame {
                 saveCsvButtonMouseClicked(evt);
             }
         });
-        panel2.add(saveCsvButton);
 
-        add(panel2);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(setpointEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(saveCsvButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(analyzerSettingsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(analyzerSettingsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(setpointEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveCsvButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -212,10 +238,6 @@ public class Main_Frame extends PlugInFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button analyzerSettingsButton;
     private java.awt.Label label1;
-    private java.awt.Panel panel1;
-    private java.awt.Panel panel2;
-    private java.awt.Panel panel4;
-    private java.awt.Panel panel5;
     private java.awt.Button saveCsvButton;
     private java.awt.TextField setpointEntry;
     private java.awt.Button startSimButton;

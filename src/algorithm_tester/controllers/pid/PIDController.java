@@ -56,6 +56,22 @@ public class PIDController extends AbstractController {
         miniPID.setOutputFilter(settings.get("output-filter"));
     }
     
+    public PIDController(double P, double I, double D, double limit_low, double limit_high,
+                double output_filter) {
+        super();
+        settings.put("P", P);
+        settings.put("I", I);
+        settings.put("D", D);
+        settings.put("limit-low", limit_low);
+        settings.put("limit-high", limit_high);
+        settings.put("output-filter", output_filter);
+        interval = 10;
+        miniPID = new MiniPID(settings.get("P"),
+                settings.get("I"),settings.get("D"));
+        miniPID.setOutputLimits(settings.get("limit-low"), settings.get("limit-high"));
+        miniPID.setOutputFilter(settings.get("output-filter"));
+    }
+    
     @Override
     public void setTarget(double target) {
         this.setpoint = target;

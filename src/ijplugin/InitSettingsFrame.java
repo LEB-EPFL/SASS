@@ -1178,7 +1178,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         }
 
         if (checkbox_analyzer_spotcounter.getState()) {
-            SpotCounter spotcounter = new SpotCounter();
+            SpotCounter spotcounter = new SpotCounter(Double.parseDouble(cam_px_size.getText()) / Double.parseDouble(cam_magnification.getText()));
             LinkedHashMap<String, Integer> spotcounter_params = new LinkedHashMap<String, Integer>();
             spotcounter_params.put("noise-tolerance", 90);
             spotcounter_params.put("box-size", 5);

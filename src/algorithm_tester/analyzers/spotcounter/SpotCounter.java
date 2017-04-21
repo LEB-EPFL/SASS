@@ -43,12 +43,14 @@ public class SpotCounter extends AbstractAnalyzer {
     
     private int noise_tolerance = 100;
     private int box_size = 5;
+    protected final double pixel_area_um2;
     
     /**
      * Initializes the algorithm.
      */
-    public SpotCounter() {
+    public SpotCounter(double pixel_size_um) {
         super();
+        pixel_area_um2 = pixel_size_um * pixel_size_um;
         parameters = new LinkedHashMap<String, Integer>();
         parameters.put("noise-tolerance", noise_tolerance);
         parameters.put("box-size", box_size);
@@ -78,7 +80,8 @@ public class SpotCounter extends AbstractAnalyzer {
         ResultsTable result;
         result = analyzer.analyze(ip);
         spot_counts.add(result.getValue("n", count));
-        output_history.add(result.getValue("n", count));
+        output_history.add(result.getValue("n", count) /
+                (pixel_area_um2 * (ip.getWidth()*ip.getHeight())));
         min_dists.add(result.getValue("min-distance", count));
         mean_dists.add(result.getValue("mean-distance", count));
         p10_dists.add(result.getValue("p10-distance", count));

@@ -67,6 +67,9 @@ public class AlgorithmTester {
      * Initializes all analyzers, the generator and controller.
      */
     public AlgorithmTester() {
+        // Real time generator
+        generator = new STORMsim(null);
+        
         analyzers = new LinkedHashMap<String,EvaluationAlgorithm>();
         // Instantiate all analyzers and add them to the list.
         AutoLase autolase = new AutoLase();
@@ -75,7 +78,7 @@ public class AlgorithmTester {
         autolase_params.put("averaging", 30);
         autolase.setCustomParameters(autolase_params);
         
-        SpotCounter spotcounter = new SpotCounter();
+        SpotCounter spotcounter = new SpotCounter(1.0);
         LinkedHashMap<String, Integer> spotcounter_params = new LinkedHashMap<String, Integer>();
         spotcounter_params.put("noise-tolerance", 90);
         spotcounter_params.put("box-size", 5);
@@ -87,9 +90,6 @@ public class AlgorithmTester {
         addAnalyzer(spotcounter);
         //addAnalyzer(quickpalm);
         
-        
-        // Real time generator
-        generator = new STORMsim(null);
         
         // Set up controller
         //controller = new SimpleController();

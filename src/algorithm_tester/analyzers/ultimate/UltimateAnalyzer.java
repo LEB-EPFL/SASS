@@ -33,14 +33,12 @@ import java.util.LinkedHashMap;
 public class UltimateAnalyzer extends SpotCounter {
     private final int init_phase = 20;
     private int[][] subtract_mask;
-    private final double pixel_area_um2;
     
     private ImageStack stack;
     private ImagePlus imp;
     
     public UltimateAnalyzer(double pixel_size_um) {
-        super();
-        pixel_area_um2 = pixel_size_um * pixel_size_um;
+        super(pixel_size_um);
         count++;
     }
     

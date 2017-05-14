@@ -2,3 +2,6 @@
 /dist/
 /ext_packages/
 /nbproject/private/
+
+# emacs temp files
+*~

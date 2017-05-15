@@ -162,8 +162,13 @@ class Worker extends Thread {
         while (!stop) {
             app.incrementCounter();
             ip = generator.getNextImage();
-            for (EvaluationAlgorithm analyzer: analyzers.values())
+            long time_start, time_end;
+            for (EvaluationAlgorithm analyzer: analyzers.values()) {
+                time_start = System.nanoTime();
                 analyzer.processImage(ip.duplicate());
+                time_end = System.nanoTime();
+                System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
+            }
             //System.out.println(image_count);
             controller.adjust();
             

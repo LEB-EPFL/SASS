@@ -8,7 +8,7 @@ Under development...
 ## Acknowledgements
 STEADIER-SAILOR uses adapted code and algorithms under GPL from following projects:
  - [SOFIsim](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes
- - [ALICA(https://github.com/MStefko/ALICA) by Marcel Stefko
+ - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko
  
  
  Many thanks to Dr. Kyle M. Douglass for guidance during this project.

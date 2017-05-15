@@ -81,4 +81,6 @@ public interface ImageGenerator {
      * @return internal stack
      */
     public ImageStack getStack();
+    
+    public double getPixelSizeUm();
 }

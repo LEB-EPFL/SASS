@@ -129,6 +129,10 @@ public class Device {
         return (camera.pixel_size*1e6/camera.magnification)*(camera.pixel_size*1e6/camera.magnification)*camera.res_x*camera.res_y;
     }
     
+    public double getPixelSizeUm() {
+        return camera.pixel_size*1e6/camera.magnification;
+    }
+    
     /**
      * Modifies the laser power to desired value.
      * @param laser_power new laser power [W]

@@ -16,15 +16,6 @@
  */
 package ijplugin;
 
-import algorithm_tester.EvaluationAlgorithm;
-import algorithm_tester.FeedbackController;
-import algorithm_tester.analyzers.autolase.AutoLase;
-import algorithm_tester.analyzers.quickpalm.QuickPalm;
-import algorithm_tester.analyzers.spotcounter.SpotCounter;
-import algorithm_tester.analyzers.ultimate.UltimateAnalyzer;
-import algorithm_tester.controllers.manual.ManualController;
-import algorithm_tester.controllers.pid.PIDController;
-import algorithm_tester.controllers.simple.SimpleController;
 import algorithm_tester.generators.realtime.Camera;
 import algorithm_tester.generators.realtime.Device;
 import algorithm_tester.generators.realtime.Fluorophore;
@@ -35,6 +26,13 @@ import algorithm_tester.generators.realtime.Obstructor;
 import algorithm_tester.generators.realtime.STORMsim;
 import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
 import algorithm_tester.generators.realtime.obstructors.GoldBeads;
+import ch.epfl.leb.alica.Analyzer;
+import ch.epfl.leb.alica.Controller;
+import ch.epfl.leb.alica.analyzers.autolase.AutoLase;
+import ch.epfl.leb.alica.analyzers.quickpalm.QuickPalm;
+import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
+import ch.epfl.leb.alica.controllers.manual.ManualController;
+import ch.epfl.leb.alica.controllers.pid.PID_controller;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import java.io.File;
@@ -161,7 +159,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         checkbox_analyzer_autolase = new java.awt.Checkbox();
         checkbox_analyzer_spotcounter = new java.awt.Checkbox();
         checkbox_analyzer_quickpalm = new java.awt.Checkbox();
-        checkbox_analyzer_ultimate = new java.awt.Checkbox();
         panel7 = new java.awt.Panel();
         label51 = new java.awt.Label();
         cb_controller_PID = new java.awt.Checkbox();
@@ -171,7 +168,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         entry_PID_P = new java.awt.TextField();
         entry_PID_I = new java.awt.TextField();
         entry_PID_D = new java.awt.TextField();
-        cb_controller_simple = new java.awt.Checkbox();
         cb_controller_manual = new java.awt.Checkbox();
         label50 = new java.awt.Label();
         entry_PID_output_filter = new java.awt.TextField();
@@ -813,8 +809,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         checkbox_analyzer_quickpalm.setLabel("QuickPALM");
 
-        checkbox_analyzer_ultimate.setLabel("Ultimate");
-
         javax.swing.GroupLayout panel6Layout = new javax.swing.GroupLayout(panel6);
         panel6.setLayout(panel6Layout);
         panel6Layout.setHorizontalGroup(
@@ -824,8 +818,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                 .addGroup(panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkbox_analyzer_autolase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkbox_analyzer_spotcounter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkbox_analyzer_quickpalm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkbox_analyzer_ultimate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(checkbox_analyzer_quickpalm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -843,8 +836,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
                 .addComponent(checkbox_analyzer_spotcounter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkbox_analyzer_quickpalm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(checkbox_analyzer_ultimate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -869,13 +860,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         entry_PID_I.setText("0.25");
 
         entry_PID_D.setText("0.0");
-
-        cb_controller_simple.setLabel("Simple");
-        cb_controller_simple.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cb_controller_simpleItemStateChanged(evt);
-            }
-        });
 
         cb_controller_manual.setLabel("Manual");
         cb_controller_manual.addItemListener(new java.awt.event.ItemListener() {
@@ -915,8 +899,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                 .addGap(1, 1, 1)
                 .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cb_controller_manual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_controller_PID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_controller_simple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_controller_PID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panel7Layout.setVerticalGroup(
@@ -946,10 +929,8 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     .addComponent(label50, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(entry_PID_output_filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cb_controller_simple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cb_controller_manual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -1166,62 +1147,53 @@ public class InitSettingsFrame extends java.awt.Dialog {
         Device device = new Device(cam, fluo, laser, emitters, obstructors);
         STORMsim generator = new STORMsim(device);
         
-        LinkedHashMap<String,EvaluationAlgorithm> analyzers = new LinkedHashMap<String,EvaluationAlgorithm>();
+        LinkedHashMap<String,Analyzer> analyzers = new LinkedHashMap<String,Analyzer>();
 
         if (checkbox_analyzer_autolase.getState()) {
-            AutoLase autolase = new AutoLase();
             LinkedHashMap<String, Integer> autolase_params = new LinkedHashMap<String, Integer>();
             autolase_params.put("threshold", 70);
             autolase_params.put("averaging", 30);
-            autolase.setCustomParameters(autolase_params);
+            AutoLase autolase = new AutoLase(autolase_params.get("threshold"),autolase_params.get("averaging"));
             analyzers.put(autolase.getName(), autolase);
         }
 
         if (checkbox_analyzer_spotcounter.getState()) {
-            SpotCounter spotcounter = new SpotCounter(Double.parseDouble(cam_px_size.getText()) / Double.parseDouble(cam_magnification.getText()));
             LinkedHashMap<String, Integer> spotcounter_params = new LinkedHashMap<String, Integer>();
             spotcounter_params.put("noise-tolerance", 90);
             spotcounter_params.put("box-size", 5);
-            spotcounter.setCustomParameters(spotcounter_params);
+            SpotCounter spotcounter = new SpotCounter(spotcounter_params.get("noise-tolerance"),
+            spotcounter_params.get("box-size"), false);
             analyzers.put(spotcounter.getName(), spotcounter);
         }
 
         if (checkbox_analyzer_quickpalm.getState()) {
-            QuickPalm quickpalm = new QuickPalm();
+            QuickPalm quickpalm = new QuickPalm(false);
             analyzers.put(quickpalm.getName(), quickpalm);
         }
         
-        if (checkbox_analyzer_ultimate.getState()) {
-            UltimateAnalyzer ultimate = new UltimateAnalyzer(
-                    Double.parseDouble(cam_px_size.getText()) / Double.parseDouble(cam_magnification.getText()));
-            analyzers.put(ultimate.getName(), ultimate);
-        }
         
-        if (analyzers.isEmpty()) {
-            IJ.showMessage("You have to select at least one analyzer.");
-            return;
-        }
-        FeedbackController controller = null;
+        Controller controller = null;
         if (cb_controller_PID.getState()) {
             try {
-            controller = new PIDController(Double.parseDouble(entry_PID_P.getText()),
+            controller = new PID_controller(Double.parseDouble(entry_PID_P.getText()),
                 Double.parseDouble(entry_PID_I.getText()),
                 Double.parseDouble(entry_PID_D.getText()),
-                Double.parseDouble(laser_min.getText()),
-                Double.parseDouble(laser_max.getText()),
-                Double.parseDouble(entry_PID_output_filter.getText()));
+                Double.parseDouble(entry_PID_output_filter.getText()),
+                Double.parseDouble(laser_max.getText()));
             } catch (NumberFormatException ex) {
                 IJ.showMessage("Error in PID parameter parsing.");
                 return;
             }
-        } else if (cb_controller_manual.getState()) {
-            controller = new ManualController();
         } else {
-            controller = new SimpleController();
+            controller = new ManualController(Double.parseDouble(laser_max.getText()),
+                0.0);
         }
-        controller.setTarget(0.0);
         
-        if (analyzers.size() > 1) {
+        Analyzer active_analyzer;
+        if (analyzers.isEmpty()) {
+            IJ.showMessage("You have to select at least one analyzer.");
+            return;
+        } else if (analyzers.size() > 1) {
             GenericDialog gd = new GenericDialog("Analyzer selection");
             gd.addMessage("Choose error signal source:");
             String[] choices = new String[analyzers.size()];
@@ -1232,13 +1204,12 @@ public class InitSettingsFrame extends java.awt.Dialog {
             gd.addChoice("Analyzer", choices, choices[0]);
             gd.showDialog();
             
-            controller.setAnalyzer(analyzers.get(gd.getNextChoice()));
+            active_analyzer = analyzers.get(gd.getNextChoice());
         } else {
-            controller.setAnalyzer(analyzers.values().iterator().next());
+            active_analyzer = analyzers.values().iterator().next();
         }
-        controller.setGenerator(generator);
         
-        App app = new App(analyzers, generator, controller);
+        App app = new App(analyzers, active_analyzer, generator, controller);
         main.setApp(app);
         this.dispose();
     }//GEN-LAST:event_button_initializeMouseClicked
@@ -1249,30 +1220,16 @@ public class InitSettingsFrame extends java.awt.Dialog {
             entry_PID_I.setEnabled(true);
             entry_PID_P.setEnabled(true);
             cb_controller_manual.setState(false);
-            cb_controller_simple.setState(false);
         } else {
             cb_controller_PID.setState(true);
         }
     }//GEN-LAST:event_cb_controller_PIDItemStateChanged
-
-    private void cb_controller_simpleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_controller_simpleItemStateChanged
-        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            entry_PID_D.setEnabled(false);
-            entry_PID_I.setEnabled(false);
-            entry_PID_P.setEnabled(false);
-            cb_controller_manual.setState(false);
-            cb_controller_PID.setState(false);
-        } else {
-            cb_controller_simple.setState(true);
-        }
-    }//GEN-LAST:event_cb_controller_simpleItemStateChanged
 
     private void cb_controller_manualItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_controller_manualItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             entry_PID_D.setEnabled(false);
             entry_PID_I.setEnabled(false);
             entry_PID_P.setEnabled(false);
-            cb_controller_simple.setState(false);
             cb_controller_PID.setState(false);
         } else {
             cb_controller_manual.setState(true);
@@ -1298,11 +1255,9 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.TextField cam_wavelength;
     private java.awt.Checkbox cb_controller_PID;
     private java.awt.Checkbox cb_controller_manual;
-    private java.awt.Checkbox cb_controller_simple;
     private java.awt.Checkbox checkbox_analyzer_autolase;
     private java.awt.Checkbox checkbox_analyzer_quickpalm;
     private java.awt.Checkbox checkbox_analyzer_spotcounter;
-    private java.awt.Checkbox checkbox_analyzer_ultimate;
     private java.awt.Checkbox checkbox_background;
     private java.awt.Checkbox checkbox_goldbeads;
     private java.awt.Checkbox emitter_checkbox_file;

@@ -20,9 +20,9 @@
 package ijplugin;
 
 import algorithm_tester.AlgorithmTester;
-import algorithm_tester.EvaluationAlgorithm;
-import algorithm_tester.FeedbackController;
 import algorithm_tester.ImageGenerator;
+import ch.epfl.leb.alica.Analyzer;
+import ch.epfl.leb.alica.Controller;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Plot;
@@ -59,9 +59,9 @@ public class App extends AlgorithmTester {
         
     }
     
-    public App(LinkedHashMap<String, EvaluationAlgorithm> analyzers,
-            ImageGenerator generator, FeedbackController controller) {
-        super(analyzers, generator, controller);
+    public App(LinkedHashMap<String, Analyzer> analyzers, Analyzer active_analyzer,
+            ImageGenerator generator, Controller controller) {
+        super(analyzers, active_analyzer, generator, controller);
         generator.getNextImage();
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());
@@ -74,7 +74,7 @@ public class App extends AlgorithmTester {
      * Start continuously generating new images until stopped.
      */
     public void startSimulating() {
-        worker = new Worker(this, generator, controller, analyzers, imp);
+        worker = new Worker(this, generator, controller, analyzers, active_analyzer, imp);
         worker.start();
     }
     
@@ -95,7 +95,7 @@ public class App extends AlgorithmTester {
      * @param value new setpoint value
      */
     public void setSetpoint(double value) {
-        controller.setTarget(value);
+        controller.setSetpoint(value);
     }
     
     /**
@@ -106,35 +106,6 @@ public class App extends AlgorithmTester {
         return plot;
     }
     
-    /**
-     * Automatically generates the setup frame for all active analyzers,
-     * by looking at the key-value pairs of each analyzer's parameter map.
-     */
-    public void analyzerSetupDialog() {
-        GenericDialog gd = new GenericDialog("Analyzer setup");
-        for (String key: analyzers.keySet()) {
-            System.out.println(analyzers.get(key).getName());
-            gd.addMessage(String.format("%s:",key));
-            LinkedHashMap<String,Integer> settings = analyzers.get(key).getCustomParameters();
-            System.out.println(settings.keySet().isEmpty());
-            for (String s_key: settings.keySet()) {
-                gd.addNumericField(s_key, settings.get(s_key), 0);
-            }
-        }
-        gd.showDialog();
-        
-        if (gd.wasCanceled())
-            return;
-        
-        for (String key: analyzers.keySet()) {
-            LinkedHashMap<String,Integer> settings = new LinkedHashMap<String,Integer>();
-            for (String s_key: analyzers.get(key).getCustomParameters().keySet()) {
-                settings.put(s_key, (int) gd.getNextNumber());
-            }
-            analyzers.get(key).setCustomParameters(settings);
-        }
-    }
-    
     
     
 }
@@ -143,15 +114,17 @@ class Worker extends Thread {
     public boolean stop;
     private final App app;
     private final ImageGenerator generator;
-    private final FeedbackController controller;
-    private final HashMap<String,EvaluationAlgorithm> analyzers;
+    private final Controller controller;
+    private final HashMap<String,Analyzer> analyzers;
+    private final Analyzer active_analyzer;
     private final ImagePlus imp;
     
-    public Worker(App app, ImageGenerator generator, FeedbackController controller, HashMap<String,EvaluationAlgorithm> analyzers, ImagePlus imp) {
+    public Worker(App app, ImageGenerator generator, Controller controller, HashMap<String,Analyzer> analyzers, Analyzer active_analyzer, ImagePlus imp) {
         this.app = app;
         this.generator = generator;
         this.controller = controller;
         this.analyzers = analyzers;
+        this.active_analyzer = active_analyzer;
         this.imp = imp;
         stop = false;
     }
@@ -163,14 +136,17 @@ class Worker extends Thread {
             app.incrementCounter();
             ip = generator.getNextImage();
             long time_start, time_end;
-            for (EvaluationAlgorithm analyzer: analyzers.values()) {
+            for (Analyzer analyzer: analyzers.values()) {
                 time_start = System.nanoTime();
-                analyzer.processImage(ip.duplicate());
+                analyzer.processImage(ip.getPixelsCopy(), ip.getWidth(), ip.getHeight(), generator.getPixelSizeUm(), time_start);
                 time_end = System.nanoTime();
                 System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
             }
-            //System.out.println(image_count);
-            controller.adjust();
+            if (app.getImageCount() % 20 == 0) {
+                //System.out.println(image_count);
+                controller.nextValue(active_analyzer.getBatchOutput());
+            }
+            generator.setControlSignal(controller.getCurrentOutput());
             
             imp.setSlice(imp.getNSlices());
             imp.updateAndRepaintWindow();
@@ -197,9 +173,11 @@ class Worker extends Thread {
         for (int i=1; i<=count; i++) {
             x[i-1] = (double) i;
             real[i-1] = generator.getTrueSignal(i);
+            /*
             laser[i-1] = controller.getOutputHistory(i);
             spot[i-1] = controller.getAnalyzer().getErrorSignal(i);
             set_point[i-1] = controller.getSetpointHistory(i);
+            */
         }
         plot.setColor(Color.black);
         plot.addPoints(x, real, Plot.LINE);

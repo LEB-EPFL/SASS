@@ -79,5 +79,10 @@ public class TiffGenerator extends AbstractGenerator {
     public double getTrueSignal(int image_no) {
         return 0.0;
     }
+
+    @Override
+    public double getPixelSizeUm() {
+        return 1.0;
+    }
     
 }

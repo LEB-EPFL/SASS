@@ -196,4 +196,9 @@ public class STORMsim extends AbstractGenerator {
         
         device = new Device(camera, fluo, laser, emitters, obstructors);
     }
+
+    @Override
+    public double getPixelSizeUm() {
+        return device.getPixelSizeUm();
+    }
 }

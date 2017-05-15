@@ -1111,7 +1111,6 @@
                       <Component id="checkbox_analyzer_autolase" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="checkbox_analyzer_spotcounter" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="checkbox_analyzer_quickpalm" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="checkbox_analyzer_ultimate" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
@@ -1133,8 +1132,6 @@
                   <Component id="checkbox_analyzer_spotcounter" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="checkbox_analyzer_quickpalm" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="checkbox_analyzer_ultimate" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -1160,11 +1157,6 @@
         <Component class="java.awt.Checkbox" name="checkbox_analyzer_quickpalm">
           <Properties>
             <Property name="label" type="java.lang.String" value="QuickPALM"/>
-          </Properties>
-        </Component>
-        <Component class="java.awt.Checkbox" name="checkbox_analyzer_ultimate">
-          <Properties>
-            <Property name="label" type="java.lang.String" value="Ultimate"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -1204,7 +1196,6 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="cb_controller_manual" min="-2" max="-2" attributes="0"/>
                       <Component id="cb_controller_PID" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="cb_controller_simple" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -1243,10 +1234,8 @@
                       <Component id="entry_PID_output_filter" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cb_controller_simple" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="cb_controller_manual" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <EmptySpace pref="55" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -1295,14 +1284,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="0.0"/>
           </Properties>
-        </Component>
-        <Component class="java.awt.Checkbox" name="cb_controller_simple">
-          <Properties>
-            <Property name="label" type="java.lang.String" value="Simple"/>
-          </Properties>
-          <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cb_controller_simpleItemStateChanged"/>
-          </Events>
         </Component>
         <Component class="java.awt.Checkbox" name="cb_controller_manual">
           <Properties>

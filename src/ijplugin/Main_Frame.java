@@ -20,6 +20,7 @@
 package ijplugin;
 
 import algorithm_tester.generators.realtime.STORMsim;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.frame.PlugInFrame;
 import java.io.File;
@@ -172,18 +173,31 @@ public class Main_Frame extends PlugInFrame {
     }//GEN-LAST:event_exitForm
 
     private void stopSimButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopSimButtonMouseClicked
-        app.stopSimulating();
+        try {
+            app.stopSimulating();
+        } catch (RuntimeException ex) {
+            IJ.showMessage("Error in simulation stop.", ex.getMessage());
+            startSimButton.setEnabled(true);
+            return;
+        }
+        
         startSimButton.setEnabled(true);
         stopSimButton.setEnabled(false);
         setpointEntry.setEnabled(true);
     }//GEN-LAST:event_stopSimButtonMouseClicked
 
     private void startSimButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startSimButtonMouseClicked
+        try {
+            app.setSetpoint(Double.parseDouble(setpointEntry.getText()));
+            app.startSimulating();
+        } catch (RuntimeException ex) {
+            IJ.showMessage("Error in simulation start.", ex.getMessage());
+            stopSimButton.setEnabled(true);
+            return;
+        }
         startSimButton.setEnabled(false);
         stopSimButton.setEnabled(true);
-        app.setSetpoint(Double.parseDouble(setpointEntry.getText()));
         setpointEntry.setEnabled(false);
-        app.startSimulating();
     }//GEN-LAST:event_startSimButtonMouseClicked
 
     private void saveCsvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveCsvButtonMouseClicked

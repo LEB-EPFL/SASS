@@ -44,12 +44,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class AlgorithmTester {
 
-    /**
-     * Map of all analyzers to be applied to the generated images.
-     */
-    protected final HashMap<String,Analyzer> analyzers;
     
-    protected final Analyzer active_analyzer;
+    protected final Analyzer analyzer;
 
     /**
      * Generator which is the source of images to be analyzed.
@@ -74,40 +70,16 @@ public class AlgorithmTester {
         // Real time generator
         generator = new STORMsim(null);
         
-        
-        
-        analyzers = new LinkedHashMap<String,Analyzer>();
-        // Instantiate all analyzers and add them to the list.
-        
-        LinkedHashMap<String, Integer> autolase_params = new LinkedHashMap<String, Integer>();
-        autolase_params.put("threshold", 70);
-        autolase_params.put("averaging", 30);
-        AutoLase autolase = new AutoLase(autolase_params.get("threshold"),autolase_params.get("averaging"));
-        
-        
-        LinkedHashMap<String, Integer> spotcounter_params = new LinkedHashMap<String, Integer>();
-        spotcounter_params.put("noise-tolerance", 90);
-        spotcounter_params.put("box-size", 5);
-        SpotCounter spotcounter = new SpotCounter(spotcounter_params.get("noise-tolerance"),
-            spotcounter_params.get("box-size"), false);
-        
-        QuickPalm quickpalm = new QuickPalm(false);
-        
-        //addAnalyzer(autolase);
-        addAnalyzer(spotcounter);
-        //addAnalyzer(quickpalm);
-        active_analyzer = spotcounter;
-        
+        analyzer = new SpotCounter(100, 5, true);
         // Set up controller
         //controller = new SimpleController();
         controller = new PID_controller(1.0,0.0,0.0,0.0,0.0);
         controller.setSetpoint(0.0);
     }
     
-    public AlgorithmTester(LinkedHashMap<String, Analyzer> analyzers, Analyzer active_analyzer,
+    public AlgorithmTester(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
-        this.analyzers = analyzers;
-        this.active_analyzer = active_analyzer;
+        this.analyzer = analyzer;
         this.generator = generator;
         this.controller = controller;
     }
@@ -182,11 +154,10 @@ public class AlgorithmTester {
         ImageProcessor ip;
         for (image_count = 0; image_count < 25; image_count++) {
             ip = generator.getNextImage();
-            for (Analyzer analyzer: analyzers.values())
-                analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 0.100, 10);
+            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 0.100, 10);
             //System.out.println(image_count);
             if (image_count % 10 == 0) {
-                controller.nextValue(active_analyzer.getBatchOutput());
+                controller.nextValue(analyzer.getBatchOutput());
                 generator.setControlSignal(controller.getCurrentOutput());
             }
         }
@@ -206,14 +177,6 @@ public class AlgorithmTester {
         // Save analysis results to a csv file.
         saveToCsv(csv_output);
         System.exit(0);
-    }
-    
-    /**
-     * Adds the analyzer to list of all analyzers to be evaluated.
-     * @param analyzer initialized and configured EvaluationAlgorithm
-     */
-    public final void addAnalyzer(Analyzer analyzer) {
-        analyzers.put(analyzer.getName(), analyzer);
     }
     
     /**

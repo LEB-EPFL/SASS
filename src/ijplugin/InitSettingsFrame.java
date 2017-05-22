@@ -28,13 +28,17 @@ import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
 import algorithm_tester.generators.realtime.obstructors.GoldBeads;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
+import ch.epfl.leb.alica.analyzers.AnalyzerFactory;
+import ch.epfl.leb.alica.analyzers.AnalyzerSetupPanel;
 import ch.epfl.leb.alica.analyzers.autolase.AutoLase;
 import ch.epfl.leb.alica.analyzers.quickpalm.QuickPalm;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
+import ch.epfl.leb.alica.controllers.ControllerFactory;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
 import ch.epfl.leb.alica.controllers.pid.PID_controller;
 import ij.IJ;
 import ij.gui.GenericDialog;
+import java.awt.GridLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +47,7 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -54,11 +59,51 @@ public class InitSettingsFrame extends java.awt.Dialog {
     File emitterCsvFile;
     File backgroundTifFile;
     Main_Frame main;
+    private final AnalyzerFactory analyzer_factory;
+    private final ControllerFactory controller_factory;
     
     public InitSettingsFrame(java.awt.Frame parent, boolean modal, Main_Frame main) {
         super(parent, modal);
         this.main = main;
+        this.analyzer_factory = new AnalyzerFactory();
+        this.controller_factory = new ControllerFactory();
         initComponents();
+        
+        // Populate the dropdown menus of analyzer, controller and laser
+        cb_analyzer_setup.removeAllItems();
+        for (String key: analyzer_factory.getProductNameList()) {
+            cb_analyzer_setup.addItem(key);
+        }
+        cb_analyzer_setup.setSelectedItem(analyzer_factory.getSelectedProductName());
+        
+        cb_controller_setup.removeAllItems();
+        for (String key: controller_factory.getProductNameList()) {
+            cb_controller_setup.addItem(key);
+        }
+        cb_controller_setup.setSelectedItem(controller_factory.getSelectedProductName());
+        
+
+        // update the setup panels
+        updateAnalyzerSetupPanel();
+        updateControllerSetupPanel();
+    }
+    
+        private void updateAnalyzerSetupPanel() {
+        analyzer_panel.removeAll();
+        javax.swing.JPanel panel = analyzer_factory.getSelectedSetupPanel();
+        analyzer_panel.add(panel);
+        panel.setBounds(5,5,200,150);
+        panel.revalidate();
+        panel.repaint();
+    }
+    
+    private void updateControllerSetupPanel() {
+        controller_panel.removeAll();
+        javax.swing.JPanel panel = controller_factory.getSelectedSetupPanel();
+        controller_panel.add(panel);
+        panel.setBounds(5,5,200,150);
+        panel.revalidate();
+        panel.repaint();
     }
 
     /**
@@ -155,23 +200,19 @@ public class InitSettingsFrame extends java.awt.Dialog {
         label48 = new java.awt.Label();
         goldbead_signal = new java.awt.TextField();
         panel6 = new java.awt.Panel();
-        label49 = new java.awt.Label();
-        checkbox_analyzer_autolase = new java.awt.Checkbox();
-        checkbox_analyzer_spotcounter = new java.awt.Checkbox();
-        checkbox_analyzer_quickpalm = new java.awt.Checkbox();
-        panel7 = new java.awt.Panel();
-        label51 = new java.awt.Label();
-        cb_controller_PID = new java.awt.Checkbox();
-        label52 = new java.awt.Label();
-        label53 = new java.awt.Label();
-        label54 = new java.awt.Label();
-        entry_PID_P = new java.awt.TextField();
-        entry_PID_I = new java.awt.TextField();
-        entry_PID_D = new java.awt.TextField();
-        cb_controller_manual = new java.awt.Checkbox();
-        label50 = new java.awt.Label();
-        entry_PID_output_filter = new java.awt.TextField();
+        jLabel1 = new javax.swing.JLabel();
+        cb_analyzer_setup = new javax.swing.JComboBox();
+        analyzer_panel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        cb_controller_setup = new javax.swing.JComboBox();
+        controller_panel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        e_controller_tickrate = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        e_max_controller_output = new javax.swing.JTextField();
 
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -800,14 +841,31 @@ public class InitSettingsFrame extends java.awt.Dialog {
                 .addComponent(background_file_label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        label49.setText("Analyzers");
+        jLabel1.setText("Analyzer:");
 
-        checkbox_analyzer_autolase.setLabel("AutoLase");
+        cb_analyzer_setup.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                cb_analyzer_setupPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
 
-        checkbox_analyzer_spotcounter.setLabel("SpotCounter");
-        checkbox_analyzer_spotcounter.setState(true);
+        analyzer_panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        analyzer_panel.setPreferredSize(new java.awt.Dimension(210, 160));
 
-        checkbox_analyzer_quickpalm.setLabel("QuickPALM");
+        javax.swing.GroupLayout analyzer_panelLayout = new javax.swing.GroupLayout(analyzer_panel);
+        analyzer_panel.setLayout(analyzer_panelLayout);
+        analyzer_panelLayout.setHorizontalGroup(
+            analyzer_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 206, Short.MAX_VALUE)
+        );
+        analyzer_panelLayout.setVerticalGroup(
+            analyzer_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 156, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout panel6Layout = new javax.swing.GroupLayout(panel6);
         panel6.setLayout(panel6Layout);
@@ -815,122 +873,108 @@ public class InitSettingsFrame extends java.awt.Dialog {
             panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkbox_analyzer_autolase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkbox_analyzer_spotcounter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkbox_analyzer_quickpalm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(cb_analyzer_setup, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(label49, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(analyzer_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panel6Layout.setVerticalGroup(
             panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label49, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(checkbox_analyzer_autolase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(checkbox_analyzer_spotcounter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(checkbox_analyzer_quickpalm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cb_analyzer_setup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(analyzer_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        label51.setText("Controller");
+        jLabel2.setText("Controller:");
 
-        cb_controller_PID.setLabel("PID");
-        cb_controller_PID.setState(true);
-        cb_controller_PID.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cb_controller_PIDItemStateChanged(evt);
+        cb_controller_setup.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                cb_controller_setupPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
 
-        label52.setText("P");
+        controller_panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        controller_panel.setPreferredSize(new java.awt.Dimension(210, 160));
 
-        label53.setText("I");
-
-        label54.setText("D");
-
-        entry_PID_P.setText("0.5");
-
-        entry_PID_I.setText("0.25");
-
-        entry_PID_D.setText("0.0");
-
-        cb_controller_manual.setLabel("Manual");
-        cb_controller_manual.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cb_controller_manualItemStateChanged(evt);
-            }
-        });
-
-        label50.setText("F");
-
-        entry_PID_output_filter.setText("0.1");
-
-        javax.swing.GroupLayout panel7Layout = new javax.swing.GroupLayout(panel7);
-        panel7.setLayout(panel7Layout);
-        panel7Layout.setHorizontalGroup(
-            panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel7Layout.createSequentialGroup()
-                .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel7Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(label51, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label52, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label53, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label54, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label50, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(entry_PID_P, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(entry_PID_I, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                            .addComponent(entry_PID_D, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(entry_PID_output_filter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panel7Layout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cb_controller_manual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_controller_PID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+        javax.swing.GroupLayout controller_panelLayout = new javax.swing.GroupLayout(controller_panel);
+        controller_panel.setLayout(controller_panelLayout);
+        controller_panelLayout.setHorizontalGroup(
+            controller_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 206, Short.MAX_VALUE)
         );
-        panel7Layout.setVerticalGroup(
-            panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel7Layout.createSequentialGroup()
-                .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(label51, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cb_controller_PID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(entry_PID_P, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(label52, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label53, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel7Layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(entry_PID_I, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        controller_panelLayout.setVerticalGroup(
+            controller_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 156, Short.MAX_VALUE)
+        );
+
+        jLabel3.setText("Tick rate [frames]:");
+
+        e_controller_tickrate.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        e_controller_tickrate.setText("40");
+
+        jLabel4.setText("Max output:");
+
+        e_max_controller_output.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        e_max_controller_output.setText("50");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(controller_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cb_controller_setup, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(e_max_controller_output, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                                    .addComponent(e_controller_tickrate))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cb_controller_setup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(e_controller_tickrate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(label54, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(entry_PID_D, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(label50, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(entry_PID_output_filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cb_controller_manual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(e_max_controller_output, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(controller_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -938,24 +982,25 @@ public class InitSettingsFrame extends java.awt.Dialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(427, 427, 427)
-                .addComponent(button_initialize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(440, 440, 440)
+                        .addComponent(button_initialize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -963,19 +1008,25 @@ public class InitSettingsFrame extends java.awt.Dialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(panel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(20, 20, 20)
+                        .addComponent(panel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button_initialize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(panel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(panel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(button_initialize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
@@ -1146,98 +1197,42 @@ public class InitSettingsFrame extends java.awt.Dialog {
         }
         Device device = new Device(cam, fluo, laser, emitters, obstructors);
         STORMsim generator = new STORMsim(device);
-        
-        LinkedHashMap<String,Analyzer> analyzers = new LinkedHashMap<String,Analyzer>();
 
-        if (checkbox_analyzer_autolase.getState()) {
-            LinkedHashMap<String, Integer> autolase_params = new LinkedHashMap<String, Integer>();
-            autolase_params.put("threshold", 70);
-            autolase_params.put("averaging", 30);
-            AutoLase autolase = new AutoLase(autolase_params.get("threshold"),autolase_params.get("averaging"));
-            analyzers.put(autolase.getName(), autolase);
-        }
-
-        if (checkbox_analyzer_spotcounter.getState()) {
-            LinkedHashMap<String, Integer> spotcounter_params = new LinkedHashMap<String, Integer>();
-            spotcounter_params.put("noise-tolerance", 90);
-            spotcounter_params.put("box-size", 5);
-            SpotCounter spotcounter = new SpotCounter(spotcounter_params.get("noise-tolerance"),
-            spotcounter_params.get("box-size"), false);
-            analyzers.put(spotcounter.getName(), spotcounter);
-        }
-
-        if (checkbox_analyzer_quickpalm.getState()) {
-            QuickPalm quickpalm = new QuickPalm(false);
-            analyzers.put(quickpalm.getName(), quickpalm);
-        }
-        
-        
-        Controller controller = null;
-        if (cb_controller_PID.getState()) {
-            try {
-            controller = new PID_controller(Double.parseDouble(entry_PID_P.getText()),
-                Double.parseDouble(entry_PID_I.getText()),
-                Double.parseDouble(entry_PID_D.getText()),
-                Double.parseDouble(entry_PID_output_filter.getText()),
-                Double.parseDouble(laser_max.getText()));
-            } catch (NumberFormatException ex) {
-                IJ.showMessage("Error in PID parameter parsing.");
-                return;
-            }
-        } else {
-            controller = new ManualController(Double.parseDouble(laser_max.getText()),
-                0.0);
-        }
-        
-        Analyzer active_analyzer;
-        if (analyzers.isEmpty()) {
-            IJ.showMessage("You have to select at least one analyzer.");
+        double max_controller_output;
+        int controller_tickrate;
+        try {
+            max_controller_output = Double.parseDouble(e_max_controller_output.getText());
+            controller_tickrate = Integer.parseInt(e_controller_tickrate.getText());
+        } catch (NumberFormatException ex) {
+            IJ.showMessage("Error in parsing controller parameters.");
             return;
-        } else if (analyzers.size() > 1) {
-            GenericDialog gd = new GenericDialog("Analyzer selection");
-            gd.addMessage("Choose error signal source:");
-            String[] choices = new String[analyzers.size()];
-            Iterator<String> iter = analyzers.keySet().iterator();
-            for (int i=0; i<analyzers.size(); i++) {
-                choices[i] = iter.next();
-            }
-            gd.addChoice("Analyzer", choices, choices[0]);
-            gd.showDialog();
-            
-            active_analyzer = analyzers.get(gd.getNextChoice());
-        } else {
-            active_analyzer = analyzers.values().iterator().next();
         }
         
-        App app = new App(analyzers, active_analyzer, generator, controller);
+        if (max_controller_output < 0.0 || controller_tickrate < 1) {
+            IJ.showMessage("Error in controller parameter values.");
+            return;
+        }
+        controller_factory.setMaxControllerOutput(max_controller_output);
+        
+        
+        App app = new App(analyzer_factory.build(), generator, controller_factory.build());
         main.setApp(app);
         this.dispose();
     }//GEN-LAST:event_button_initializeMouseClicked
 
-    private void cb_controller_PIDItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_controller_PIDItemStateChanged
-        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            entry_PID_D.setEnabled(true);
-            entry_PID_I.setEnabled(true);
-            entry_PID_P.setEnabled(true);
-            cb_controller_manual.setState(false);
-        } else {
-            cb_controller_PID.setState(true);
-        }
-    }//GEN-LAST:event_cb_controller_PIDItemStateChanged
+    private void cb_analyzer_setupPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cb_analyzer_setupPopupMenuWillBecomeInvisible
+        analyzer_factory.selectProduct((String) cb_analyzer_setup.getSelectedItem());
+        updateAnalyzerSetupPanel();
+    }//GEN-LAST:event_cb_analyzer_setupPopupMenuWillBecomeInvisible
 
-    private void cb_controller_manualItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_controller_manualItemStateChanged
-        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            entry_PID_D.setEnabled(false);
-            entry_PID_I.setEnabled(false);
-            entry_PID_P.setEnabled(false);
-            cb_controller_PID.setState(false);
-        } else {
-            cb_controller_manual.setState(true);
-        }
-    }//GEN-LAST:event_cb_controller_manualItemStateChanged
+    private void cb_controller_setupPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cb_controller_setupPopupMenuWillBecomeInvisible
+        controller_factory.selectProduct((String) cb_controller_setup.getSelectedItem());
+        updateControllerSetupPanel();
+    }//GEN-LAST:event_cb_controller_setupPopupMenuWillBecomeInvisible
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel analyzer_panel;
     private java.awt.Button background_choosefile_button;
     private java.awt.Label background_file_label;
     private java.awt.Button button_initialize;
@@ -1253,22 +1248,18 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.TextField cam_resX;
     private java.awt.TextField cam_resY;
     private java.awt.TextField cam_wavelength;
-    private java.awt.Checkbox cb_controller_PID;
-    private java.awt.Checkbox cb_controller_manual;
-    private java.awt.Checkbox checkbox_analyzer_autolase;
-    private java.awt.Checkbox checkbox_analyzer_quickpalm;
-    private java.awt.Checkbox checkbox_analyzer_spotcounter;
+    private javax.swing.JComboBox cb_analyzer_setup;
+    private javax.swing.JComboBox cb_controller_setup;
     private java.awt.Checkbox checkbox_background;
     private java.awt.Checkbox checkbox_goldbeads;
+    private javax.swing.JPanel controller_panel;
+    private javax.swing.JTextField e_controller_tickrate;
+    private javax.swing.JTextField e_max_controller_output;
     private java.awt.Checkbox emitter_checkbox_file;
     private java.awt.Checkbox emitter_checkbox_random;
     private java.awt.Button emitter_choosefile_button;
     private java.awt.Label emitter_file_label;
     private java.awt.TextField emitter_no;
-    private java.awt.TextField entry_PID_D;
-    private java.awt.TextField entry_PID_I;
-    private java.awt.TextField entry_PID_P;
-    private java.awt.TextField entry_PID_output_filter;
     private java.awt.TextField fluo_Tbl;
     private java.awt.TextField fluo_Toff;
     private java.awt.TextField fluo_Ton;
@@ -1276,6 +1267,11 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.TextField fluo_signal;
     private java.awt.TextField goldbead_number;
     private java.awt.TextField goldbead_signal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private java.awt.Label label1;
     private java.awt.Label label10;
     private java.awt.Label label11;
@@ -1319,13 +1315,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.Label label46;
     private java.awt.Label label47;
     private java.awt.Label label48;
-    private java.awt.Label label49;
     private java.awt.Label label5;
-    private java.awt.Label label50;
-    private java.awt.Label label51;
-    private java.awt.Label label52;
-    private java.awt.Label label53;
-    private java.awt.Label label54;
     private java.awt.Label label6;
     private java.awt.Label label7;
     private java.awt.Label label8;
@@ -1339,6 +1329,29 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.Panel panel4;
     private java.awt.Panel panel5;
     private java.awt.Panel panel6;
-    private java.awt.Panel panel7;
     // End of variables declaration//GEN-END:variables
+
+
+    private LinkedHashMap<String,Analyzer> initAnalyzers() {
+        LinkedHashMap<String,Analyzer> analyzers = new LinkedHashMap<String,Analyzer>();
+        
+        AnalyzerFactory factory = new AnalyzerFactory();
+        
+        JFrame frame = new JFrame("Analyzer setup");
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        	
+        frame.setLayout(new GridLayout());
+        
+        for (AnalyzerSetupPanel panel: factory.getProductSetupPanelCollection()) {
+            frame.add(panel);
+        }
+        
+        frame.setVisible(true);
+        for (AnalyzerSetupPanel panel: factory.getProductSetupPanelCollection()) {
+            Analyzer a = panel.initAnalyzer();
+            analyzers.put(a.getName(), a);
+        }
+        
+        return analyzers;
+    }
 }

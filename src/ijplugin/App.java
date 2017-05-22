@@ -59,9 +59,9 @@ public class App extends AlgorithmTester {
         
     }
     
-    public App(LinkedHashMap<String, Analyzer> analyzers, Analyzer active_analyzer,
+    public App(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
-        super(analyzers, active_analyzer, generator, controller);
+        super(analyzer, generator, controller);
         generator.getNextImage();
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());
@@ -74,7 +74,7 @@ public class App extends AlgorithmTester {
      * Start continuously generating new images until stopped.
      */
     public void startSimulating() {
-        worker = new Worker(this, generator, controller, analyzers, active_analyzer, imp);
+        worker = new Worker(this, generator, controller, analyzer, imp);
         worker.start();
     }
     
@@ -115,16 +115,14 @@ class Worker extends Thread {
     private final App app;
     private final ImageGenerator generator;
     private final Controller controller;
-    private final HashMap<String,Analyzer> analyzers;
-    private final Analyzer active_analyzer;
+    private final Analyzer analyzer;
     private final ImagePlus imp;
     
-    public Worker(App app, ImageGenerator generator, Controller controller, HashMap<String,Analyzer> analyzers, Analyzer active_analyzer, ImagePlus imp) {
+    public Worker(App app, ImageGenerator generator, Controller controller, Analyzer active_analyzer, ImagePlus imp) {
         this.app = app;
         this.generator = generator;
         this.controller = controller;
-        this.analyzers = analyzers;
-        this.active_analyzer = active_analyzer;
+        this.analyzer = active_analyzer;
         this.imp = imp;
         stop = false;
     }
@@ -136,15 +134,14 @@ class Worker extends Thread {
             app.incrementCounter();
             ip = generator.getNextImage();
             long time_start, time_end;
-            for (Analyzer analyzer: analyzers.values()) {
-                time_start = System.nanoTime();
-                analyzer.processImage(ip.getPixelsCopy(), ip.getWidth(), ip.getHeight(), generator.getPixelSizeUm(), time_start);
-                time_end = System.nanoTime();
-                System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
-            }
+            time_start = System.nanoTime();
+            analyzer.processImage(ip.getPixelsCopy(), ip.getWidth(), ip.getHeight(), generator.getPixelSizeUm(), time_start);
+            time_end = System.nanoTime();
+            System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
+
             if (app.getImageCount() % 20 == 0) {
                 //System.out.println(image_count);
-                controller.nextValue(active_analyzer.getBatchOutput());
+                controller.nextValue(analyzer.getBatchOutput());
             }
             generator.setControlSignal(controller.getCurrentOutput());
             

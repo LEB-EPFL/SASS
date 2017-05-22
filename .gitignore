@@ -1,7 +1,7 @@
 /build/
 /dist/
-/ext_packages/
 /nbproject/private/
-
+/src/lib/javadocs
+/ext_packages/
 # emacs temp files
 *~

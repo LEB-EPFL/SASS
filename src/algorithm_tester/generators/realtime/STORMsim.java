@@ -55,7 +55,7 @@ public class STORMsim extends AbstractGenerator {
         } else {
             this.device = device;
         }
-        int[] res = device.getResolution();
+        int[] res = this.device.getResolution();
         stack = new ImageStack(res[0],res[1]);
 
         emitter_history = new ArrayList<Double>();
@@ -190,7 +190,7 @@ public class STORMsim extends AbstractGenerator {
         try {
             obstructors.add(new ConstantBackground(camera));
         } catch (RuntimeException ex) {
-            Logger.getLogger(STORMsim.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(STORMsim.class.getName()).log(Level.FINER, null, ex);
         }
             
         

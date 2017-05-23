@@ -59,7 +59,7 @@ public class ConstantBackground implements Obstructor  {
         fc.setFileFilter(new FileNameExtensionFilter("TIF image","tif"));
         returnVal = fc.showOpenDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            throw new RuntimeException("You need to select a background image!");
+            throw new RuntimeException("Background image not selected");
         }
         File tif_file = fc.getSelectedFile();
         // load the file

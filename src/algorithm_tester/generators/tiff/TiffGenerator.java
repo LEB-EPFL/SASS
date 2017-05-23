@@ -46,7 +46,7 @@ public class TiffGenerator extends AbstractGenerator {
         System.out.format("Tif file loaded: %s\n",file.getAbsolutePath());
         count = 0;
     }
-    
+
     @Override
     public ImageProcessor getNextImage() {
         count++;

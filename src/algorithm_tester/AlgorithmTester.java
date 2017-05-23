@@ -25,7 +25,9 @@ import algorithm_tester.generators.realtime.STORMsim;
 import ch.epfl.leb.alica.analyzers.autolase.AutoLase;
 import ch.epfl.leb.alica.analyzers.quickpalm.QuickPalm;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
+import ch.epfl.leb.alica.controllers.manual.ManualController;
 import ch.epfl.leb.alica.controllers.pid.PID_controller;
+import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +39,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Carries out the actual simulation.
@@ -63,18 +67,19 @@ public class AlgorithmTester {
      */
     protected int image_count;
     
+    protected HashMap<Integer,JSONObject> history = new HashMap<Integer,JSONObject>();
+    
     /**
      * Initializes all analyzers, the generator and controller.
      */
     public AlgorithmTester() {
         // Real time generator
         generator = new STORMsim(null);
-        
         analyzer = new SpotCounter(100, 5, true);
         // Set up controller
         //controller = new SimpleController();
-        controller = new PID_controller(1.0,0.0,0.0,0.0,0.0);
-        controller.setSetpoint(0.0);
+        controller = new ManualController(30, 1);
+        controller.setSetpoint(1.0);
     }
     
     public AlgorithmTester(Analyzer analyzer,
@@ -91,15 +96,14 @@ public class AlgorithmTester {
      */
     public static void main(String[] args) {
         AlgorithmTester tester = new AlgorithmTester();
-        tester.execute();
+        tester.execute(1000,100,"C:\\Users\\stefko\\Documents\\stormsim_log.csv","C:\\Users\\stefko\\Documents\\stormsim_tif.tif");
+        System.exit(0);
     }
     
     /**
      * Define the testing procedure in this method.
      */
-    public void execute() {
-        
-        
+    public ImageStack execute() {
         JFileChooser fc = new JFileChooser();
         int returnVal;
         
@@ -112,44 +116,9 @@ public class AlgorithmTester {
         fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
         returnVal = fc.showSaveDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
+            return null;
         }
         File csv_output = fc.getSelectedFile();
-        
-        /*/
-        File tiff_file = new File("C:\\Users\\stefko\\Desktop\\sim400orig.tif");
-        File csv_output = new File("C:\\Users\\stefko\\Desktop\\output.csv");
-        //*/
-        
-        
-        /* Tiff generator
-        // Analyze all images from the generator. End of analysis is marked
-        // by a null pointer.
-        fc.setFileFilter(new FileNameExtensionFilter("TIF file","tif"));
-        fc.setDialogType(JFileChooser.OPEN_DIALOG);
-        returnVal = fc.showOpenDialog(null);
-        if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        File tiff_file = fc.getSelectedFile();
-        
-        
-        generator = new TiffGenerator(tiff_file);
-        ImageProcessor ip = generator.getNextImage();
-        image_count = 0;
-        while (ip != null) {
-            image_count++;
-            for (EvaluationAlgorithm analyzer: analyzers)
-                analyzer.processImage(ip);
-            ip = generator.getNextImage();
-        }
-        
-        /*/
-
-        
-        
-        
-        
         
         ImageProcessor ip;
         for (image_count = 0; image_count < 25; image_count++) {
@@ -167,7 +136,7 @@ public class AlgorithmTester {
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         returnVal = fc.showSaveDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
+            return null;
         }
         generator.saveStack(fc.getSelectedFile());
         
@@ -176,16 +145,58 @@ public class AlgorithmTester {
         
         // Save analysis results to a csv file.
         saveToCsv(csv_output);
-        System.exit(0);
+        return generator.getStack();
     }
     
+    public ImageStack execute(int no_of_images, int controller_refresh_rate, String csv_save_path, String tiff_save_path) {
+        if (no_of_images < 1 || controller_refresh_rate < 1) {
+            throw new IllegalArgumentException("Wrong simulation parameters!");
+        }
+        
+        ImageProcessor ip;
+        for (image_count = 1; image_count <= no_of_images; image_count++) {
+            JSONObject history_entry = new JSONObject();
+            
+            ip = generator.getNextImage();
+            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 0.100, 10);
+            //System.out.println(image_count);
+            if (image_count % controller_refresh_rate == 0) {
+                double analyzer_batch_output = analyzer.getBatchOutput();
+                controller.nextValue(analyzer_batch_output);
+                generator.setControlSignal(controller.getCurrentOutput());
+            }
+            try {
+                history_entry.put("true-signal",generator.getTrueSignal(image_count));
+                history_entry.put("analyzer-output", analyzer.getIntermittentOutput());
+                history_entry.put("controller-output", controller.getCurrentOutput());
+                history_entry.put("controller-setpoint", controller.getSetpoint());
+            } catch (JSONException ex) {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error in storing JSON values.", ex);
+            }
+            
+            history.put(image_count, history_entry);
+        }
+        image_count -= 1; // to accurately represent image count
+        
+        if (csv_save_path != null) {
+            File csv_file = new File(csv_save_path);
+            saveToCsv(csv_file);
+        }
+        
+        if (tiff_save_path != null) {
+            File tiff_file = new File(tiff_save_path);
+            generator.saveStack(tiff_file);
+        }
+        
+        return generator.getStack();
+    
+    }
     /**
-     * Saves the data generated by analyzers for each frame into a .csv file
+     * Saves the data for generator, analyzer and controller for each frame into a .csv file
      * @param file destination csv file
      */
-    public void saveToCsv(File file) {
-        throw new UnsupportedOperationException();// Open the file for writing
-        /*PrintWriter writer;
+    public void saveToCsv(File file) {// Open the file for writing
+        PrintWriter writer;
         try {
             writer = new PrintWriter(file.getAbsolutePath());
         } catch (FileNotFoundException ex) {
@@ -193,62 +204,31 @@ public class AlgorithmTester {
             return;
         }
         
-        
-        HashMap<String, Integer> parameter_map;
-        // Print header: analyzer settings
-        writer.println("#Analyzer settings:");
-        String parameters = "";
-        for (Analyzer analyzer: analyzers.values()) {
-            parameter_map = analyzer.getCustomParameters();
-            for (String key: parameter_map.keySet()) {
-                parameters = parameters.
-                    concat(analyzer.getName()).concat(".").concat(key).
-                    concat(":").concat(parameter_map.get(key).toString()).
-                    concat(",");
-            }
-        }
-        writer.println(parameters);
-        
-        HashMap<String,Double> setting_map;
-        writer.println("#Controller settings:");
-        String settings = "";
-        setting_map = controller.getSettings();
-        for (String key: setting_map.keySet()) {
-            settings = settings.concat(String.format(
-                "%s:%f,",key,setting_map.get(key)));
-        }
-        writer.println(parameters);
-        
         HashMap<String, Double> output_map;
         // Print header: Column description
         writer.println("#Columns:");
-        String analyzer_names = "frame-id,true-signal,laser-power";
-        for (Analyzer analyzer: analyzers.values()) {
-            output_map = analyzer.getOutputValues(1);
-                for (String key: output_map.keySet()) {
-                    analyzer_names = analyzer_names.concat(",").
-                    concat(analyzer.getName()).concat(":").concat(key);
-                }
-        }
-        writer.println(analyzer_names);
+        String column_names = "frame-id,true-signal,analyzer-output,controller-output,controller-setpoint";
+        writer.println(column_names);
         
         // Print data - one line for each frame
         for (int i=1; i<=image_count; i++) {
-            String s = String.format("%d,%5.2f,%5.2f",
-                    i,generator.getTrueSignal(i),controller.getOutputHistory(i));
-            
-            for (Analyzer analyzer: analyzers.values()) {
-                output_map = analyzer.getOutputValues(i);
-                for (String key: output_map.keySet()) {
-                    s = s.concat(String.format(",%f",output_map.get(key)));
-                }
-                
+            JSONObject e = history.get(i);
+            String s;
+            try {
+                s = String.format("%d,%8.4e,%8.4e,%8.4e,%8.4e",
+                        i,e.get("true-signal"),e.get("analyzer-output"),e.get("controller-output"),e.get("controller-setpoint"));
+            } catch (JSONException ex) {
+                s = String.format("%d",i);
+                Logger.getLogger(AlgorithmTester.class.getName()).log(Level.FINER, null, ex);
+            } catch (NullPointerException ex) {
+                s = String.format("%d",i);
+                Logger.getLogger(AlgorithmTester.class.getName()).log(Level.FINER, null, ex);
             }
             writer.println(s);
         }
         
         writer.close();
-        */
+        
         
     }
     

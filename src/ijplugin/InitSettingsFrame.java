@@ -77,13 +77,15 @@ public class InitSettingsFrame extends java.awt.Dialog {
         updateControllerSetupPanel();
     }
     
-        private void updateAnalyzerSetupPanel() {
+    private void updateAnalyzerSetupPanel() {
         analyzer_panel.removeAll();
         javax.swing.JPanel panel = analyzer_factory.getSelectedSetupPanel();
         analyzer_panel.add(panel);
         panel.setBounds(5,5,200,150);
         panel.revalidate();
         panel.repaint();
+        analyzer_panel.validate();
+        analyzer_panel.repaint();
     }
     
     private void updateControllerSetupPanel() {
@@ -93,6 +95,8 @@ public class InitSettingsFrame extends java.awt.Dialog {
         panel.setBounds(5,5,200,150);
         panel.revalidate();
         panel.repaint();
+        controller_panel.validate();
+        controller_panel.repaint();
     }
 
     /**
@@ -1320,27 +1324,4 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.Panel panel6;
     // End of variables declaration//GEN-END:variables
 
-
-    private LinkedHashMap<String,Analyzer> initAnalyzers() {
-        LinkedHashMap<String,Analyzer> analyzers = new LinkedHashMap<String,Analyzer>();
-        
-        AnalyzerFactory factory = new AnalyzerFactory();
-        
-        JFrame frame = new JFrame("Analyzer setup");
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        	
-        frame.setLayout(new GridLayout());
-        
-        for (AnalyzerSetupPanel panel: factory.getProductSetupPanelCollection()) {
-            frame.add(panel);
-        }
-        
-        frame.setVisible(true);
-        for (AnalyzerSetupPanel panel: factory.getProductSetupPanelCollection()) {
-            Analyzer a = panel.initAnalyzer();
-            analyzers.put(a.getName(), a);
-        }
-        
-        return analyzers;
-    }
 }

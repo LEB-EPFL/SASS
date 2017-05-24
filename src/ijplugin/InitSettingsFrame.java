@@ -18,9 +18,9 @@ package ijplugin;
 
 import algorithm_tester.generators.realtime.Camera;
 import algorithm_tester.generators.realtime.Device;
-import algorithm_tester.generators.realtime.Fluorophore;
+import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
 import algorithm_tester.generators.realtime.FluorophoreGenerator;
-import algorithm_tester.generators.realtime.FluorophoreProperties;
+import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
 import algorithm_tester.generators.realtime.Laser;
 import algorithm_tester.generators.realtime.Obstructor;
 import algorithm_tester.generators.realtime.STORMsim;
@@ -1115,7 +1115,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         // surround this in try catch blocks for easier error identification
         Camera cam;    
         Laser laser;
-        FluorophoreProperties fluo;
+        SimpleProperties fluo;
         try {
             cam = new Camera(Integer.parseInt(cam_resX.getText()),
                     Integer.parseInt(cam_resY.getText()),
@@ -1131,7 +1131,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     1e-9 *  Double.parseDouble(cam_radius.getText()));
 
             
-            fluo = new FluorophoreProperties(
+            fluo = new SimpleProperties(
                     Double.parseDouble(fluo_signal.getText()),
                     Double.parseDouble(fluo_background.getText()),
                     Double.parseDouble(fluo_Ton.getText()),
@@ -1151,7 +1151,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         }
         
         
-        ArrayList<Fluorophore> emitters;
+        ArrayList<SimpleFluorophore> emitters;
         if (emitter_checkbox_file.getState()) {
             try {
                 emitters = FluorophoreGenerator.parseFluorophoresFromCsv(emitterCsvFile, cam, fluo, true);

@@ -19,6 +19,8 @@
  */
 package algorithm_tester.generators.realtime;
 
+import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
+import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,14 +46,14 @@ public class FluorophoreGenerator {
      * @param fluo fluorophore properties
      * @return
      */
-    public static ArrayList<Fluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, FluorophoreProperties fluo) {
+    public static ArrayList<SimpleFluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, SimpleProperties fluo) {
         Random rnd = new Random();
-        ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
+        ArrayList<SimpleFluorophore> result = new ArrayList<SimpleFluorophore>();
         double x; double y;
         for (int i=0; i<n_fluos; i++) {
             x = cam.res_x*rnd.nextDouble();
             y = cam.res_y*rnd.nextDouble();
-            result.add(new Fluorophore(fluo, cam, x, y));
+            result.add(new SimpleFluorophore(fluo, cam, x, y));
         }
         return result;
     }
@@ -69,13 +71,13 @@ public class FluorophoreGenerator {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static ArrayList<Fluorophore> parseFluorophoresFromCsv(File file, Camera camera, FluorophoreProperties fluo, boolean rescale) throws FileNotFoundException, IOException {
+    public static ArrayList<SimpleFluorophore> parseFluorophoresFromCsv(File file, Camera camera, SimpleProperties fluo, boolean rescale) throws FileNotFoundException, IOException {
         if (file==null) {
             file = getFileFromDialog();
         }
         
         // load all fluorophores
-        ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
+        ArrayList<SimpleFluorophore> result = new ArrayList<SimpleFluorophore>();
         double x; double y;
         BufferedReader br;
         String line;
@@ -94,30 +96,30 @@ public class FluorophoreGenerator {
             y = Double.parseDouble(entries[1]);
             // ignore ones with negative positions
             if (x>=0.0 && y>=0.0)
-                result.add(new Fluorophore(fluo, camera, x, y));
+                result.add(new SimpleFluorophore(fluo, camera, x, y));
         }
         
         // rescale positions to fit into frame        
         if (rescale) {
-            ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
+            ArrayList<SimpleFluorophore> result_rescaled = new ArrayList<SimpleFluorophore>();
             double max_x_coord = 0.0;
-            for (Fluorophore f: result) {
+            for (SimpleFluorophore f: result) {
                 if (f.x>max_x_coord)
                     max_x_coord = f.x;
             }
             double factor = camera.res_x/max_x_coord;
-            for (Fluorophore f: result) {
-                result_rescaled.add(new Fluorophore(fluo, camera, 
+            for (SimpleFluorophore f: result) {
+                result_rescaled.add(new SimpleFluorophore(fluo, camera, 
                         f.x*factor,
                         f.y*factor));
             }
             return result_rescaled;
         // or crop fluorophores outside of frame
         } else {
-            ArrayList<Fluorophore> result_cropped = new ArrayList<Fluorophore>();
-            for (Fluorophore f: result) {
+            ArrayList<SimpleFluorophore> result_cropped = new ArrayList<SimpleFluorophore>();
+            for (SimpleFluorophore f: result) {
                 if (f.x < camera.res_x && f.y < camera.res_y) {
-                    result_cropped.add(new Fluorophore(fluo, camera, 
+                    result_cropped.add(new SimpleFluorophore(fluo, camera, 
                         f.x, f.y));
                 }
             }

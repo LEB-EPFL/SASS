@@ -19,6 +19,8 @@
  */
 package algorithm_tester.generators.realtime;
 
+import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
+import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
 import algorithm_tester.generators.AbstractGenerator;
 import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
 import algorithm_tester.generators.realtime.obstructors.GoldBeads;
@@ -153,7 +155,7 @@ public class STORMsim extends AbstractGenerator {
         gd.showDialog();
         
                 
-        FluorophoreProperties fluo = new FluorophoreProperties(gd.getNextNumber(), //signal_per_frame, 
+        SimpleProperties fluo = new SimpleProperties(gd.getNextNumber(), //signal_per_frame, 
                 gd.getNextNumber(), //background_per_frame, 
                 gd.getNextNumber(), //base_Ton_frames, 
                 gd.getNextNumber(), //base_Toff_frames, 
@@ -164,7 +166,7 @@ public class STORMsim extends AbstractGenerator {
                           gd.getNextNumber()); //min_power)
         
         
-        ArrayList<Fluorophore> emitters;
+        ArrayList<SimpleFluorophore> emitters;
         int emitter_no = (int) gd.getNextNumber();
         if (emitter_no == 0) {
             try {

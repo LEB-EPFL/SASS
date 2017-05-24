@@ -19,6 +19,7 @@
  */
 package algorithm_tester.generators.realtime;
 
+import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
 import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
 import java.awt.geom.Point2D;
@@ -110,7 +111,7 @@ public abstract class Emitter extends Point2D.Double  {
                         signature = generate_signature_for_pixel(i, j, camera_fwhm_digital);
                     } catch (MathException ex) {
                         signature = 0.0;
-                        Logger.getLogger(Fluorophore.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(SimpleFluorophore.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     result.add(new Pixel(i,j,signature));
                 }

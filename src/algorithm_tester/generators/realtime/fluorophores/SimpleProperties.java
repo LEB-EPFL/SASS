@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.realtime;
+package algorithm_tester.generators.realtime.fluorophores;
 
 /**
- * FluorophoreProperties properties (signal, background values and time constants).
+ * SimpleProperties properties (signal, background values and time constants).
  * @author Marcel Stefko
  */
-public class FluorophoreProperties {
+public class SimpleProperties {
 
     /**
      * photons emitted if fluorophore is fully on
@@ -58,7 +58,7 @@ public class FluorophoreProperties {
      * @param base_Toff_frames mean off-time with unit laser power [frames]
      * @param base_Tbl_frames mean bleaching time with unit laser power [frames]
      */
-    public FluorophoreProperties(double signal_per_frame, double background_per_frame, 
+    public SimpleProperties(double signal_per_frame, double background_per_frame, 
             double base_Ton_frames, 
             double base_Toff_frames, double base_Tbl_frames) {
         signal = signal_per_frame;

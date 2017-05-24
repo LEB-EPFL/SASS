@@ -179,10 +179,11 @@ public class Device {
             Arrays.fill(pixels[row], 0.0f);
         
         // Add obstructions
-        for (Obstructor o: obstructors) {
-            o.applyTo(pixels);
+        if (obstructors != null) {
+            for (Obstructor o: obstructors) {
+                o.applyTo(pixels);
+            }
         }
-        
         // Add emitters
         for (Fluorophore f: fluorophores) {
             f.applyTo(pixels);

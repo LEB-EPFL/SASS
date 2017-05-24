@@ -26,7 +26,6 @@ import ch.epfl.leb.alica.analyzers.autolase.AutoLase;
 import ch.epfl.leb.alica.analyzers.quickpalm.QuickPalm;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
-import ch.epfl.leb.alica.controllers.pid.PID_controller;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;

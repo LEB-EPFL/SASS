@@ -189,9 +189,30 @@ class Worker extends Thread {
         plot.setColor(Color.orange);
         plot.addPoints(x, laser, Plot.LINE);
         plot.addLabel(0.02,0.4,"Laser power");
-        plot.setLimits(0, 0.5, 0, 0.5); // hack to get a correct rescale
-        plot.setLimitsToFit(true);
+        plot.setLimits(getMin(x), getMax(x), getMin(real), getMax(real)); // hack to get a correct rescale
         plot.draw();
         
+    }
+    
+    private double getMin(double[] arr) {
+        if (arr.length == 0) {
+            return Double.NaN;
+        }
+        double min = arr[0];
+        for (double d: arr) {
+            min = min>d ? d : min;
+        }
+        return min;
+    }
+    
+    private double getMax(double[] arr) {
+        if (arr.length == 0) {
+            return Double.NaN;
+        }
+        double max = arr[0];
+        for (double d: arr) {
+            max = max<d ? d : max;
+        }
+        return max;
     }
 }

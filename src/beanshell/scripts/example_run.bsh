@@ -1,0 +1,23 @@
+import algorithm_tester.AlgorithmTester;
+import algorithm_tester.generators.realtime.STORMsim;
+import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
+import ch.epfl.leb.alica.controllers.selftuningpi.SelfTuningController;
+
+
+STORMsim generator = new STORMsim(null); // null causes initialization from dialog
+
+SpotCounter analyzer = new SpotCounter(100, //noise tolerance
+                        5, // box size
+                        true); // live view
+
+SelfTuningController controller = new SelfTuningController(10, // max output
+        0.1, // sampling period in seconds
+        2, // step height
+        0.1, // p factor
+        2.0); // i factor
+
+AlgorithmTester tester = new AlgorithmTester(analyzer, generator, controller);
+tester.execute(1000, // number of simulated frames
+                 10, // controller tickrate
+                 "C:\\Users\\stefko\\Documents\\stormsim_log.csv", // csv file location
+                 "C:\\Users\\stefko\\Documents\\stormsim_tif.tif"); // tif file location

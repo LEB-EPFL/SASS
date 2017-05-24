@@ -1113,7 +1113,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
     }//GEN-LAST:event_checkbox_backgroundItemStateChanged
 
     private void button_initializeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_initializeMouseClicked
-        // surround this in try catch blocks for easier error identification
         Camera cam;    
         Laser laser;
         SimpleProperties fluo;

@@ -16,6 +16,8 @@
  */
 package algorithm_tester.generators.realtime.fluorophores;
 
+import algorithm_tester.generators.realtime.Camera;
+import algorithm_tester.generators.realtime.Fluorophore;
 import algorithm_tester.generators.realtime.FluorophoreProperties;
 
 /**
@@ -71,5 +73,10 @@ public class PalmProperties extends FluorophoreProperties {
             return Double.POSITIVE_INFINITY;
         else
             return 1.0/d;
+    }
+
+    @Override
+    public Fluorophore createFluorophore(Camera camera, double x, double y) {
+        return new PalmFluorophore(this, camera, x, y);
     }
 }

@@ -19,20 +19,13 @@
  */
 package algorithm_tester.generators.realtime;
 
-import algorithm_tester.generators.realtime.fluorophores.PalmFluorophore;
-import algorithm_tester.generators.realtime.fluorophores.PalmProperties;
-import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
-import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
+import java.util.Random;import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -55,10 +48,7 @@ public class FluorophoreGenerator {
         for (int i=0; i<n_fluos; i++) {
             x = cam.res_x*rnd.nextDouble();
             y = cam.res_y*rnd.nextDouble();
-            if (fluo instanceof SimpleProperties)
-                result.add(new SimpleFluorophore((SimpleProperties) fluo, cam, x, y));
-            else if (fluo instanceof PalmProperties)
-                result.add(new PalmFluorophore((PalmProperties) fluo, cam, x, y));
+            result.add(fluo.createFluorophore(cam, x, y));
         }
         return result;
     }
@@ -101,10 +91,7 @@ public class FluorophoreGenerator {
             y = Double.parseDouble(entries[1]);
             // ignore ones with negative positions
             if (x>=0.0 && y>=0.0)
-                if (fluo instanceof SimpleProperties)
-                    result.add(new SimpleFluorophore((SimpleProperties) fluo, camera, x, y));
-                else if (fluo instanceof PalmProperties)
-                    result.add(new PalmFluorophore((PalmProperties) fluo, camera, x, y));
+                result.add(fluo.createFluorophore(camera, x, y));
         }
         
         // rescale positions to fit into frame        
@@ -117,15 +104,7 @@ public class FluorophoreGenerator {
             }
             double factor = camera.res_x/max_x_coord;
             for (Fluorophore f: result) {
-                if (fluo instanceof SimpleProperties) {
-                    result_rescaled.add(new SimpleFluorophore((SimpleProperties) fluo, camera, 
-                        f.x*factor,
-                        f.y*factor));
-                } else if (fluo instanceof PalmProperties) {
-                    result_rescaled.add(new PalmFluorophore((PalmProperties) fluo, camera, 
-                        f.x*factor,
-                        f.y*factor));
-                }
+                result_rescaled.add(fluo.createFluorophore(camera, f.x*factor, f.y*factor));
             }
             return result_rescaled;
         // or crop fluorophores outside of frame

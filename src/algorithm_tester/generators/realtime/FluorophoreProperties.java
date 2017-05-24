@@ -20,7 +20,7 @@ package algorithm_tester.generators.realtime;
  *
  * @author stefko
  */
-public class FluorophoreProperties {
+public abstract class FluorophoreProperties {
     public final double signal;
     public final double background;
     
@@ -32,4 +32,6 @@ public class FluorophoreProperties {
         this.signal = signal;
         this.background = background;
     }
+    
+    public abstract Fluorophore createFluorophore(Camera camera, double x, double y);
 }

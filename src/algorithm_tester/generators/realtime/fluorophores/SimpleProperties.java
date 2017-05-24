@@ -19,6 +19,8 @@
  */
 package algorithm_tester.generators.realtime.fluorophores;
 
+import algorithm_tester.generators.realtime.Camera;
+import algorithm_tester.generators.realtime.Fluorophore;
 import algorithm_tester.generators.realtime.FluorophoreProperties;
 
 /**
@@ -56,5 +58,10 @@ public class SimpleProperties extends FluorophoreProperties {
         base_Ton = base_Ton_frames;
         base_Toff = base_Toff_frames;
         base_Tbl = base_Tbl_frames;
+    }
+
+    @Override
+    public Fluorophore createFluorophore(Camera camera, double x, double y) {
+        return new SimpleFluorophore(this, camera, x, y);
     }
 }

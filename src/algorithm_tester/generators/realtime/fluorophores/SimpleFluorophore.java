@@ -58,7 +58,7 @@ public class SimpleFluorophore extends Fluorophore {
         this.state = false;
         this.is_bleached = false;
 
-        this.recalculate_lifetimes(0.0001);
+        this.recalculate_lifetimes(0.0);
     }
     
     @Override

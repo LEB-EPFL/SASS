@@ -62,6 +62,7 @@ public class App extends AlgorithmTester {
     public App(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
         super(analyzer, generator, controller);
+        controller.setSetpoint(0.0);
         generator.getNextImage();
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());

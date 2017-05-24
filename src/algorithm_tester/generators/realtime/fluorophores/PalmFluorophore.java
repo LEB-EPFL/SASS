@@ -27,7 +27,7 @@ public class PalmFluorophore extends Fluorophore {
     private final PalmProperties f_props;
     private PalmState state;
     
-    private double T_activation;
+    private double T_activation = java.lang.Double.POSITIVE_INFINITY;
     
     
     public PalmFluorophore(PalmProperties f_props, Camera camera, double x, double y) {
@@ -83,6 +83,7 @@ public class PalmFluorophore extends Fluorophore {
                         t_rem -= t_dark2;
                         state = PalmState.DARK_2;
                     } else {
+                        on_time += t_rem;
                         t_rem = 0.0;
                     }
                     break;
@@ -121,8 +122,11 @@ public class PalmFluorophore extends Fluorophore {
             return;
         }
         current_laser_power = laser_power;
-        
-        T_activation = f_props.T_a * laser_power;
+        if (laser_power == 0.0) {
+            T_activation = java.lang.Double.POSITIVE_INFINITY;
+        } else {
+            T_activation = f_props.T_a / laser_power;
+        }
     }
 }
 

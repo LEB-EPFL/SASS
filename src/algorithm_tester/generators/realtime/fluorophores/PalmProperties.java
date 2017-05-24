@@ -64,7 +64,7 @@ public class PalmProperties extends FluorophoreProperties {
         this.T_r2 = parseInverse(k_r2);
     }
     
-    private static double parseInverse(double d) {
+    public static double parseInverse(double d) {
         if (d<0.0)
             throw new IllegalArgumentException("Can't parse a negative double.");
         if (Double.isInfinite(d))

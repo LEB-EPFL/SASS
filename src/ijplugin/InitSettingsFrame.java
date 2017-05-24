@@ -21,10 +21,12 @@ import algorithm_tester.generators.realtime.Device;
 import algorithm_tester.generators.realtime.Fluorophore;
 import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
 import algorithm_tester.generators.realtime.FluorophoreGenerator;
+import algorithm_tester.generators.realtime.FluorophoreProperties;
 import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
 import algorithm_tester.generators.realtime.Laser;
 import algorithm_tester.generators.realtime.Obstructor;
 import algorithm_tester.generators.realtime.STORMsim;
+import algorithm_tester.generators.realtime.fluorophores.PalmProperties;
 import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
 import algorithm_tester.generators.realtime.obstructors.GoldBeads;
 import ch.epfl.leb.alica.Analyzer;
@@ -1044,8 +1046,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
             emitter_choosefile_button.setEnabled(false);
             emitter_file_label.setEnabled(false);
             emitter_no.setEnabled(true);
-        } else {
-            emitter_checkbox_random.setState(true);
         }
     }//GEN-LAST:event_emitter_checkbox_randomItemStateChanged
 
@@ -1055,8 +1055,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
             emitter_choosefile_button.setEnabled(true);
             emitter_file_label.setEnabled(true);
             emitter_no.setEnabled(false);
-        } else {
-            emitter_checkbox_file.setState(true);
         }
     }//GEN-LAST:event_emitter_checkbox_fileItemStateChanged
 
@@ -1115,7 +1113,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private void button_initializeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_initializeMouseClicked
         Camera cam;    
         Laser laser;
-        SimpleProperties fluo;
+        FluorophoreProperties fluo;
         try {
             cam = new Camera(Integer.parseInt(cam_resX.getText()),
                     Integer.parseInt(cam_resY.getText()),
@@ -1131,13 +1129,21 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     1e-9 *  Double.parseDouble(cam_radius.getText()));
 
             
-            fluo = new SimpleProperties(
+            /*fluo = new SimpleProperties(
                     Double.parseDouble(fluo_signal.getText()),
                     Double.parseDouble(fluo_background.getText()),
                     Double.parseDouble(fluo_Ton.getText()),
                     Double.parseDouble(fluo_Toff.getText()),
                     Double.parseDouble(fluo_Tbl.getText()));
-
+                    */
+            fluo = new PalmProperties(Double.parseDouble(fluo_signal.getText()),
+                    Double.parseDouble(fluo_background.getText()),
+                    0.1,//0.01/Integer.parseInt(emitter_no.getText()), //ka
+                    5.4/100.0, // kb
+                    7.8/1.2/100.0, // kd1
+                    0.2*7.8/1.2/100.0, // kd2
+                    0.4/100.0, //kr1
+                    15.7/100.0); // kr2
 
             laser = new Laser( Double.parseDouble(laser_start.getText()),
                     Double.parseDouble(laser_max.getText()),
@@ -1159,11 +1165,13 @@ public class InitSettingsFrame extends java.awt.Dialog {
                 IJ.showMessage("Error in emitter position parsing.");
                 return;
             }
-        } else {
+        } else if (emitter_checkbox_random.getState()) {
             emitters = FluorophoreGenerator.generateFluorophoresRandom(
                 Integer.parseInt(emitter_no.getText()), //n_fluos, 
                 cam,
                 fluo);
+        } else {
+            emitters = FluorophoreGenerator.generateFluorophoresGrid(10, cam, fluo);
         }
         
         ArrayList<Obstructor> obstructors = new ArrayList<Obstructor>();

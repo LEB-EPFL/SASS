@@ -33,7 +33,10 @@ public abstract class Fluorophore extends Emitter {
     }
 
     protected double nextExponential(double mean) {
-        return Math.log(1 - random.nextDouble()) * (-mean);
+        if (java.lang.Double.isInfinite(mean))
+            return java.lang.Double.POSITIVE_INFINITY;
+        else
+            return Math.log(1 - random.nextDouble()) * (-mean);
     }
 
     /**
@@ -49,4 +52,9 @@ public abstract class Fluorophore extends Emitter {
      */
     public abstract boolean isBleached();
     
+    /**
+     * Recalculates the lifetimes of this emitter based on current laser power.
+     * @param laser_power current laser power
+     */
+    public abstract void recalculate_lifetimes(double laser_power);
 }

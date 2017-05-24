@@ -61,10 +61,7 @@ public class SimpleFluorophore extends Fluorophore {
         this.recalculate_lifetimes(0.0001);
     }
     
-    /**
-     * Recalculates the lifetimes of this emitter based on current laser power.
-     * @param laser_power current laser power
-     */
+    @Override
     public void recalculate_lifetimes(double laser_power) {
         if (current_laser_power == laser_power) {
             return;

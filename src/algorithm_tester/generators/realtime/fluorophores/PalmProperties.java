@@ -16,13 +16,14 @@
  */
 package algorithm_tester.generators.realtime.fluorophores;
 
+import algorithm_tester.generators.realtime.FluorophoreProperties;
+
 /**
  *
  * @author stefko
  */
-public class PalmProperties {
-    public final double signal;
-    public final double background;
+public class PalmProperties extends FluorophoreProperties {
+
     
     public final double k_a;
     public final double k_b;
@@ -42,13 +43,10 @@ public class PalmProperties {
     public PalmProperties(double signal, double background, 
             double k_a, double k_b, double k_d1, 
             double k_d2, double k_r1, double k_r2) {
-        if (signal < 0.0 || background < 0.0 || k_a<=0.0 || k_b<0.0 || k_d1<0.0 || k_d2<0.0 || k_r1<0.0 || k_r2<0.0) {
+        super(signal, background);
+        if (k_a<=0.0 || k_b<0.0 || k_d1<0.0 || k_d2<0.0 || k_r1<0.0 || k_r2<0.0) {
             throw new IllegalArgumentException();
         }
-        
-        this.signal = signal;
-        this.background = background;
-        
         this.k_a = k_a;
         this.k_b = k_b;
         this.k_d1 = k_d1;

@@ -111,6 +111,11 @@ public class PalmFluorophore extends Fluorophore {
         }
         return flicker(on_time*f_props.signal);
     }
+
+    @Override
+    public void recalculate_lifetimes(double laser_power) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
 enum PalmState {

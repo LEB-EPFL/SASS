@@ -166,7 +166,7 @@ public class STORMsim extends AbstractGenerator {
                           gd.getNextNumber()); //min_power)
         
         
-        ArrayList<SimpleFluorophore> emitters;
+        ArrayList<Fluorophore> emitters;
         int emitter_no = (int) gd.getNextNumber();
         if (emitter_no == 0) {
             try {

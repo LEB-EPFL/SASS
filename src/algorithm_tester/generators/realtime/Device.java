@@ -39,8 +39,8 @@ import cern.jet.random.engine.MersenneTwister;
  */
 public class Device {
     private final Camera camera;
-    private final SimpleProperties fluo;
-    private final ArrayList<SimpleFluorophore> fluorophores;
+    private final FluorophoreProperties fluo;
+    private final ArrayList<Fluorophore> fluorophores;
     private final Laser laser;
     
     private final ArrayList<Obstructor> obstructors;
@@ -84,7 +84,7 @@ public class Device {
         
         obstructors = new ArrayList<Obstructor>();
         
-        for (SimpleFluorophore e: fluorophores) {
+        for (Fluorophore e: fluorophores) {
             e.recalculate_lifetimes(laser.getPower());
         }
         random = new Random();
@@ -101,14 +101,14 @@ public class Device {
      * @param emitters list of fluorophores
      * @param obstructors list of obstructors
      */
-    public Device(Camera cam, SimpleProperties fluo, Laser laser, ArrayList<SimpleFluorophore>emitters,
+    public Device(Camera cam, FluorophoreProperties fluo, Laser laser, ArrayList<Fluorophore>emitters,
             ArrayList<Obstructor> obstructors) {
         camera = cam;
         this.fluo = fluo;
         this.laser = laser;
         this.fluorophores = emitters;
         this.obstructors = obstructors;
-        for (SimpleFluorophore e: emitters) {
+        for (Fluorophore e: emitters) {
             e.recalculate_lifetimes(laser.getPower());
         }
         random = new Random();
@@ -141,7 +141,7 @@ public class Device {
      */
     public void setLaserPower(double laser_power) {
         laser.setPower(laser_power);
-        for (SimpleFluorophore e: fluorophores) {
+        for (Fluorophore e: fluorophores) {
             e.recalculate_lifetimes(laser.getPower());
         }
     }
@@ -160,7 +160,7 @@ public class Device {
      */
     public double getOnEmitterCount() {
         int count = 0;
-        for (SimpleFluorophore e: fluorophores) {
+        for (Fluorophore e: fluorophores) {
             if (e.isOn()) {
                 count++;
             }
@@ -187,7 +187,7 @@ public class Device {
             }
         }
         // Add emitters
-        for (SimpleFluorophore f: fluorophores) {
+        for (Fluorophore f: fluorophores) {
             f.applyTo(pixels);
         }
         

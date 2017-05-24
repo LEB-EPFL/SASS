@@ -19,22 +19,13 @@
  */
 package algorithm_tester.generators.realtime.fluorophores;
 
+import algorithm_tester.generators.realtime.FluorophoreProperties;
+
 /**
  * SimpleProperties properties (signal, background values and time constants).
  * @author Marcel Stefko
  */
-public class SimpleProperties {
-
-    /**
-     * photons emitted if fluorophore is fully on
-     */
-    public final double signal;
-
-    /**
-     * constant background of the fluorophore
-     */
-    public final double background;
-
+public class SimpleProperties extends FluorophoreProperties {
     /** 
      * mean on-time with unit laser power [frames]
      */
@@ -61,8 +52,7 @@ public class SimpleProperties {
     public SimpleProperties(double signal_per_frame, double background_per_frame, 
             double base_Ton_frames, 
             double base_Toff_frames, double base_Tbl_frames) {
-        signal = signal_per_frame;
-        background = background_per_frame;
+        super(signal_per_frame, background_per_frame);
         base_Ton = base_Ton_frames;
         base_Toff = base_Toff_frames;
         base_Tbl = base_Tbl_frames;

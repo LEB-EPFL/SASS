@@ -18,6 +18,7 @@ package ijplugin;
 
 import algorithm_tester.generators.realtime.Camera;
 import algorithm_tester.generators.realtime.Device;
+import algorithm_tester.generators.realtime.Fluorophore;
 import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
 import algorithm_tester.generators.realtime.FluorophoreGenerator;
 import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
@@ -1151,7 +1152,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         }
         
         
-        ArrayList<SimpleFluorophore> emitters;
+        ArrayList<Fluorophore> emitters;
         if (emitter_checkbox_file.getState()) {
             try {
                 emitters = FluorophoreGenerator.parseFluorophoresFromCsv(emitterCsvFile, cam, fluo, true);

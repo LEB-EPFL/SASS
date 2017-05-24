@@ -62,7 +62,7 @@ public class SimpleFluorophore extends Fluorophore {
     }
     
     @Override
-    public void recalculate_lifetimes(double laser_power) {
+    public final void recalculate_lifetimes(double laser_power) {
         if (current_laser_power == laser_power) {
             return;
         }

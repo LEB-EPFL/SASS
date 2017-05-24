@@ -27,11 +27,14 @@ public class PalmFluorophore extends Fluorophore {
     private final PalmProperties f_props;
     private PalmState state;
     
+    private double T_activation;
+    
     
     public PalmFluorophore(PalmProperties f_props, Camera camera, double x, double y) {
         super(camera, x, y);
         this.f_props = f_props;
         this.state = PalmState.INACTIVE;
+        this.recalculate_lifetimes(0.0);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class PalmFluorophore extends Fluorophore {
         while (t_rem > 0.0) {
             switch (state) {
                 case INACTIVE:
-                    double t_activation = nextExponential(f_props.T_a);
+                    double t_activation = nextExponential(T_activation);
                     if (t_activation < t_rem) {
                         t_rem -= t_activation;
                         state = PalmState.ACTIVE;
@@ -113,8 +116,13 @@ public class PalmFluorophore extends Fluorophore {
     }
 
     @Override
-    public void recalculate_lifetimes(double laser_power) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public final void recalculate_lifetimes(double laser_power) {
+        if (current_laser_power == laser_power) {
+            return;
+        }
+        current_laser_power = laser_power;
+        
+        T_activation = f_props.T_a * laser_power;
     }
 }
 

@@ -107,7 +107,12 @@ public class Device {
         this.fluo = fluo;
         this.laser = laser;
         this.fluorophores = emitters;
-        this.obstructors = obstructors;
+        
+        if (obstructors!=null)
+            this.obstructors = obstructors;
+        else
+            this.obstructors = new ArrayList<Obstructor>();
+        
         for (Fluorophore e: emitters) {
             e.recalculate_lifetimes(laser.getPower());
         }

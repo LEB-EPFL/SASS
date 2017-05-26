@@ -41,7 +41,9 @@ public class ConsoleFrame extends PlugInFrame {
         setVisible(true);
 
         interpreter = new Interpreter( console );
+        interpreter.setShowResults(true);
         new Thread( interpreter ).start(); // start a thread to call the run() method
+        
 
     }
 

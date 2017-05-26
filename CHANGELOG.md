@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - PALM and dSTORM fluorophore blinking models (not accessible via GUI)
 - Analyzer and Controller are now loaded from ALICA .jar
-- BeanShell basic support (doesn't work fully yet!)
+- BeanShell basic support (executing the .jar causes a BeanShell console to run)
 
 ### Removed
 - Multiple simultaneous analyzer option. Create a new custom encapsulating analyzer

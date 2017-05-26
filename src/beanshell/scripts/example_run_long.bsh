@@ -1,0 +1,71 @@
+/**
+    This script performs some cool foo and then generates a lot of bar.
+ */
+
+import algorithm_tester.generators.realtime.*; // I am sorry
+import algorithm_tester.generators.realtime.fluorophores.PalmProperties;
+import java.util.ArrayList;
+
+// *** Initalize generator from the ground up ***
+Camera camera = new Camera(400, //res_x
+                    400, //res_y
+                    100, //acq_speed, 
+                    1.6, //readout_noise, 
+                    0.06, //dark_current, 
+                    0.8, //quantum_efficiency, 
+                    6, //gain, 
+                    6.45 * 1e-6, //pixel_size, 
+                    1.3, //NA, 
+                    600 * 1e-9, //wavelength, 
+                    100, //magnification, 
+                    8 * 1e-9); //radius)
+
+// fluorophores: all properties in units per frame
+FluorophoreProperties fluo = new PalmProperties(2500, // signal
+                    50, // background
+                    0.1, //ka
+                    5.4/100.0, // kb
+                    7.8/1.2/100.0, // kd1
+                    0.2*7.8/1.2/100.0, // kd2
+                    0.4/100.0, //kr1
+                    15.7/100.0); // kr2
+// laser
+Laser laser = new Laser(1.0, // start
+        500.0, // max
+        0.0); // min
+
+// generate emitters from the fluorophore properties
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
+            camera,
+            fluo);
+
+
+
+Device device = new Device(camera, fluo, laser, emitters, null);
+STORMsim generator = new STORMsim(device);
+
+// *** Initialize controller ***
+import ch.epfl.leb.alica.controllers.manual.ManualController;
+ManualController controller = new ManualController(500.0, 1.0); //max, start
+
+// *** Initialize analyzer ***
+import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
+SpotCounter analyzer = new SpotCounter(100, 5, true); //noise, box size, live view
+
+// *** Initialize algorithm tester ***
+import algorithm_tester.AlgorithmTester;
+AlgorithmTester tester = new AlgorithmTester(analyzer, generator, controller);
+
+// *** Execute simulation ***
+import ij.ImageStack;
+ImageStack stack = tester.execute( 1000, // number of simulated frames
+                  10, // controller tickrate
+                null, // csv file save
+                null); // tif file save
+
+import ij.ImagePlus;
+ImagePlus ip = new ImagePlus("Simulation output", stack);
+ip.show();
+ip.updateAndRepaintWindow();
+
+

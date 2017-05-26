@@ -1129,21 +1129,12 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     1e-9 *  Double.parseDouble(cam_radius.getText()));
 
             
-            /*fluo = new SimpleProperties(
+            fluo = new SimpleProperties(
                     Double.parseDouble(fluo_signal.getText()),
                     Double.parseDouble(fluo_background.getText()),
                     Double.parseDouble(fluo_Ton.getText()),
                     Double.parseDouble(fluo_Toff.getText()),
                     Double.parseDouble(fluo_Tbl.getText()));
-                    */
-            fluo = new PalmProperties(Double.parseDouble(fluo_signal.getText()),
-                    Double.parseDouble(fluo_background.getText()),
-                    0.1,//0.01/Integer.parseInt(emitter_no.getText()), //ka
-                    5.4/100.0, // kb
-                    7.8/1.2/100.0, // kd1
-                    0.2*7.8/1.2/100.0, // kd2
-                    0.4/100.0, //kr1
-                    15.7/100.0); // kr2
 
             laser = new Laser( Double.parseDouble(laser_start.getText()),
                     Double.parseDouble(laser_max.getText()),

@@ -2,10 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Compatible with ALICA release 0.0.1
+- Compatible with ALICA release 0.0.2
 
 ### Added
-- PALM and dSTORM fluorophore blinking models (not accessible via GUI)
+- PALM and dSTORM fluorophore blinking models (not accessible via GUI, only BeanShell)
 - Analyzer and Controller are now loaded from ALICA .jar
 - BeanShell basic support (executing the .jar causes a BeanShell console to run)
 

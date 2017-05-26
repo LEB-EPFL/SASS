@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Compatible with ALICA release 0.0.1
+
 ### Added
 - PALM and dSTORM fluorophore blinking models (not accessible via GUI)
 - Analyzer and Controller are now loaded from ALICA .jar

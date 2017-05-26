@@ -52,22 +52,12 @@ ManualController controller = new ManualController(500.0, 1.0); //max, start
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 SpotCounter analyzer = new SpotCounter(100, 5, false); //noise, box size, live view
 
-// *** Initialize algorithm tester ***
-import algorithm_tester.AlgorithmTester;
-AlgorithmTester tester = new AlgorithmTester(analyzer, generator, controller);
-
-// *** Execute simulation ***
-System.out.println("Starting simulation...");
-import ij.ImageStack;
-ImageStack stack = tester.execute( 1000, // number of simulated frames
-                  10, // controller tickrate
-                null, // csv file save
-                null); // tif file save
-System.out.println("Simulation finished.");
-
-import ij.ImagePlus;
-ImagePlus ip = new ImagePlus("Simulation output", stack);
-ip.show();
-ip.updateAndRepaintWindow();
+// *** Initialize App and GUI ***
+import ijplugin.App;
+import ijplugin.Main_Frame;
+App app = new App(analyzer, generator, controller);
+Main_Frame frame = new Main_Frame("STORMsim control");
+frame.setApp(app);
+frame.setVisible(true);
 
 

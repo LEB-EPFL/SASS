@@ -40,6 +40,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONException;
 import org.json.JSONObject;
+import simulator.generators.realtime.RNG;
 
 /**
  * Carries out the actual simulation.
@@ -94,6 +95,7 @@ public class Simulator {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        RNG.setSeed(1);
         Simulator tester = new Simulator();
         tester.execute(1000,100,"C:\\Users\\stefko\\Documents\\stormsim_log.csv","C:\\Users\\stefko\\Documents\\stormsim_tif.tif");
         System.exit(0);
@@ -229,6 +231,10 @@ public class Simulator {
         writer.close();
         
         
+    }
+    
+    public void saveStack(File tiff_file) {
+        generator.saveStack(tiff_file);
     }
     
     /**

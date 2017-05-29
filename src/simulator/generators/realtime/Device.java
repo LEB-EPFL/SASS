@@ -45,10 +45,10 @@ public class Device {
     
     private final ArrayList<Obstructor> obstructors;
     
-    private final Poisson poisson;
-    private final Random random;
-    private final Gamma gamma;
-    private final Normal gaussian;
+    private final Poisson poisson = RNG.getPoissonGenerator();
+    private final Random random = RNG.getUniformGenerator();
+    private final Gamma gamma = RNG.getGammaGenerator();
+    private final Normal gaussian = RNG.getGaussianGenerator();
     
     /**
      * Initialize device with default parameters.
@@ -87,10 +87,6 @@ public class Device {
         for (Fluorophore e: fluorophores) {
             e.recalculate_lifetimes(laser.getPower());
         }
-        random = new Random();
-        poisson = new Poisson(1.0, new MersenneTwister(random.nextInt()));
-        gamma = new Gamma(1.0, 5.0, new MersenneTwister(random.nextInt()));
-        gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
     /**
@@ -116,10 +112,6 @@ public class Device {
         for (Fluorophore e: emitters) {
             e.recalculate_lifetimes(laser.getPower());
         }
-        random = new Random();
-        poisson = new Poisson(1.0, new MersenneTwister(random.nextInt()));
-        gamma = new Gamma(1.0, 5.0, new MersenneTwister(random.nextInt()));
-        gaussian = new Normal(0.0, 1.0, new MersenneTwister(random.nextInt()));
     }
     
     /**

@@ -21,11 +21,6 @@ package simulator.generators.realtime.fluorophores;
 
 import simulator.generators.realtime.Camera;
 import simulator.generators.realtime.Fluorophore;
-import simulator.generators.realtime.fluorophores.SimpleProperties;
-import cern.jet.random.Exponential;
-import cern.jet.random.engine.MersenneTwister;
-import java.util.Random;
-import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 /**
  * SimpleFluorophore defined by its coordinates and underlying fluorophore 

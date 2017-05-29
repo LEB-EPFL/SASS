@@ -29,7 +29,7 @@ public abstract class Fluorophore extends Emitter {
     public Fluorophore(Camera camera, double x, double y) {
         super(camera, x, y);
         this.current_laser_power = 0.0;
-        this.random = new Random();
+        this.random = RNG.getUniformGenerator();
     }
 
     protected double nextExponential(double mean) {

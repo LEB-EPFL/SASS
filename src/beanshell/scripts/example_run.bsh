@@ -1,7 +1,10 @@
-import algorithm_tester.AlgorithmTester;
-import algorithm_tester.generators.realtime.STORMsim;
+import simulator.Simulator;
+import simulator.generators.realtime.STORMsim;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.selftuningpi.SelfTuningController;
+
+import simulator.generators.realtime.RNG;
+RNG.setSeed(1);
 
 
 STORMsim generator = new STORMsim(null); // null causes initialization from dialog

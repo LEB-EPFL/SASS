@@ -2,10 +2,11 @@
     This script performs some cool foo and then generates a lot of bar.
  */
 
-import algorithm_tester.generators.realtime.*; // I am sorry
-import algorithm_tester.generators.realtime.fluorophores.PalmProperties;
+import simulator.generators.realtime.*; // I am sorry
+import simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
+RNG.setSeed(1);
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(400, //res_x
                     400, //res_y
@@ -53,8 +54,8 @@ import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 SpotCounter analyzer = new SpotCounter(100, 5, false); //noise, box size, live view
 
 // *** Initialize algorithm tester ***
-import algorithm_tester.AlgorithmTester;
-AlgorithmTester tester = new AlgorithmTester(analyzer, generator, controller);
+import simulator.Simulator;
+Simulator tester = new Simulator(analyzer, generator, controller);
 
 // *** Execute simulation ***
 System.out.println("Starting simulation...");
@@ -70,4 +71,7 @@ ImagePlus ip = new ImagePlus("Simulation output", stack);
 ip.show();
 ip.updateAndRepaintWindow();
 
+File tiff_file = new File("C:\\Users\\stefko\\Documents\\stormsim2.tif");
+tester.saveStack(tiff_file);
+System.out.println("Tiff stack saved to: "+tiff_file);
 

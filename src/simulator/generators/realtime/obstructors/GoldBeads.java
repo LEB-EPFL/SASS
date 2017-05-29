@@ -24,6 +24,7 @@ import simulator.generators.realtime.Emitter;
 import simulator.generators.realtime.Obstructor;
 import java.util.ArrayList;
 import java.util.Random;
+import simulator.generators.realtime.RNG;
 
 /**
  * A number of constantly-shining gold beads interspersed in the frame.
@@ -40,7 +41,7 @@ public class GoldBeads implements Obstructor {
      * @param brightness how bright the beads are [photons/frame]
      */
     public GoldBeads(int beadCount, Camera camera, double brightness) {
-        random = new Random();
+        random = RNG.getUniformGenerator();
         beads = new ArrayList<GoldBead>();
         for (int i=0; i<beadCount; i++) {
             double x = random.nextDouble() * camera.res_x;

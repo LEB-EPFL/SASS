@@ -16,9 +16,13 @@
  */
 package beanshell;
 
+import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.util.JConsole;
 import ij.plugin.frame.PlugInFrame;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -105,11 +109,25 @@ public class ConsoleFrame extends PlugInFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ConsoleFrame().setVisible(true);
+        if (args.length == 0) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new ConsoleFrame().setVisible(true);
+                }
+            });
+        } else if (args.length == 1) {
+            Interpreter interpreter = new Interpreter();
+            try {
+                interpreter.source(args[0]);
+                System.exit(0);
+            } catch (IOException ex) {
+                Logger.getLogger(ConsoleFrame.class.getName()).log(Level.SEVERE, "IOException while executing shell script.", ex);
+                System.exit(1);
+            } catch (EvalError ex) {
+                Logger.getLogger(ConsoleFrame.class.getName()).log(Level.SEVERE, "EvalError while executing shell script.", ex);
+                System.exit(1);
             }
-        });
+        }
     }
 
 

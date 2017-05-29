@@ -42,7 +42,7 @@ public class FluorophoreGenerator {
      * @return
      */
     public static ArrayList<Fluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, FluorophoreProperties fluo) {
-        Random rnd = new Random();
+        Random rnd = RNG.getUniformGenerator();
         ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
         double x; double y;
         for (int i=0; i<n_fluos; i++) {

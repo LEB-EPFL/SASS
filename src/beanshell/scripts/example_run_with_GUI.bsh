@@ -2,9 +2,11 @@
     This script performs some cool foo and then generates a lot of bar.
  */
 
-import algorithm_tester.generators.realtime.*; // I am sorry
-import algorithm_tester.generators.realtime.fluorophores.PalmProperties;
+import simulator.generators.realtime.*; // I am sorry
+import simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
+
+RNG.setSeed(1);
 
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(400, //res_x

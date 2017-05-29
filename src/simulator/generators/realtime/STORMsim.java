@@ -48,11 +48,13 @@ public class STORMsim extends AbstractGenerator {
             
     /**
      * Initialize the generator, either from GUI dialog or use default params.
-     * @param showDialog if true, dialog is shown, otherwise default params
+     * @param device
      */
     public STORMsim(Device device) {
         super();
+        
         if (device == null) {
+            RNG.setSeed(1);
             initDeviceFromDialog();
         } else {
             this.device = device;

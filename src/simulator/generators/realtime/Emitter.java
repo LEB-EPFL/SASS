@@ -56,7 +56,7 @@ public abstract class Emitter extends Point2D.Double  {
      */
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
-        this.poisson = new Poisson(1.0, new MersenneTwister(11*(int)x + 17*(int)y));
+        this.poisson = RNG.getPoissonGenerator();
         // radius cutoff
         double r = 3 * camera.fwhm_digital / 2.3548;
         // generate pixels which will be added to image when emitter is on

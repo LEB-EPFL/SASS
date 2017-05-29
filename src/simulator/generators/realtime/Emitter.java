@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.realtime;
+package simulator.generators.realtime;
 
-import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
+import simulator.generators.realtime.fluorophores.SimpleFluorophore;
 import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
 import java.awt.geom.Point2D;

@@ -19,8 +19,8 @@
  */
 package ijplugin;
 
-import algorithm_tester.AlgorithmTester;
-import algorithm_tester.ImageGenerator;
+import simulator.Simulator;
+import simulator.ImageGenerator;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
 import ij.ImagePlus;
@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  * Backend for the FIJI plugin GUI
  * @author Marcel Stefko
  */
-public class App extends AlgorithmTester {
+public class App extends Simulator {
     private final ImagePlus imp;
     private final Plot plot;
     private Worker worker;

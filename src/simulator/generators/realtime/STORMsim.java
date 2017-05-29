@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.realtime;
+package simulator.generators.realtime;
 
-import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
-import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
-import algorithm_tester.generators.AbstractGenerator;
-import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
-import algorithm_tester.generators.realtime.obstructors.GoldBeads;
+import simulator.generators.realtime.fluorophores.SimpleFluorophore;
+import simulator.generators.realtime.fluorophores.SimpleProperties;
+import simulator.generators.AbstractGenerator;
+import simulator.generators.realtime.obstructors.ConstantBackground;
+import simulator.generators.realtime.obstructors.GoldBeads;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;

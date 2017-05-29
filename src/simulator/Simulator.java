@@ -17,11 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester;
+package simulator;
 
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
-import algorithm_tester.generators.realtime.STORMsim;
+import simulator.generators.realtime.STORMsim;
 import ch.epfl.leb.alica.analyzers.autolase.AutoLase;
 import ch.epfl.leb.alica.analyzers.quickpalm.QuickPalm;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Carries out the actual simulation.
  * @author Marcel Stefko
  */
-public class AlgorithmTester {
+public class Simulator {
 
     
     protected final Analyzer analyzer;
@@ -71,7 +71,7 @@ public class AlgorithmTester {
     /**
      * Initializes all analyzers, the generator and controller.
      */
-    public AlgorithmTester() {
+    public Simulator() {
         // Real time generator
         generator = new STORMsim(null);
         analyzer = new SpotCounter(100, 5, true);
@@ -81,7 +81,7 @@ public class AlgorithmTester {
         controller.setSetpoint(1.0);
     }
     
-    public AlgorithmTester(Analyzer analyzer,
+    public Simulator(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
         this.analyzer = analyzer;
         this.generator = generator;
@@ -94,7 +94,7 @@ public class AlgorithmTester {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AlgorithmTester tester = new AlgorithmTester();
+        Simulator tester = new Simulator();
         tester.execute(1000,100,"C:\\Users\\stefko\\Documents\\stormsim_log.csv","C:\\Users\\stefko\\Documents\\stormsim_tif.tif");
         System.exit(0);
     }
@@ -199,7 +199,7 @@ public class AlgorithmTester {
         try {
             writer = new PrintWriter(file.getAbsolutePath());
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(AlgorithmTester.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
         
@@ -218,10 +218,10 @@ public class AlgorithmTester {
                         i,e.get("true-signal"),e.get("analyzer-output"),e.get("controller-output"),e.get("controller-setpoint"));
             } catch (JSONException ex) {
                 s = String.format("%d",i);
-                Logger.getLogger(AlgorithmTester.class.getName()).log(Level.FINER, null, ex);
+                Logger.getLogger(Simulator.class.getName()).log(Level.FINER, null, ex);
             } catch (NullPointerException ex) {
                 s = String.format("%d",i);
-                Logger.getLogger(AlgorithmTester.class.getName()).log(Level.FINER, null, ex);
+                Logger.getLogger(Simulator.class.getName()).log(Level.FINER, null, ex);
             }
             writer.println(s);
         }

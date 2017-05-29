@@ -16,19 +16,19 @@
  */
 package ijplugin;
 
-import algorithm_tester.generators.realtime.Camera;
-import algorithm_tester.generators.realtime.Device;
-import algorithm_tester.generators.realtime.Fluorophore;
-import algorithm_tester.generators.realtime.fluorophores.SimpleFluorophore;
-import algorithm_tester.generators.realtime.FluorophoreGenerator;
-import algorithm_tester.generators.realtime.FluorophoreProperties;
-import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
-import algorithm_tester.generators.realtime.Laser;
-import algorithm_tester.generators.realtime.Obstructor;
-import algorithm_tester.generators.realtime.STORMsim;
-import algorithm_tester.generators.realtime.fluorophores.PalmProperties;
-import algorithm_tester.generators.realtime.obstructors.ConstantBackground;
-import algorithm_tester.generators.realtime.obstructors.GoldBeads;
+import simulator.generators.realtime.Camera;
+import simulator.generators.realtime.Device;
+import simulator.generators.realtime.Fluorophore;
+import simulator.generators.realtime.fluorophores.SimpleFluorophore;
+import simulator.generators.realtime.FluorophoreGenerator;
+import simulator.generators.realtime.FluorophoreProperties;
+import simulator.generators.realtime.fluorophores.SimpleProperties;
+import simulator.generators.realtime.Laser;
+import simulator.generators.realtime.Obstructor;
+import simulator.generators.realtime.STORMsim;
+import simulator.generators.realtime.fluorophores.PalmProperties;
+import simulator.generators.realtime.obstructors.ConstantBackground;
+import simulator.generators.realtime.obstructors.GoldBeads;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.analyzers.AnalyzerFactory;
 import ch.epfl.leb.alica.analyzers.AnalyzerSetupPanel;

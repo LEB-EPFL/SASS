@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.realtime.obstructors;
+package simulator.generators.realtime.obstructors;
 
-import algorithm_tester.generators.realtime.Camera;
-import algorithm_tester.generators.realtime.Obstructor;
+import simulator.generators.realtime.Camera;
+import simulator.generators.realtime.Obstructor;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.Opener;

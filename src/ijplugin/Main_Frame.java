@@ -19,7 +19,7 @@
  */
 package ijplugin;
 
-import algorithm_tester.generators.realtime.STORMsim;
+import simulator.generators.realtime.STORMsim;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.frame.PlugInFrame;

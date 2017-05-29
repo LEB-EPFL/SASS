@@ -17,11 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.realtime.fluorophores;
+package simulator.generators.realtime.fluorophores;
 
-import algorithm_tester.generators.realtime.Camera;
-import algorithm_tester.generators.realtime.Fluorophore;
-import algorithm_tester.generators.realtime.fluorophores.SimpleProperties;
+import simulator.generators.realtime.Camera;
+import simulator.generators.realtime.Fluorophore;
+import simulator.generators.realtime.fluorophores.SimpleProperties;
 import cern.jet.random.Exponential;
 import cern.jet.random.engine.MersenneTwister;
 import java.util.Random;

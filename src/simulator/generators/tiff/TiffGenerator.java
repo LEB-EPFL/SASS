@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators.tiff;
+package simulator.generators.tiff;
 
-import algorithm_tester.ImageGenerator;
-import algorithm_tester.generators.AbstractGenerator;
+import simulator.ImageGenerator;
+import simulator.generators.AbstractGenerator;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.FileSaver;

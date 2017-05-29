@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package algorithm_tester.generators;
+package simulator.generators;
 
-import algorithm_tester.ImageGenerator;
+import simulator.ImageGenerator;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.FileSaver;

@@ -48,7 +48,7 @@ public class Main_Frame extends PlugInFrame {
      * Initialize the new frame
      */
     public Main_Frame() {
-        super("AAA");
+        super("STORMsim");
         setSize(200, 200);
         initComponents();
         setVisible(true);

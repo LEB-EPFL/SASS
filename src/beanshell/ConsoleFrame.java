@@ -109,12 +109,15 @@ public class ConsoleFrame extends PlugInFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        // with no arguments, initialize shell
         if (args.length == 0) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     new ConsoleFrame().setVisible(true);
                 }
             });
+            
+        // with one argument, execute given shell script
         } else if (args.length == 1) {
             Interpreter interpreter = new Interpreter();
             try {

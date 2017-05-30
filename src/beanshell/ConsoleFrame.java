@@ -110,10 +110,10 @@ public class ConsoleFrame extends PlugInFrame {
     }//GEN-LAST:event_console_panelComponentResized
 
     /**
+     * Accessed from FIJI. Initializes console and prints welcome text.
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        // with no arguments, initialize shell
         final ConsoleFrame console = new ConsoleFrame();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

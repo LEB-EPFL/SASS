@@ -15,7 +15,7 @@ stdenv.mkDerivation {
   concsrc = (builtins.toPath ./src/lib/concurrent.jar);
   clisrc = (builtins.toPath ./src/lib/commons-cli-1.4.jar);
   bshsrc = (builtins.toPath ./src/lib/bsh-2.0b6.jar);
-  alicasrc = (builtins.toPath ./src/lib/ALICA-0.0.2.jar);
+  alicasrc = (builtins.toPath ./src/lib/ALICA-v0.0.2.jar);
   mmcsrc = (builtins.toPath ./src/lib/MMCoreJ.jar);
   
   meta = {

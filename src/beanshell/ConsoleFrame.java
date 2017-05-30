@@ -22,6 +22,7 @@ package beanshell;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.util.JConsole;
+import commandline.CommandLineInterface;
 import ij.plugin.frame.PlugInFrame;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -40,7 +41,7 @@ public class ConsoleFrame extends PlugInFrame {
      * Initialize the new frame
      */
     public ConsoleFrame() {
-        super("STORMsim - BeanShell console");
+        super("SASS - BeanShell console");
         this.console = new JConsole();
         initComponents();
         this.console_panel.add(this.console);
@@ -113,27 +114,16 @@ public class ConsoleFrame extends PlugInFrame {
      */
     public static void main(String args[]) {
         // with no arguments, initialize shell
-        if (args.length == 0) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new ConsoleFrame().setVisible(true);
-                }
-            });
-            
-        // with one argument, execute given shell script
-        } else if (args.length == 1) {
-            Interpreter interpreter = new Interpreter();
-            try {
-                interpreter.source(args[0]);
-            } catch (IOException ex) {
-                Logger.getLogger(ConsoleFrame.class.getName()).log(Level.SEVERE, "IOException while executing shell script.", ex);
-                System.exit(1);
-            } catch (EvalError ex) {
-                Logger.getLogger(ConsoleFrame.class.getName()).log(Level.SEVERE, "EvalError while executing shell script.", ex);
-                System.exit(1);
+        final ConsoleFrame console = new ConsoleFrame();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+
+                console.setVisible(true);
             }
+        });
+        CommandLineInterface.printWelcomeText(console.getInterpreter().getOut());
+        new Thread(console.getInterpreter()).start();
         }
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

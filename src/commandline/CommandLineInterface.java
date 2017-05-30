@@ -50,7 +50,7 @@ public final class CommandLineInterface {
     
     public static Options constructOptions() {
         final Options options = new Options();
-        options.addOption("c", "console", false, "run BeanShell interpreter inside current terminal window");
+        options.addOption("i", "interpreter", false, "run BeanShell interpreter inside current terminal window");
         options.addOption("s", "script", true, "execute BeanShell script");
         options.addOption("h", "help", false, "show this help");
         return options;
@@ -71,7 +71,7 @@ public final class CommandLineInterface {
             HelpFormatter helpFormatter = new HelpFormatter();
             helpFormatter.printHelp("java -jar <jar-name>", options, true);
             System.exit(0);
-        } else if (line.hasOption("console")) {
+        } else if (line.hasOption("interpreter")) {
             interpreter = new Interpreter(new InputStreamReader(System.in), System.out, System.err, true);
             interpreter.setShowResults(true);
             if (line.hasOption("script")) {

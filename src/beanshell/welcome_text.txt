@@ -1,6 +1,6 @@
-Welcome to STEADIER-SAILOR BeanShell console.
+Welcome to SASS BeanShell console.
 
-STEADIER-SAILOR (c) Laboratory of Experimental Biophysics EPFL 2017
+SASS (c) Laboratory of Experimental Biophysics EPFL 2017
 
 Notable commands:
    source("C:\\file\\path\\to\\folder.bsh") - execute script from file

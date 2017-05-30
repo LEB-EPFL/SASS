@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="STEADIER-SAILOR" default="default" basedir=".">
+<project name="SASS" default="default" basedir=".">
     <description>Builds, tests, and runs the project STEADIER-SAILOR.</description>
     <import file="nbproject/build-impl.xml"/>
     <property name="pluginsDir"  location="D:\Fiji_JRE6\plugins" />
-    <property name="store.jar.name" value="STEADIER_SAILOR.jar"/>
+    <property name="store.jar.name" value="SASS_v0.0.2.jar"/>
     <property name="store.dir" value="store"/>
     <property name="store.jar" value="${store.dir}/${store.jar.name}"/>
     <target name="-post-jar">

@@ -51,20 +51,19 @@ obstructors.add(beads);
 Device device = new Device(camera, fluo, laser, emitters, null);
 STORMsim generator = new STORMsim(device);
 
-// *** Initialize controller ***
-import ch.epfl.leb.alica.controllers.manual.ManualController;
-ManualController controller = new ManualController(500.0, 0.0); //max, start
+generator.setControlSignal(0.03);
+for (i=0;i<120000;i++) {
+    if (i%1000==0) {
+		System.out.println(i);
+	}
+	generator.getNextImage();
+}
+generator.saveStack(new File("C:\\Users\\stefko\\Documents\\gen_fast_stack2.tif"));
+import ij.ImagePlus;
+ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
+ip.show();
+ip.updateAndRepaintWindow();
+System.exit(0);
 
-// *** Initialize analyzer ***
-import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
-SpotCounter analyzer = new SpotCounter(100, 5, false); //noise, box size, live view
-
-// *** Initialize App and GUI ***
-import ijplugin.App;
-import ijplugin.Main_Frame;
-App app = new App(analyzer, generator, controller);
-Main_Frame frame = new Main_Frame("STORMsim control");
-frame.setApp(app);
-frame.setVisible(true);
 
 

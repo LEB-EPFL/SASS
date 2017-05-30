@@ -125,7 +125,6 @@ public class ConsoleFrame extends PlugInFrame {
             Interpreter interpreter = new Interpreter();
             try {
                 interpreter.source(args[0]);
-                System.exit(0);
             } catch (IOException ex) {
                 Logger.getLogger(ConsoleFrame.class.getName()).log(Level.SEVERE, "IOException while executing shell script.", ex);
                 System.exit(1);

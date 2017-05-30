@@ -124,10 +124,18 @@ public class Device {
         return result;
     }
     
+    /**
+     *
+     * @return size of current FOV in square micrometers
+     */
     public double getFOVsize_um() {
         return (camera.pixel_size*1e6/camera.magnification)*(camera.pixel_size*1e6/camera.magnification)*camera.res_x*camera.res_y;
     }
     
+    /**
+     * 
+     * @return length of one pixel side in micrometers
+     */
     public double getPixelSizeUm() {
         return camera.pixel_size*1e6/camera.magnification;
     }

@@ -59,6 +59,12 @@ public class App extends Simulator {
         
     }
     
+    /**
+     * Assemble App from its components
+     * @param analyzer
+     * @param generator
+     * @param controller
+     */
     public App(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
         super(analyzer, generator, controller);

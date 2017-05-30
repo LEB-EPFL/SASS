@@ -22,20 +22,36 @@ package simulator.generators.realtime;
 import java.util.Random;
 
 /**
- *
- * @author stefko
+ * A general fluorescent molecule which emits light.
+ * @author Marcel Stefko
  */
 public abstract class Fluorophore extends Emitter {
-    protected double current_laser_power;
-    protected final Random random;
 
+    /**
+     * Laser power value for which the currently stored lifetime values are calculated.
+     */
+    protected double current_laser_power;
+    
+    private final Random random;
+
+    /**
+     * Initialize fluorophore and calculate its pattern on camera
+     * @param camera Camera used for calculating diffraction pattern
+     * @param x x-position in pixels
+     * @param y y-position in pixels
+     */
     public Fluorophore(Camera camera, double x, double y) {
         super(camera, x, y);
         this.current_laser_power = 0.0;
         this.random = RNG.getUniformGenerator();
     }
 
-    protected double nextExponential(double mean) {
+    /**
+     * Sample an random number from an exponential distribution
+     * @param mean mean of the distribution
+     * @return random number from this distribution
+     */
+    protected final double nextExponential(double mean) {
         if (java.lang.Double.isInfinite(mean))
             return java.lang.Double.POSITIVE_INFINITY;
         else

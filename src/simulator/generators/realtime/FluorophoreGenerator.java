@@ -53,6 +53,13 @@ public class FluorophoreGenerator {
         return result;
     }
     
+    /**
+     * Generate a rectangular grid of fluorophores
+     * @param spacing distance between nearest neighbors
+     * @param cam Camera
+     * @param fluo type of fluorophore
+     * @return
+     */
     public static ArrayList<Fluorophore> generateFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
         int limit_x = cam.res_x;
         int limit_y = cam.res_y;

@@ -48,18 +48,34 @@ public final class RNG {
         gaussian = new Normal(0.0, 1.0, new MersenneTwister(uniform.nextInt()));
     }
     
+    /**
+     *
+     * @return uniform RNG
+     */
     public static Random getUniformGenerator() {
         return uniform;
     }
     
+    /**
+     *
+     * @return Poisson RNG
+     */
     public static Poisson getPoissonGenerator() {
         return poisson;
     }
     
+    /**
+     *
+     * @return Gamma distribution RNG
+     */
     public static Gamma getGammaGenerator() {
         return gamma;
     }
     
+    /**
+     *
+     * @return Gaussian distribution RNG
+     */
     public static Normal getGaussianGenerator() {
         return gaussian;
     }

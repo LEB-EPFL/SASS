@@ -33,13 +33,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * Main FIJI plugin frame.
  * @author Marcel Stefko
  */
-public class Main_Frame extends PlugInFrame {
+public class GUI extends PlugInFrame {
     App app;
     /**
      * Creates new form MainFrame
      * @param title title of the window
      */
-    public Main_Frame(String title) {
+    public GUI(String title) {
         super(title);
         initComponents();
     }
@@ -47,7 +47,7 @@ public class Main_Frame extends PlugInFrame {
     /**
      * Initialize the new frame
      */
-    public Main_Frame() {
+    public GUI() {
         super("STORMsim");
         setSize(200, 200);
         initComponents();
@@ -67,6 +67,10 @@ public class Main_Frame extends PlugInFrame {
         
     }
     
+    /**
+     * Set the App which this GUI should control
+     * @param app
+     */
     public void setApp(App app) {
         this.app = app;
     }
@@ -222,7 +226,7 @@ public class Main_Frame extends PlugInFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main_Frame("main").setVisible(true);
+                new GUI("main").setVisible(true);
             }
         });
     }

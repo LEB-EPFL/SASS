@@ -51,6 +51,10 @@ public class ConsoleFrame extends PlugInFrame {
         interpreter.setShowResults(true);
     }
     
+    /**
+     * 
+     * @return BeanShell interpreter associated with this ConsoleFrame
+     */
     public Interpreter getInterpreter() {
         return interpreter;
     }
@@ -108,23 +112,6 @@ public class ConsoleFrame extends PlugInFrame {
     private void console_panelComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_console_panelComponentResized
         this.console.setSize(this.console_panel.getWidth(), this.console_panel.getHeight());
     }//GEN-LAST:event_console_panelComponentResized
-
-    /**
-     * Accessed from FIJI. Initializes console and prints welcome text.
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        final ConsoleFrame console = new ConsoleFrame();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-
-                console.setVisible(true);
-            }
-        });
-        CommandLineInterface.printWelcomeText(console.getInterpreter().getOut());
-        new Thread(console.getInterpreter()).start();
-        }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel console_panel;

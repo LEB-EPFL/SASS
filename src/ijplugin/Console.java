@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
@@ -17,31 +17,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package simulator.generators.realtime;
+package ijplugin;
+
+import beanshell.ConsoleFrame;
+import commandline.CommandLineInterface;
 
 /**
- * Each fluorophore has a signal value and background value
- * @author Marcel Stefko
+ * Launched by FIJI
+ * @author stefko
  */
-public abstract class FluorophoreProperties {
-    public final double signal;
-    public final double background;
-    
-    public FluorophoreProperties(double signal, double background) {
-        if (signal < 0.0 || background < 0.0) {
-            throw new IllegalArgumentException();
-        }
-        
-        this.signal = signal;
-        this.background = background;
-    }
+public class Console {
     
     /**
-     * Create fluorophore with these given properties
-     * @param camera Camera to calculate pattern
-     * @param x x-position in pixels
-     * @param y y-position in pixels
-     * @return generated fluorophore
+     * Accessed from FIJI. Initializes console and prints welcome text.
      */
-    public abstract Fluorophore createFluorophore(Camera camera, double x, double y);
+    public Console() {
+        final ConsoleFrame console = new ConsoleFrame();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+
+                console.setVisible(true);
+            }
+        });
+        CommandLineInterface.printWelcomeText(console.getInterpreter().getOut());
+        new Thread(console.getInterpreter()).start();
+    }
 }

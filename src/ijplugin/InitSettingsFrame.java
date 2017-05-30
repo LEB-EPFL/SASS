@@ -46,18 +46,24 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author stefko
+ * Outdated frame for basic setup of simulation
+ * @author Marcel Stefko
  */
 public class InitSettingsFrame extends java.awt.Dialog {
 
     File emitterCsvFile;
     File backgroundTifFile;
-    Main_Frame main;
+    GUI main;
     private final AnalyzerFactory analyzer_factory;
     private final ControllerFactory controller_factory;
     
-    public InitSettingsFrame(java.awt.Frame parent, boolean modal, Main_Frame main) {
+    /**
+     * Assemble the frame and display it
+     * @param parent
+     * @param modal should the window be persistent
+     * @param main GUI to notify
+     */
+    public InitSettingsFrame(java.awt.Frame parent, boolean modal, GUI main) {
         super(parent, modal);
         this.main = main;
         this.analyzer_factory = new AnalyzerFactory();

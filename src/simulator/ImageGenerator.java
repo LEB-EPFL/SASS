@@ -82,5 +82,9 @@ public interface ImageGenerator {
      */
     public ImageStack getStack();
     
+    /**
+     *
+     * @return length of one pixel side in micrometers
+     */
     public double getPixelSizeUm();
 }

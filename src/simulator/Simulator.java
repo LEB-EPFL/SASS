@@ -48,7 +48,9 @@ import simulator.generators.realtime.RNG;
  */
 public class Simulator {
 
-    
+    /**
+     * Analyzer which analyzes generated images
+     */
     protected final Analyzer analyzer;
 
     /**
@@ -82,6 +84,12 @@ public class Simulator {
         controller.setSetpoint(1.0);
     }
     
+    /**
+     * Initialize simulator from components
+     * @param analyzer
+     * @param generator
+     * @param controller
+     */
     public Simulator(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
         this.analyzer = analyzer;
@@ -103,6 +111,7 @@ public class Simulator {
     
     /**
      * Define the testing procedure in this method.
+     * @return generated ImageStack
      */
     public ImageStack execute() {
         JFileChooser fc = new JFileChooser();
@@ -149,6 +158,14 @@ public class Simulator {
         return generator.getStack();
     }
     
+    /**
+     * An example simulation
+     * @param no_of_images
+     * @param controller_refresh_rate
+     * @param csv_save_path
+     * @param tiff_save_path
+     * @return
+     */
     public ImageStack execute(int no_of_images, int controller_refresh_rate, String csv_save_path, String tiff_save_path) {
         if (no_of_images < 1 || controller_refresh_rate < 1) {
             throw new IllegalArgumentException("Wrong simulation parameters!");
@@ -233,6 +250,10 @@ public class Simulator {
         
     }
     
+    /**
+     * Save current ImageStack to TIFF file
+     * @param tiff_file file to save to
+     */
     public void saveStack(File tiff_file) {
         generator.saveStack(tiff_file);
     }

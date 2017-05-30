@@ -33,8 +33,8 @@ import java.util.logging.Logger;
  */
 public class ConsoleFrame extends PlugInFrame {
 
-    private JConsole console;
-    private Interpreter interpreter;
+    private final JConsole console;
+    private final Interpreter interpreter;
     
     /**
      * Initialize the new frame
@@ -45,13 +45,13 @@ public class ConsoleFrame extends PlugInFrame {
         initComponents();
         this.console_panel.add(this.console);
         this.console.setSize(500, 400);
-        setVisible(true);
 
         interpreter = new Interpreter( console );
         interpreter.setShowResults(true);
-        new Thread( interpreter ).start(); // start a thread to call the run() method
-        
-
+    }
+    
+    public Interpreter getInterpreter() {
+        return interpreter;
     }
 
     /**

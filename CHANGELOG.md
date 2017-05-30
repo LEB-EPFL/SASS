@@ -9,12 +9,11 @@ Compatible with [ALICA v0.0.2]
 ### Added
 - PALM and dSTORM fluorophore blinking models (not accessible via GUI, only BeanShell)
 - Analyzer and Controller are now loaded from ALICA .jar
-- BeanShell basic support (executing the .jar causes a BeanShell console to run)
+- BeanShell integration (executing the .jar causes a standalone BeanShell console to run, running scripts possible via command line)
 
 ### Removed
-- Multiple simultaneous analyzer option. Create a new custom encapsulating analyzer
-  if you want the same functionality. Possibility to output multiple values from
-  Analyzer will be implemented using JSONObjects
+- Multiple simultaneous analyzers option. Create a new custom encapsulating analyzer
+  if you want the same functionality.
 
 
 ## [v0.0.1]

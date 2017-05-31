@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [v0.1.0]
-Compatible with [ALICA v0.1.0]
+Compatible with [ALICA v0.1.x]
 
 ### Fixed
 - BeanShell integration into FIJI

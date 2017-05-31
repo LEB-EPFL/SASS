@@ -24,3 +24,4 @@ Compatible with [ALICA v0.0.2]
 
 [Unreleased]: https://github.com/MStefko/STEADIER-SAILOR/compare/v0.0.2...HEAD
 [ALICA v0.0.2]: https://github.com/MStefko/ALICA/releases/tag/v0.0.2
+[v0.0.2]: https://github.com/MStefko/SASS/releases/tag/v0.0.2

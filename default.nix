@@ -14,7 +14,7 @@ stdenv.mkDerivation {
   math3src = (builtins.toPath ./src/lib/commons-math3-3.4.1.jar);
   concsrc = (builtins.toPath ./src/lib/concurrent.jar);
   clisrc = (builtins.toPath ./src/lib/commons-cli-1.4.jar);
-  bshsrc = (builtins.toPath ./src/lib/bsh-2.0b6.jar);
+  bshsrc = (builtins.toPath ./src/lib/bsh-2.0b4.jar);
   alicasrc = (builtins.toPath ./src/lib/ALICA-v0.1.0.jar);
   mmcsrc = (builtins.toPath ./src/lib/MMCoreJ.jar);
   

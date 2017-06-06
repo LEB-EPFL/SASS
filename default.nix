@@ -1,8 +1,8 @@
 with import <nixpkgs> {};
 
 stdenv.mkDerivation {
-  name = "SASS-0.1.0";
-  version = "0.1.0";
+  name = "SASS-0.1.1";
+  version = "0.1.1";
   buildInputs = [
     jdk
     netbeans

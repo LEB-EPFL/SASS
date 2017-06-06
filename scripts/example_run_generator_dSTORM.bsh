@@ -1,10 +1,10 @@
 /**
-    This script manually initializes the components of simulation, and then launches a GUI where
-	you can control the laser power and start/stop simulation.
+ * This is a run without real-time laser control, good for simulating STORM data for use
+ * by other programs.
  */
 
 import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dStormProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
 RNG.setSeed(1);
@@ -36,35 +36,45 @@ Laser laser = new Laser(0.0, // start
         500.0, // max
         0.0); // min
 
-// generate emitters from the fluorophore properties
-/*ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
-            camera,
-            fluo);*/
-File csv_file = new File("C:\\Users\\stefko\\Documents\\positions.csv");
-ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
+// generate emitters 
+	// create a grid
+	/*ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
+				camera,
+				fluo);*/
+				
+	// or parse emitters from file
+	File csv_file = new File("emitter_positions.csv");
+	ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
 
+// add a gold bead to the field of view at random location
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();
 Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);
 
+// assemble the device and generator
 Device device = new Device(camera, fluo, laser, emitters, null);
 STORMsim generator = new STORMsim(device);
 
-// *** Initialize controller ***
-import ch.epfl.leb.alica.controllers.manual.ManualController;
-ManualController controller = new ManualController(500.0, 0.0); //max, start
+// set laser power
+generator.setControlSignal(0.03);
 
-// *** Initialize analyzer ***
-import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
-SpotCounter analyzer = new SpotCounter(100, 5, false); //noise, box size, live view
+// simulate frames
+for (i=0;i<120000;i++) {
+    if (i%1000==0) {
+		System.out.println(i);
+	}
+	generator.getNextImage();
+}
 
-// *** Initialize App and GUI ***
-import ch.epfl.leb.sass.ijplugin.App;
-import ch.epfl.leb.sass.ijplugin.GUI;
-App app = new App(analyzer, generator, controller);
-GUI frame = new GUI("STORMsim control");
-frame.setApp(app);
-frame.setVisible(true);
+// save and show
+generator.saveStack(new File("generated_stack.tif"));
+import ij.ImagePlus;
+ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
+ip.show();
+ip.updateAndRepaintWindow();
+
+//System.exit(0); // uncomment if you want termination immediately
+
 
 

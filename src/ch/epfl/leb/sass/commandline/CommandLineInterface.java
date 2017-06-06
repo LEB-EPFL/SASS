@@ -45,7 +45,7 @@ import org.apache.commons.cli.ParseException;
 public final class CommandLineInterface {
     
     private static final Options options = constructOptions();
-    private static final URL urlToWelcomeText = CommandLineInterface.class.getResource("/commandline/welcome_text.txt");
+    private static final URL urlToWelcomeText = CommandLineInterface.class.getResource("/ch/epfl/leb/sass/commandline/welcome_text.txt");
     
     /**
      *

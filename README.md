@@ -14,7 +14,7 @@ Placing the .jar file in `FIJI/plugins/` folder (file MUST have an underscore in
 
 ## Acknowledgements
 SASS uses adapted code and algorithms under GPL from following projects:
- - [SOFIsim](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes
+ - [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes
  - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko
  
  

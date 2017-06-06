@@ -55,13 +55,18 @@ public class dStormFluorophore extends Fluorophore {
 
     @Override
     protected double simulateBrightness() {
+
         if (isBleached())
             return 0.0;
-        double t_rem = 1.0;
+        double t_rem = 1.0; // remaining time
         double on_time = 0.0;
         while (t_rem > 0.0) {
+            // Main idea here is that we look for a transition that happens
+            // earlier than t_rem, and also earlier than all other transitions
+            // if t_rem is hit first, we do not transit to another state
             switch (state) {
                 case DARK:
+                    // check for recovery to active state
                     double t_recovery = nextExponential(T_dark_recovery);
                     if (t_recovery < t_rem) {
                         t_rem -= t_recovery;
@@ -72,12 +77,16 @@ public class dStormFluorophore extends Fluorophore {
                     break;
                 
                 case ACTIVE:
+                    // we are on, remember to increment on-time
+                    // transition to bleach or triplet state
                     double t_bleach = nextExponential(f_props.T_bleach);
                     double t_triplet = nextExponential(f_props.T_triplet);
+                    // check bleaching
                     if (t_bleach<t_rem && t_bleach<t_triplet) {
                         on_time += t_bleach;
                         t_rem = 0.0;
                         state = dStormState.BLEACHED;
+                    // check triplet state
                     } else if (t_triplet<t_rem) {
                         on_time += t_triplet;
                         t_rem -= t_triplet;
@@ -89,6 +98,7 @@ public class dStormFluorophore extends Fluorophore {
                     break;
                     
                 case TRIPLET:
+                    // recovery possible
                     double t_dark = nextExponential(f_props.T_dark);
                     double t_triplet_recovery = nextExponential(f_props.T_triplet_recovery);
                     if (t_dark<t_rem && t_dark<t_triplet_recovery) {

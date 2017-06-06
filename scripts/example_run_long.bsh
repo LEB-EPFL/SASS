@@ -2,8 +2,8 @@
     This script performs some cool foo and then generates a lot of bar.
  */
 
-import simulator.generators.realtime.*; // I am sorry
-import simulator.generators.realtime.fluorophores.PalmProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
 RNG.setSeed(5);
@@ -54,7 +54,7 @@ import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 SpotCounter analyzer = new SpotCounter(100, 5, false); //noise, box size, live view
 
 // *** Initialize algorithm tester ***
-import simulator.Simulator;
+import ch.epfl.leb.sass.simulator.Simulator;
 Simulator tester = new Simulator(analyzer, generator, controller);
 
 // *** Execute simulation ***

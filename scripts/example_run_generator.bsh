@@ -2,8 +2,8 @@
     This script performs some cool foo and then generates a lot of bar.
  */
 
-import simulator.generators.realtime.*; // I am sorry
-import simulator.generators.realtime.fluorophores.PalmProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
 RNG.setSeed(1);
@@ -43,7 +43,7 @@ Laser laser = new Laser(0.0, // start
 File csv_file = new File("C:\\Users\\stefko\\Documents\\positions.csv");
 ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
 
-import simulator.generators.realtime.obstructors.GoldBeads;
+import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();
 Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);

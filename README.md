@@ -10,7 +10,7 @@ Toolkit for testing various algorithms for estimating fluorophore density in STO
 ### As FIJI plugin
 Placing the .jar file in `FIJI/plugins/` folder (file MUST have an underscore in the name, e.g. `SASS_v0.0.2.jar`) enables FIJI integration:
  - `Plugins -> SASS -> GUI` launches an interactive simulator (not all options are available through the GUI).
- - `Plugins -> SASS -> Console` launches BeanShell console. Generated images can be analyzed immediately with FIJI.
+ - `Plugins -> SASS -> Command Prompt` launches BeanShell console. Generated images can be analyzed immediately with FIJI.
 
 ## Acknowledgements
 SASS uses adapted code and algorithms under GPL from following projects:

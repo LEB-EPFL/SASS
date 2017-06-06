@@ -1,5 +1,6 @@
 /**
-    This script performs some cool foo and then generates a lot of bar.
+    This script manually initializes the components of simulation, and then launches a GUI where
+	you can control the laser power and start/stop simulation.
  */
 
 import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry

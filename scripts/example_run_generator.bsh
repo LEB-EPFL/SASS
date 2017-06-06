@@ -1,5 +1,6 @@
 /**
-    This script performs some cool foo and then generates a lot of bar.
+ * This is a run without real-time laser control, good for simulating STORM data for use
+ * by other programs.
  */
 
 import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
@@ -35,34 +36,45 @@ Laser laser = new Laser(0.0, // start
         500.0, // max
         0.0); // min
 
-// generate emitters from the fluorophore properties
-/*ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
-            camera,
-            fluo);*/
-File csv_file = new File("C:\\Users\\stefko\\Documents\\positions.csv");
-ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
+// generate emitters 
+	// create a grid
+	/*ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
+				camera,
+				fluo);*/
+				
+	// or parse emitters from file
+	File csv_file = new File("emitter_positions.csv");
+	ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
 
+// add a gold bead to the field of view at random location
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();
 Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);
 
+// assemble the device and generator
 Device device = new Device(camera, fluo, laser, emitters, null);
 STORMsim generator = new STORMsim(device);
 
+// set laser power
 generator.setControlSignal(0.03);
+
+// simulate frames
 for (i=0;i<120000;i++) {
     if (i%1000==0) {
 		System.out.println(i);
 	}
 	generator.getNextImage();
 }
-generator.saveStack(new File("C:\\Users\\stefko\\Documents\\gen_fast_stack2.tif"));
+
+// save and show
+generator.saveStack(new File("generated_stack.tif"));
 import ij.ImagePlus;
 ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 ip.show();
 ip.updateAndRepaintWindow();
-System.exit(0);
+
+//System.exit(0); // uncomment if you want termination immediately
 
 
 

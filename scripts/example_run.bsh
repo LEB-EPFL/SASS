@@ -1,3 +1,10 @@
+/**
+ * This script initializes the STORMsim generator from dialog, 
+ * and uses SpotCounter analyzer
+ * and self-tuning PI controller. 
+ * Then it simulates 100 frames and saves csv log and tif stack.
+ */
+
 import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.generators.realtime.STORMsim;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;

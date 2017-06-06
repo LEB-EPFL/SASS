@@ -86,21 +86,6 @@ public class Camera {
      * gain multiplied by quantum efficiency
      */
     public final double quantum_gain;
-    
-    /**
-     * point-spread function of the optics
-     */
-    public final double[][] psf;
-
-    /**
-     * digital representation of the PSF?
-     */
-    public final double[][] psf_digital;
-
-    /**
-     * FWHM of the PSF
-     */
-    public final double fwhm;
 
     /**
      * digital representation of the FWHM?
@@ -154,69 +139,7 @@ public class Camera {
         // calculate Gaussian PSF
         double airy_psf_radius = 0.61*wavelength/NA;
         double airy_psf_radius_digital = airy_psf_radius * magnification;
-        
-        fwhm = airy_psf_radius / radius;
+
         fwhm_digital = airy_psf_radius_digital / pixel_size;
-        
-        int psfSize = (2 * (int)fwhm_digital) + 1;
-        int psfSize_digital = psfSize;
-        
-        psf_digital = generateGaussianMatrix(psfSize_digital, fwhm_digital/2.3548);
-        double[][] psf_temp = generateGaussianMatrix(psfSize, fwhm/2.3548);
-        psf = multiplyBy(psf_temp, getMaximum(psf_digital)/getMaximum(psf_temp));
-    }
-    
-    /**
-     * Generate a Gaussian low-pass filter matrix (psf simulation)
-     * @param size size of the matrix (odd integer)
-     * @param sigma sigma of the 2D Gaussian curve
-     */
-    private double[][] generateGaussianMatrix(int size, double sigma) {
-        double[][] result = new double[size][size];
-        if (size%2 != 1)
-            throw new IllegalArgumentException("Gaussian matrix size must be an odd integer!");
-        int mid = (size - 1)/2;
-        for (int step_x = 0; step_x <= mid; step_x++) {
-            for (int step_y = 0; step_y <= mid; step_y++) {
-                double val = exp( -(step_x*step_x + step_y*step_y)/(2*sigma*sigma));
-                
-                result[mid + step_x][mid + step_y] = val;
-                result[mid + step_x][mid - step_y] = val;
-                result[mid - step_x][mid + step_y] = val;
-                result[mid - step_x][mid - step_y] = val;
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * Return maximal value from a 2D array
-     * @param arr array to be analyzed
-     */
-    private double getMaximum(double[][] arr) {
-        double max = 0.0;
-        for (double[] row: arr) {
-            for (double val: row) {
-                if (val > max)
-                    max = val;
-            }
-        }
-        return max;
-    }
-    
-    /**
-     * Multiply an array by a constant
-     * @param arr array to be multiplied
-     * @return resulting array
-     */
-    private double[][] multiplyBy(double[][] grid, double factor) {
-        double[][] result = new double[grid.length][grid[0].length];
-        for (int row=0; row < grid.length; row++) {
-            for (int col=0; col < grid[row].length; col++) {
-                double val = grid[row][col] * factor;
-                result[row][col] = val;
-            }
-        }
-        return result;
     }
 }

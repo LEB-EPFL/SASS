@@ -22,8 +22,6 @@ package ch.epfl.leb.sass.simulator;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
 import ch.epfl.leb.sass.simulator.generators.realtime.STORMsim;
-import ch.epfl.leb.alica.analyzers.autolase.AutoLase;
-import ch.epfl.leb.alica.analyzers.quickpalm.QuickPalm;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
 import ij.ImageStack;
@@ -31,9 +29,7 @@ import ij.process.ImageProcessor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -95,67 +91,6 @@ public class Simulator {
         this.analyzer = analyzer;
         this.generator = generator;
         this.controller = controller;
-    }
-    
-    /**
-     * Main function which executes the testing procedure.
-     * 
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        RNG.setSeed(1);
-        Simulator tester = new Simulator();
-        tester.execute(1000,100,"C:\\Users\\stefko\\Documents\\stormsim_log.csv","C:\\Users\\stefko\\Documents\\stormsim_tif.tif");
-        System.exit(0);
-    }
-    
-    /**
-     * Define the testing procedure in this method.
-     * @return generated ImageStack
-     */
-    public ImageStack execute() {
-        JFileChooser fc = new JFileChooser();
-        int returnVal;
-        
-        //*
-        // File chooser dialog for saving output csv
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        //set a default filename 
-        fc.setSelectedFile(new File("tester_output.csv"));
-        //Set an extension filter
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
-        returnVal = fc.showSaveDialog(null);
-        if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return null;
-        }
-        File csv_output = fc.getSelectedFile();
-        
-        ImageProcessor ip;
-        for (image_count = 0; image_count < 25; image_count++) {
-            ip = generator.getNextImage();
-            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 0.100, 10);
-            //System.out.println(image_count);
-            if (image_count % 10 == 0) {
-                controller.nextValue(analyzer.getBatchOutput());
-                generator.setControlSignal(controller.getCurrentOutput());
-            }
-        }
-        
-        fc.setFileFilter(new FileNameExtensionFilter("TIF file","tif"));
-        fc.setSelectedFile(new File("gen_stack.tif"));
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        returnVal = fc.showSaveDialog(null);
-        if  (returnVal != JFileChooser.APPROVE_OPTION) {
-            return null;
-        }
-        generator.saveStack(fc.getSelectedFile());
-        
-        
-        //*/
-        
-        // Save analysis results to a csv file.
-        saveToCsv(csv_output);
-        return generator.getStack();
     }
     
     /**
@@ -263,7 +198,7 @@ public class Simulator {
      * this class.
      */
     public void incrementCounter() {
-    image_count++;
+        image_count++;
     }
     
     /**

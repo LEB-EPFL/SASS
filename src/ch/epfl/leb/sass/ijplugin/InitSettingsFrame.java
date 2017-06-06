@@ -131,7 +131,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         label10 = new java.awt.Label();
         label11 = new java.awt.Label();
         label12 = new java.awt.Label();
-        label4 = new java.awt.Label();
         label13 = new java.awt.Label();
         cam_resX = new java.awt.TextField();
         cam_resY = new java.awt.TextField();
@@ -143,7 +142,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         cam_px_size = new java.awt.TextField();
         cam_NA = new java.awt.TextField();
         cam_wavelength = new java.awt.TextField();
-        cam_radius = new java.awt.TextField();
         cam_magnification = new java.awt.TextField();
         label14 = new java.awt.Label();
         label15 = new java.awt.Label();
@@ -156,7 +154,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         label22 = new java.awt.Label();
         label23 = new java.awt.Label();
         label24 = new java.awt.Label();
-        label25 = new java.awt.Label();
         panel2 = new java.awt.Panel();
         label1 = new java.awt.Label();
         label27 = new java.awt.Label();
@@ -246,8 +243,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         label12.setText("Wavelength:");
 
-        label4.setText("Cross-section radius:");
-
         label13.setText("Magnification:");
 
         cam_resX.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
@@ -290,10 +285,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
         cam_wavelength.setMinimumSize(new java.awt.Dimension(120, 20));
         cam_wavelength.setText("600");
 
-        cam_radius.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        cam_radius.setMinimumSize(new java.awt.Dimension(120, 20));
-        cam_radius.setText("8.0");
-
         cam_magnification.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         cam_magnification.setMinimumSize(new java.awt.Dimension(120, 20));
         cam_magnification.setText("100");
@@ -320,8 +311,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         label24.setText("-");
 
-        label25.setText("nm");
-
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -331,7 +320,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -343,6 +331,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                             .addComponent(label11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(21, 21, 21)
@@ -389,15 +378,9 @@ public class InitSettingsFrame extends java.awt.Dialog {
                                         .addComponent(label14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panel1Layout.createSequentialGroup()
-                                        .addComponent(cam_radius, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(panel1Layout.createSequentialGroup()
-                                        .addComponent(cam_magnification, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(label24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(cam_magnification, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(label24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGap(86, 86, 86)
                         .addComponent(label26, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -430,8 +413,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                         .addComponent(label12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(label13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panel1Layout.createSequentialGroup()
@@ -487,11 +469,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cam_magnification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cam_radius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         label1.setText("Fluorophores");
@@ -1134,8 +1112,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     1e-6 *  Double.parseDouble(cam_px_size.getText()),
                     Double.parseDouble(cam_NA.getText()),
                     1e-9 *  Double.parseDouble(cam_wavelength.getText()),
-                    Double.parseDouble(cam_magnification.getText()),
-                    1e-9 *  Double.parseDouble(cam_radius.getText()));
+                    Double.parseDouble(cam_magnification.getText()));
 
             
             fluo = new SimpleProperties(
@@ -1244,7 +1221,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.TextField cam_magnification;
     private java.awt.TextField cam_px_size;
     private java.awt.TextField cam_quantum_eff;
-    private java.awt.TextField cam_radius;
     private java.awt.TextField cam_readout_noise;
     private java.awt.TextField cam_resX;
     private java.awt.TextField cam_resY;
@@ -1290,7 +1266,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.Label label22;
     private java.awt.Label label23;
     private java.awt.Label label24;
-    private java.awt.Label label25;
     private java.awt.Label label26;
     private java.awt.Label label27;
     private java.awt.Label label28;
@@ -1306,7 +1281,6 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.Label label37;
     private java.awt.Label label38;
     private java.awt.Label label39;
-    private java.awt.Label label4;
     private java.awt.Label label40;
     private java.awt.Label label41;
     private java.awt.Label label42;

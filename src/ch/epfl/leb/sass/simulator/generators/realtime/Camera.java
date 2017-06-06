@@ -71,11 +71,6 @@ public class Camera {
      * magnification of camera [-]
      */
     public final double magnification;
-
-    /**
-     * square root of absorption cross-section [m]
-     */
-    public final double radius;
     
     /**
      * noise in frame caused by dark current [electrons/frame/pixel]
@@ -115,11 +110,10 @@ public class Camera {
      * @param NA numerical aperture [-]
      * @param wavelength light wavelength [m]
      * @param magnification magnification of camera [-]
-     * @param radius square root of absorption cross-section [m]
      */
     public Camera(int res_x, int res_y, int acq_speed, double readout_noise, double dark_current,
             double quantum_efficiency, double gain, double pixel_size, double NA,
-            double wavelength, double magnification, double radius) {
+            double wavelength, double magnification) {
         this.res_x = res_x;
         this.res_y = res_y;
         this.acq_speed = acq_speed;
@@ -131,7 +125,6 @@ public class Camera {
         this.NA = NA;
         this.wavelength = wavelength;
         this.magnification = magnification;
-        this.radius = radius;
         
         this.thermal_noise = this.dark_current / this.acq_speed;
         this.quantum_gain = this.quantum_efficiency * this.gain;

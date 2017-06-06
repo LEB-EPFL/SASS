@@ -64,8 +64,7 @@ public class Device {
                             6.45 * 1e-6, //pixel_size, 
                             1.3, //NA, 
                             600 * 1e-9, //wavelength, 
-                            100, //magnification, 
-                            8 * 1e-9); //radius)
+                            100); //magnification, 
         
         fluo = new SimpleProperties(2500, //signal_per_frame, 
                                50, //background_per_frame, 
@@ -236,7 +235,7 @@ public class Device {
             for (int col=0; col < image[row].length; col++) {
                 image[row][col] += camera.readout_noise*gaussian.nextDouble() +
                                    camera.thermal_noise*gaussian.nextDouble() +
-                                   gamma.nextDouble(image[row][col]+0.1f,camera.quantum_gain);
+                                   gamma.nextDouble(image[row][col]+0.01f,camera.quantum_gain); //0.01f so that we dont do nextDouble(0,c)
             }
         }
     }

@@ -117,7 +117,6 @@ public class STORMsim extends AbstractGenerator {
         gd.addNumericField("Numerical aperture", 1.3, 2);
         gd.addNumericField("Wavelength [nm]", 600, 0);
         gd.addNumericField("Magnification", 100, 0);
-        gd.addNumericField("Cross-section radius [nm]", 8, 1);
         gd.showDialog();
         
         Camera camera = new Camera((int)gd.getNextNumber(), //res_x
@@ -130,8 +129,7 @@ public class STORMsim extends AbstractGenerator {
                             gd.getNextNumber() * 1e-6, //pixel_size, 
                             gd.getNextNumber(), //NA, 
                             gd.getNextNumber() * 1e-9, //wavelength, 
-                            gd.getNextNumber(), //magnification, 
-                            gd.getNextNumber() * 1e-9); //radius)
+                            gd.getNextNumber()); //magnification, 
         
         gd = new GenericDialog("Device initialization");
         

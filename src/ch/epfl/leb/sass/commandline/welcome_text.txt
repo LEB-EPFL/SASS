@@ -3,11 +3,9 @@ Welcome to SASS BeanShell console.
 SASS (c) Laboratory of Experimental Biophysics EPFL 2017
 
 Notable commands:
-   source("C:\\file\\path\\to\\folder.bsh") - execute script from file
+   source("path\\to\\file.bsh") - execute script from file
    cd(), cat(), dir(), pwd(), etc. - Unix-like shell commands
    frame() - Display a GUI component in a Frame or JFrame.
-   javap(Object) - Print the methods and fields of an object, 
-       similar to the output of the Java javap command.
-   classBrowser() - open the class browser
+   javap(Object) - Print the methods and fields of an object.
    
 Have fun!

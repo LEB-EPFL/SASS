@@ -24,6 +24,8 @@ import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
 import java.awt.geom.Point2D;
 import static java.lang.Math.sqrt;
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,8 +59,9 @@ public abstract class Emitter extends Point2D.Double  {
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
         this.poisson = RNG.getPoissonGenerator();
+        final double sigma = camera.fwhm_digital / 2.3548;
         // radius cutoff
-        double r = 3 * camera.fwhm_digital / 2.3548;
+        final double r = 3 * sigma;
         // generate pixels which will be added to image when emitter is on
         this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
         
@@ -74,9 +77,10 @@ public abstract class Emitter extends Point2D.Double  {
      * @throws MathException
      */
     private double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
-        double denom = sqrt(2.0)*camera_fwhm_digital / 2.3548;
-        return (Erf.erf((x-this.x+0.5)/denom) - Erf.erf((x-this.x-0.5)/denom)) *
-               (Erf.erf((y-this.y+0.5)/denom) - Erf.erf((y-this.y-0.5)/denom));
+        final double sigma = camera_fwhm_digital / 2.3548;
+        final double denom = sqrt(2.0)*sigma;
+        return 0.25 *(Erf.erf((x-this.x+0.5)/denom) - Erf.erf((x-this.x-0.5)/denom)) *
+                     (Erf.erf((y-this.y+0.5)/denom) - Erf.erf((y-this.y-0.5)/denom));
     }
     
     
@@ -92,13 +96,13 @@ public abstract class Emitter extends Point2D.Double  {
     private ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
         ArrayList<Pixel> result = new ArrayList<Pixel>();
         // Upper and lower bounds for the region.
-        int bot_x = (int)(this.x-radius);
-        int top_x = (int)(this.x+radius);
-        int bot_y = (int)(this.y-radius);
-        int top_y = (int)(this.y+radius);
+        final int bot_x = (int) floor(this.x-radius);
+        final int top_x = (int) ceil(this.x+radius);
+        final int bot_y = (int) floor(this.y-radius);
+        final int top_y = (int) ceil(this.y+radius);
         
         // Squared radius so we dont have to do the sqrt()
-        double radius2 = radius*radius;
+        final double radius2 = radius*radius;
         
         // Iterate over all pixels in the square defined by the bounds and
         // filter out those which are too far, otherwise generate signature and
@@ -147,8 +151,9 @@ public abstract class Emitter extends Point2D.Double  {
         double brightness = this.simulateBrightness();
         for (Pixel p: this.getPixelList()) {
             try {
-                pixels[p.x][p.y] += 0.25* brightness * p.getSignature();
+                pixels[p.x][p.y] += brightness * p.getSignature();
             } catch (ArrayIndexOutOfBoundsException ex) {
+                // pixel signature outside of frame, do nothing
                 //Logger.getLogger(Device.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

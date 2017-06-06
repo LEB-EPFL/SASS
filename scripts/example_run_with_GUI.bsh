@@ -19,8 +19,7 @@ Camera camera = new Camera(30, //res_x
                     6.45 * 1e-6, //pixel_size, 
                     1.3, //NA, 
                     600 * 1e-9, //wavelength, 
-                    100, //magnification, 
-                    8 * 1e-9); //radius)
+                    100); //magnification)
 
 // fluorophores: all properties in units per frame
 FluorophoreProperties fluo = new PalmProperties(2500, // signal

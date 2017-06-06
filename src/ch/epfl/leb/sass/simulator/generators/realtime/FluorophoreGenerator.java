@@ -110,7 +110,9 @@ public class FluorophoreGenerator {
             y = Double.parseDouble(entries[1]);
             // ignore ones with negative positions
             if (x>=0.0 && y>=0.0)
-                result.add(fluo.createFluorophore(camera, x, y));
+                // we subtract 0.5 to make the positions agree with how ThunderSTORM computes positions
+                // i.e. origin is in the very top left of image, not in the center of top left pixel as it is in our simulation
+                result.add(fluo.createFluorophore(camera, x-0.5, y-0.5));
         }
         
         // rescale positions to fit into frame        

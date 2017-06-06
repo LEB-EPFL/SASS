@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [v0.1.1]
+Compatible with [ALICA v0.1.0]
+### Fixed
+- Main class location in package `ch.epfl.leb.sass`
+- Normalization of emitter PSF
+- Parsing emitters from file now puts them at position identical with ThunderSTORM coordinate system
+
 ## [v0.1.0]
 Compatible with [ALICA v0.1.0]
 
@@ -30,3 +37,4 @@ Compatible with [ALICA v0.0.2]
 [ALICA v0.1.0]: https://github.com/MStefko/ALICA/releases/tag/v0.1.0
 [v0.0.2]: https://github.com/MStefko/SASS/releases/tag/v0.0.2
 [v0.1.0]: https://github.com/MStefko/SASS/releases/tag/v0.1.0
+[v0.1.1]: https://github.com/MStefko/SASS/releases/tag/v0.1.1

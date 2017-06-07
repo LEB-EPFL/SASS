@@ -30,6 +30,13 @@ public abstract class MovingFluorophore extends Fluorophore {
     private final ArrayList<Point2D.Double> trajectory;
     private int image_count = 0;
     
+    /**
+     * Fluorophore which moves along a certain trajectory and then stops
+     * @param camera
+     * @param x initial x position
+     * @param y initial y position
+     * @param trajectory trajectory of fluorophore in absolute numbers
+     */
     public MovingFluorophore(Camera camera, double x, double y, ArrayList<Point2D.Double> trajectory) {
         super(camera, x, y);
         this.trajectory = trajectory;

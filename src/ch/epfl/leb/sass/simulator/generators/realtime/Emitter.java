@@ -97,7 +97,6 @@ public abstract class Emitter extends Point2D.Double  {
      * @param radius radius value [pixels]
      * @param camera_fwhm_digital camera fwhm value
      * @return list of Pixels with precalculated signatures
-     * @throws MathException
      */
     protected final ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
         ArrayList<Pixel> result = new ArrayList<Pixel>();

@@ -64,13 +64,17 @@ public class Simulator {
      * Number of already-generated images.
      */
     protected int image_count;
-    
-    protected HashMap<Integer,JSONObject> history = new HashMap<Integer,JSONObject>();
+
+    /**
+     * Records of values of output of analyzer, controller and generator.
+     */
+    protected HashMap<Integer,JSONObject> history;
     
     /**
      * Initializes all analyzers, the generator and controller.
      */
     public Simulator() {
+        this.history = new HashMap<Integer,JSONObject>();
         // Real time generator
         generator = new STORMsim(null);
         analyzer = new SpotCounter(100, 5, true);
@@ -88,6 +92,7 @@ public class Simulator {
      */
     public Simulator(Analyzer analyzer,
             ImageGenerator generator, Controller controller) {
+        this.history = new HashMap<Integer,JSONObject>();
         this.analyzer = analyzer;
         this.generator = generator;
         this.controller = controller;

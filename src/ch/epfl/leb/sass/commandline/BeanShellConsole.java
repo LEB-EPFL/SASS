@@ -35,6 +35,7 @@ public class BeanShellConsole extends PlugInFrame {
     
     /**
      * Initialize the new frame
+     * @param title name of the frame
      */
     public BeanShellConsole(String title) {
         super(title);

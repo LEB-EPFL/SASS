@@ -1,21 +1,28 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [v0.1.2]
+Contains [ALICA v0.1.0]
+
+### Added
+- Moving variant of SimpleFluorophore (trajectory has to be specified explicitly
+for every frame, and there is no motion blur).
+
 ## [v0.1.1]
-Compatible with [ALICA v0.1.0]
+Contains [ALICA v0.1.0]
 ### Fixed
 - Class location in package `ch.epfl.leb.sass`
 - Normalization of emitter PSF
 - Parsing emitters from file now puts them at position identical with ThunderSTORM coordinate system
 
 ## [v0.1.0]
-Compatible with [ALICA v0.1.0]
+Contains [ALICA v0.1.0]
 
 ### Fixed
 - BeanShell integration into FIJI
 
 ## [v0.0.2]
-Compatible with [ALICA v0.0.2]
+Contains [ALICA v0.0.2]
 
 ### Added
 - PALM and dSTORM fluorophore blinking models (not accessible via GUI, only BeanShell)
@@ -38,3 +45,4 @@ Compatible with [ALICA v0.0.2]
 [v0.0.2]: https://github.com/MStefko/SASS/releases/tag/v0.0.2
 [v0.1.0]: https://github.com/MStefko/SASS/releases/tag/v0.1.0
 [v0.1.1]: https://github.com/MStefko/SASS/releases/tag/v0.1.1
+[v0.1.2]: https://github.com/MStefko/SASS/releases/tag/v0.1.2

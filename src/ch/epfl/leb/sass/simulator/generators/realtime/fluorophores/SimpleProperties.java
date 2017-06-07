@@ -22,6 +22,9 @@ package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores;
 import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
 import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.MovingFluorophore;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 /**
  * SimpleProperties properties (signal, background values and time constants).
@@ -63,5 +66,17 @@ public class SimpleProperties extends FluorophoreProperties {
     @Override
     public Fluorophore createFluorophore(Camera camera, double x, double y) {
         return new SimpleFluorophore(this, camera, x, y);
+    }
+    
+    /**
+     * Creates a moving variant of simple fluorophore
+     * @param camera
+     * @param x
+     * @param y
+     * @param trajectory
+     * @return
+     */
+    public MovingFluorophore createMovingFluorophore(Camera camera, double x, double y, ArrayList<Point2D.Double> trajectory) {
+        return new SimpleMovingFluorophore(this, camera, x, y, trajectory);
     }
 }

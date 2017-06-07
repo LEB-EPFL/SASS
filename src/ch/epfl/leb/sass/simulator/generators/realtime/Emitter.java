@@ -42,12 +42,17 @@ public abstract class Emitter extends Point2D.Double  {
      * List of pixels which are affected by this emitter's light (these pixels
      * need to be updated when the emitter is on).
      */
-    protected final ArrayList<Pixel> pixel_list;    
+    protected ArrayList<Pixel> pixel_list;    
 
     /**
      * Poisson RNG for flickering simulation.
      */
     protected Poisson poisson;
+    
+    /**
+     * Camera settings used for calculating PSF
+     */
+    protected final Camera camera;
 
     /**
      * Creates emitter at given position, and calculates its signature on the
@@ -58,6 +63,7 @@ public abstract class Emitter extends Point2D.Double  {
      */
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
+        this.camera = camera;
         this.poisson = RNG.getPoissonGenerator();
         final double sigma = camera.fwhm_digital / 2.3548;
         // radius cutoff
@@ -93,7 +99,7 @@ public abstract class Emitter extends Point2D.Double  {
      * @return list of Pixels with precalculated signatures
      * @throws MathException
      */
-    private ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
+    protected final ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
         ArrayList<Pixel> result = new ArrayList<Pixel>();
         // Upper and lower bounds for the region.
         final int bot_x = (int) floor(this.x-radius);

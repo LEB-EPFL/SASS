@@ -19,6 +19,8 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -138,6 +140,96 @@ public class FluorophoreGenerator {
             }
             return result_cropped;
         }
+    }
+    
+    /**
+     * Parses moving fluorophores and their trajectories from a csv file.
+     * CSV file column format:
+     *  emitter_no[-],frame_no[-],x[px],y[px]
+     * Frame and emitter numbers must be strictly increasing, but don't have to 
+     * be consecutive (gaps in frame numbers are interpolated).
+     * @param file csv file, if null, a dialog is opened
+     * @param camera camera settings
+     * @param fluo moving fluorophore settings
+     * @return list of fluorophores
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static ArrayList<MovingFluorophore> parseMovingFluorophoresFromCsv(File file, Camera camera, SimpleProperties fluo) throws IOException {
+        if (file==null) {
+            file = getFileFromDialog();
+        }
+        
+        final ArrayList<MovingFluorophore> result = new ArrayList<MovingFluorophore>();;
+        final BufferedReader br;
+        String line;
+        final String splitBy = ",";
+        br = new BufferedReader(new FileReader(file));
+        
+        // aggregator variables
+        int trajectory_no = -1;
+        int expected_frame_no = 1;
+        ArrayList<Point2D.Double> current_trajectory = new ArrayList<Point2D.Double>();
+        double initial_x = 0, initial_y = 0;
+        // read all lines
+        
+        
+        while ((line = br.readLine()) != null) {
+            // skip comments
+            if (line.startsWith("#")) {
+                continue;
+            }
+            
+            // read 2 integers and 2 doubles from beginning of line
+            final String[] entries = line.split(splitBy);
+            final int new_trajectory_no = Integer.parseInt(entries[0]);
+            final int new_frame_no = Integer.parseInt(entries[1]);
+            final double x = Double.parseDouble(entries[2]);
+            final double y = Double.parseDouble(entries[3]);
+            
+            // parse first trajectory number on first read line
+            if (trajectory_no == -1) {
+                trajectory_no = new_trajectory_no;
+                initial_x = x;
+                initial_y = y;
+                expected_frame_no = 1;
+            }
+            
+            // read the trajectory number and ensure we are still on the same
+            // trajectory, if not, finalize this trajectory and create next one
+            if (new_trajectory_no != trajectory_no) {
+                trajectory_no = new_trajectory_no;
+                result.add(fluo.createMovingFluorophore(camera, current_trajectory.get(0).x, current_trajectory.get(0).y, current_trajectory));
+                current_trajectory = new ArrayList<Point2D.Double>();
+                initial_x = x;
+                initial_y = y;
+                expected_frame_no = 1;
+            }
+            
+            if (new_frame_no < expected_frame_no) {
+                throw new RuntimeException("Error in parsing of frame numbers!");
+            } else if (new_frame_no == expected_frame_no) {
+                // add point to current trajectory
+                current_trajectory.add(new Point2D.Double(x, y));
+            } else {
+                int frame_gap_size = new_frame_no - expected_frame_no + 1;
+                
+                // fill in the gap between frames via weighted average
+                for (int i=1; i<frame_gap_size; i++) {
+                    current_trajectory.add(new Point2D.Double(
+                        (i*x + (frame_gap_size-i)*initial_x) / frame_gap_size, 
+                        (i*y + (frame_gap_size-i)*initial_y) / frame_gap_size));
+                }
+                // add the actual frame
+                current_trajectory.add(new Point2D.Double(x, y));
+            }
+            initial_x = x;
+            initial_y = y;
+            expected_frame_no = new_frame_no + 1;
+        }
+        // add last fluorophore
+        result.add(fluo.createMovingFluorophore(camera, current_trajectory.get(0).x, current_trajectory.get(0).y, current_trajectory));
+        return result;
     }
     
     private static File getFileFromDialog() {

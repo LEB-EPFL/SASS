@@ -116,6 +116,7 @@ public final class CommandLineInterface {
         // double-clicking the .jar, so launch own ConsoleFrame
         } else if (System.console() == null) {
             BeanShellConsole cframe = new BeanShellConsole("SASS BeanShell Prompt");
+            interpreter = cframe.getInterpreter();
             cframe.setVisible(true);
             System.setOut(cframe.getInterpreter().getOut());
             System.setErr(cframe.getInterpreter().getErr());

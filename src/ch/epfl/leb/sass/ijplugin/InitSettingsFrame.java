@@ -1193,7 +1193,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         controller_factory.setMaxControllerOutput(max_controller_output);
         
         
-        App app = new App(analyzer_factory.build(), generator, controller_factory.build());
+        App app = new App(analyzer_factory.build(), generator, controller_factory.build(), controller_tickrate);
         main.setApp(app);
         this.dispose();
     }//GEN-LAST:event_button_initializeMouseClicked

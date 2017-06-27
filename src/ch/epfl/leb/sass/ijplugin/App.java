@@ -29,6 +29,7 @@ import ij.gui.Plot;
 import ij.process.ImageProcessor;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -41,7 +42,17 @@ import java.util.logging.Logger;
 public class App extends Simulator {
     private final ImagePlus imp;
     private final Plot plot;
+    private final int controller_tickrate;
     private Worker worker;
+    private final InteractionWindow interaction_window;
+    
+    private final ArrayList<Double> generatorTrueSignal = new ArrayList<Double>();
+
+    
+    private final ArrayList<Double> controllerOutput = new ArrayList<Double>();
+    private final ArrayList<Double> analyzerOutput = new ArrayList<Double>();
+    private final ArrayList<Double> controllerSetpoint = new ArrayList<Double>();
+    
     
     /**
      * Initialize simulation, generate 2 images for correct 
@@ -56,7 +67,8 @@ public class App extends Simulator {
         imp.show();
         plot = new Plot("Controller history", "Frame id.", "Value");
         plot.show();
-        
+        controller_tickrate = 20;
+        interaction_window = new InteractionWindow(analyzer, controller);
     }
     
     /**
@@ -66,14 +78,19 @@ public class App extends Simulator {
      * @param controller
      */
     public App(Analyzer analyzer,
-            ImageGenerator generator, Controller controller) {
+            ImageGenerator generator, Controller controller, int controller_tickrate) {
         super(analyzer, generator, controller);
+        if (controller_tickrate<1) {
+            throw new IllegalArgumentException("Wrong controller tickrate!");
+        }
         controller.setSetpoint(0.0);
+        this.controller_tickrate = controller_tickrate;
         generator.getNextImage();
         generator.getNextImage();
+        interaction_window = new InteractionWindow(analyzer, controller);
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
-        plot = new Plot("Controller history", "Frame id.", "Value");
+        plot = new Plot("Controller history", "Frame id.", "Value (normalized)");
         plot.show();
     }
     
@@ -83,6 +100,11 @@ public class App extends Simulator {
     public void startSimulating() {
         worker = new Worker(this, generator, controller, analyzer, imp);
         worker.start();
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                interaction_window.setVisible(true);
+            }
+        });
     }
     
     /**
@@ -111,6 +133,26 @@ public class App extends Simulator {
      */
     public Plot getPlot() {
         return plot;
+    }
+    
+    public int getControllerTickrate() {
+        return controller_tickrate;
+    }
+    
+    public ArrayList<Double> getGeneratorTrueSignal() {
+        return generatorTrueSignal;
+    }
+
+    public ArrayList<Double> getControllerOutput() {
+        return controllerOutput;
+    }
+
+    public ArrayList<Double> getAnalyzerOutput() {
+        return analyzerOutput;
+    }
+
+    public ArrayList<Double> getControllerSetpoint() {
+        return controllerSetpoint;
     }
     
     
@@ -146,11 +188,17 @@ class Worker extends Thread {
             time_end = System.nanoTime();
             System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
 
-            if (app.getImageCount() % 20 == 0) {
+            if (app.getImageCount() % app.getControllerTickrate() == 0) {
                 //System.out.println(image_count);
                 controller.nextValue(analyzer.getBatchOutput());
             }
             generator.setControlSignal(controller.getCurrentOutput());
+            
+            app.getAnalyzerOutput().add(analyzer.getIntermittentOutput());
+            app.getControllerOutput().add(controller.getCurrentOutput());
+            app.getControllerSetpoint().add(controller.getSetpoint());
+            app.getGeneratorTrueSignal().add(generator.getTrueSignal(app.getImageCount()));
+            
             
             imp.setSlice(imp.getNSlices());
             imp.updateAndRepaintWindow();
@@ -167,6 +215,11 @@ class Worker extends Thread {
     
     public void updatePlot() {
         Plot plot = app.getPlot();
+        double real_max = 0.01;
+        double laser_max = 0.01;
+        double signal_max = 0.01;
+        
+        
         
         int count = app.getImageCount()-1;
         double[] x = new double[count]; 
@@ -176,13 +229,26 @@ class Worker extends Thread {
         double[] set_point = new double[count];
         for (int i=1; i<=count; i++) {
             x[i-1] = (double) i;
-            real[i-1] = generator.getTrueSignal(i);
-            /*
-            laser[i-1] = controller.getOutputHistory(i);
-            spot[i-1] = controller.getAnalyzer().getErrorSignal(i);
-            set_point[i-1] = controller.getSetpointHistory(i);
-            */
+            real[i-1] = app.getGeneratorTrueSignal().get(i);
+            laser[i-1] = app.getControllerOutput().get(i) * 20;
+            spot[i-1] = app.getAnalyzerOutput().get(i);
+            set_point[i-1] = app.getControllerSetpoint().get(i);
         }
+        
+        /*for (int i=0; i<count; i++) {
+            real_max = real[i]>real_max ? real[i] : real_max;
+            laser_max = laser[i]>laser_max ? laser[i] : laser_max;
+            signal_max = spot[i]>signal_max ? spot[i]: signal_max;
+            signal_max = set_point[i]>signal_max ? set_point[i] : signal_max;
+        }
+        
+        for (int i=0; i<count; i++) {
+            real[i] = real[i] / real_max;
+            laser[i] = laser[i] / laser_max;
+            spot[i] = spot[i] / signal_max;
+            set_point[i] = set_point[i] / signal_max;
+        }*/
+        
         plot.setColor(Color.black);
         plot.addPoints(x, real, Plot.LINE);
         plot.setFont(new Font("Helvetica", Font.PLAIN, 14));
@@ -196,7 +262,7 @@ class Worker extends Thread {
         plot.setColor(Color.orange);
         plot.addPoints(x, laser, Plot.LINE);
         plot.addLabel(0.02,0.4,"Laser power");
-        plot.setLimits(getMin(x), getMax(x), getMin(real), getMax(real)); // hack to get a correct rescale
+        plot.setLimits(getMin(x), getMax(x), 0, 3000); // hack to get a correct rescale
         plot.draw();
         
     }

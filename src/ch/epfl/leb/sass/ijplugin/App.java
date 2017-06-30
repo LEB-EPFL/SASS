@@ -230,24 +230,16 @@ class Worker extends Thread {
         for (int i=1; i<=count; i++) {
             x[i-1] = (double) i;
             real[i-1] = app.getGeneratorTrueSignal().get(i);
-            laser[i-1] = app.getControllerOutput().get(i) * 20;
+            laser[i-1] = app.getControllerOutput().get(i);
             spot[i-1] = app.getAnalyzerOutput().get(i);
             set_point[i-1] = app.getControllerSetpoint().get(i);
         }
         
-        /*for (int i=0; i<count; i++) {
-            real_max = real[i]>real_max ? real[i] : real_max;
-            laser_max = laser[i]>laser_max ? laser[i] : laser_max;
-            signal_max = spot[i]>signal_max ? spot[i]: signal_max;
-            signal_max = set_point[i]>signal_max ? set_point[i] : signal_max;
-        }
+        
         
         for (int i=0; i<count; i++) {
-            real[i] = real[i] / real_max;
-            laser[i] = laser[i] / laser_max;
-            spot[i] = spot[i] / signal_max;
-            set_point[i] = set_point[i] / signal_max;
-        }*/
+            laser[i] = laser[i] / getMax(laser) * getMax(real);
+        }
         
         plot.setColor(Color.black);
         plot.addPoints(x, real, Plot.LINE);
@@ -262,7 +254,7 @@ class Worker extends Thread {
         plot.setColor(Color.orange);
         plot.addPoints(x, laser, Plot.LINE);
         plot.addLabel(0.02,0.4,"Laser power");
-        plot.setLimits(getMin(x), getMax(x), 0, 3000); // hack to get a correct rescale
+        plot.setLimits(getMin(x), getMax(x), 0, 1.2 * getMax(real)); // hack to get a correct rescale
         plot.draw();
         
     }

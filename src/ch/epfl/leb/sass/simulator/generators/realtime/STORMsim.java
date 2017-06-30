@@ -68,7 +68,7 @@ public class STORMsim extends AbstractGenerator {
     
     @Override
     public double getTrueSignal(int image_no) {
-        return emitter_history.get(image_no) / device.getFOVsize_um();
+        return emitter_history.get(image_no) / device.getFOVsize_um() * 10000;
     }
 
     @Override
@@ -206,5 +206,10 @@ public class STORMsim extends AbstractGenerator {
     @Override
     public double getPixelSizeUm() {
         return device.getPixelSizeUm();
+    }
+
+    @Override
+    public double getFOVSizeUm2() {
+        return device.getFOVsize_um();
     }
 }

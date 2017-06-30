@@ -82,7 +82,14 @@ public class TiffGenerator extends AbstractGenerator {
 
     @Override
     public double getPixelSizeUm() {
-        return 1.0;
+        return 0.1;
+    }
+    
+
+    @Override
+    public double getFOVSizeUm2() {
+        ImageProcessor ip = stack.getProcessor(count);
+        return getPixelSizeUm()*getPixelSizeUm()*ip.getWidth()*ip.getHeight();
     }
     
 }

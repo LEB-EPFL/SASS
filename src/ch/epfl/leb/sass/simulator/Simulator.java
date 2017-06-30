@@ -116,7 +116,9 @@ public class Simulator {
             JSONObject history_entry = new JSONObject();
             
             ip = generator.getNextImage();
-            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 0.100, 10);
+            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 
+                    generator.getPixelSizeUm()*generator.getPixelSizeUm()*ip.getWidth()*ip.getHeight(), 
+                    10);
             //System.out.println(image_count);
             if (image_count % controller_refresh_rate == 0) {
                 double analyzer_batch_output = analyzer.getBatchOutput();

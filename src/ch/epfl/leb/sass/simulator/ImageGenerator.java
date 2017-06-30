@@ -87,4 +87,10 @@ public interface ImageGenerator {
      * @return length of one pixel side in micrometers
      */
     public double getPixelSizeUm();
+    
+    /**
+     * 
+     * @return FOV size in square micrometers
+     */
+    public double getFOVSizeUm2();
 }

@@ -19,7 +19,6 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleFluorophore;
 import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
 import java.awt.geom.Point2D;
@@ -82,7 +81,7 @@ public abstract class Emitter extends Point2D.Double  {
      * @return signature value for this pixel
      * @throws MathException
      */
-    private double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
+    protected double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
         final double sigma = camera_fwhm_digital / 2.3548;
         final double denom = sqrt(2.0)*sigma;
         return 0.25 *(Erf.erf((x-this.x+0.5)/denom) - Erf.erf((x-this.x-0.5)/denom)) *
@@ -120,7 +119,7 @@ public abstract class Emitter extends Point2D.Double  {
                         signature = generate_signature_for_pixel(i, j, camera_fwhm_digital);
                     } catch (MathException ex) {
                         signature = 0.0;
-                        Logger.getLogger(SimpleFluorophore.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Emitter.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     result.add(new Pixel(i,j,signature));
                 }
@@ -167,7 +166,7 @@ public abstract class Emitter extends Point2D.Double  {
     /**
      * Simulates the state evolution of the emitter for the next frame, and
      * returns the integrated brightness of this emitter for this frame.
-     * @return brightness of emitter in this frame
+     * @return brightness of emitter in this frame [photons emitted]
      */
     protected abstract double simulateBrightness();
 }

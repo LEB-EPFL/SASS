@@ -74,6 +74,18 @@ public class FluorophoreGenerator {
         return result;
     }
     
+    public static ArrayList<Fluorophore3D> generate3DFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
+        int limit_x = cam.res_x;
+        int limit_y = cam.res_y;
+        ArrayList<Fluorophore3D> result = new ArrayList<Fluorophore3D>();
+        for (int i=spacing; i<limit_x; i+=spacing) {
+            for (int j=spacing; j<limit_y; j+= spacing) {
+                result.add(fluo.createFluorophore3D(cam, i, j, ((-limit_y/2)+j)/100.0));
+            }
+        }       
+        return result;
+    }
+    
     /**
      * Parses fluorophore positions from csv file.
      * All lines which don't start with "#" have to contain at least 2 doubles,

@@ -193,9 +193,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="label2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                           <Component id="label3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="label5" min="-2" max="-2" attributes="0"/>
@@ -215,9 +214,8 @@
                           <Component id="label12" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="label13" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
@@ -241,6 +239,7 @@
                                                                                                   <Group type="103" groupAlignment="1" attributes="0">
                                                                                                       <Component id="label14" min="-2" max="-2" attributes="0"/>
                                                                                                       <Component id="cam_resX" min="-2" max="-2" attributes="0"/>
+                                                                                                      <Component id="label2" alignment="1" min="-2" max="-2" attributes="0"/>
                                                                                                   </Group>
                                                                                                   <EmptySpace max="-2" attributes="0"/>
                                                                                                   <Component id="label15" min="-2" max="-2" attributes="0"/>
@@ -292,9 +291,9 @@
                               <Component id="cam_magnification" min="-2" max="-2" attributes="0"/>
                               <Component id="label24" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

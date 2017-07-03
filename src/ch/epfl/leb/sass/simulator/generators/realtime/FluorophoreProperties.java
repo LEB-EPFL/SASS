@@ -44,4 +44,6 @@ public abstract class FluorophoreProperties {
      * @return generated fluorophore
      */
     public abstract Fluorophore createFluorophore(Camera camera, double x, double y);
+    
+    public abstract Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z);
 }

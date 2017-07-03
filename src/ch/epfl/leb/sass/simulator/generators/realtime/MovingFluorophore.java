@@ -19,6 +19,7 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  * Fluorophore that can move between frames
  * @author Marcel Stefko
  */
-public abstract class MovingFluorophore extends Fluorophore {
+public class MovingFluorophore extends Fluorophore {
     private final ArrayList<Point2D.Double> trajectory;
     private int image_count = 0;
     
@@ -37,8 +38,8 @@ public abstract class MovingFluorophore extends Fluorophore {
      * @param y initial y position
      * @param trajectory trajectory of fluorophore in absolute numbers
      */
-    public MovingFluorophore(Camera camera, double x, double y, ArrayList<Point2D.Double> trajectory) {
-        super(camera, x, y);
+    public MovingFluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y, ArrayList<Point2D.Double> trajectory) {
+        super(camera, signal, state_system, start_state, x, y);
         this.trajectory = trajectory;
     }
     

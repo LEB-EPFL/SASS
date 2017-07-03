@@ -19,7 +19,6 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleFluorophore;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 import cern.jet.random.Gamma;

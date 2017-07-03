@@ -25,24 +25,45 @@ import java.util.Random;
  * A general fluorescent molecule which emits light.
  * @author Marcel Stefko
  */
-public abstract class Fluorophore extends Emitter {
+public class Fluorophore extends Emitter {
 
-    /**
-     * Laser power value for which the currently stored lifetime values are calculated.
-     */
-    protected double current_laser_power;
     
+    /**
+     * RNG
+     */
     private final Random random;
-
+    
+    /**
+     * Internal state system for this fluorophore
+     */
+    private final StateSystem state_system;
+    
+    /**
+     * State that this fluorophore is currently in
+     */
+    private int current_state;
+    
+    /**
+     * No of photons per frame.
+     */
+    private final double signal;
+    
     /**
      * Initialize fluorophore and calculate its pattern on camera
      * @param camera Camera used for calculating diffraction pattern
+     * @param signal No of photons per frame.
+     * @param state_system Internal state system for this fluorophore
+     * @param start_state Initial state number
      * @param x x-position in pixels
      * @param y y-position in pixels
      */
-    public Fluorophore(Camera camera, double x, double y) {
+    public Fluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y) {
         super(camera, x, y);
-        this.current_laser_power = java.lang.Double.NaN;
+        this.state_system = state_system;
+        this.signal = signal;
+        if (start_state >= state_system.getNStates()) {
+            throw new IllegalArgumentException("Starting state no. is out of bounds.");
+        }
         this.random = RNG.getUniformGenerator();
     }
 
@@ -63,17 +84,64 @@ public abstract class Fluorophore extends Emitter {
      * inform if this emitter is also bleached!
      * @return true-emitter is on, false-emitter is off
      */
-    public abstract boolean isOn();
+    public boolean isOn() {
+        return state_system.isOnState(current_state);
+    }
 
     /**
      * Informs if this emitter switched into the irreversible bleached state.
      * @return boolean, true if emitter is bleached
      */
-    public abstract boolean isBleached();
+    public boolean isBleached() {
+        return state_system.isBleachedState(current_state);
+    }
     
     /**
      * Recalculates the lifetimes of this emitter based on current laser power.
      * @param laser_power current laser power
      */
-    public abstract void recalculate_lifetimes(double laser_power);
+    public void recalculate_lifetimes(double laser_power) {
+        this.state_system.recalculate_lifetimes(laser_power);
+    }
+
+    @Override
+    protected double simulateBrightness() {
+        if (isBleached()) {
+            return 0.0;
+        }
+        
+        double remaining_time = 1.0;
+        double on_time = 0.0;
+        while (remaining_time > 0.0) {
+            // initialize time of next transition and next state id variables
+            double transition_time = java.lang.Double.POSITIVE_INFINITY; 
+            int next_state = current_state;
+            // for each state transition, draw lifetime of this transition,
+            // and keep track which one is the minimal one
+            for (int state=0; state<state_system.getNStates(); state++) {
+                double state_time = nextExponential(state_system.getMeanTransitionLifetime(current_state, state));
+                if (state_time < transition_time) {
+                    next_state = state;
+                    transition_time = state_time;
+                }
+            }
+            // transition happens sooner than end of frame
+            if (transition_time <= remaining_time) {
+                if (this.isOn()) {
+                    on_time += transition_time;
+                }
+                remaining_time -= transition_time;
+                current_state = next_state;
+            // no transition happens till end of frame
+            } else {
+                if (this.isOn()) {
+                    on_time += remaining_time;
+                }
+                remaining_time = 0.0;
+            }
+        }
+        return flicker(on_time*signal);
+    }
 }
+
+

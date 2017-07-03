@@ -21,26 +21,19 @@ package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
+import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore3D;
 import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
 
 /**
  *
  * @author stefko
  */
 public class dStormProperties extends FluorophoreProperties {
-    public final double k_bl;
-    public final double k_triplet;
-    public final double k_triplet_recovery;
-    public final double k_dark;
-    public final double k_dark_recovery;
-    public final double k_dark_recovery_constant;
     
-    public final double T_bleach;
-    public final double T_triplet;
-    public final double T_triplet_recovery;
-    public final double T_dark;
-    public final double T_dark_recovery;
-    public final double T_dark_recovery_constant; 
+    private final double[][][] Mk;
+    
+    private final StateSystem state_system;
     
     public dStormProperties(double signal, double background, double k_bl, 
             double k_triplet, double k_triplet_recovery, double k_dark, 
@@ -52,31 +45,48 @@ public class dStormProperties extends FluorophoreProperties {
             throw new IllegalArgumentException("Rates must be positive.");
         }
         
-        this.k_bl = k_bl;
-        this.k_triplet = k_triplet;
-        this.k_triplet_recovery = k_triplet_recovery;
-        this.k_dark = k_dark;
-        this.k_dark_recovery = k_dark_recovery;
-        this.k_dark_recovery_constant = k_dark_recovery_constant;
+        // 4 available states
+        Mk = new double[][][] {
+            // state 0: active
+            {
+                { 0.0 }, // active
+                { k_triplet }, // triplet
+                { 0.0 }, // reduced
+                { 0.0, k_bl }, // bleached
+            },
+            // state 1: triplet
+            {
+                { k_triplet_recovery }, // active
+                { 0.0 }, // triplet
+                { k_dark }, // reduced
+                { 0.0 }, // bleached
+            },
+            // state 2: reduced
+            {
+                { k_dark_recovery_constant, k_dark_recovery}, // active
+                { 0.0 }, // triplet
+                { 0.0 }, // reduced
+                { 0.0 }, // bleached
+            },
+            // state 4: bleached
+            {
+                { 0.0 }, // active
+                { 0.0 }, // triplet
+                { 0.0 }, // reduced
+                { 0.0 }, // bleached
+            }
+        };
         
-        this.T_bleach = parseInverse(k_bl);
-        this.T_triplet = parseInverse(k_triplet);
-        this.T_triplet_recovery = parseInverse(k_triplet_recovery);
-        this.T_dark = parseInverse(k_dark);
-        this.T_dark_recovery = parseInverse(k_dark_recovery);
-        this.T_dark_recovery_constant = parseInverse(k_dark_recovery_constant);
-    }
+        state_system = new StateSystem(5, Mk);
+        }
 
     @Override
     public Fluorophore createFluorophore(Camera camera, double x, double y) {
-        return new dStormFluorophore(this, camera, x, y);
+        return new Fluorophore(camera, signal, state_system, 2, x, y);
     }
-    
-    private static double parseInverse(double d) {
-        return PalmProperties.parseInverse(d);
-    }
-    
-    public double getDarkRecoveryTime(double laser_power) {
-        return parseInverse(k_dark_recovery_constant + k_dark_recovery*laser_power);
+
+    @Override
+    public Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z) {
+                return new Fluorophore3D(camera, signal, state_system, 2, x, y, z);
     }
 }

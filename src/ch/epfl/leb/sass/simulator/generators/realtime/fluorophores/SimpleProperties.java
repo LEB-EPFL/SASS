@@ -21,8 +21,10 @@ package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
+import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore3D;
 import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
 import ch.epfl.leb.sass.simulator.generators.realtime.MovingFluorophore;
+import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -31,41 +33,72 @@ import java.util.ArrayList;
  * @author Marcel Stefko
  */
 public class SimpleProperties extends FluorophoreProperties {
-    /** 
-     * mean on-time with unit laser power [frames]
-     */
-    public final double base_Ton;
 
-    /**
-     * mean off-time with unit laser power [frames]
-     */
-    public final double base_Toff;
-
-    /**
-     * mean bleaching time with unit laser power [frames]
-     */
-    public final double base_Tbl;
+    private final double[][][] Mk;
+    
+    private final StateSystem state_system;
     
     /**
      * Initialize fluorophore with given properties
      * @param signal_per_frame photons emitted if fluorophore is fully on
      * @param background_per_frame constant background of the fluorophore
-     * @param base_Ton_frames mean on-time with unit laser power [frames]
-     * @param base_Toff_frames mean off-time with unit laser power [frames]
-     * @param base_Tbl_frames mean bleaching time with unit laser power [frames]
+     * @param Ton mean on-time with unit laser power [frames]
+     * @param Toff mean off-time with unit laser power [frames]
+     * @param Tbl mean bleaching time with unit laser power [frames]
      */
     public SimpleProperties(double signal_per_frame, double background_per_frame, 
-            double base_Ton_frames, 
-            double base_Toff_frames, double base_Tbl_frames) {
+            double Ton, 
+            double Toff, double Tbl) {
         super(signal_per_frame, background_per_frame);
-        base_Ton = base_Ton_frames;
-        base_Toff = base_Toff_frames;
-        base_Tbl = base_Tbl_frames;
+        if ( !(Ton>=0.0 && Toff>=0.0 && Tbl>=0.0) ) {
+            throw new IllegalArgumentException("Lifetimes must be non-negative!");
+        }
+        double k_on, k_off, k_bl;
+        if (Ton==0.0) {
+            k_off = Double.POSITIVE_INFINITY;
+        } else {
+            k_off = 1 / Ton;
+        }
+        if (Toff==0.0) {
+            k_on = Double.POSITIVE_INFINITY;
+        } else {
+            k_on = 1 / Toff;
+        }
+        if (Tbl==0.0) {
+            k_bl = Double.POSITIVE_INFINITY;
+        } else {
+            k_bl = 1 / Tbl;
+        }
+        
+        
+        // 3 states
+        Mk = new double[][][] {
+            // state 0: active
+            {
+                { 0.0 }, // active
+                { k_off }, // dark
+                { 0.0, k_bl }, // bleached
+            },
+            // state 1: dark
+            {
+                { 0.0, k_on }, // active
+                { 0.0 }, // dark
+                { 0.0, k_bl }, // bleached
+            },
+            // state 2: long dark
+            {
+                { 0.0 }, // active
+                { 0.0 }, // dark
+                { 0.0 }, // bleached
+            }
+        };
+                
+        state_system = new StateSystem(3, Mk);
     }
 
     @Override
     public Fluorophore createFluorophore(Camera camera, double x, double y) {
-        return new SimpleFluorophore(this, camera, x, y);
+        return new Fluorophore(camera, signal, state_system, 1, x, y);
     }
     
     /**
@@ -77,6 +110,11 @@ public class SimpleProperties extends FluorophoreProperties {
      * @return
      */
     public MovingFluorophore createMovingFluorophore(Camera camera, double x, double y, ArrayList<Point2D.Double> trajectory) {
-        return new SimpleMovingFluorophore(this, camera, x, y, trajectory);
+        return new MovingFluorophore(camera, signal, state_system, 1, x, y, trajectory);
+    }
+
+    @Override
+    public Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z) {
+                return new Fluorophore3D(camera, signal, state_system, 1, x, y, z);
     }
 }

@@ -61,6 +61,7 @@ public class Fluorophore extends Emitter {
         super(camera, x, y);
         this.state_system = state_system;
         this.signal = signal;
+        this.current_state = start_state;
         if (start_state >= state_system.getNStates()) {
             throw new IllegalArgumentException("Starting state no. is out of bounds.");
         }

@@ -8,6 +8,7 @@ Contains [ALICA v0.2.1]
 - General N-state fluorophore system which replaces the individual xFluorophore
 classes
 - 3D fluorophore support (needs better PSF calculation)
+- Moving 2D fluorophore
 
 ### Removed
 - SimpleFluorophore, dSTORMFluorophore, PALMFluorophore classes
@@ -62,3 +63,4 @@ Contains [ALICA v0.0.2]
 [v0.1.0]: https://github.com/MStefko/SASS/releases/tag/v0.1.0
 [v0.1.1]: https://github.com/MStefko/SASS/releases/tag/v0.1.1
 [v0.1.2]: https://github.com/MStefko/SASS/releases/tag/v0.1.2
+[v0.2.0]: https://github.com/MStefko/SASS/releases/tag/v0.2.0

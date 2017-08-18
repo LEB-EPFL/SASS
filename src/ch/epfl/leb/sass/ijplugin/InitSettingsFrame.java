@@ -155,6 +155,8 @@ public class InitSettingsFrame extends java.awt.Dialog {
         label24 = new java.awt.Label();
         cam_em_gain = new java.awt.TextField();
         label25 = new java.awt.Label();
+        cam_baseline = new java.awt.TextField();
+        label49 = new java.awt.Label();
         panel2 = new java.awt.Panel();
         label1 = new java.awt.Label();
         label27 = new java.awt.Label();
@@ -319,6 +321,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         cam_em_gain.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         cam_em_gain.setMinimumSize(new java.awt.Dimension(120, 20));
+        cam_em_gain.setName(""); // NOI18N
         cam_em_gain.setText("100");
         cam_em_gain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -327,6 +330,17 @@ public class InitSettingsFrame extends java.awt.Dialog {
         });
 
         label25.setText("EM gain:");
+
+        cam_baseline.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        cam_baseline.setMinimumSize(new java.awt.Dimension(120, 20));
+        cam_baseline.setText("100");
+        cam_baseline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cam_baselineActionPerformed(evt);
+            }
+        });
+
+        label49.setText("Baseline");
 
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
@@ -379,12 +393,17 @@ public class InitSettingsFrame extends java.awt.Dialog {
                         .addComponent(label26, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108)
+                        .addComponent(cam_em_gain, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(label10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(label49, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(10, 10, 10)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panel1Layout.createSequentialGroup()
@@ -402,7 +421,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                                         .addComponent(cam_px_size, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(label21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(cam_em_gain, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cam_baseline, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(cam_magnification, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -471,6 +490,10 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(label25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cam_baseline, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label49, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
                         .addGap(7, 7, 7)
@@ -503,6 +526,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         );
 
         label9.getAccessibleContext().setAccessibleName("ADU per electron");
+        cam_baseline.getAccessibleContext().setAccessibleName("");
 
         label1.setText("Fluorophores");
 
@@ -1142,6 +1166,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
                     Double.parseDouble(cam_quantum_eff.getText()),
                     Double.parseDouble(cam_adu_per_electron.getText()),
                     Integer.parseInt(cam_em_gain.getText()),
+                    Integer.parseInt(cam_baseline.getText()),
                     1e-6 *  Double.parseDouble(cam_px_size.getText()),
                     Double.parseDouble(cam_NA.getText()),
                     1e-9 *  Double.parseDouble(cam_wavelength.getText()),
@@ -1249,6 +1274,10 @@ public class InitSettingsFrame extends java.awt.Dialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cam_adu_per_electronActionPerformed
 
+    private void cam_baselineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cam_baselineActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cam_baselineActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel analyzer_panel;
@@ -1258,6 +1287,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.TextField cam_FPS;
     private java.awt.TextField cam_NA;
     private java.awt.TextField cam_adu_per_electron;
+    private java.awt.TextField cam_baseline;
     private java.awt.TextField cam_dark_current;
     private java.awt.TextField cam_em_gain;
     private java.awt.TextField cam_magnification;
@@ -1333,6 +1363,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
     private java.awt.Label label46;
     private java.awt.Label label47;
     private java.awt.Label label48;
+    private java.awt.Label label49;
     private java.awt.Label label5;
     private java.awt.Label label6;
     private java.awt.Label label7;

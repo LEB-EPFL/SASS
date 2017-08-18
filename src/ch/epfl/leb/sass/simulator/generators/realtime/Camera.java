@@ -60,6 +60,11 @@ public class Camera {
     public final int EM_gain;
 
     /**
+     * Camera pixel baseline (zero signal mean) [ADU]
+     */
+    public final int baseline;
+    
+    /**
      * physical size of pixel [m]
      */
     public final double pixel_size;
@@ -109,14 +114,17 @@ public class Camera {
      * @param quantum_efficiency quantum efficiency [0.0-1.0]
      * @param ADU_per_electron conversion between camera units and electrons [-]
      * @param EM_gain electron multiplication gain [-]
+     * @param baseline zero-signal average of pixel values [ADU]
      * @param pixel_size physical size of pixel [m]
      * @param NA numerical aperture [-]
      * @param wavelength light wavelength [m]
      * @param magnification magnification of camera [-]
      */
-    public Camera(int res_x, int res_y, int acq_speed, double readout_noise, double dark_current,
-            double quantum_efficiency, double ADU_per_electron, int EM_gain, double pixel_size, double NA,
-            double wavelength, double magnification) {
+    public Camera(int res_x, int res_y, int acq_speed, double readout_noise,
+            double dark_current, double quantum_efficiency,
+            double ADU_per_electron, int EM_gain, int baseline,
+            double pixel_size, double NA, double wavelength,
+            double magnification) {
         this.res_x = res_x;
         this.res_y = res_y;
         this.acq_speed = acq_speed;
@@ -125,6 +133,7 @@ public class Camera {
         this.quantum_efficiency = quantum_efficiency;
         this.ADU_per_electron = ADU_per_electron;
         this.EM_gain = EM_gain;
+        this.baseline = baseline;
         this.pixel_size = pixel_size;
         this.NA = NA;
         this.wavelength = wavelength;

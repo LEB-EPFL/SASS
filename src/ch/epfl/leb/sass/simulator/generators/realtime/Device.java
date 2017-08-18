@@ -61,6 +61,7 @@ public class Device {
                             0.9, //quantum_efficiency, 
                             45, //ADU_per_electron,
                             300, // EM_gain
+                            100, // baseline
                             6.45 * 1e-6, //pixel_size, 
                             1.3, //NA, 
                             600 * 1e-9, //wavelength, 
@@ -198,6 +199,14 @@ public class Device {
         // Add noise
         addNoises(pixels);
         
+        // Convert signal to ADU and add baseline.
+        for (int x = 0; x < pixels.length; x++) {
+            for (int y = 0; y < pixels[0].length; y++) {
+                pixels[x][y] *= camera.ADU_per_electron;
+                pixels[x][y] += camera.baseline;
+            }
+        }
+        
         // Convert to short array
         FloatProcessor fp = new FloatProcessor(pixels);
         return fp.convertToShortProcessor(false);
@@ -233,9 +242,15 @@ public class Device {
         // Other noises
         for (int row=0; row < image.length; row++) {
             for (int col=0; col < image[row].length; col++) {
+                if (camera.EM_gain != 0) {
+                    // lambda parameter of nextDouble() is inverse of EM_gain.
+                    image[row][col] = (float) gamma.nextDouble(
+                            image[row][col]+0.01f,
+                            1.0 / ((double) camera.EM_gain));
+                }
+                
                 image[row][col] += camera.readout_noise*gaussian.nextDouble() +
                                    camera.thermal_noise*gaussian.nextDouble();
-                                   //gamma.nextDouble(image[row][col]+0.01f,camera.quantum_gain); //0.01f so that we dont do nextDouble(0,c)
             }
         }
     }

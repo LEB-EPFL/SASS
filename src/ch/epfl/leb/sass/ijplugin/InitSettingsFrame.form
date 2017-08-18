@@ -155,12 +155,18 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="label25" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                          <Component id="cam_em_gain" min="-2" pref="45" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="label10" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="label11" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="label12" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="label13" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="label25" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label49" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -182,7 +188,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="label21" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="cam_em_gain" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
+                                      <Component id="cam_baseline" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -276,6 +282,11 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="label25" min="-2" max="-2" attributes="0"/>
                       </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="cam_baseline" min="-2" max="-2" attributes="0"/>
+                      <Component id="label49" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -570,6 +581,7 @@
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[120, 20]"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="" noResource="true"/>
             <Property name="text" type="java.lang.String" value="100"/>
           </Properties>
           <Events>
@@ -579,6 +591,28 @@
         <Component class="java.awt.Label" name="label25">
           <Properties>
             <Property name="text" type="java.lang.String" value="EM gain:"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.TextField" name="cam_baseline">
+          <Properties>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Text Cursor"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[120, 20]"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="100"/>
+          </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+          </AccessibilityProperties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cam_baselineActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="java.awt.Label" name="label49">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Baseline"/>
           </Properties>
         </Component>
       </SubComponents>

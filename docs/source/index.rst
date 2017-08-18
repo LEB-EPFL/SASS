@@ -11,6 +11,8 @@ SASS
 .. toctree::
    :maxdepth: 1
 
+   models
+
 About
 =====
 

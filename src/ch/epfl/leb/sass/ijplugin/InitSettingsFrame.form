@@ -99,7 +99,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                          <Component id="label26" min="-2" pref="111" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="label2" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -109,9 +113,45 @@
                               <Component id="label7" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="label8" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="label9" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label25" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label49" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label11" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label12" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="label13" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="cam_magnification" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="label24" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="cam_wavelength" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="label23" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="cam_NA" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="label22" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="cam_px_size" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="label21" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="cam_baseline" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="label51" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="cam_em_gain" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="label50" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" attributes="0">
                                   <Component id="cam_adu_per_electron" min="-2" pref="45" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -146,56 +186,6 @@
                                   <Component id="cam_resX" min="-2" pref="45" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="label14" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-                          <Component id="label26" min="-2" pref="111" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="label25" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
-                          <Component id="cam_em_gain" min="-2" pref="45" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="label10" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="label11" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="label12" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="label13" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="label49" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="cam_wavelength" min="-2" pref="45" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="label23" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="cam_NA" min="-2" pref="45" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="label22" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="cam_px_size" min="-2" pref="45" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="label21" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="cam_baseline" alignment="0" min="-2" pref="45" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="cam_magnification" min="-2" pref="45" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="label24" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -273,59 +263,52 @@
                           <Component id="cam_adu_per_electron" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="cam_em_gain" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="12" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                           <Component id="label25" min="-2" max="-2" attributes="0"/>
+                          <Component id="cam_em_gain" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="label50" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="cam_baseline" min="-2" max="-2" attributes="0"/>
-                      <Component id="label49" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="label49" min="-2" max="-2" attributes="0"/>
+                      <Component id="label51" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
-                          <Component id="label10" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="label11" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="label12" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="label13" min="-2" max="-2" attributes="0"/>
+                          <Component id="label21" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="1" attributes="0">
-                                              <Component id="label21" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="cam_px_size" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="label22" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="cam_NA" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="label23" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="cam_wavelength" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="cam_magnification" min="-2" max="-2" attributes="0"/>
-                              <Component id="label24" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="label10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="cam_px_size" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="label11" min="-2" max="-2" attributes="0"/>
+                      <Component id="cam_NA" min="-2" max="-2" attributes="0"/>
+                      <Component id="label22" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="label23" min="-2" max="-2" attributes="0"/>
+                      <Component id="label12" min="-2" max="-2" attributes="0"/>
+                      <Component id="cam_wavelength" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="label13" min="-2" max="-2" attributes="0"/>
+                      <Component id="cam_magnification" min="-2" max="-2" attributes="0"/>
+                      <Component id="label24" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="81" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -613,6 +596,16 @@
         <Component class="java.awt.Label" name="label49">
           <Properties>
             <Property name="text" type="java.lang.String" value="Baseline"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Label" name="label50">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="-"/>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Label" name="label51">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ADU"/>
           </Properties>
         </Component>
       </SubComponents>

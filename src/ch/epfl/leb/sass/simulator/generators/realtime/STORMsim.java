@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
+ * Author(s): Marcel Stefko, Kyle M. Douglass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,7 +112,9 @@ public class STORMsim extends AbstractGenerator {
         gd.addNumericField("Readout noise [rms]", 1.6, 1);
         gd.addNumericField("Dark current [e/px/frame]",0.06,3);
         gd.addNumericField("Quantum efficiency", 0.8, 2);
-        gd.addNumericField("Gain", 6, 1);
+        gd.addNumericField("ADU per electron", 0.0200, 4);
+        gd.addNumericField("EM gain", 100, 0);
+        gd.addNumericField("Baseline", 100, 0);
         gd.addNumericField("Pixel size [um]", 6.45, 3);
         gd.addNumericField("Numerical aperture", 1.3, 2);
         gd.addNumericField("Wavelength [nm]", 600, 0);
@@ -125,7 +127,9 @@ public class STORMsim extends AbstractGenerator {
                             gd.getNextNumber(), //readout_noise, 
                             gd.getNextNumber(), //dark_current, 
                             gd.getNextNumber(), //quantum_efficiency, 
-                            gd.getNextNumber(), //gain, 
+                            gd.getNextNumber(), //ADU_per_electron,
+                            (int)gd.getNextNumber(), // EM_gain,
+                            (int)gd.getNextNumber(), // baseline,
                             gd.getNextNumber() * 1e-6, //pixel_size, 
                             gd.getNextNumber(), //NA, 
                             gd.getNextNumber() * 1e-9, //wavelength, 

@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+### Added
+- Electron multiplication (EM) gain and camera baseline parameters.
+
+### Fixed
+- The camera noise model was improperly accounting for electron
+  multiplication noise. This is now fixed and encompasses both EMCCD's
+  (by setting the EM gain to a non-zero value) and sCMOS (by setting
+  the EM gain to zero.)
+	
 ## [v0.2.0]
 Contains [ALICA v0.2.1]
 

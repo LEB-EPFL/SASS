@@ -228,27 +228,27 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         label26.setText("Camera settings");
 
-        label2.setText("Resolution X:");
+        label2.setText("Field of view X");
 
-        label3.setText("Resolution Y:");
+        label3.setText("Field of view Y");
 
-        label5.setText("Framerate:");
+        label5.setText("Frame rate");
 
-        label6.setText("Readout noise:");
+        label6.setText("Readout noise");
 
-        label7.setText("Dark current:");
+        label7.setText("Dark current");
 
-        label8.setText("Quantum efficiency:");
+        label8.setText("Quantum efficiency");
 
-        label9.setText("ADU per electron:");
+        label9.setText("ADU per electron");
 
-        label10.setText("Pixel size:");
+        label10.setText("Pixel size");
 
-        label11.setText("Numerical aperture:");
+        label11.setText("Numerical aperture");
 
-        label12.setText("Wavelength:");
+        label12.setText("Wavelength");
 
-        label13.setText("Magnification:");
+        label13.setText("Magnification");
 
         cam_resX.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         cam_resX.setMinimumSize(new java.awt.Dimension(120, 20));
@@ -307,11 +307,11 @@ public class InitSettingsFrame extends java.awt.Dialog {
 
         label17.setText("RMS");
 
-        label18.setText("e/px/frame");
+        label18.setText("e-/px/frame");
 
         label19.setText("-");
 
-        label20.setText("-");
+        label20.setText("ADU/e-");
 
         label21.setText("um");
 
@@ -331,7 +331,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
             }
         });
 
-        label25.setText("EM gain:");
+        label25.setText("EM gain");
 
         cam_baseline.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         cam_baseline.setMinimumSize(new java.awt.Dimension(120, 20));
@@ -522,6 +522,7 @@ public class InitSettingsFrame extends java.awt.Dialog {
         );
 
         label9.getAccessibleContext().setAccessibleName("ADU per electron");
+        label12.getAccessibleContext().setAccessibleName("Wavelength");
         cam_baseline.getAccessibleContext().setAccessibleName("");
 
         label1.setText("Fluorophores");

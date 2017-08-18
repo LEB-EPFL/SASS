@@ -321,37 +321,37 @@
         </Component>
         <Component class="java.awt.Label" name="label2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Resolution X:"/>
+            <Property name="text" type="java.lang.String" value="Field of view X"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Resolution Y:"/>
+            <Property name="text" type="java.lang.String" value="Field of view Y"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Framerate:"/>
+            <Property name="text" type="java.lang.String" value="Frame rate"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Readout noise:"/>
+            <Property name="text" type="java.lang.String" value="Readout noise"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Dark current:"/>
+            <Property name="text" type="java.lang.String" value="Dark current"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Quantum efficiency:"/>
+            <Property name="text" type="java.lang.String" value="Quantum efficiency"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label9">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ADU per electron:"/>
+            <Property name="text" type="java.lang.String" value="ADU per electron"/>
           </Properties>
           <AccessibilityProperties>
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="ADU per electron"/>
@@ -359,22 +359,25 @@
         </Component>
         <Component class="java.awt.Label" name="label10">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Pixel size:"/>
+            <Property name="text" type="java.lang.String" value="Pixel size"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label11">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Numerical aperture:"/>
+            <Property name="text" type="java.lang.String" value="Numerical aperture"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label12">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Wavelength:"/>
+            <Property name="text" type="java.lang.String" value="Wavelength"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Wavelength"/>
+          </AccessibilityProperties>
         </Component>
         <Component class="java.awt.Label" name="label13">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Magnification:"/>
+            <Property name="text" type="java.lang.String" value="Magnification"/>
           </Properties>
         </Component>
         <Component class="java.awt.TextField" name="cam_resX">
@@ -523,7 +526,7 @@
         </Component>
         <Component class="java.awt.Label" name="label18">
           <Properties>
-            <Property name="text" type="java.lang.String" value="e/px/frame"/>
+            <Property name="text" type="java.lang.String" value="e-/px/frame"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label19">
@@ -533,7 +536,7 @@
         </Component>
         <Component class="java.awt.Label" name="label20">
           <Properties>
-            <Property name="text" type="java.lang.String" value="-"/>
+            <Property name="text" type="java.lang.String" value="ADU/e-"/>
           </Properties>
         </Component>
         <Component class="java.awt.Label" name="label21">
@@ -573,7 +576,7 @@
         </Component>
         <Component class="java.awt.Label" name="label25">
           <Properties>
-            <Property name="text" type="java.lang.String" value="EM gain:"/>
+            <Property name="text" type="java.lang.String" value="EM gain"/>
           </Properties>
         </Component>
         <Component class="java.awt.TextField" name="cam_baseline">

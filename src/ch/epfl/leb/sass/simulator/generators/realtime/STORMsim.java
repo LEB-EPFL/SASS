@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
+ * Author(s): Marcel Stefko, Kyle M. Douglass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,7 +125,8 @@ public class STORMsim extends AbstractGenerator {
                             gd.getNextNumber(), //readout_noise, 
                             gd.getNextNumber(), //dark_current, 
                             gd.getNextNumber(), //quantum_efficiency, 
-                            gd.getNextNumber(), //gain, 
+                            gd.getNextNumber(), //ADU_per_electron,
+                            (int)gd.getNextNumber(), // EM_gain)
                             gd.getNextNumber() * 1e-6, //pixel_size, 
                             gd.getNextNumber(), //NA, 
                             gd.getNextNumber() * 1e-9, //wavelength, 

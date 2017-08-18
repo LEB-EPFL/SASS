@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
+ * Author(s): Marcel Stefko, Kyle M. Douglass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,9 +57,10 @@ public class Device {
                             400, //res_y
                             100, //acq_speed, 
                             1.6, //readout_noise, 
-                            0.06, //dark_current, 
-                            0.8, //quantum_efficiency, 
-                            6, //gain, 
+                            0.06,//dark_current, 
+                            0.9, //quantum_efficiency, 
+                            45, //ADU_per_electron,
+                            300, // EM_gain
                             6.45 * 1e-6, //pixel_size, 
                             1.3, //NA, 
                             600 * 1e-9, //wavelength, 
@@ -215,7 +216,7 @@ public class Device {
     }
     
     /**
-     * Adds Poisson, readout, thermal and quantum gain noise to the image.
+     * Adds Poisson,  readout,  thermal, and electron multiplication  noise to the image.
      * @param image image to be noised up
      */
     private void addNoises(float[][] image) {
@@ -233,8 +234,8 @@ public class Device {
         for (int row=0; row < image.length; row++) {
             for (int col=0; col < image[row].length; col++) {
                 image[row][col] += camera.readout_noise*gaussian.nextDouble() +
-                                   camera.thermal_noise*gaussian.nextDouble() +
-                                   gamma.nextDouble(image[row][col]+0.01f,camera.quantum_gain); //0.01f so that we dont do nextDouble(0,c)
+                                   camera.thermal_noise*gaussian.nextDouble();
+                                   //gamma.nextDouble(image[row][col]+0.01f,camera.quantum_gain); //0.01f so that we dont do nextDouble(0,c)
             }
         }
     }

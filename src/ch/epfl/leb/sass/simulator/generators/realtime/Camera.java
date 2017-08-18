@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
+ * Author(s): Marcel Stefko, Kyle M. Douglass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,16 @@ public class Camera {
     public final double quantum_efficiency;
 
     /**
-     * gain [-]
+     * Conversion factor between camera's analog-to-digital units (ADU) and electrons. [-]
      */
-    public final double gain;
+    public final double ADU_per_electron;
+    
+    /**
+     * Electron multiplication (EM) gain of the camera.
+     * This may be set to zero for sensors without EM gain, such as CMOS
+     * sensors.
+     */
+    public final int EM_gain;
 
     /**
      * physical size of pixel [m]
@@ -78,11 +85,6 @@ public class Camera {
     public final double thermal_noise;
 
     /**
-     * gain multiplied by quantum efficiency
-     */
-    public final double quantum_gain;
-
-    /**
      * digital representation of the FWHM?
      */
     public final double fwhm_digital;
@@ -105,14 +107,15 @@ public class Camera {
      * @param readout_noise readout noise of camera [RMS]
      * @param dark_current dark current [electrons/second/pixel]
      * @param quantum_efficiency quantum efficiency [0.0-1.0]
-     * @param gain gain [-]
+     * @param ADU_per_electron conversion between camera units and electrons [-]
+     * @param EM_gain electron multiplication gain [-]
      * @param pixel_size physical size of pixel [m]
      * @param NA numerical aperture [-]
      * @param wavelength light wavelength [m]
      * @param magnification magnification of camera [-]
      */
     public Camera(int res_x, int res_y, int acq_speed, double readout_noise, double dark_current,
-            double quantum_efficiency, double gain, double pixel_size, double NA,
+            double quantum_efficiency, double ADU_per_electron, int EM_gain, double pixel_size, double NA,
             double wavelength, double magnification) {
         this.res_x = res_x;
         this.res_y = res_y;
@@ -120,14 +123,14 @@ public class Camera {
         this.readout_noise = readout_noise;
         this.dark_current = dark_current;
         this.quantum_efficiency = quantum_efficiency;
-        this.gain = gain;
+        this.ADU_per_electron = ADU_per_electron;
+        this.EM_gain = EM_gain;
         this.pixel_size = pixel_size;
         this.NA = NA;
         this.wavelength = wavelength;
         this.magnification = magnification;
         
         this.thermal_noise = this.dark_current / this.acq_speed;
-        this.quantum_gain = this.quantum_efficiency * this.gain;
         
         // calculate Gaussian PSF
         double airy_psf_radius = 0.61*wavelength/NA;

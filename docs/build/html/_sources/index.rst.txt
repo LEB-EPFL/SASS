@@ -12,6 +12,7 @@ SASS
    :maxdepth: 1
 
    models
+   scripting
 
 About
 =====

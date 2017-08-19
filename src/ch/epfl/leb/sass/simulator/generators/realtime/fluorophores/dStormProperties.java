@@ -77,7 +77,7 @@ public class dStormProperties extends FluorophoreProperties {
             }
         };
         
-        state_system = new StateSystem(5, Mk);
+        state_system = new StateSystem(4, Mk);
         }
 
     @Override

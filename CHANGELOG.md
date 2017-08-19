@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
   multiplication noise. This is now fixed and encompasses both EMCCD's
   (by setting the EM gain to a non-zero value) and sCMOS (by setting
   the EM gain to zero.)
+- A problem preventing the creation of new dStormProperties
+  fluorophore models.
+	
 	
 ## [v0.2.0]
 Contains [ALICA v0.2.1]

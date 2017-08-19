@@ -28,11 +28,11 @@ Camera camera = new Camera(256, //res_x
 FluorophoreProperties fluo = new dStormProperties(2500, // signal
                     50, // background
                     0.001, //k_bl
-                    5, // k_triplet
-                    2, // k_triplet_recovery
+                    0.1, // k_triplet
+                    0.01, // k_triplet_recovery
                     15, // k_dark
-                    100, //k_dark_recovery
-                    500); // k_dark_recovery_constant
+                    0.01, //k_dark_recovery
+                    0.01); // k_dark_recovery_constant
 // laser
 Laser laser = new Laser(0.0, // start
         500.0, // max

@@ -16,7 +16,9 @@ Camera camera = new Camera(30, //res_x
                     1.6, //readout_noise, 
                     0.06, //dark_current, 
                     0.8, //quantum_efficiency, 
-                    6, //gain, 
+                    2.2,  // ADU_per_electron
+		    0,    // EM_gain
+		    100,  // baseline, ADU
                     6.45 * 1e-6, //pixel_size, 
                     1.3, //NA, 
                     600 * 1e-9, //wavelength, 
@@ -37,18 +39,19 @@ Laser laser = new Laser(0.0, // start
         0.0); // min
 
 // generate emitters from the fluorophore properties
-/*ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
             camera,
-            fluo);*/
-File csv_file = new File("C:\\Users\\stefko\\Documents\\positions.csv");
-ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
+            fluo);
+
+/*File csv_file = new File("C:\\Users\\stefko\\Documents\\positions.csv");
+ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);*/
 
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();
 Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);
 
-Device device = new Device(camera, fluo, laser, emitters, null);
+Device device = new Device(camera, fluo, laser, emitters, obstructors);
 STORMsim generator = new STORMsim(device);
 
 // *** Initialize controller ***

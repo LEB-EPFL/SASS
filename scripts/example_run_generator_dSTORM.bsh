@@ -4,23 +4,25 @@
  */
 
 import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dStormProperties;
 import java.util.ArrayList;
 
 RNG.setSeed(1);
 
 // *** Initalize generator from the ground up ***
-Camera camera = new Camera(30, //res_x
-                    30, //res_y
+Camera camera = new Camera(256, //res_x
+                    256, //res_y
                     100, //acq_speed, 
                     1.6, //readout_noise, 
                     0.06, //dark_current, 
                     0.8, //quantum_efficiency, 
-                    6, //gain, 
+                    2.2,  // ADU_per_electron
+                    0,    // EM_gain
+                    100,  // baseline, ADU 
                     6.45 * 1e-6, //pixel_size, 
                     1.3, //NA, 
                     600 * 1e-9, //wavelength, 
-                    100); //magnification)
+                    60); //magnification)
 
 // fluorophores: all properties in units per frame
 FluorophoreProperties fluo = new dStormProperties(2500, // signal
@@ -38,13 +40,13 @@ Laser laser = new Laser(0.0, // start
 
 // generate emitters 
 	// create a grid
-	/*ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
-				camera,
-				fluo);*/
+	ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(10,// spacing in px
+		  		camera,
+				fluo);
 				
 	// or parse emitters from file
-	File csv_file = new File("emitter_positions.csv");
-	ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);
+	/*File csv_file = new File("emitter_positions.csv");
+	ArrayList emitters = FluorophoreGenerator.parseFluorophoresFromCsv(csv_file, camera, fluo, false);*/
 
 // add a gold bead to the field of view at random location
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
@@ -53,14 +55,14 @@ Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);
 
 // assemble the device and generator
-Device device = new Device(camera, fluo, laser, emitters, null);
+Device device = new Device(camera, fluo, laser, emitters, obstructors);
 STORMsim generator = new STORMsim(device);
 
 // set laser power
 generator.setControlSignal(0.03);
 
 // simulate frames
-for (i=0;i<120000;i++) {
+for (i=0;i<100;i++) {
     if (i%1000==0) {
 		System.out.println(i);
 	}

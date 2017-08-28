@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [v0.2.1]
 ### Added
 - Electron multiplication (EM) gain and camera baseline parameters.
 
@@ -77,3 +77,4 @@ Contains [ALICA v0.0.2]
 [v0.1.1]: https://github.com/MStefko/SASS/releases/tag/v0.1.1
 [v0.1.2]: https://github.com/MStefko/SASS/releases/tag/v0.1.2
 [v0.2.0]: https://github.com/MStefko/SASS/releases/tag/v0.2.0
+[v0.2.1]: https://github.com/MStefko/SASS/releases/tag/v0.2.1

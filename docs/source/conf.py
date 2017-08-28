@@ -161,3 +161,11 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
+
+# -- ReadTheDocs ----------------------------------------------------------
+
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+if read_the_docs_build:
+    print('calling javasphinx')
+    subprocess.call('javasphinx-apidoc -u -o _javasphinx/ ../../src/', shell=True)

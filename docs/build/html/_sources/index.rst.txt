@@ -6,13 +6,14 @@
 SASS
 ====
 
- STORM Acquisition Simulation Software
+ SMLM Acquisition Simulation Software
 
 .. toctree::
    :maxdepth: 1
 
    models
    scripting
+   faq
 
 About
 =====

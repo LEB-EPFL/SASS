@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Scripting Interface &#8212; SASS 0.2.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
+    <link rel="prev" title="Simulation Models" href="models.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="models.html" title="Simulation Models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Scripting Interface</a><ul>
+<li><a class="reference internal" href="#the-sass-command-prompt">The SASS Command Prompt</a></li>
+<li><a class="reference internal" href="#running-beanshell-scripts">Running Beanshell Scripts</a></li>
+<li><a class="reference internal" href="#example-scripts">Example Scripts</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="models.html"
+                        title="previous chapter">Simulation Models</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="next chapter">Frequently Asked Questions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scripting.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="scripting-interface">
+<h1>Scripting Interface<a class="headerlink" href="#scripting-interface" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-sass-command-prompt">
+<h2>The SASS Command Prompt<a class="headerlink" href="#the-sass-command-prompt" title="Permalink to this headline">¶</a></h2>
+<p>SASS includes a beanshell scripting interface that supports the
+execution of either pre-made or <em>ad hoc</em> scripts for easily running
+and repeating simulations. The interface is accessed through the
+Plugins menu bar via <em>Plugins &gt; SASS &gt; Command Prompt</em>.</p>
+<img alt="The SASS command prompt." class="align-center" src="_images/command_prompt.png" />
+<p>Inside this prompt you have access to a few Unix-like shell commands
+by appending <code class="code docutils literal"><span class="pre">();</span></code> to the command name. For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pwd</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>prints the current working directory.</p>
+</div>
+<div class="section" id="running-beanshell-scripts">
+<h2>Running Beanshell Scripts<a class="headerlink" href="#running-beanshell-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Beanshell scripts that setup and launch localization microscopy
+simulations may be run with the <code class="code docutils literal"><span class="pre">source()</span></code> command. For security
+reasons, you will want to ensure that the file you are sourcing is
+trustworthy because the Beanshell interpreter will run whatever code
+is contained within the file.</p>
+<p>Here is how one would launch the <strong>example_run_generator.bsh</strong> example
+script from within the command prompt and which launches a basic PALM
+simulation:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span><span class="p">(</span><span class="s2">&quot;/path/to/examples/example_run_generator.bsh&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Please be sure to change the path argument above to one for your
+specific machine, which includes changing <cite>/</cite> to <cite>\\</cite> if you are
+using Windows.</p>
+</div>
+<div class="section" id="example-scripts">
+<h2>Example Scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Example scripts for performing 2D and 3D simulations with PALM and
+STORM models may be found <a class="reference external" href="https://github.com/MStefko/SASS/tree/master/scripts">in the examples folder</a> in the SASS
+parent directory.</p>
+<p><a class="reference external" href="https://github.com/MStefko/SASS/tree/master/scripts">https://github.com/MStefko/SASS/tree/master/scripts</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="models.html" title="Simulation Models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 1970, The Laboratory of Experimental Biophysics, EPFL, Lausanne, Switzerland.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

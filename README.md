@@ -1,6 +1,12 @@
-# STORM Acquisition Simulation Software
+# SMLM Acquisition Simulation Software
 
-Toolkit for testing various algorithms for estimating fluorophore density in STORM and PALM datasets, and simulating real-time control of the acquisition using a feedback loop.
+Toolkit for simulating non-stationary fluorescence photodynamics and
+real-time control systems for single molecule localization microscopy
+(SMLM).
+
+## Documentation
+
+http://sass.readthedocs.io/en/latest/
 
 ## Usage
 Download latest .jar from [releases].

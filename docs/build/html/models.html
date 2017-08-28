@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Simulation Models &#8212; SASS 0.2.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scripting Interface" href="scripting.html" />
+    <link rel="prev" title="SASS" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="scripting.html" title="Scripting Interface"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="SASS"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulation Models</a><ul>
+<li><a class="reference internal" href="#shot-noise-and-sensor-noise">Shot noise and sensor noise</a><ul>
+<li><a class="reference internal" href="#shot-noise">Shot noise</a></li>
+<li><a class="reference internal" href="#sensor-temporal-noise">Sensor temporal noise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">SASS</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="scripting.html"
+                        title="next chapter">Scripting Interface</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulation-models">
+<h1>Simulation Models<a class="headerlink" href="#simulation-models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="shot-noise-and-sensor-noise">
+<h2>Shot noise and sensor noise<a class="headerlink" href="#shot-noise-and-sensor-noise" title="Permalink to this headline">¶</a></h2>
+<p>There are two noise models employed by SASS: photon shot noise—which
+accounts for the quantum nature of fluorescence emission—and sensor
+noise. Sensor noise is based on the models described in these two
+documents:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://onlinelibrary.wiley.com/doi/10.1046/j.1365-8711.2003.07020.x/abstract">Basden, Haniff, and Mackay, &#8220;Photon counting strategies with
+low-light-level CCDs,&#8221; Mon. Not. R. Aston. Soc. 345,
+1187-1197 (2003)</a></li>
+<li><a class="reference external" href="http://www.emva.org/standards-technology/emva-1288/">The EMVA 1288 Standard</a></li>
+</ul>
+<p>Sensor noise models in SASS currently do not account for spatial
+non-uniformities or defect pixels; each pixel is assumed independent
+from all other pixels. Furthermore, each pixel has identical
+statistical properties to all other pixels.</p>
+<p>Additional assumptions employed in SASS include:</p>
+<ul class="simple">
+<li>The sensor is linear.</li>
+<li>Noise sources are wide sense stationary with respect to time and
+space.</li>
+<li>Only quantum efficiency is wavelength-dependent.</li>
+<li>Only dark current is temperature dependent.</li>
+</ul>
+<a class="reference internal image-reference" href="_images/camera_noise_model.png"><img alt="Schematic of the image sensor temporal noise model." class="align-center" src="_images/camera_noise_model.png" style="width: 985.0px; height: 352.5px;" /></a>
+<div class="section" id="shot-noise">
+<h3>Shot noise<a class="headerlink" href="#shot-noise" title="Permalink to this headline">¶</a></h3>
+<p>Photon shot noise (or just shot noise) represents fluctuations in the
+number of photons incident on a pixel between different frame
+exposures. It is due to the quantum nature of fluorescence emission
+and is not dependent upon any properties of the image sensor.</p>
+<p>Let <span class="math">\(\mu_p\)</span> represent the mean number of photons incident upon a
+pixel during the exposure of a given frame. The number of
+photoelectrons <span class="math">\(\mu_e\)</span> generated by these photons is given by</p>
+<div class="math">
+\[\mu_e = \eta \mu_p\]</div>
+<p>where <span class="math">\(\eta\)</span> is the quantum efficiency of the sensor and, in
+general, depends on the wavelength of the light.</p>
+<p>Fluorescence emission is well-modeled as a Poisson process. Under this
+condition, the mean number of photoelectrons will be equivalent to the
+variance <span class="math">\(sigma_e^2\)</span> of the number of photoelectrons generated
+over time.</p>
+<div class="math">
+\[\sigma_e^2 = \mu_e\]</div>
+</div>
+<div class="section" id="sensor-temporal-noise">
+<h3>Sensor temporal noise<a class="headerlink" href="#sensor-temporal-noise" title="Permalink to this headline">¶</a></h3>
+<p>Within the sensor, photoelectrons are converted to analog-to-digital
+units (ADU) through a step-wise process involving</p>
+<ol class="arabic simple">
+<li>the amplification of the signal and the addition of multiplication
+noise (for cameras possessing a multiplication register),</li>
+<li>the addition of dark noise, which consists of readout noise and
+dark current noise,</li>
+<li>the conversion of electrons to voltages by multiplication with a
+constant system gain factor,</li>
+<li>and quantization of the voltage to discrete ADU values and
+summation with a constant baseline value.</li>
+</ol>
+<p>The number of photoelectrons that is generated within the pixels of an
+electron multiplying CCD (EMCCD) is amplified within a serial register
+via electron avalanche multiplication. This process is random and
+introduces a multiplicative noise that is modeled as a gamma
+distribution <span class="math">\(\Gamma \left( \mu_e, g^{-1} \right)\)</span> where
+<span class="math">\(g^{-1}\)</span> is the inverse value of the camera&#8217;s EM gain. (Note
+that in some notations the second parameter of the gamma distribution
+is denoted directly by the gain, not its inverse.) Sensors such as
+sCMOS cameras that lack a serial multiplication register are modeled
+in SASS by setting the EM gain value to 0.</p>
+<p>Following the multiplication register, dark current noise is added to
+the signal to account for thermally excited electrons within the
+pixels. Dark current is modeled as a zero-mean Gaussian distribution
+whose standard deviation is a free parameter. Typically, the value for
+this parameter is found by assuming that dark current is also a
+Poisson process whose variance is equivalent to the mean number of
+dark current electrons <span class="math">\(\mu_I t_{exp}\)</span>. Here, <span class="math">\(\mu_I\)</span> is
+the dark current in electrons per time and <span class="math">\(t_{exp}\)</span> is the
+exposure time of the frame. <span class="math">\(\mu_I\)</span> is dependent on temperature
+in general. Dark current is often negligible in microscopy
+experiments, so it may often be safely ignored.</p>
+<p>The total number of amplified photoelectrons and dark current
+electrons are then readout as a voltage, which introduces a readout
+noise. Readout noise is modeled as a zero-mean Gaussian distribution
+whose standard deviation is also a free parameter. The value for this
+parameter is often given on camera specification sheets as a median or
+root-mean-square (RMS) number of electrons. (<a class="reference external" href="http://camera.hamamatsu.com/us/en/technical_guides/read_noise/index.html">RMS readout noise is
+preferred for sCMOS cameras because of pixel-to-pixel variation in the
+values</a>.)
+Some camera manufacturers will combine dark current and readout noise
+into a single noise source known as dark noise with mean <span class="math">\(\mu_d\)</span>
+and variance <span class="math">\(\sigma_d^2\)</span>.</p>
+<p>After addition of the readout noise, the voltage signal is amplified
+by another free parameter found on camera specification sheets, the
+system gain <span class="math">\(K\)</span>. Finally, the signal is quantized into discrete
+ADUs and optionally summed with a constant baseline <span class="math">\(b\)</span> to
+prevent negative pixel values. This baseline is often about 100
+ADU. The quantization noise is a uniform distribution with variance
+<span class="math">\(\sigma_q^2 = \frac{1}{12} \, ADU^2\)</span>. It is automatically
+accounted for in the code by converting from double to integer data
+types.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="scripting.html" title="Scripting Interface"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="SASS"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 1970, The Laboratory of Experimental Biophysics, EPFL, Lausanne, Switzerland.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

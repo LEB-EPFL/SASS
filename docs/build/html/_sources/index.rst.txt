@@ -14,6 +14,7 @@ SASS
    models
    scripting
    faq
+   _javasphinx/packages
 
 About
 =====

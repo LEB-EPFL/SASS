@@ -1,8 +1,11 @@
-.. contents:: Frequently Asked Questions
-   :depth: 2
+Frequently Asked Questions
+==========================
+
+.. contents::
+   :depth: 3
 
 General
-=======
++++++++
 
 What does SASS stand for?
 -------------------------
@@ -13,7 +16,7 @@ SMLM Acquisition Simulation Software.
 
 
 Running Simulations
-===================
++++++++++++++++++++
 
 How are custom fluorophore position lists formatted?
 ----------------------------------------------------
@@ -27,6 +30,9 @@ column represents the fluorophore's y-position. The file should
 contain no header or comments.
 
 **Example**
+
+The column labels **should not** be included in the file; they are
+illustrated here only to indicate which columns correspond to x and y.
 
 +-----------+-----------+
 | x, pixels | y, pixels |

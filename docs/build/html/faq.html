@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>General &#8212; SASS 0.2.1 documentation</title>
+    <title>Frequently Asked Questions &#8212; SASS 0.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -46,12 +46,15 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">General</a><ul>
+<li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#general">General</a><ul>
 <li><a class="reference internal" href="#what-does-sass-stand-for">What does SASS stand for?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#running-simulations">Running Simulations</a><ul>
 <li><a class="reference internal" href="#how-are-custom-fluorophore-position-lists-formatted">How are custom fluorophore position lists formatted?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -84,31 +87,36 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="contents topic" id="frequently-asked-questions">
-<p class="topic-title first">Frequently Asked Questions</p>
+  <div class="section" id="frequently-asked-questions">
+<h1><a class="toc-backref" href="#id1">Frequently Asked Questions</a><a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#general" id="id1">General</a><ul>
-<li><a class="reference internal" href="#what-does-sass-stand-for" id="id2">What does SASS stand for?</a></li>
+<li><a class="reference internal" href="#frequently-asked-questions" id="id1">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#general" id="id2">General</a><ul>
+<li><a class="reference internal" href="#what-does-sass-stand-for" id="id3">What does SASS stand for?</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-simulations" id="id3">Running Simulations</a><ul>
-<li><a class="reference internal" href="#how-are-custom-fluorophore-position-lists-formatted" id="id4">How are custom fluorophore position lists formatted?</a></li>
+<li><a class="reference internal" href="#running-simulations" id="id4">Running Simulations</a><ul>
+<li><a class="reference internal" href="#how-are-custom-fluorophore-position-lists-formatted" id="id5">How are custom fluorophore position lists formatted?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="general">
-<h1><a class="toc-backref" href="#id1">General</a><a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h1>
+<h2><a class="toc-backref" href="#id2">General</a><a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="what-does-sass-stand-for">
-<h2><a class="toc-backref" href="#id2">What does SASS stand for?</a><a class="headerlink" href="#what-does-sass-stand-for" title="Permalink to this headline">¶</a></h2>
+<h3><a class="toc-backref" href="#id3">What does SASS stand for?</a><a class="headerlink" href="#what-does-sass-stand-for" title="Permalink to this headline">¶</a></h3>
 <p>SMLM Acquisition Simulation Software.</p>
 <p>(SMLM stands for Single Molecule Localization Microscopy.)</p>
 </div>
 </div>
 <div class="section" id="running-simulations">
-<h1><a class="toc-backref" href="#id3">Running Simulations</a><a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h1>
+<h2><a class="toc-backref" href="#id4">Running Simulations</a><a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="how-are-custom-fluorophore-position-lists-formatted">
-<h2><a class="toc-backref" href="#id4">How are custom fluorophore position lists formatted?</a><a class="headerlink" href="#how-are-custom-fluorophore-position-lists-formatted" title="Permalink to this headline">¶</a></h2>
+<h3><a class="toc-backref" href="#id5">How are custom fluorophore position lists formatted?</a><a class="headerlink" href="#how-are-custom-fluorophore-position-lists-formatted" title="Permalink to this headline">¶</a></h3>
 <p>Customized fluorophore positions are imported into SASS from an
 externally-generated file that you create yourself. This file should
 contain two columns of comma-separated numerical values (for example,
@@ -117,6 +125,8 @@ first column represents the fluorophore&#8217;s x-position, while the second
 column represents the fluorophore&#8217;s y-position. The file should
 contain no header or comments.</p>
 <p><strong>Example</strong></p>
+<p>The column labels <strong>should not</strong> be included in the file; they are
+illustrated here only to indicate which columns correspond to x and y.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="50%" />
@@ -146,6 +156,7 @@ contain no header or comments.</p>
 left-hand corner of the generated image stacks. This means, for
 example, that a fluorophore at position (16, 16) will be in the center
 of a 32x32 pixel image.</p>
+</div>
 </div>
 </div>
 

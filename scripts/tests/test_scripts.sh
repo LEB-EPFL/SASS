@@ -29,9 +29,8 @@ java -version
 # Download desired version of SASS to a temporary directory
 url="https://github.com/MStefko/SASS/releases/download/v$version/SASS_v$version.jar"
 temp_dir=$(mktemp -d)
-sass=/home/kmdouglass/apps/Fiji.app/plugins/SASS_v$version.jar
-#sass=$temp_dir/SASS_v$version.jar
-#wget -O $sass $url
+sass=$temp_dir/SASS_v$version.jar
+wget -O $sass $url
 
 if [ $? -eq 0 ]
 then
@@ -70,5 +69,3 @@ done
 rm -rf $temp_dir
 
 exit 0
-
-

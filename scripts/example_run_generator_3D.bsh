@@ -58,7 +58,7 @@ STORMsim generator = new STORMsim(device);
 generator.setControlSignal(0.03);
 
 // simulate frames
-for (i=0;i<10000;i++) {
+for (i=0;i<5000;i++) {
     if (i%1000==0) {
 		System.out.println(i);
 	}

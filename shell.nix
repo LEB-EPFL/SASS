@@ -45,5 +45,11 @@ with import <nixpkgs> {};
     
     };
 
-  in pkgs.python35.withPackages (ps: [ ps.sphinx pkgs.netbeans javalang javasphinx ])
+  in pkgs.python35.withPackages (ps: [
+      ps.sphinx
+      pkgs.netbeans
+      javalang
+      javasphinx
+    ]
+  )
 ).env

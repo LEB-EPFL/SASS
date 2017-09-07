@@ -1,0 +1,10 @@
+# Travis CI build and test script
+language: java
+jdk:
+  - oraclejdk6
+
+before_install:
+  - cd java
+
+script:
+  - ant test

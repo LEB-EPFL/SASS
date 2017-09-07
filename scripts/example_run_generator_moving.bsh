@@ -52,6 +52,10 @@ for (int i=1; i<1000; i++) {
 ArrayList emitters = new ArrayList();
 emitters.add( fluo.createMovingFluorophore(camera,50.0,50.0,trajectory));
 
+// alternatively, you may load the trajectory from a csv file
+// parse emitters from csv file like below:
+// ArrayList emitters = FluorophoreGenerator.parseMovingFluorophoresFromCsv(null, camera, fluo);
+
 // add a gold bead to the field of view at random location
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();

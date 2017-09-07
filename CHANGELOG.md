@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+### Removed
+- Removed the script **example_run_generator_moving_from_csv.bsh** and
+  made a comment about how to implement trajectory loading from an
+  external file in **example_run_generator_moving.bsh**.
+
 ## [v0.2.1]
 ### Added
 - Electron multiplication (EM) gain and camera baseline parameters.

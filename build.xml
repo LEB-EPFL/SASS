@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="SASS" default="default" basedir=".">
-    <description>Builds, tests, and runs the project STEADIER-SAILOR.</description>
+    <description>Builds, tests, and runs the project SASS.</description>
     <import file="nbproject/build-impl.xml"/>
     <property name="pluginsDir"  location="/home/douglass/apps/Fiji.app/plugins" />
     <property name="store.jar.name" value="SASS_v0.2.1.jar"/>

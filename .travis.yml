@@ -1,10 +1,11 @@
 # Travis CI build and test script
 language: java
 jdk:
-  - oraclejdk6
+  - oraclejdk8
+  - openjdk8
 
 before_install:
-  - cd java
+  - sudo apt-get install ant-optional
 
 script:
   - ant test

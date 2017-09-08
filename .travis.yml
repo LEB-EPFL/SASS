@@ -1,8 +1,8 @@
 # Travis CI build and test script
 language: java
 jdk:
-  - oraclejdk7
   - oraclejdk8
+  - openjdk8
 
 script:
   - ant test

@@ -18,7 +18,7 @@
 #
 
 test_dir=$(readlink -f $1)
-version=$2
+sass=$2
 
 # Print information about the test
 echo "Testing execution of scripts in directory: $test_dir"
@@ -27,19 +27,7 @@ echo "SASS version: v$version"
 java -version
 
 # Download desired version of SASS to a temporary directory
-url="https://github.com/MStefko/SASS/releases/download/v$version/SASS_v$version.jar"
 temp_dir=$(mktemp -d)
-sass=$temp_dir/SASS_v$version.jar
-wget -O $sass $url
-
-if [ $? -eq 0 ]
-then
-    echo "Successfully retrieved the SASS_v$version.jar file."
-else
-    echo "Failed to retrieve the SASS_v$version.jar file." >&2
-    rmdir $temp_dir
-    exit 1
-fi
 
 # Change to the temporary directory to run tests there
 cd $temp_dir

@@ -1,5 +1,7 @@
 # SMLM Acquisition Simulation Software
 
+[![Build Status](https://travis-ci.org/LEB-EPFL/SASS.svg?branch=master)](https://travis-ci.org/LEB-EPFL/SASS)
+
 Toolkit for simulating non-stationary fluorescence photodynamics and
 real-time control systems for single molecule localization microscopy
 (SMLM).

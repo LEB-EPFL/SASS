@@ -4,5 +4,8 @@ jdk:
   - oraclejdk8
   - openjdk8
 
+before_install:
+  - sudo apt-get install ant-optional
+
 script:
   - ant test

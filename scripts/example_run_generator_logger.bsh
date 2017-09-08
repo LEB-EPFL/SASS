@@ -1,0 +1,78 @@
+/**
+ * This setups a simulation with a logger for logging the state
+ * transitions.
+ */
+
+import ch.epfl.leb.sass.simulator.StateLogger;
+import ch.epfl.leb.sass.simulator.generators.realtime.*;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
+import java.util.ArrayList;
+
+RNG.setSeed(1);
+
+// Obtain a reference to the state logger and enable it
+StateLogger logger = StateLogger.getInstance();
+logger.setPerformLogging(true);
+
+// *** Initalize generator from the ground up ***
+Camera camera = new Camera(
+    30, //res_x
+    30, //res_y
+    100, //acq_speed, 
+    1.6, //readout_noise, 
+    0.06, //dark_current, 
+    0.8, //quantum_efficiency, 
+    2.2,  // ADU_per_electron
+    0,    // EM_gain
+    100,  // baseline, ADU 
+    6.45 * 1e-6, //pixel_size, 
+    1.4, //NA, 
+    680 * 1e-9, //wavelength, 
+    60); //magnification)
+
+// fluorophores: all properties in units per frame
+FluorophoreProperties fluo = new PalmProperties(
+    2500, // signal
+    50, // background
+    100, //ka
+    0, // kb
+    7.8/1.2/100.0, // kd1
+    0.2*7.8/1.2/100.0, // kd2
+    0.4/100.0, //kr1
+    15.7/100.0); // kr2
+
+// laser
+Laser laser = new Laser(
+    0.0, // start
+    500.0, // max
+    0.0); // min
+
+// generate emitters 
+// create a grid
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(
+    10, // spacing in px
+    camera,
+    fluo);
+
+// assemble the device and generator
+Device device = new Device(camera, fluo, laser, emitters, null);
+STORMsim generator = new STORMsim(device);
+
+// set laser power
+generator.setControlSignal(0.03);
+
+// simulate frames
+for (i=0;i<10000;i++) {
+    if (i%1000==0) {
+		System.out.println(i);
+	}
+	generator.getNextImage();
+}
+
+// Save the stack
+generator.saveStack(new File("generated_stack.tif"));
+
+// Save the state transitions
+logger.setFilename("state_transitions.csv");
+logger.saveLogFile();
+

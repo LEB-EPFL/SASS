@@ -20,6 +20,7 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.Random;
+import ch.epfl.leb.sass.simulator.StateLogger;
 
 /**
  * A general fluorescent molecule which emits light.
@@ -27,6 +28,15 @@ import java.util.Random;
  */
 public class Fluorophore extends Emitter {
 
+    /**
+     * A copy of the state logger.
+     */
+    private StateLogger logger = StateLogger.getInstance();
+    
+    /**
+     * internal emitter clock for tracking total time elapsed
+     */
+    private double time_elapsed = 0.0;
     
     /**
      * RNG
@@ -132,12 +142,22 @@ public class Fluorophore extends Emitter {
                     on_time += transition_time;
                 }
                 remaining_time -= transition_time;
+                time_elapsed += transition_time;
+                
+                logger.logStateTransition(
+                    this.getId(),
+                    time_elapsed,
+                    current_state,
+                    next_state
+                );
+                
                 current_state = next_state;
             // no transition happens till end of frame
             } else {
                 if (this.isOn()) {
                     on_time += remaining_time;
                 }
+                time_elapsed += remaining_time;
                 remaining_time = 0.0;
             }
         }

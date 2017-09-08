@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Kyle M. Douglass
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -30,12 +28,34 @@ package ch.epfl.leb.sass.simulator;
 
 import org.json.JSONObject;
 import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class StateLogger {
     private static StateLogger uniqueInstance = new StateLogger();
+    
+    /**
+     * The name of the log file.
+     */
     private String filename = "";
+    
+    /**
+     * Determines whether the StateLogger is active or not.
+     */
+    private boolean performLogging = false;
+    
+    /**
+     * State information for recording.
+     */
+    private ArrayList<Integer> ids = new ArrayList();
+    private ArrayList<Double> elapsedTimes = new ArrayList();
+    private ArrayList<Integer> initialStates = new ArrayList();
+    private ArrayList<Integer> nextStates = new ArrayList();
 
-    private StateLogger() {}
+    private StateLogger() {
+    }
 
     public static StateLogger getInstance() {
 	return uniqueInstance;
@@ -43,20 +63,19 @@ public class StateLogger {
 
     /**
      * Simple logger for state transitions and their times.
-     * @param time_elapsed The time spent in the current state
-     * @param current_state integer ID of the original state
-     * @param next_state integer ID for the new fluorophore state
+     * @param id integer ID of the emitter
+     * @param timeElapsed The time spent in the current state
+     * @param initialState integer ID of the original state
+     * @param nextState integer ID for the new fluorophore state
      */
-    public void logStateTransition(double time_elapsed,
-                              int current_state,
-                              int next_state) {
-    }
-
-    /**
-     * Logs all information from a fluorophore formatted in JSON
-     * @param json State information encoded in a JSON object
-     */
-    public void logStateTransition(JSONObject json) {
+    public void logStateTransition(int id, double timeElapsed, int initialState, int nextState) {
+        if ( !(this.performLogging) )
+            return;
+        
+        this.ids.add(id);
+        this.elapsedTimes.add(timeElapsed);
+        this.initialStates.add(initialState);
+        this.nextStates.add(nextState);
     }
     
     /**
@@ -68,10 +87,11 @@ public class StateLogger {
     }
     
     /**
-     * Set the filename for logging the fluorophore state transitions.
-     * @param filename The full path and filename of the log file
+     * Set the filename for logging the fluorophore state transitions and create the file.
+     * @param inFilename The full path and filename of the log file
+     * @throws IOException
      */
-    public void setFilename(String inFilename) {
+    public void setFilename(String inFilename) throws IOException {
         // Don't do anything if input filename equals the logger's current one
         if (inFilename.equals(this.filename))
             return;
@@ -95,8 +115,70 @@ public class StateLogger {
             logFile = new File(baseName);
             fileId++;
         }
-            
         
         this.filename = logFile.toString();
+    }
+    
+    public ArrayList<Integer> getIds() {
+        return this.ids;
+    }
+    
+    public ArrayList<Double> getElapsedTimes() {
+        return this.elapsedTimes;
+    }
+    
+    public ArrayList<Integer> getInitialStates() {
+        return this.initialStates;
+    }
+    
+    public ArrayList<Integer> getNextStates() {
+        return this.nextStates;
+    }
+    
+    public boolean getPerformLogging() {
+        return performLogging;
+    }
+    
+    public void setPerformLogging(boolean isActive) {
+        performLogging = isActive;
+    }
+    
+    /**
+     * Saves the state of the logger to a file.
+     * @throws IOException 
+     */
+    public void saveLogFile() throws IOException {
+        File logFile = new File(this.filename);
+        if ( !(logFile.exists()) )
+            logFile.createNewFile();
+        
+        FileWriter fileWriter = new FileWriter(this.filename);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        
+        printWriter.print("id,time_elapsed,initial_state,next_state%n");
+        
+        for(int ctr = 0; ctr < this.ids.size(); ctr++) {
+            printWriter.printf(
+                "%d,%.4f,%d,%d",
+                this.ids.get(ctr),
+                this.elapsedTimes.get(ctr),
+                this.initialStates.get(ctr),
+                this.nextStates.get(ctr)
+            );
+        }
+        
+        printWriter.close();
+    }
+    
+    /**
+     * Resets the logger to its initial state.
+     */
+    public void reset() {
+        this.filename = "";
+        this.performLogging = false;
+        this.ids = new ArrayList();
+        this.elapsedTimes = new ArrayList();
+        this.initialStates = new ArrayList();
+        this.nextStates = new ArrayList();
     }
 }

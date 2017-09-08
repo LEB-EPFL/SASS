@@ -26,7 +26,7 @@ import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Logs all state transitions from a simulation.
  * @author Kyle M. Douglass
  */
 public class StateLoggerTest {
@@ -42,14 +42,63 @@ public class StateLoggerTest {
      * Test of logStateTransition method, of class StateLogger.
      */
     @Test
-    public void testLogStateTransition_3args() {
+    public void testLogStateTransition_4args() {
         System.out.println("logStateTransition");
-        double time_elapsed = 0.0;
-        int current_state = 0;
-        int next_state = 0;
+        int id = 1;
+        double timeElapsed = 10.0;
+        int initialState = 0;
+        int nextState = 1;
         StateLogger logger = StateLogger.getInstance();
-        logger.logStateTransition(time_elapsed, current_state, next_state);
-        // TODO: ADD ASSERTION
+        logger.setPerformLogging(true);
+        
+        // Method call to test is here.
+        logger.logStateTransition(id, timeElapsed, initialState, nextState);
+        
+        int actualId = logger.getIds().get(0);
+        double actualTimeElapsed = logger.getElapsedTimes().get(0);
+        int actualInitialState = logger.getInitialStates().get(0);
+        int actualNextState = logger.getNextStates().get(0);
+        assertEquals(id, actualId);
+        assertEquals(timeElapsed, actualTimeElapsed, 0.001);
+        assertEquals(initialState, actualInitialState);
+        assertEquals(nextState, actualNextState);
+        
+    }
+    
+    /**
+     * Test for resetting the logger to its initial state.
+     */
+    @Test
+    public void testReset() throws IOException {
+        StateLogger logger = StateLogger.getInstance();
+        
+        // Give the logger some initial state
+        logger.setFilename("textLogFile.txt");
+        logger.setPerformLogging(true);
+        logger.logStateTransition(1, 10.0, 0, 1);
+        
+        assertTrue("textLogFile.txt".equals(logger.getFilename()));
+        assertEquals(true, logger.getPerformLogging());
+        
+        int actualId = logger.getIds().get(0);
+        double actualTimeElapsed = logger.getElapsedTimes().get(0);
+        int actualInitialState = logger.getInitialStates().get(0);
+        int actualNextState = logger.getNextStates().get(0);
+        assertEquals(1, actualId);
+        assertEquals(10.0, actualTimeElapsed, 0.001);
+        assertEquals(0, actualInitialState);
+        assertEquals(1, actualNextState);
+        
+        // Critical method test is here.
+        logger.reset();
+        
+        assertTrue("".equals(logger.getFilename()));
+        assertEquals(false, logger.getPerformLogging());
+        
+        assertEquals(0, logger.getIds().size());
+        assertEquals(0, logger.getElapsedTimes().size());
+        assertEquals(0, logger.getInitialStates().size());
+        assertEquals(0, logger.getNextStates().size());
     }
     
     /**
@@ -65,8 +114,6 @@ public class StateLoggerTest {
         // Tell logger to create a file whose filename already exists
         logger.setFilename(existingFile.toString());
         File logFile = new File(logger.getFilename());
-        boolean created = logFile.createNewFile();
-        assertTrue(created);
         
         // Critical check of setFilename() is here.
         String newName = logFile.getName();
@@ -74,6 +121,9 @@ public class StateLoggerTest {
             "logger file name is: " + newName,
             newName.equals("testLogFile_1.txt")
         );
+        
+        // Create the actual file
+        logFile.createNewFile();
         
         // Another critical check: is integer id is incremented another time?
         logger.setFilename(existingFile.toString());

@@ -19,7 +19,10 @@ package ch.epfl.leb.sass.simulator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
@@ -29,26 +32,30 @@ import static org.junit.Assert.*;
  * Logs all state transitions from a simulation.
  * @author Kyle M. Douglass
  */
-public class StateLoggerTest {
-    private StateLogger logger = StateLogger.getInstance();
+public class StateLoggerTest { 
+    private StateLogger logger = null;
     
     @Rule
     public TemporaryFolder tempDir = new TemporaryFolder();
     
     public StateLoggerTest() {
     }
-
+    
+    @Before
+    public void setUp () {
+        logger = StateLogger.getInstance();
+    }
+    
     /**
      * Test of logStateTransition method, of class StateLogger.
      */
     @Test
-    public void testLogStateTransition_4args() {
+    public void testLogStateTransition() {
         System.out.println("logStateTransition");
         int id = 1;
         double timeElapsed = 10.0;
         int initialState = 0;
         int nextState = 1;
-        StateLogger logger = StateLogger.getInstance();
         logger.setPerformLogging(true);
         
         // Method call to test is here.
@@ -70,8 +77,6 @@ public class StateLoggerTest {
      */
     @Test
     public void testReset() throws IOException {
-        StateLogger logger = StateLogger.getInstance();
-        
         // Give the logger some initial state
         logger.setFilename("textLogFile.txt");
         logger.setPerformLogging(true);
@@ -99,6 +104,42 @@ public class StateLoggerTest {
         assertEquals(0, logger.getElapsedTimes().size());
         assertEquals(0, logger.getInitialStates().size());
         assertEquals(0, logger.getNextStates().size());
+    }
+    
+    /**
+     * Test for saving the log file.
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testSaveLogFile() throws IOException {
+        File logFile = tempDir.newFile("testLogFile.txt");
+        logger.setFilename(logFile.toString());
+        logger.setPerformLogging(true);
+        
+        // Add some data to the logger
+        this.logger.logStateTransition(1, 10.0, 0, 1);
+        this.logger.logStateTransition(2, 5.5, 1, 0);
+        
+        // Critical test
+        logger.saveLogFile();
+        
+        // Open the file and verify the contents
+        FileReader fileReader = new FileReader(logger.getFilename());
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        try {
+            String line1 = bufferedReader.readLine();
+            String line2 = bufferedReader.readLine();
+            String line3 = bufferedReader.readLine();
+            
+            assertTrue(line1.equals("id,time_elapsed,initial_state,next_state"));
+            assertTrue(line2.equals("1,10.0000,0,1"));
+            assertTrue(line3.equals("2,5.5000,1,0"));
+        } catch (IOException e)
+        {
+            throw e;
+        } finally {
+            bufferedReader.close();
+        }
     }
     
     /**

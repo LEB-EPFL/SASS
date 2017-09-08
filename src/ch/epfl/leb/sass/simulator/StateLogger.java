@@ -155,11 +155,11 @@ public class StateLogger {
         FileWriter fileWriter = new FileWriter(this.filename);
         PrintWriter printWriter = new PrintWriter(fileWriter);
         
-        printWriter.print("id,time_elapsed,initial_state,next_state%n");
+        printWriter.println("id,time_elapsed,initial_state,next_state");
         
         for(int ctr = 0; ctr < this.ids.size(); ctr++) {
             printWriter.printf(
-                "%d,%.4f,%d,%d",
+                "%d,%.4f,%d,%d%n",
                 this.ids.get(ctr),
                 this.elapsedTimes.get(ctr),
                 this.initialStates.get(ctr),

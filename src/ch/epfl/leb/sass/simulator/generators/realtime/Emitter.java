@@ -36,6 +36,16 @@ import org.apache.commons.math.special.Erf;
  * @author Marcel Stefko
  */
 public abstract class Emitter extends Point2D.Double  {
+    
+    /**
+     * Running total of the number of emitters.
+     */
+    protected static int numberOfEmitters = 0;
+    
+    /**
+     * A unique ID assigned to this emitter.
+     */
+    protected int id;
 
     /**
      * List of pixels which are affected by this emitter's light (these pixels
@@ -69,6 +79,10 @@ public abstract class Emitter extends Point2D.Double  {
         final double r = 3 * sigma;
         // generate pixels which will be added to image when emitter is on
         this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
+        
+        // Increment the number of emitters and assign the id.
+        this.numberOfEmitters += 1;
+        this.id = this.numberOfEmitters;
         
     }
 
@@ -169,4 +183,12 @@ public abstract class Emitter extends Point2D.Double  {
      * @return brightness of emitter in this frame [photons emitted]
      */
     protected abstract double simulateBrightness();
+    
+    /**
+     * Returns the emitter's ID.
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
 }

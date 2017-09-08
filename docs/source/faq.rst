@@ -50,3 +50,6 @@ The units of the values are in pixels, and the origin is in the upper
 left-hand corner of the generated image stacks. This means, for
 example, that a fluorophore at position (16, 16) will be in the center
 of a 32x32 pixel image.
+
+The coordinate system is identical to that used by `ThunderSTORM
+<http://zitmen.github.io/thunderstorm/>`_.

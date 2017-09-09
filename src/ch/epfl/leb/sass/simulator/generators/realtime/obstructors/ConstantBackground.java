@@ -106,7 +106,7 @@ public class ConstantBackground implements Obstructor  {
      */
     private void loadFile(File file) {
         Opener o = new Opener();
-        ImagePlus win = o.openTiff(file.getParent().concat("\\"),file.getName());
+        ImagePlus win = o.openTiff(file.getParent().concat(File.separator),file.getName());
         ImageStack stack = win.getImageStack();
         ImageProcessor ip = stack.getProcessor(1);
         FloatProcessor fp = ip.convertToFloatProcessor();

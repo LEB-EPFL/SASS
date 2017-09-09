@@ -18,11 +18,11 @@
 #
 
 test_dir=$(readlink -f $1)
-sass=$2
+sass=$(readlink -f $2)
 
 # Print information about the test
 echo "Testing execution of scripts in directory: $test_dir"
-echo "SASS version: v$version"
+echo "SASS: $sass"
 
 java -version
 

@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
   demonstrates how to log the groundtruth output from a simulation and
   save the results to a .csv file.
 
+### Fixed
+- Fixed a bug preventing the opening of a background file on Linux/Mac
+  OS that was caused by a hard-coded backslash file separator
+  character.
+
 ### Removed
 - Removed the script **example_run_generator_moving_from_csv.bsh** and
   made a comment about how to implement trajectory loading from an

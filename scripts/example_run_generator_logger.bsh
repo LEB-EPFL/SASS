@@ -70,7 +70,7 @@ for (i=0;i<10000;i++) {
 }
 
 // Save the stack
-generator.saveStack(new File("generated_stack.tif"));
+//generator.saveStack(new File("generated_stack.tif"));
 
 // Save the state transitions
 logger.setFilename("state_transitions.csv");

@@ -69,12 +69,12 @@ for (i=0;i<100;i++) {
 	generator.getNextImage();
 }
 
-// save and show
-generator.saveStack(new File("generated_stack.tif"));
-import ij.ImagePlus;
-ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
-ip.show();
-ip.updateAndRepaintWindow();
+// save and show; uncomment these lines to save and display stack
+//generator.saveStack(new File("generated_stack.tif"));
+//import ij.ImagePlus;
+//ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
+//ip.show();
+//ip.updateAndRepaintWindow();
 
 //System.exit(0); // uncomment if you want termination immediately
 

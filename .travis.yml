@@ -9,3 +9,9 @@ before_install:
 
 script:
   - ant test
+  - mkdir -p dist/lib
+  # The line below is needed for the Travis build specifically
+  - cp -r src/lib/*.jar dist/lib
+  - ant -f build-travis.xml
+  - java -jar ./store/SASS*.jar
+  - ./scripts/tests/test_scripts.sh scripts ./store/SASS*.jar

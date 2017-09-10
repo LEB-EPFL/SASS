@@ -1,7 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [v0.3.0]
+Contains [ALICA v0.2.1]
+
 ### Added
 - `StateLogger` object for recording each fluorophore state transition
    and the time at which it occurs.
@@ -29,8 +31,7 @@ All notable changes to this project will be documented in this file.
   (by setting the EM gain to a non-zero value) and sCMOS (by setting
   the EM gain to zero.)
 - A problem preventing the creation of new dStormProperties
-  fluorophore models.
-	
+  fluorophore models.	
 	
 ## [v0.2.0]
 Contains [ALICA v0.2.1]
@@ -87,12 +88,13 @@ Contains [ALICA v0.0.2]
 - default.nix was added to more easily port the development
   environment across machines.
 
-[ALICA v0.2.1]: https://github.com/MStefko/ALICA/releases/tag/v0.2.1
-[ALICA v0.0.2]: https://github.com/MStefko/ALICA/releases/tag/v0.0.2
-[ALICA v0.1.0]: https://github.com/MStefko/ALICA/releases/tag/v0.1.0
-[v0.0.2]: https://github.com/MStefko/SASS/releases/tag/v0.0.2
-[v0.1.0]: https://github.com/MStefko/SASS/releases/tag/v0.1.0
-[v0.1.1]: https://github.com/MStefko/SASS/releases/tag/v0.1.1
-[v0.1.2]: https://github.com/MStefko/SASS/releases/tag/v0.1.2
-[v0.2.0]: https://github.com/MStefko/SASS/releases/tag/v0.2.0
-[v0.2.1]: https://github.com/MStefko/SASS/releases/tag/v0.2.1
+[ALICA v0.2.1]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.1
+[ALICA v0.0.2]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.0.2
+[ALICA v0.1.0]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.1.0
+[v0.0.2]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.0.2
+[v0.1.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.1.0
+[v0.1.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.1.1
+[v0.1.2]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.1.2
+[v0.2.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.2.0
+[v0.2.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.2.1
+[v0.3.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.3.0

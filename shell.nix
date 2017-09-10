@@ -36,7 +36,8 @@ with import <nixpkgs> {};
                       pkgs.python35Packages.beautifulsoup4
 	       	      pkgs.python35Packages.future
 		      pkgs.python35Packages.docutils
-		      pkgs.python35Packages.sphinx];
+		      pkgs.python35Packages.sphinx
+		    ];
 
       meta = {
         homepage = "https://github.com/bronto/javasphinx";
@@ -50,6 +51,7 @@ with import <nixpkgs> {};
       pkgs.netbeans
       javalang
       javasphinx
+      pkgs.jdk
     ]
   )
 ).env

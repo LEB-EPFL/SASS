@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+- `STORMsim` now has a method wrapper called `incrementTimeStep()`
+  which advances the simulation by one frame without recording an
+  image to the stack.
+
 ## [v0.3.0]
 Contains [ALICA v0.2.1]
 

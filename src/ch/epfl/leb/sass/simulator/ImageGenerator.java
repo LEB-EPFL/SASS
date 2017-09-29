@@ -28,6 +28,7 @@ import java.util.HashMap;
  * Interface through which AlgorithmTester generates new images to be
  * analyzed by EvaluationAlgorithms.
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public interface ImageGenerator {
 
@@ -36,6 +37,11 @@ public interface ImageGenerator {
      * @return newly generated image
      */
     public ImageProcessor getNextImage();
+    
+    /**
+     * Increments the simulation by one time step without creating an image.
+     */
+    public void incrementTimeStep();
     
     /**
      * Sets control signal of the generator (e.g. laser power). This should be

@@ -39,6 +39,19 @@ Please be sure to change the path argument above to one for your
 specific machine, which includes changing `/` to `\\\\` if you are
 using Windows.
 
+From the shell/command line
++++++++++++++++++++++++++++
+
+To better facilitate batch processing and complex workflows, we made
+it possible to run a Beanshell script directly from the command line
+by invoking the SASS .jar directly through the Java Virtual Machine::
+
+  java -jar path/to/SASS/SASS.jar -s path/to/examples/example_run_generator.bsh
+
+As you can see, you only need to pass the path to the .jar file on
+your machine and a **-s** argument followed by the path to the
+Beanshell script.
+
 Example Scripts
 ---------------
 

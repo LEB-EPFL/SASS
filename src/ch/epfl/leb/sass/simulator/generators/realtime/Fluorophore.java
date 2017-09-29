@@ -21,6 +21,7 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.Random;
 import ch.epfl.leb.sass.simulator.StateLogger;
+import ch.epfl.leb.sass.simulator.PositionLogger;
 
 /**
  * A general fluorescent molecule which emits light.
@@ -31,7 +32,12 @@ public class Fluorophore extends Emitter {
     /**
      * A copy of the state logger.
      */
-    private StateLogger logger = StateLogger.getInstance();
+    private StateLogger stateLogger = StateLogger.getInstance();
+    
+    /**
+     * A copy of the position logger.
+     */
+    private PositionLogger positionLogger = PositionLogger.getInstance();
     
     /**
      * internal emitter clock for tracking total time elapsed
@@ -76,6 +82,9 @@ public class Fluorophore extends Emitter {
             throw new IllegalArgumentException("Starting state no. is out of bounds.");
         }
         this.random = RNG.getUniformGenerator();
+        
+        // Log the fluorophore's position
+        this.positionLogger.logPosition(this.getId(), x, y, 0.0);
     }
 
     /**
@@ -144,7 +153,7 @@ public class Fluorophore extends Emitter {
                 remaining_time -= transition_time;
                 time_elapsed += transition_time;
                 
-                logger.logStateTransition(
+                stateLogger.logStateTransition(
                     this.getId(),
                     time_elapsed,
                     current_state,

@@ -35,6 +35,7 @@ import cern.jet.random.engine.MersenneTwister;
 /**
  * Encapsulator class which contains all device objects (camera, laser...)
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class Device {
     private final Camera camera;
@@ -192,6 +193,8 @@ public class Device {
             }
         }
         // Add emitters
+        // The applyTo method also handles fluorophore state changes by calling
+        // the simulateBrightness() method of an emitter.
         for (Fluorophore f: fluorophores) {
             f.applyTo(pixels);
         }

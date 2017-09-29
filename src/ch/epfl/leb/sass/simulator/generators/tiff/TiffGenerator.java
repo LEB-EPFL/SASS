@@ -56,6 +56,11 @@ public class TiffGenerator extends AbstractGenerator {
     }
 
     @Override
+    public void incrementTimeStep(){
+        return;
+    }
+    
+    @Override
     public void setCustomParameters(HashMap<String, Double> map) {
         return;
     }

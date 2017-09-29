@@ -38,7 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * ImageGenerator wrapper around the RealTimeGenerator implementation.
+ * Implementation of the ImageGenerator interface with methods required by AbstractGenerator.
  * @author Marcel Stefko
  */
 public class STORMsim extends AbstractGenerator {
@@ -79,6 +79,20 @@ public class STORMsim extends AbstractGenerator {
         ImageProcessor ip = device.simulateFrame();
         stack.addSlice(ip);
         return ip;
+    }
+    
+    /**
+     * Advance the simulation by one time step (i.e. one frame), but do not create an image.
+     */
+    @Override
+    public void incrementTimeStep() {
+        emitter_history.add(device.getOnEmitterCount());
+        
+        // Returned ImageProcess instance is not captured. This was easier than
+        // outright avoiding any image creation that happens inside
+        // simulateFrame() because the Fluorophore state transitions are handled
+        // inside a long chain of method calls. -kmd
+        device.simulateFrame();
     }
 
     @Override

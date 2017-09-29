@@ -4,6 +4,7 @@
  */
 
 import ch.epfl.leb.sass.simulator.StateLogger;
+import ch.epfl.leb.sass.simulator.PositionLogger;
 import ch.epfl.leb.sass.simulator.generators.realtime.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
@@ -11,8 +12,12 @@ import java.util.ArrayList;
 RNG.setSeed(1);
 
 // Obtain a reference to the state logger and enable it
-StateLogger logger = StateLogger.getInstance();
-logger.setPerformLogging(true);
+StateLogger stateLogger = StateLogger.getInstance();
+stateLogger.setPerformLogging(true);
+
+// Do the same for the position logger
+PositionLogger positionLogger = PositionLogger.getInstance();
+positionLogger.setPerformLogging(true);
 
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(
@@ -54,6 +59,10 @@ ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(
     camera,
     fluo);
 
+// Positions can be logged after fluorophore creation.
+positionLogger.setFilename("emitter_positions.csv");
+positionLogger.saveLogFile();
+
 // assemble the device and generator
 Device device = new Device(camera, fluo, laser, emitters, null);
 STORMsim generator = new STORMsim(device);
@@ -73,6 +82,6 @@ for (i=0;i<10000;i++) {
 //generator.saveStack(new File("generated_stack.tif"));
 
 // Save the state transitions
-logger.setFilename("state_transitions.csv");
-logger.saveLogFile();
+stateLogger.setFilename("state_transitions.csv");
+stateLogger.saveLogFile();
 

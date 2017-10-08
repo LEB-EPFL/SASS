@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator;
+package ch.epfl.leb.sass.simulator.loggers;
 
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
@@ -29,46 +30,46 @@ import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.*;
 
 /**
- * Logs emitter positions from  a simulation.
+ * Logs all state transitions from a simulation.
  * @author Kyle M. Douglass
  */
-public class PositionLoggerTest { 
-    private PositionLogger logger = null;
+public class StateLoggerTest { 
+    private StateLogger logger = null;
     
     @Rule
     public TemporaryFolder tempDir = new TemporaryFolder();
     
-    public PositionLoggerTest() {
+    public StateLoggerTest() {
     }
     
     @Before
     public void setUp () {
-        logger = PositionLogger.getInstance();
+        logger = StateLogger.getInstance();
     }
     
     /**
      * Test of logStateTransition method, of class StateLogger.
      */
     @Test
-    public void testLogPosition() {
-        System.out.println("logPosition");
+    public void testLogStateTransition() {
+        System.out.println("logStateTransition");
         int id = 1;
-        double x = 10.0;
-        double y = 5.0;
-        double z = 1.0;
+        double timeElapsed = 10.0;
+        int initialState = 0;
+        int nextState = 1;
         logger.setPerformLogging(true);
         
         // Method call to test is here.
-        logger.logPosition(id, x, y, z);
+        logger.logStateTransition(id, timeElapsed, initialState, nextState);
         
         int actualId = logger.getIds().get(0);
-        double actualX = logger.getX().get(0);
-        double actualY = logger.getY().get(0);
-        double actualZ = logger.getZ().get(0);
+        double actualTimeElapsed = logger.getElapsedTimes().get(0);
+        int actualInitialState = logger.getInitialStates().get(0);
+        int actualNextState = logger.getNextStates().get(0);
         assertEquals(id, actualId);
-        assertEquals(x, actualX, 0.001);
-        assertEquals(y, actualY, 0.001);
-        assertEquals(z, actualZ, 0.001);
+        assertEquals(timeElapsed, actualTimeElapsed, 0.001);
+        assertEquals(initialState, actualInitialState);
+        assertEquals(nextState, actualNextState);
         
     }
     
@@ -80,19 +81,19 @@ public class PositionLoggerTest {
         // Give the logger some initial state
         logger.setFilename("textLogFile.txt");
         logger.setPerformLogging(true);
-        logger.logPosition(1, 10.0, 5.0, 1.0);
+        logger.logStateTransition(1, 10.0, 0, 1);
         
         assertTrue("textLogFile.txt".equals(logger.getFilename()));
         assertEquals(true, logger.getPerformLogging());
         
         int actualId = logger.getIds().get(0);
-        double actualX = logger.getX().get(0);
-        double actualY = logger.getY().get(0);
-        double actualZ = logger.getZ().get(0);
+        double actualTimeElapsed = logger.getElapsedTimes().get(0);
+        int actualInitialState = logger.getInitialStates().get(0);
+        int actualNextState = logger.getNextStates().get(0);
         assertEquals(1, actualId);
-        assertEquals(10.0, actualX, 0.001);
-        assertEquals(5.0, actualY, 0.001);
-        assertEquals(1.0, actualZ, 0.001);
+        assertEquals(10.0, actualTimeElapsed, 0.001);
+        assertEquals(0, actualInitialState);
+        assertEquals(1, actualNextState);
         
         // Critical method test is here.
         logger.reset();
@@ -101,9 +102,9 @@ public class PositionLoggerTest {
         assertEquals(false, logger.getPerformLogging());
         
         assertEquals(0, logger.getIds().size());
-        assertEquals(0, logger.getX().size());
-        assertEquals(0, logger.getY().size());
-        assertEquals(0, logger.getZ().size());
+        assertEquals(0, logger.getElapsedTimes().size());
+        assertEquals(0, logger.getInitialStates().size());
+        assertEquals(0, logger.getNextStates().size());
     }
     
     /**
@@ -117,8 +118,8 @@ public class PositionLoggerTest {
         logger.setPerformLogging(true);
         
         // Add some data to the logger
-        this.logger.logPosition(1, 10.0, 5.0, 1.0);
-        this.logger.logPosition(2, 10.1, 5.5, 1.1);
+        this.logger.logStateTransition(1, 10.0, 0, 1);
+        this.logger.logStateTransition(2, 5.5, 1, 0);
         
         // Critical test
         logger.saveLogFile();
@@ -131,9 +132,9 @@ public class PositionLoggerTest {
             String line2 = bufferedReader.readLine();
             String line3 = bufferedReader.readLine();
             
-            assertTrue(line1.equals("id,x,y,z"));
-            assertTrue(line2.equals("1,10.0000,5.0000,1.0000"));
-            assertTrue(line3.equals("2,10.1000,5.5000,1.1000"));
+            assertTrue(line1.equals("id,time_elapsed,initial_state,next_state"));
+            assertTrue(line2.equals("1,10.0000,0,1"));
+            assertTrue(line3.equals("2,5.5000,1,0"));
         } catch (IOException e)
         {
             throw e;

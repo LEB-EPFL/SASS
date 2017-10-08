@@ -16,6 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package ch.epfl.leb.sass.simulator.loggers;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 /**
  * Records the fluorophore positions to a file.
  * 
@@ -27,28 +35,8 @@
  *
  * @author Kyle M. Douglass
  */
-
-package ch.epfl.leb.sass.simulator;
-
-import org.json.JSONObject;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
-public class PositionLogger {
+public class PositionLogger extends AbstractLogger{
     private static PositionLogger uniqueInstance = new PositionLogger();
-    
-    /**
-     * The name of the log file.
-     */
-    private String filename = "";
-    
-    /**
-     * Determines whether the PositionLogger  is active or not.
-     */
-    private boolean performLogging = false;
     
     /**
      * Position  information for recording.
@@ -58,9 +46,16 @@ public class PositionLogger {
     private ArrayList<Double> y = new ArrayList();
     private ArrayList<Double> z = new ArrayList();
 
+    
+    /**
+     * Constructor is private because StateLogger is a singleton.
+     */
     private PositionLogger() {
     }
 
+    /**
+     * @return An instance of the singleton.
+     */
     public static PositionLogger getInstance() {
 	return uniqueInstance;
     }
@@ -82,47 +77,6 @@ public class PositionLogger {
         this.z.add(z);
     }
     
-    /**
-     * Return the current filename for the log file.
-     * @return filename
-     */
-    public String getFilename() {
-        return this.filename;
-    }
-    
-    /**
-     * Set the filename for logging the fluorophore positions  and create the file.
-     * @param inFilename The full path and filename of the log file
-     * @throws IOException
-     */
-    public void setFilename(String inFilename) throws IOException {
-        // Don't do anything if input filename equals the logger's current one
-        if (inFilename.equals(this.filename))
-            return;
-        
-        // Get a unique filename if the current one exists
-        File logFile = new File(inFilename);
-        int fileId = 1;
-        String[] tokens;
-        tokens = logFile.getName().split("\\.(?=[^\\.]+$)");
-        String baseName;
-        while (logFile.exists()) {
-            // Remove last file type from filename and append a unique integer.
-            // NOTE: example.tar.gz will become example.tar_1.gz
-            // https://stackoverflow.com/questions/4545937/java-splitting-the-filename-into-a-base-and-extension#4546093
-            baseName = tokens[0] + "_" + String.valueOf(fileId);
-            
-            if (2 == tokens.length)
-                baseName += "." + tokens[1];
-            
-            baseName = logFile.getParent() + File.separator + baseName;
-            logFile = new File(baseName);
-            fileId++;
-        }
-        
-        this.filename = logFile.toString();
-    }
-    
     public ArrayList<Integer> getIds() {
         return this.ids;
     }
@@ -139,18 +93,11 @@ public class PositionLogger {
         return this.z;
     }
     
-    public boolean getPerformLogging() {
-        return performLogging;
-    }
-    
-    public void setPerformLogging(boolean isActive) {
-        performLogging = isActive;
-    }
-    
     /**
      * Saves the state of the logger to a file.
      * @throws IOException 
      */
+    @Override
     public void saveLogFile() throws IOException {
         File logFile = new File(this.filename);
         if ( !(logFile.exists()) )
@@ -177,6 +124,7 @@ public class PositionLogger {
     /**
      * Resets the logger to its initial state.
      */
+    @Override
     public void reset() {
         this.filename = "";
         this.performLogging = false;

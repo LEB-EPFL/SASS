@@ -11,6 +11,10 @@ real-time control systems for single molecule localization microscopy
 http://sass.readthedocs.io/en/latest/
 
 ## Usage
+
+**NOTICE** The API for SASS is still under development and may change
+until major version 1.
+
 Download latest .jar from [releases].
 ### As standalone application
  - Executing the .jar file by double-clicking launches a BeanShell console. Example scripts can be found in `/scripts/` folder.

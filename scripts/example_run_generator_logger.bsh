@@ -3,8 +3,8 @@
  * transitions.
  */
 
-import ch.epfl.leb.sass.simulator.StateLogger;
-import ch.epfl.leb.sass.simulator.PositionLogger;
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
+import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ch.epfl.leb.sass.simulator.generators.realtime.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;

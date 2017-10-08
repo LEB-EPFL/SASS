@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file.
 - `PositionLogger` object for recording the fluorophores' initial
   positions in x, y, z to a file.
 
+### Changed
+- `PositionLogger` and `StateLogger` now extend an `AbstractLogger`
+  base class.
+- `PositionLogger` and `StateLogger` now reside in the package
+  *ch.epfl.leb.sass.simulator.loggers*.
+
 ## [v0.3.0]
 Contains [ALICA v0.2.1]
 

@@ -28,8 +28,9 @@ public abstract class AbstractLogger {
     
     /**
      * Saves the state of the logger to a file.
+     * @throws java.io.IOException
      */
-    public abstract void saveLogFile();
+    public abstract void saveLogFile() throws IOException;
     
      /**
      * Resets the logger to its initial state.
@@ -37,23 +38,18 @@ public abstract class AbstractLogger {
     public abstract void reset();
     
     /**
-     * Log the information by saving it to the logger's state.
-     */
-    public abstract void log();
-    
-    /**
      * The name of the log file.
      */
-    private String filename = "";
+    protected String filename = "";
     
     /**
      * Determines whether the StateLogger is active or not.
      */
-    private boolean performLogging = false;
+    protected boolean performLogging = false;
     
     /**
      * Return the current filename for the log file.
-     * @return filename
+     * @return The filename of the log file.
      */
     public String getFilename() {
         return this.filename;
@@ -92,10 +88,18 @@ public abstract class AbstractLogger {
         this.filename = logFile.toString();
     }
     
+    /**
+     * Indicates whether the logger is active.
+     * @return A boolean indicating whether the logger is active.
+     */
     public boolean getPerformLogging() {
         return performLogging;
     }
     
+    /**
+     * Activates and deactivates the logger.
+     * @param isActive Indicates whether the logger should be active.
+     */
     public void setPerformLogging(boolean isActive) {
         performLogging = isActive;
     }

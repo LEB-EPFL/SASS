@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author(s): Marcel Stefko, Kyle M. Douglass
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,16 +17,20 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import static java.lang.Math.exp;
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 /**
  * Class containing camera configuration info and optics calculation functions.
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class Camera {
 
     /**
-     * framerate [frames/second]
+     * frame rate [frames/second]
      */
     public final int acq_speed;
 
@@ -90,17 +92,17 @@ public class Camera {
     public final double thermal_noise;
 
     /**
-     * digital representation of the FWHM?
+     * digital representation of the FWHM
      */
     public final double fwhm_digital;
     
     /**
-     * horizontal resolution [pixels]
+     * horizontal image size [pixels]
      */
     public final int res_x;
 
     /**
-     * vertical resolution [pixels]
+     * vertical image size [pixels]
      */
     public final int res_y;
     
@@ -108,7 +110,7 @@ public class Camera {
      * Initialize camera with parameters.
      * @param res_x horizontal resolution [pixels]
      * @param res_y vertical resolution [pixels]
-     * @param acq_speed framerate [frames/second]
+     * @param acq_speed frame rate [frames/second]
      * @param readout_noise readout noise of camera [RMS]
      * @param dark_current dark current [electrons/second/pixel]
      * @param quantum_efficiency quantum efficiency [0.0-1.0]
@@ -146,5 +148,48 @@ public class Camera {
         double airy_psf_radius_digital = airy_psf_radius * magnification;
 
         fwhm_digital = airy_psf_radius_digital / pixel_size;
+    }
+    
+    /**
+     * Returns a list of pixels within a certain radius from a point.
+     * 
+     * This method locates all the pixels within a circular area surrounding a
+     * given two-dimensional point whose center lies at (x, y).
+     * 
+     * @param point
+     * @param radius radius value [pixels]
+     * @return list of Pixels with pre-calculated signatures
+     */
+    protected final ArrayList<Pixel> getPixelsWithinRadius(Point2D point, double radius) {
+        ArrayList<Pixel> result = new ArrayList<Pixel>();
+        // If radius is less than one, return the pixel containing the point
+        if (radius < 1)
+        {   
+            int x = (int) point.getX();
+            int y = (int) point.getY();
+            result.add(new Pixel(x,y,0));
+            return result;
+        }
+                    
+        // Upper and lower bounds for the region.
+        final int bot_x = (int) floor(point.getX() - radius);
+        final int top_x = (int) ceil(point.getX() + radius);
+        final int bot_y = (int) floor(point.getY() - radius);
+        final int top_y = (int) ceil(point.getX() + radius);
+        
+        // Squared radius so we dont have to do the sqrt()
+        final double radius2 = radius*radius;
+        
+        // Iterate over all pixels in the square defined by the bounds and
+        // filter out those which are too far, otherwise generate signature and
+        // add to list.
+        for (int i = bot_x; i<=top_x; i++) {
+            for (int j=bot_y; j<=top_y; j++) {
+                if (point.distanceSq((double) i, (double) j) <= radius2) {
+                    result.add(new Pixel(i,j,0));
+                }
+            }
+        }
+        return result;
     }
 }

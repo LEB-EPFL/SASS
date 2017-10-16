@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -32,8 +30,17 @@ import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
 
 /**
- * Any 2D point that emits (or reflects) light when shined on by laser.
+ * A point source of light and tools to compute its signature on a digital detector.
+ * 
+ * Emitters are general point sources of light that are imaged by an optical
+ * system and recorded by a digital sensor. The Emitter class contains tools for
+ * generating the digital images of point sources without any regard for the
+ * dynamics of the of the signal (apart from photon shot noise). Classes that
+ * extend the Emitter class are intended to implement the dynamics of the
+ * source's signal.
+ * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public abstract class Emitter extends Point2D.Double  {
     

@@ -31,9 +31,9 @@ public interface PSF {
      * 
      * @param pixelX The pixel's x-position.
      * @param pixelY The pixel's y-position.
-     * @param emitterX The emitter's x-position.
-     * @param emitterY The emitter's y-position.
-     * @param emitterZ The emitter's z-position. This is ignored for 2D PSFs.
+     * @param emitterX The emitter's x-position in fractions of a pixel.
+     * @param emitterY The emitter's y-position in fractions of a pixel.
+     * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored for 2D PSFs.
      * @return The relative probability of a photon hitting this pixel.
      * @throws org.apache.commons.math.MathException
      */

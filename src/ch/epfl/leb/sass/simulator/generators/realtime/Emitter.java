@@ -171,8 +171,7 @@ public abstract class Emitter extends Point2D.Double  {
     }
     
     /**
-     * Returns list of pixels which need to be drawn on the image to accurately
-     * render the emitter.
+     * Returns list of pixels which need to be drawn on the image to accurately render the emitter.
      * @return list of Pixels
      */
     public ArrayList<Pixel> getPixelList() {
@@ -205,7 +204,7 @@ public abstract class Emitter extends Point2D.Double  {
     
     /**
      * Returns the emitter's ID.
-     * @return id
+     * @return The unique integer identifying the emitter.
      */
     public int getId() {
         return id;

@@ -154,7 +154,9 @@ public class Camera {
      * Returns a list of pixels within a certain radius from a point.
      * 
      * This method locates all the pixels within a circular area surrounding a
-     * given two-dimensional point whose center lies at (x, y).
+     * given two-dimensional point whose center lies at (x, y). The coordinate
+     * of a pixel is assumed to lie at the pixel's center, and a pixel is within
+     * a given radius of another if the pixel's center lies within this circle.
      * 
      * @param point
      * @param radius radius value [pixels]

@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
 
 /**
  * A point source of light and tools to compute its signature on a digital detector.
@@ -53,6 +54,11 @@ public abstract class Emitter extends Point2D.Double  {
      * A unique ID assigned to this emitter.
      */
     protected int id;
+    
+    /**
+     * The PSF model that's created by the emitter.
+     */
+    protected PSF psf;
 
     /**
      * List of pixels which are affected by this emitter's light (these pixels
@@ -101,7 +107,9 @@ public abstract class Emitter extends Point2D.Double  {
      * @param camera_fwhm_digital camera fwhm value
      * @return signature value for this pixel
      * @throws MathException
+     * @deprecated This behavior has been moved to the PSF interface
      */
+    @Deprecated
     protected double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
         final double sigma = camera_fwhm_digital / 2.3548;
         final double denom = sqrt(2.0)*sigma;
@@ -117,7 +125,10 @@ public abstract class Emitter extends Point2D.Double  {
      * @param radius radius value [pixels]
      * @param camera_fwhm_digital camera fwhm value
      * @return list of Pixels with precalculated signatures
+     * 
+     * @deprecated use Camera.getPixelsWithinRadius() instead.
      */
+    @Deprecated
     protected final ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
         ArrayList<Pixel> result = new ArrayList<Pixel>();
         // Upper and lower bounds for the region.
@@ -150,12 +161,13 @@ public abstract class Emitter extends Point2D.Double  {
     }
     
     /**
-     * Applies Poisson statistics to simulate flickering of emitter.
-     * @param base_brightness mean of poisson distribution to draw from
+     * Applies Poisson statistics to simulate flickering of an emitter.
+     * 
+     * @param baseBrightness mean of Poisson distribution to draw from
      * @return actual brightness of this emitter for this frame
      */
-    protected double flicker(double base_brightness) {
-        return poisson.nextInt(base_brightness);
+    protected double flicker(double baseBrightness) {
+        return poisson.nextInt(baseBrightness);
     }
     
     /**

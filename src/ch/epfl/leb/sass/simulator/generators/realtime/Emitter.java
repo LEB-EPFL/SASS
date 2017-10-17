@@ -59,6 +59,11 @@ public abstract class Emitter extends Point2D.Double  {
      * The PSF model that's created by the emitter.
      */
     protected PSF psf;
+    
+    /**
+     * The emitter's z-position.
+     */
+    public double z;
 
     /**
      * List of pixels which are affected by this emitter's light (these pixels
@@ -73,7 +78,9 @@ public abstract class Emitter extends Point2D.Double  {
     
     /**
      * Camera settings used for calculating PSF
+     * @deprecated Will be removed in future versions.
      */
+    @Deprecated
     protected final Camera camera;
 
     /**
@@ -82,9 +89,14 @@ public abstract class Emitter extends Point2D.Double  {
      * @param camera camera properties (needed for PSF calculation)
      * @param x x-position in image [pixels, with sub-pixel precision]
      * @param y y-position in image [pixels, with sub-pixel precision]
+     * @deprecated Camera instances are being decoupled from Emitter. Use the
+     *           {@link Emitter(double x, double y, double z)} constructor
+     *           instead.
      */
+    @Deprecated
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
+        this.z = 0;
         this.camera = camera;
         this.poisson = RNG.getPoissonGenerator();
         final double sigma = camera.fwhm_digital / 2.3548;
@@ -92,6 +104,33 @@ public abstract class Emitter extends Point2D.Double  {
         final double r = 3 * sigma;
         // generate pixels which will be added to image when emitter is on
         this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
+        
+        // Increment the number of emitters and assign the id.
+        this.numberOfEmitters += 1;
+        this.id = this.numberOfEmitters;
+        
+    }
+    
+    /**
+     * Creates the emitter at given position, and calculates its image from the PSF and camera.
+     * @param x x-position in image [pixels, with sub-pixel precision]
+     * @param y y-position in image [pixels, with sub-pixel precision]
+     * @param z z-position in image [pixels, with sub-pixel precision]
+     * @param psf The emitter's point spread function.
+     */
+    public Emitter(double x, double y, double z, PSF psf) {
+        super(x, y);
+        this.z = z;
+        this.psf = psf;
+        this.poisson = RNG.getPoissonGenerator();
+        this.camera = null;
+        
+        // generate pixels which will be added to the image when emitter is on
+        // This must be called **after** super(x,y).
+        this.pixel_list = Camera.getPixelsWithinRadius(this, this.psf.getRadius());
+        
+        // Compute the signature on each pixel created by this emitter
+        this.psf.generateSignature(this);
         
         // Increment the number of emitters and assign the id.
         this.numberOfEmitters += 1;
@@ -208,5 +247,21 @@ public abstract class Emitter extends Point2D.Double  {
      */
     public int getId() {
         return id;
+    }
+    
+    /**
+     * Returns the emitter's PSF model.
+     * @return The PSF model used to create the image of this emitter.
+     */
+    public PSF getPSF() {
+        return this.psf;
+    }
+    
+    /**
+     * Change the emitter's PSF model.
+     * @param psf The PSF model used to create the image of this emitter.
+     */
+    public void setPSF(PSF psf) {
+        this.psf = psf;
     }
 }

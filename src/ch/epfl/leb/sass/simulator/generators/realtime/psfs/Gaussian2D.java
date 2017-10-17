@@ -18,8 +18,13 @@
 package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
 import static java.lang.Math.sqrt;
+import java.util.ArrayList;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
+import ch.epfl.leb.sass.simulator.generators.realtime.Emitter;
+import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Generates a digital representation of a two-dimensional Gaussian PSF.
@@ -31,7 +36,7 @@ public class Gaussian2D implements PSF {
     
     /**
      * Creates an instance of the two-dimensional Gaussian PSF class with a given full width half maximum.
-     * @param fwhm The full width half maximum of the Gaussian.
+     * @param fwhm The full width half maximum of the Gaussian. [pixels]
      */
     public Gaussian2D(double fwhm) {
         this.FWHM = fwhm;
@@ -62,6 +67,41 @@ public class Gaussian2D implements PSF {
                       Erf.erf((pixelX-emitterX-0.5)/denom)) *
                      (Erf.erf((pixelY - emitterY + 0.5)/denom) -
                       Erf.erf((pixelY-emitterY-0.5)/denom));
+    }
+    
+    /**
+     * Generates the digital signature (the PSF) of the emitter its nearby pixels.
+     * @param emitter The emitter whose PSF will be calculated.
+     */
+    public void generateSignature(Emitter emitter) {
+        ArrayList<Pixel> pixels = emitter.getPixelList();
+        double signature;
+        for(Pixel pixel: pixels) {
+            try {
+                signature = this.generatePixelSignature(
+                        pixel.x, pixel.y, emitter.x, emitter.y, emitter.z);
+            } catch (MathException ex) {
+                        signature = 0.0;
+                        Logger.getLogger(Emitter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pixel.setSignature(signature);
+        }
+    }
+    
+    /**
+     * Computes the half-width of the PSF for determining which pixels contribute to the emitter signal.
+     * 
+     * For a 2D Gaussian, the effective width used here is three times the
+     * standard deviation.
+     * 
+     * @return The width of the PSF.
+     */
+    @Override
+    public double getRadius() {
+        final double sigma = this.FWHM / 2.3548;
+        // radius cutoff
+        final double r = 3 * sigma;
+        return r;
     }
     
     public double getFWHM() {

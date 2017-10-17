@@ -162,7 +162,7 @@ public class Camera {
      * @param radius radius value [pixels]
      * @return list of Pixels with pre-calculated signatures
      */
-    protected final ArrayList<Pixel> getPixelsWithinRadius(Point2D point, double radius) {
+    public static final ArrayList<Pixel> getPixelsWithinRadius(Point2D point, double radius) {
         ArrayList<Pixel> result = new ArrayList<Pixel>();
         // If radius is less than one, return the pixel containing the point
         if (radius < 1)

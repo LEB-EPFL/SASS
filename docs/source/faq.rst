@@ -18,6 +18,14 @@ SMLM Acquisition Simulation Software.
 Running Simulations
 +++++++++++++++++++
 
+How is the coordinate system in SASS defined?
+---------------------------------------------
+
+Coordinates in SASS are typically in units of pixels unless otherwise
+noted in the documentation. **Please note that the origin of the
+Cartesian coordinate system lies at the center of a pixel, not at a
+corner.**
+
 How are custom fluorophore position lists formatted?
 ----------------------------------------------------
 

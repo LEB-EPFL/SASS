@@ -29,6 +29,8 @@ import java.util.logging.Logger;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
 
 /**
  * A point source of light and tools to compute its signature on a digital detector.
@@ -54,6 +56,16 @@ public abstract class Emitter extends Point2D.Double  {
      * A unique ID assigned to this emitter.
      */
     protected int id;
+    
+    /**
+     * A copy of the state logger.
+     */
+    protected final StateLogger stateLogger = StateLogger.getInstance();
+    
+    /**
+     * A copy of the position logger.
+     */
+    protected final PositionLogger positionLogger = PositionLogger.getInstance();
     
     /**
      * The PSF model that's created by the emitter.

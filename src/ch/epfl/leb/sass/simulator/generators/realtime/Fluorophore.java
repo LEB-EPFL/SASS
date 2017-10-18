@@ -20,24 +20,12 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.Random;
-import ch.epfl.leb.sass.simulator.loggers.StateLogger;
-import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 
 /**
  * A general fluorescent molecule which emits light.
  * @author Marcel Stefko
  */
 public class Fluorophore extends Emitter {
-
-    /**
-     * A copy of the state logger.
-     */
-    private StateLogger stateLogger = StateLogger.getInstance();
-    
-    /**
-     * A copy of the position logger.
-     */
-    private PositionLogger positionLogger = PositionLogger.getInstance();
     
     /**
      * internal emitter clock for tracking total time elapsed

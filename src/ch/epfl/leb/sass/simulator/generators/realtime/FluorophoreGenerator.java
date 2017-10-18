@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,6 +18,7 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,11 +32,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Populates a field of view with fluorophores.
  * 
- * The FluorophoreGenerator contains a number of methods for creating
- * fluorophores, such as placing them on a grid, randomly distributing them in
- * the FOV, and placing them according to a text file.
+ * The FluorophoreGenerator contains a number of methods for creating actual
+ * fluorophore instances and in different arrangements, such as placing them on
+ * a grid, randomly distributing them in the FOV, and placing them according to
+ * input from a text file.
  * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class FluorophoreGenerator {
 
@@ -47,7 +48,10 @@ public class FluorophoreGenerator {
      * @param cam camera properties
      * @param fluo fluorophore properties
      * @return
+     * @deprecated Use {@link #generateFluorophoresRandom2D(int, int, int, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties)}
+     *           instead.
      */
+    @Deprecated
     public static ArrayList<Fluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, FluorophoreProperties fluo) {
         Random rnd = RNG.getUniformGenerator();
         ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
@@ -56,6 +60,29 @@ public class FluorophoreGenerator {
             x = cam.res_x*rnd.nextDouble();
             y = cam.res_y*rnd.nextDouble();
             result.add(fluo.createFluorophore(cam, x, y));
+        }
+        return result;
+    }
+    
+    /**
+     * Randomly populate the field of view with fluorophores.
+     * 
+     * @param numFluors The number of fluorophores to add to the field of view.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @return The list of fluorophores.
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresRandom2D(int numFluors, Camera camera, PSF psf, FluorophoreProperties fluorProp) {
+        Random rnd = RNG.getUniformGenerator();
+        ArrayList<Fluorophore> result = new ArrayList();
+        double x;
+        double y;
+        double z = 0;
+        for (int i=0; i < numFluors; i++) {
+            x = camera.res_x*rnd.nextDouble();
+            y = camera.res_y*rnd.nextDouble();
+            result.add(fluorProp.newFluorophore(psf, x, y, z));
         }
         return result;
     }

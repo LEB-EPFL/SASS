@@ -24,6 +24,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore3D;
 import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
 import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
 
 /**
  *
@@ -88,5 +89,11 @@ public class dStormProperties extends FluorophoreProperties {
     @Override
     public Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z) {
                 return new Fluorophore3D(camera, signal, state_system, 2, x, y, z);
+    }
+    
+    @Override
+    public Fluorophore newFluorophore(PSF psf, double x, double y, double z) {
+        int startingState = 0; // Fluorophore start in the emitting state
+        return new Fluorophore(psf, signal, state_system, startingState, x, y, z);
     }
 }

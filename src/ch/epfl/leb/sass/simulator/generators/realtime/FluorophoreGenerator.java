@@ -31,7 +31,12 @@ import java.util.Random;import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Randomly populates the field of view with fluorophores.
+ * Populates a field of view with fluorophores.
+ * 
+ * The FluorophoreGenerator contains a number of methods for creating
+ * fluorophores, such as placing them on a grid, randomly distributing them in
+ * the FOV, and placing them according to a text file.
+ * 
  * @author Marcel Stefko
  */
 public class FluorophoreGenerator {

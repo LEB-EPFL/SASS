@@ -19,9 +19,13 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+
 /**
- * Each fluorophore has a signal value and background value
+ * Abstract class that creating fluorophores with specific blinking dynamics.
+ * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public abstract class FluorophoreProperties {
     public final double signal;
@@ -43,7 +47,11 @@ public abstract class FluorophoreProperties {
      * @param y y-position in pixels
      * @return generated fluorophore
      */
+    @Deprecated
     public abstract Fluorophore createFluorophore(Camera camera, double x, double y);
     
+    @Deprecated
     public abstract Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z);
+    
+    public abstract Fluorophore newFluorophore(PSF psf, double x, double y, double z);
 }

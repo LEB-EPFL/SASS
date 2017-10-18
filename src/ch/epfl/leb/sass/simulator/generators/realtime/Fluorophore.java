@@ -20,6 +20,8 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.Random;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
 
 /**
  * A general fluorescent molecule which emits light.
@@ -60,9 +62,35 @@ public class Fluorophore extends Emitter {
      * @param start_state Initial state number
      * @param x x-position in pixels
      * @param y y-position in pixels
+     * @deprecated Use {@link #Fluorophore(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, double, ch.epfl.leb.sass.simulator.generators.realtime.StateSystem, int, double, double, double) instead.}
      */
+    @Deprecated
     public Fluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y) {
         super(camera, x, y);
+        this.state_system = state_system;
+        this.signal = signal;
+        this.current_state = start_state;
+        if (start_state >= state_system.getNStates()) {
+            throw new IllegalArgumentException("Starting state no. is out of bounds.");
+        }
+        this.random = RNG.getUniformGenerator();
+        
+        // Log the fluorophore's position
+        this.positionLogger.logPosition(this.getId(), x, y, 0.0);
+    }
+    
+     /**
+     * Initialize fluorophore and calculate its pattern on camera
+     * @param psf The image of the fluorophore on the camera
+     * @param signal Number of photons per frame.
+     * @param state_system Internal state system for this fluorophore
+     * @param start_state Initial state number
+     * @param x x-position in pixels
+     * @param y y-position in pixels
+     * @param z z-position in pixels
+     */
+    public Fluorophore(PSF psf, double signal, StateSystem state_system, int start_state, double x, double y, double z) {
+        super(x, y, z, psf);
         this.state_system = state_system;
         this.signal = signal;
         this.current_state = start_state;

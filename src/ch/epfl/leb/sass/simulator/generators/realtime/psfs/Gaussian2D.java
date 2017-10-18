@@ -71,18 +71,21 @@ public class Gaussian2D implements PSF {
     
     /**
      * Generates the digital signature (the PSF) of the emitter its nearby pixels.
-     * @param emitter The emitter whose PSF will be calculated.
+     * @param pixels The list of pixels spanned by the emitter's image.
+     * @param emitterX The emitter's x-position [pixels]
+     * @param emitterY The emitter's x-position [pixels]
+     * @param emitterZ The emitter's x-position [pixels]
      */
-    public void generateSignature(Emitter emitter) {
-        ArrayList<Pixel> pixels = emitter.getPixelList();
+    public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
+                              double emitterY, double emitterZ) {
         double signature;
         for(Pixel pixel: pixels) {
             try {
                 signature = this.generatePixelSignature(
-                        pixel.x, pixel.y, emitter.x, emitter.y, emitter.z);
+                        pixel.x, pixel.y, emitterX, emitterY, emitterZ);
             } catch (MathException ex) {
                         signature = 0.0;
-                        Logger.getLogger(Emitter.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Gaussian2D.class.getName()).log(Level.SEVERE, null, ex);
             }
             pixel.setSignature(signature);
         }

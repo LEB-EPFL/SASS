@@ -17,8 +17,9 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
+import java.util.ArrayList;
 import org.apache.commons.math.MathException;
-import ch.epfl.leb.sass.simulator.generators.realtime.Emitter;
+import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
 
 /**
  * Interface that defines the behavior of a microscope point spread function.
@@ -44,9 +45,13 @@ public interface PSF {
     
     /**
      * Computes the digitized PSF across all pixels within the emitter's vicinity.
-     * @param emitter The emitter whose PSF will be computed.
+     * @param pixels The list of pixels spanned by the emitter's image.
+     * @param emitterX The emitter's x-position [pixels]
+     * @param emitterY The emitter's x-position [pixels]
+     * @param emitterZ The emitter's x-position [pixels]
      */
-    public void generateSignature(Emitter emitter);
+    public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
+                              double emitterY, double emitterZ);
     
     /**
      * Returns the radius of the circle that fully encloses the PSF.

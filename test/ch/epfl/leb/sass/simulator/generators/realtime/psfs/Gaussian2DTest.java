@@ -17,6 +17,10 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
+import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -56,9 +60,52 @@ public class Gaussian2DTest {
         // an emitter located -.4 pixels from the pixel's center in x and y
         signature = this.gauss2d.generatePixelSignature(0, 0, -0.4, -0.4, 0);
         assertEquals(signature, groundTruth, delta);
+    }
+    
+    /**
+     * Test of getSignature method, of class Gaussian2D.
+     */
+    @Test
+    public void testGetSignature() {
+        // Test point at (0,0)
+        Point2D point = new Point2D.Double();
         
+         // Ground-truth array
+        ArrayList<Pixel> groundTruth = new ArrayList();
+        groundTruth.add(new Pixel(-1,  0, 0.0696)); // (-1,  0)
+        groundTruth.add(new Pixel( 0, -1, 0.0696)); // ( 0, -1)
+        groundTruth.add(new Pixel( 0,  0, 0.0932)); // ( 0,  0)
+        groundTruth.add(new Pixel( 0,  1, 0.0696)); // ( 0,  1)
+        groundTruth.add(new Pixel( 1,  0, 0.0696)); // ( 1,  0)
+        
+        // Generate the test array whose signature values will be computed
+        ArrayList<Pixel> pixels = new ArrayList();
+        pixels.add(new Pixel(-1,  0, 0.0)); // (-1,  0)
+        pixels.add(new Pixel( 0, -1, 0.0)); // ( 0, -1)
+        pixels.add(new Pixel( 0,  0, 0.0)); // ( 0,  0)
+        pixels.add(new Pixel( 0,  1, 0.0)); // ( 0,  1)
+        pixels.add(new Pixel( 1,  0, 0.0)); // ( 1,  0)
+        
+        // Critical test occurs here
+        this.gauss2d.generateSignature(pixels, 0, 0, 0);
+        
+        // Verify that the signatures in the pixel array match the ground truth
+        for (int ctr = 0; ctr < pixels.size(); ctr++)
+        {
+            assertEquals(groundTruth.get(ctr).getSignature(),
+                    pixels.get(ctr).getSignature(),
+                    0.0001);
+        }
     }
 
+    /**
+     * Test of getRadius method, of class Gaussian2D.
+     */
+    @Test
+    public void testGetRadius() {
+        assertEquals(this.gauss2d.getRadius(), 1.2740 * 3, 0.0001);
+    }
+    
     /**
      * Test of getFWHM method, of class Gaussian2D.
      */

@@ -130,7 +130,7 @@ public abstract class Emitter extends Point2D.Double  {
         this.pixel_list = Camera.getPixelsWithinRadius(this, this.psf.getRadius());
         
         // Compute the signature on each pixel created by this emitter
-        this.psf.generateSignature(this);
+        this.psf.generateSignature(this.pixel_list, this.x, this.y, this.z);
         
         // Increment the number of emitters and assign the id.
         this.numberOfEmitters += 1;

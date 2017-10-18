@@ -149,49 +149,4 @@ public class Camera {
 
         fwhm_digital = airy_psf_radius_digital / pixel_size;
     }
-    
-    /**
-     * Returns a list of pixels within a certain radius from a point.
-     * 
-     * This method locates all the pixels within a circular area surrounding a
-     * given two-dimensional point whose center lies at (x, y). The coordinate
-     * of a pixel is assumed to lie at the pixel's center, and a pixel is within
-     * a given radius of another if the pixel's center lies within this circle.
-     * 
-     * @param point
-     * @param radius radius value [pixels]
-     * @return list of Pixels with pre-calculated signatures
-     */
-    public static final ArrayList<Pixel> getPixelsWithinRadius(Point2D point, double radius) {
-        ArrayList<Pixel> result = new ArrayList<Pixel>();
-        // If radius is less than one, return the pixel containing the point
-        if (radius < 1)
-        {   
-            int x = (int) point.getX();
-            int y = (int) point.getY();
-            result.add(new Pixel(x,y,0));
-            return result;
-        }
-                    
-        // Upper and lower bounds for the region.
-        final int bot_x = (int) floor(point.getX() - radius);
-        final int top_x = (int) ceil(point.getX() + radius);
-        final int bot_y = (int) floor(point.getY() - radius);
-        final int top_y = (int) ceil(point.getX() + radius);
-        
-        // Squared radius so we dont have to do the sqrt()
-        final double radius2 = radius*radius;
-        
-        // Iterate over all pixels in the square defined by the bounds and
-        // filter out those which are too far, otherwise generate signature and
-        // add to list.
-        for (int i = bot_x; i<=top_x; i++) {
-            for (int j=bot_y; j<=top_y; j++) {
-                if (point.distanceSq((double) i, (double) j) <= radius2) {
-                    result.add(new Pixel(i,j,0));
-                }
-            }
-        }
-        return result;
-    }
 }

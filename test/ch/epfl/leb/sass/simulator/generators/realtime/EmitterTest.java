@@ -17,44 +17,18 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author Kyle M. Douglass
+ * @author douglass
  */
-public class CameraTest {
+public class EmitterTest {
     
-    private Camera camera;
-    
-    public CameraTest() {
-    }
-    
-    /**
-     * Creates a test instance of the Camera class.
-     */
-    @Before
-    public void setUp() {
-        this.camera = new Camera(
-            32,          //res_x
-            32,          //res_y
-            100,         //acq_speed, 
-            1.6,         //readout_noise, 
-            0.06,        //dark_current, 
-            0.8,         //quantum_efficiency, 
-            2.2,         // ADU_per_electron
-            0,           // EM_gain
-            100,         // baseline, ADU 
-            6.45 * 1e-6, //pixel_size, 
-            1.4,         //NA, 
-            680 * 1e-9,  //wavelength, 
-            60);         //magnification));
+    public EmitterTest() {
     }
 
     /**
@@ -78,7 +52,7 @@ public class CameraTest {
         
         double radius = 1.0;
         ArrayList<Pixel> pixels;
-        pixels = Camera.getPixelsWithinRadius(point, radius);
+        pixels = Emitter.getPixelsWithinRadius(point, radius);
         assertEquals(5, pixels.size());
         
         // Verify that the positions in the pixel array match the ground truth
@@ -90,7 +64,7 @@ public class CameraTest {
         
         // Verify that the method works with an even radius
         radius = 2.0;
-        pixels = Camera.getPixelsWithinRadius(point, radius);
+        pixels = Emitter.getPixelsWithinRadius(point, radius);
         assertEquals(13, pixels.size());
         
         
@@ -109,7 +83,7 @@ public class CameraTest {
         
         double radius = 0.95;
         ArrayList<Pixel> pixels;
-        pixels = Camera.getPixelsWithinRadius(point, radius);
+        pixels = Emitter.getPixelsWithinRadius(point, radius);
         assertEquals(1, pixels.size());
         assertEquals(1, pixels.get(0).x);
         assertEquals(2, pixels.get(0).y);

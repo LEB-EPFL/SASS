@@ -127,7 +127,7 @@ public abstract class Emitter extends Point2D.Double  {
         
         // generate pixels which will be added to the image when emitter is on
         // This must be called **after** super(x,y).
-        this.pixel_list = Camera.getPixelsWithinRadius(this, this.psf.getRadius());
+        this.pixel_list = this.getPixelsWithinRadius(this, this.psf.getRadius());
         
         // Compute the signature on each pixel created by this emitter
         this.psf.generateSignature(this.pixel_list, this.x, this.y, this.z);
@@ -165,7 +165,7 @@ public abstract class Emitter extends Point2D.Double  {
      * @param camera_fwhm_digital camera fwhm value
      * @return list of Pixels with precalculated signatures
      * 
-     * @deprecated use Camera.getPixelsWithinRadius() instead.
+     * @deprecated Use {@link #getPixelsWithinRadius(java.awt.geom.Point2D, double)} instead.
      */
     @Deprecated
     protected final ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
@@ -193,6 +193,51 @@ public abstract class Emitter extends Point2D.Double  {
                         Logger.getLogger(Emitter.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     result.add(new Pixel(i,j,signature));
+                }
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Returns a list of pixels within a certain radius from a point.
+     * 
+     * This method locates all the pixels within a circular area surrounding a
+     * given two-dimensional point whose center lies at (x, y). The coordinate
+     * of a pixel is assumed to lie at the pixel's center, and a pixel is within
+     * a given radius of another if the pixel's center lies within this circle.
+     * 
+     * @param point
+     * @param radius radius value [pixels]
+     * @return list of Pixels with pre-calculated signatures
+     */
+    public static final ArrayList<Pixel> getPixelsWithinRadius(Point2D point, double radius) {
+        ArrayList<Pixel> result = new ArrayList<Pixel>();
+        // If radius is less than one, return the pixel containing the point
+        if (radius < 1)
+        {   
+            int x = (int) point.getX();
+            int y = (int) point.getY();
+            result.add(new Pixel(x,y,0));
+            return result;
+        }
+                    
+        // Upper and lower bounds for the region.
+        final int bot_x = (int) floor(point.getX() - radius);
+        final int top_x = (int) ceil(point.getX() + radius);
+        final int bot_y = (int) floor(point.getY() - radius);
+        final int top_y = (int) ceil(point.getX() + radius);
+        
+        // Squared radius so we dont have to do the sqrt()
+        final double radius2 = radius*radius;
+        
+        // Iterate over all pixels in the square defined by the bounds and
+        // filter out those which are too far, otherwise generate signature and
+        // add to list.
+        for (int i = bot_x; i<=top_x; i++) {
+            for (int j=bot_y; j<=top_y; j++) {
+                if (point.distanceSq((double) i, (double) j) <= radius2) {
+                    result.add(new Pixel(i,j,0));
                 }
             }
         }

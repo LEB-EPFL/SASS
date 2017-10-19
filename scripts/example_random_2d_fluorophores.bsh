@@ -5,14 +5,15 @@
  * This script demonstrates how to randomly populate the field with
  * with a 2D distribution of fluorophores.
  *
+ *
  */
 
-import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
+import ch.epfl.leb.sass.simulator.generators.realtime.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
-RNG.setSeed(1);
+RNG.setSeed(5);
 
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(
@@ -50,13 +51,12 @@ double fwhm = camera.fwhm_digital; // From the Airy disk
 Gaussian2D gauss2D = new Gaussian2D(fwhm);
 
 // generate emitters 
-	// create a grid
-	ArrayList emitters = FluorophoreGenerator.generateFluorophoresRandom2D(
-		    100 , // number of fluorophores
-		    camera,
-		    gauss2D,
-		    fluo);
-				
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresRandom2D(
+        100, // number of fluorophores
+	camera,
+	gauss2D,
+	fluo);
+		
 // add a gold bead to the field of view at random location
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();
@@ -64,7 +64,7 @@ Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);
 
 // assemble the device and generator
-Device device = new Device(camera, fluo, laser, emitters, null);
+Device device = new Device(camera, fluo, laser, emitters, obstructors);
 STORMsim generator = new STORMsim(device);
 
 // set laser power
@@ -79,11 +79,11 @@ for (i=0;i<10000;i++) {
 }
 
 // save and show; uncomment these lines to save and display stack
-generator.saveStack(new File("generated_stack.tif"));
-import ij.ImagePlus;
-ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
-ip.show();
-ip.updateAndRepaintWindow();
+//generator.saveStack(new File("generated_stack.tif"));
+//import ij.ImagePlus;
+//ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
+//ip.show();
+//ip.updateAndRepaintWindow();
 
 //System.exit(0); // uncomment if you want termination immediately
 

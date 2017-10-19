@@ -100,7 +100,7 @@ public class Fluorophore extends Emitter {
         this.random = RNG.getUniformGenerator();
         
         // Log the fluorophore's position
-        this.positionLogger.logPosition(this.getId(), x, y, 0.0);
+        this.positionLogger.logPosition(this.getId(), x, y, z);
     }
 
     /**

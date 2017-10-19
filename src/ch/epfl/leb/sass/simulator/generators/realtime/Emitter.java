@@ -238,7 +238,7 @@ public abstract class Emitter extends Point2D.Double  {
         final int bot_x = (int) floor(point.getX() - radius);
         final int top_x = (int) ceil(point.getX() + radius);
         final int bot_y = (int) floor(point.getY() - radius);
-        final int top_y = (int) ceil(point.getX() + radius);
+        final int top_y = (int) ceil(point.getY() + radius);
         
         // Squared radius so we dont have to do the sqrt()
         final double radius2 = radius*radius;

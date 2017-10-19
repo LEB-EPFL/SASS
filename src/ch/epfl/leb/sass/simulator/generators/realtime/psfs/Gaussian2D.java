@@ -64,9 +64,9 @@ public class Gaussian2D implements PSF {
         final double sigma = this.FWHM / 2.3548;
         final double denom = sqrt(2.0)*sigma;
         return 0.25 *(Erf.erf((pixelX - emitterX + 0.5)/denom) - 
-                      Erf.erf((pixelX-emitterX-0.5)/denom)) *
+                      Erf.erf((pixelX - emitterX - 0.5)/denom)) *
                      (Erf.erf((pixelY - emitterY + 0.5)/denom) -
-                      Erf.erf((pixelY-emitterY-0.5)/denom));
+                      Erf.erf((pixelY - emitterY - 0.5)/denom));
     }
     
     /**
@@ -84,8 +84,8 @@ public class Gaussian2D implements PSF {
                 signature = this.generatePixelSignature(
                         pixel.x, pixel.y, emitterX, emitterY, emitterZ);
             } catch (MathException ex) {
-                        signature = 0.0;
-                        Logger.getLogger(Gaussian2D.class.getName()).log(Level.SEVERE, null, ex);
+                signature = 0.0;
+                Logger.getLogger(Gaussian2D.class.getName()).log(Level.SEVERE, null, ex);
             }
             pixel.setSignature(signature);
         }

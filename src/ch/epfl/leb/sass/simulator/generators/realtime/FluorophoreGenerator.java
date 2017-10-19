@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ArrayIndexOutOfBoundsException;
 import java.util.ArrayList;
 import java.util.Random;import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -160,7 +161,10 @@ public class FluorophoreGenerator {
      * @return list of fluorophores
      * @throws FileNotFoundException
      * @throws IOException
+     * @deprecated Use {@link #generateFluorophoresFromCSV(java.io.File, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties, boolean) }
+     *           instead.
      */
+    @Deprecated
     public static ArrayList<Fluorophore> parseFluorophoresFromCsv(File file, Camera camera, FluorophoreProperties fluo, boolean rescale) throws FileNotFoundException, IOException {
         if (file==null) {
             file = getFileFromDialog();
@@ -202,6 +206,88 @@ public class FluorophoreGenerator {
             double factor = camera.res_x/max_x_coord;
             for (Fluorophore f: result) {
                 result_rescaled.add(fluo.createFluorophore(camera, f.x*factor, f.y*factor));
+            }
+            return result_rescaled;
+        // or crop fluorophores outside of frame
+        } else {
+            ArrayList<Fluorophore> result_cropped = new ArrayList<Fluorophore>();
+            for (Fluorophore f: result) {
+                if (f.x < camera.res_x && f.y < camera.res_y) {
+                    result_cropped.add(f);
+                }
+            }
+            return result_cropped;
+        }
+    }
+    
+    /**
+     * Parse a CSV file and generate fluorophores from it.
+     * 
+     * @param file The CSV file. If this is null, then a dialog is opened.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @param rescale if true, positions are rescaled to fit into frame,
+     *  otherwise positions outside of frame are cropped
+     * @return list of fluorophores.
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresFromCSV(
+            File file,
+            Camera camera,
+            PSF psf,
+            FluorophoreProperties fluorProp,
+            boolean rescale) throws FileNotFoundException, IOException {
+        if (file==null) {
+            file = getFileFromDialog();
+        }
+        
+        // load all fluorophores
+        ArrayList<Fluorophore> result = new ArrayList();
+        double x;
+        double y;
+        double z;
+        BufferedReader br;
+        String line;
+        String splitBy = ",";
+        br = new BufferedReader(new FileReader(file));
+        // read all lines
+        while ((line = br.readLine()) != null) {
+            // skip comments
+            if (line.startsWith("#")) {
+                continue;
+            }
+            
+            // read 2 doubles from beginning of line
+            String[] entries = line.split(splitBy);
+            x = Double.parseDouble(entries[0]);
+            y = Double.parseDouble(entries[1]);
+            
+            try {
+                z = Double.parseDouble(entries[2]);
+            } catch (ArrayIndexOutOfBoundsException ex){
+                // There is no z-column, so set the z-position to 0.0.
+                z = 0.0;
+            }
+            // Ignore entries with negative x- and y-positions.
+            if (x>=0.0 && y>=0.0)
+                // we subtract 0.5 to make the positions agree with how ThunderSTORM computes positions
+                // i.e. origin is in the very top left of image, not in the center of top left pixel as it is in our simulation
+                result.add(fluorProp.newFluorophore(psf, x - 0.5, y - 0.5, z));
+        }
+        
+        // rescale positions to fit into frame        
+        if (rescale) {
+            ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
+            double max_x_coord = 0.0;
+            for (Fluorophore f: result) {
+                if (f.x>max_x_coord)
+                    max_x_coord = f.x;
+            }
+            double factor = camera.res_x/max_x_coord;
+            for (Fluorophore f: result) {
+                result_rescaled.add(fluorProp.newFluorophore(psf, f.x*factor, f.y*factor, f.z));
             }
             return result_rescaled;
         // or crop fluorophores outside of frame

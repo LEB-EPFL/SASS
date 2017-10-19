@@ -176,7 +176,6 @@ public abstract class Emitter extends Point2D.Double  {
      * @param radius radius value [pixels]
      * @param camera_fwhm_digital camera fwhm value
      * @return list of Pixels with precalculated signatures
-     * 
      * @deprecated Use {@link #getPixelsWithinRadius(java.awt.geom.Point2D, double)} instead.
      */
     @Deprecated

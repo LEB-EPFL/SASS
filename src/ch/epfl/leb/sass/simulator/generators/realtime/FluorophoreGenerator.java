@@ -92,8 +92,11 @@ public class FluorophoreGenerator {
      * @param spacing distance between nearest neighbors
      * @param cam Camera
      * @param fluo type of fluorophore
-     * @return
+     * @return The list of fluorophores.
+     * @deprecated Use {@link #generateFluorophoresGrid2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
+     *           instead.
      */
+    @Deprecated
     public static ArrayList<Fluorophore> generateFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
         int limit_x = cam.res_x;
         int limit_y = cam.res_y;
@@ -101,6 +104,33 @@ public class FluorophoreGenerator {
         for (int i=spacing; i<limit_x; i+=spacing) {
             for (int j=spacing; j<limit_y; j+= spacing) {
                 result.add(fluo.createFluorophore(cam, i, j));
+            }
+        }       
+        return result;
+    }
+    
+    /**
+     * Generate a rectangular grid of fluorophores.
+     * 
+     * @param spacing The distance along the grid between nearest neighbors.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @return The list of fluorophores.
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresGrid2D(
+            int spacing,
+            Camera camera,
+            PSF psf,
+            FluorophoreProperties fluorProp) {
+        int limitX = camera.res_x;
+        int limitY = camera.res_y;
+        double z = 0.0;
+        ArrayList<Fluorophore> result = new ArrayList();
+               
+        for (int i=spacing; i < limitX; i+=spacing) {
+            for (int j=spacing; j < limitY; j+= spacing) {
+                result.add(fluorProp.newFluorophore(psf, i, j, z));
             }
         }       
         return result;

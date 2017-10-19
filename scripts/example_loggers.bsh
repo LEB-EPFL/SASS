@@ -1,10 +1,14 @@
-/**
- * This setups a simulation with a logger for logging the state
- * transitions.
+ /**
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne.
+ *
+ * This script demonstrates how to use the loggers provided by SASS.
+ *
  */
 
 import ch.epfl.leb.sass.simulator.loggers.StateLogger;
 import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
 import ch.epfl.leb.sass.simulator.generators.realtime.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
@@ -52,11 +56,16 @@ Laser laser = new Laser(
     500.0, // max
     0.0); // min
 
+// Create a 2D Gaussian point-spread function
+double fwhm = camera.fwhm_digital; // From the Airy disk
+Gaussian2D gauss2D = new Gaussian2D(fwhm);
+
 // generate emitters 
 // create a grid
-ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid(
-    10, // spacing in px
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid2D(
+    4, // spacing in pixels
     camera,
+    gauss2D,
     fluo);
 
 // Positions can be logged after fluorophore creation.

@@ -36,7 +36,7 @@ public class Pixel {
      * Y-position of pixel in image.
      */
     public final int y;
-    private final double signature;
+    private double signature;
     
     /**
      * Initialize new pixel with position and signature.
@@ -56,6 +56,13 @@ public class Pixel {
      */
     public double getSignature() {
         return this.signature;
+    }
+    
+    /**
+     * Set's the pixel's signature.
+     */
+    public void setSignature(double signature) {
+        this.signature = signature;
     }
     
     /**

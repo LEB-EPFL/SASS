@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,19 +18,28 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ArrayIndexOutOfBoundsException;
 import java.util.ArrayList;
 import java.util.Random;import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Randomly populates the field of view with fluorophores.
+ * Populates a field of view with fluorophores.
+ * 
+ * The FluorophoreGenerator contains a number of methods for creating actual
+ * fluorophore instances and in different arrangements, such as placing them on
+ * a grid, randomly distributing them in the FOV, and placing them according to
+ * input from a text file.
+ * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class FluorophoreGenerator {
 
@@ -42,7 +49,10 @@ public class FluorophoreGenerator {
      * @param cam camera properties
      * @param fluo fluorophore properties
      * @return
+     * @deprecated Use {@link #generateFluorophoresRandom2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
+     *           instead.
      */
+    @Deprecated
     public static ArrayList<Fluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, FluorophoreProperties fluo) {
         Random rnd = RNG.getUniformGenerator();
         ArrayList<Fluorophore> result = new ArrayList<Fluorophore>();
@@ -56,12 +66,38 @@ public class FluorophoreGenerator {
     }
     
     /**
+     * Randomly populate the field of view with fluorophores.
+     * 
+     * @param numFluors The number of fluorophores to add to the field of view.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @return The list of fluorophores.
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresRandom2D(int numFluors, Camera camera, PSF psf, FluorophoreProperties fluorProp) {
+        Random rnd = RNG.getUniformGenerator();
+        ArrayList<Fluorophore> result = new ArrayList();
+        double x;
+        double y;
+        double z = 0;
+        for (int i=0; i < numFluors; i++) {
+            x = camera.res_x*rnd.nextDouble();
+            y = camera.res_y*rnd.nextDouble();
+            result.add(fluorProp.newFluorophore(psf, x, y, z));
+        }
+        return result;
+    }
+    
+    /**
      * Generate a rectangular grid of fluorophores
      * @param spacing distance between nearest neighbors
      * @param cam Camera
      * @param fluo type of fluorophore
-     * @return
+     * @return The list of fluorophores.
+     * @deprecated Use {@link #generateFluorophoresGrid2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
+     *           instead.
      */
+    @Deprecated
     public static ArrayList<Fluorophore> generateFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
         int limit_x = cam.res_x;
         int limit_y = cam.res_y;
@@ -69,6 +105,33 @@ public class FluorophoreGenerator {
         for (int i=spacing; i<limit_x; i+=spacing) {
             for (int j=spacing; j<limit_y; j+= spacing) {
                 result.add(fluo.createFluorophore(cam, i, j));
+            }
+        }       
+        return result;
+    }
+    
+    /**
+     * Generate a rectangular grid of fluorophores.
+     * 
+     * @param spacing The distance along the grid between nearest neighbors.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @return The list of fluorophores.
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresGrid2D(
+            int spacing,
+            Camera camera,
+            PSF psf,
+            FluorophoreProperties fluorProp) {
+        int limitX = camera.res_x;
+        int limitY = camera.res_y;
+        double z = 0.0;
+        ArrayList<Fluorophore> result = new ArrayList();
+               
+        for (int i=spacing; i < limitX; i+=spacing) {
+            for (int j=spacing; j < limitY; j+= spacing) {
+                result.add(fluorProp.newFluorophore(psf, i, j, z));
             }
         }       
         return result;
@@ -98,7 +161,10 @@ public class FluorophoreGenerator {
      * @return list of fluorophores
      * @throws FileNotFoundException
      * @throws IOException
+     * @deprecated Use {@link #generateFluorophoresFromCSV(java.io.File, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties, boolean) }
+     *           instead.
      */
+    @Deprecated
     public static ArrayList<Fluorophore> parseFluorophoresFromCsv(File file, Camera camera, FluorophoreProperties fluo, boolean rescale) throws FileNotFoundException, IOException {
         if (file==null) {
             file = getFileFromDialog();
@@ -140,6 +206,88 @@ public class FluorophoreGenerator {
             double factor = camera.res_x/max_x_coord;
             for (Fluorophore f: result) {
                 result_rescaled.add(fluo.createFluorophore(camera, f.x*factor, f.y*factor));
+            }
+            return result_rescaled;
+        // or crop fluorophores outside of frame
+        } else {
+            ArrayList<Fluorophore> result_cropped = new ArrayList<Fluorophore>();
+            for (Fluorophore f: result) {
+                if (f.x < camera.res_x && f.y < camera.res_y) {
+                    result_cropped.add(f);
+                }
+            }
+            return result_cropped;
+        }
+    }
+    
+    /**
+     * Parse a CSV file and generate fluorophores from it.
+     * 
+     * @param file The CSV file. If this is null, then a dialog is opened.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @param rescale if true, positions are rescaled to fit into frame,
+     *  otherwise positions outside of frame are cropped
+     * @return list of fluorophores.
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresFromCSV(
+            File file,
+            Camera camera,
+            PSF psf,
+            FluorophoreProperties fluorProp,
+            boolean rescale) throws FileNotFoundException, IOException {
+        if (file==null) {
+            file = getFileFromDialog();
+        }
+        
+        // load all fluorophores
+        ArrayList<Fluorophore> result = new ArrayList();
+        double x;
+        double y;
+        double z;
+        BufferedReader br;
+        String line;
+        String splitBy = ",";
+        br = new BufferedReader(new FileReader(file));
+        // read all lines
+        while ((line = br.readLine()) != null) {
+            // skip comments
+            if (line.startsWith("#")) {
+                continue;
+            }
+            
+            // read 2 doubles from beginning of line
+            String[] entries = line.split(splitBy);
+            x = Double.parseDouble(entries[0]);
+            y = Double.parseDouble(entries[1]);
+            
+            try {
+                z = Double.parseDouble(entries[2]);
+            } catch (ArrayIndexOutOfBoundsException ex){
+                // There is no z-column, so set the z-position to 0.0.
+                z = 0.0;
+            }
+            // Ignore entries with negative x- and y-positions.
+            if (x>=0.0 && y>=0.0)
+                // we subtract 0.5 to make the positions agree with how ThunderSTORM computes positions
+                // i.e. origin is in the very top left of image, not in the center of top left pixel as it is in our simulation
+                result.add(fluorProp.newFluorophore(psf, x - 0.5, y - 0.5, z));
+        }
+        
+        // rescale positions to fit into frame        
+        if (rescale) {
+            ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
+            double max_x_coord = 0.0;
+            for (Fluorophore f: result) {
+                if (f.x>max_x_coord)
+                    max_x_coord = f.x;
+            }
+            double factor = camera.res_x/max_x_coord;
+            for (Fluorophore f: result) {
+                result_rescaled.add(fluorProp.newFluorophore(psf, f.x*factor, f.y*factor, f.z));
             }
             return result_rescaled;
         // or crop fluorophores outside of frame

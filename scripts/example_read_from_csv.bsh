@@ -1,0 +1,68 @@
+/**
+ * This setups a simulation with a logger for logging the state
+ * transitions.
+ */
+
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
+import ch.epfl.leb.sass.simulator.generators.realtime.*;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
+import java.util.ArrayList;
+
+RNG.setSeed(1);
+
+// *** Initalize generator from the ground up ***
+Camera camera = new Camera(
+    64, //res_x
+    64, //res_y
+    100, //acq_speed, 
+    1.6, //readout_noise, 
+    0.06, //dark_current, 
+    0.8, //quantum_efficiency, 
+    2.2,  // ADU_per_electron
+    0,    // EM_gain
+    100,  // baseline, ADU 
+    6.45 * 1e-6, //pixel_size, 
+    1.4, //NA, 
+    680 * 1e-9, //wavelength, 
+    60); //magnification)
+
+// Fluorophores: Rate constants in units per frame
+FluorophoreProperties fluo = new SimpleProperties(
+    2500,              // signal, photons
+    0,                 // background, photons
+    3,                 // mean on-time
+    100,               // mean off-time
+    99999999           // mean bleaching time
+);
+
+// laser
+Laser laser = new Laser(
+    0.0, // start
+    500.0, // max
+    0.0); // min
+
+// Create a 2D Gaussian point-spread function
+double fwhm = camera.fwhm_digital; // From the Airy disk
+Gaussian2D gauss2D = new Gaussian2D(fwhm);
+
+// generate emitters
+File csv_file = new File("label_pix_sass.csv");
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresFromCSV(csv_file, camera, gauss2D, fluo, false);
+
+// assemble the device and generator
+Device device = new Device(camera, fluo, laser, emitters, null);
+STORMsim generator = new STORMsim(device);
+
+// set laser power
+generator.setControlSignal(0.01);
+
+// simulate frames
+for (i=0;i<10000;i++) {
+    if (i%1000==0) {
+		System.out.println(i);
+	}
+	generator.getNextImage();
+}
+
+// Save the stack
+generator.saveStack(new File("generated_stack.tif"));

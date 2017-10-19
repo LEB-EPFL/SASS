@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author: Marcel Stefko
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -30,10 +28,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
 
 /**
- * Any 2D point that emits (or reflects) light when shined on by laser.
+ * A point source of light and tools to compute its signature on a digital detector.
+ * 
+ * Emitters are general point sources of light that are imaged by an optical
+ * system and recorded by a digital sensor. The Emitter class contains tools for
+ * generating the digital images of point sources without any regard for the
+ * dynamics of the of the signal (apart from photon shot noise). Classes that
+ * extend the Emitter class are intended to implement the dynamics of the
+ * source's signal.
+ * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public abstract class Emitter extends Point2D.Double  {
     
@@ -46,6 +56,26 @@ public abstract class Emitter extends Point2D.Double  {
      * A unique ID assigned to this emitter.
      */
     protected int id;
+    
+    /**
+     * A copy of the state logger.
+     */
+    protected final StateLogger stateLogger = StateLogger.getInstance();
+    
+    /**
+     * A copy of the position logger.
+     */
+    protected final PositionLogger positionLogger = PositionLogger.getInstance();
+    
+    /**
+     * The PSF model that's created by the emitter.
+     */
+    protected PSF psf;
+    
+    /**
+     * The emitter's z-position.
+     */
+    public double z;
 
     /**
      * List of pixels which are affected by this emitter's light (these pixels
@@ -60,7 +90,9 @@ public abstract class Emitter extends Point2D.Double  {
     
     /**
      * Camera settings used for calculating PSF
+     * @deprecated Will be removed in future versions.
      */
+    @Deprecated
     protected final Camera camera;
 
     /**
@@ -69,9 +101,14 @@ public abstract class Emitter extends Point2D.Double  {
      * @param camera camera properties (needed for PSF calculation)
      * @param x x-position in image [pixels, with sub-pixel precision]
      * @param y y-position in image [pixels, with sub-pixel precision]
+     * @deprecated Camera instances are being decoupled from Emitter. Use the
+     *           {@link #Emitter(double, double, double, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF) } constructor
+     *           instead.
      */
+    @Deprecated
     public Emitter(Camera camera, double x, double y) {
         super(x, y);
+        this.z = 0;
         this.camera = camera;
         this.poisson = RNG.getPoissonGenerator();
         final double sigma = camera.fwhm_digital / 2.3548;
@@ -79,6 +116,33 @@ public abstract class Emitter extends Point2D.Double  {
         final double r = 3 * sigma;
         // generate pixels which will be added to image when emitter is on
         this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
+        
+        // Increment the number of emitters and assign the id.
+        this.numberOfEmitters += 1;
+        this.id = this.numberOfEmitters;
+        
+    }
+    
+    /**
+     * Creates the emitter at given position, and calculates its image from the PSF and camera.
+     * @param x x-position in image [pixels, with sub-pixel precision]
+     * @param y y-position in image [pixels, with sub-pixel precision]
+     * @param z z-position in image [pixels, with sub-pixel precision]
+     * @param psf The emitter's point spread function.
+     */
+    public Emitter(double x, double y, double z, PSF psf) {
+        super(x, y);
+        this.z = z;
+        this.psf = psf;
+        this.poisson = RNG.getPoissonGenerator();
+        this.camera = null;
+        
+        // generate pixels which will be added to the image when emitter is on
+        // This must be called **after** super(x,y).
+        this.pixel_list = this.getPixelsWithinRadius(this, this.psf.getRadius());
+        
+        // Compute the signature on each pixel created by this emitter
+        this.psf.generateSignature(this.pixel_list, this.x, this.y, this.z);
         
         // Increment the number of emitters and assign the id.
         this.numberOfEmitters += 1;
@@ -94,7 +158,9 @@ public abstract class Emitter extends Point2D.Double  {
      * @param camera_fwhm_digital camera fwhm value
      * @return signature value for this pixel
      * @throws MathException
+     * @deprecated This behavior has been moved to the PSF interface
      */
+    @Deprecated
     protected double generate_signature_for_pixel(int x, int y, double camera_fwhm_digital) throws MathException {
         final double sigma = camera_fwhm_digital / 2.3548;
         final double denom = sqrt(2.0)*sigma;
@@ -110,7 +176,9 @@ public abstract class Emitter extends Point2D.Double  {
      * @param radius radius value [pixels]
      * @param camera_fwhm_digital camera fwhm value
      * @return list of Pixels with precalculated signatures
+     * @deprecated Use {@link #getPixelsWithinRadius(java.awt.geom.Point2D, double)} instead.
      */
+    @Deprecated
     protected final ArrayList<Pixel> get_pixels_within_radius(double radius, double camera_fwhm_digital) {
         ArrayList<Pixel> result = new ArrayList<Pixel>();
         // Upper and lower bounds for the region.
@@ -143,17 +211,62 @@ public abstract class Emitter extends Point2D.Double  {
     }
     
     /**
-     * Applies Poisson statistics to simulate flickering of emitter.
-     * @param base_brightness mean of poisson distribution to draw from
-     * @return actual brightness of this emitter for this frame
+     * Returns a list of pixels within a certain radius from a point.
+     * 
+     * This method locates all the pixels within a circular area surrounding a
+     * given two-dimensional point whose center lies at (x, y). The coordinate
+     * of a pixel is assumed to lie at the pixel's center, and a pixel is within
+     * a given radius of another if the pixel's center lies within this circle.
+     * 
+     * @param point
+     * @param radius radius value [pixels]
+     * @return list of Pixels with pre-calculated signatures
      */
-    protected double flicker(double base_brightness) {
-        return poisson.nextInt(base_brightness);
+    public static final ArrayList<Pixel> getPixelsWithinRadius(Point2D point, double radius) {
+        ArrayList<Pixel> result = new ArrayList<Pixel>();
+        // If radius is less than one, return the pixel containing the point
+        if (radius < 1)
+        {   
+            int x = (int) point.getX();
+            int y = (int) point.getY();
+            result.add(new Pixel(x,y,0));
+            return result;
+        }
+                    
+        // Upper and lower bounds for the region.
+        final int bot_x = (int) floor(point.getX() - radius);
+        final int top_x = (int) ceil(point.getX() + radius);
+        final int bot_y = (int) floor(point.getY() - radius);
+        final int top_y = (int) ceil(point.getY() + radius);
+        
+        // Squared radius so we dont have to do the sqrt()
+        final double radius2 = radius*radius;
+        
+        // Iterate over all pixels in the square defined by the bounds and
+        // filter out those which are too far, otherwise generate signature and
+        // add to list.
+        for (int i = bot_x; i<=top_x; i++) {
+            for (int j=bot_y; j<=top_y; j++) {
+                if (point.distanceSq((double) i, (double) j) <= radius2) {
+                    result.add(new Pixel(i,j,0));
+                }
+            }
+        }
+        return result;
     }
     
     /**
-     * Returns list of pixels which need to be drawn on the image to accurately
-     * render the emitter.
+     * Applies Poisson statistics to simulate flickering of an emitter.
+     * 
+     * @param baseBrightness mean of Poisson distribution to draw from
+     * @return actual brightness of this emitter for this frame
+     */
+    protected double flicker(double baseBrightness) {
+        return poisson.nextInt(baseBrightness);
+    }
+    
+    /**
+     * Returns list of pixels which need to be drawn on the image to accurately render the emitter.
      * @return list of Pixels
      */
     public ArrayList<Pixel> getPixelList() {
@@ -186,9 +299,25 @@ public abstract class Emitter extends Point2D.Double  {
     
     /**
      * Returns the emitter's ID.
-     * @return id
+     * @return The unique integer identifying the emitter.
      */
     public int getId() {
         return id;
+    }
+    
+    /**
+     * Returns the emitter's PSF model.
+     * @return The PSF model used to create the image of this emitter.
+     */
+    public PSF getPSF() {
+        return this.psf;
+    }
+    
+    /**
+     * Change the emitter's PSF model.
+     * @param psf The PSF model used to create the image of this emitter.
+     */
+    public void setPSF(PSF psf) {
+        this.psf = psf;
     }
 }

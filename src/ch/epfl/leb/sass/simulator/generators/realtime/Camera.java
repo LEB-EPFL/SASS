@@ -2,8 +2,6 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
- * Author(s): Marcel Stefko, Kyle M. Douglass
- * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,16 +17,21 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import static java.lang.Math.exp;
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 /**
- * Class containing camera configuration info and optics calculation functions.
+ * Represents the parameters of the camera.
+ * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class Camera {
 
     /**
-     * framerate [frames/second]
+     * frame rate [frames/second]
      */
     public final int acq_speed;
 
@@ -90,17 +93,17 @@ public class Camera {
     public final double thermal_noise;
 
     /**
-     * digital representation of the FWHM?
+     * digital representation of the FWHM
      */
     public final double fwhm_digital;
     
     /**
-     * horizontal resolution [pixels]
+     * horizontal image size [pixels]
      */
     public final int res_x;
 
     /**
-     * vertical resolution [pixels]
+     * vertical image size [pixels]
      */
     public final int res_y;
     
@@ -108,7 +111,7 @@ public class Camera {
      * Initialize camera with parameters.
      * @param res_x horizontal resolution [pixels]
      * @param res_y vertical resolution [pixels]
-     * @param acq_speed framerate [frames/second]
+     * @param acq_speed frame rate [frames/second]
      * @param readout_noise readout noise of camera [RMS]
      * @param dark_current dark current [electrons/second/pixel]
      * @param quantum_efficiency quantum efficiency [0.0-1.0]

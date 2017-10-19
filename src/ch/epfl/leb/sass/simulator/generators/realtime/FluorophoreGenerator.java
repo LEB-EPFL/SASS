@@ -49,7 +49,7 @@ public class FluorophoreGenerator {
      * @param cam camera properties
      * @param fluo fluorophore properties
      * @return
-     * @deprecated Use {@link #generateFluorophoresRandom2D(int, int, int, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties)}
+     * @deprecated Use {@link #generateFluorophoresRandom2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
      *           instead.
      */
     @Deprecated

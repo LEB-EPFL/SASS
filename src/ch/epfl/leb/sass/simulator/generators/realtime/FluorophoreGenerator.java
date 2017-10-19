@@ -89,6 +89,38 @@ public class FluorophoreGenerator {
     }
     
     /**
+     * Randomly populate the field of view with fluorophores in three dimensions.
+     * 
+     * @param numFluors The number of fluorophores to add to the field of view.
+     * @param zLow The lower bound on the range in z in units of pixels
+     * @param zHigh The upper bound on the range in z in units of pixels
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @return The list of fluorophores.
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresRandom3D(
+            int numFluors,
+            double zLow,
+            double zHigh,
+            Camera camera,
+            PSF psf,
+            FluorophoreProperties fluorProp) {
+        Random rnd = RNG.getUniformGenerator();
+        ArrayList<Fluorophore> result = new ArrayList();
+        double x;
+        double y;
+        double z;
+        for (int i=0; i < numFluors; i++) {
+            x = camera.res_x * rnd.nextDouble();
+            y = camera.res_y * rnd.nextDouble();
+            z = (zHigh - zLow) * rnd.nextDouble() + zLow;
+            result.add(fluorProp.newFluorophore(psf, x, y, z));
+        }
+        return result;
+    }
+    
+    /**
      * Generate a rectangular grid of fluorophores
      * @param spacing distance between nearest neighbors
      * @param cam Camera

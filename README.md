@@ -12,10 +12,16 @@ http://sass.readthedocs.io/en/latest/
 
 ## Usage
 
-**NOTICE** The API for SASS is still under development and may change
-until major version 1.
+## API Notice ##
 
-Download latest .jar from [releases].
+The API for SASS is still under development and may change until major
+version 1.0.0. Any methods or classes that are marked as deprecated
+will be removed by this release.
+
+## Installation
+
+Download the latest .jar from [releases].
+
 ### As standalone application
  - Executing the .jar file by double-clicking launches a BeanShell console. Example scripts can be found in `/scripts/` folder.
  - Running SASS from command line: `java -jar <SASS-jar-name> --help` brings up available options, such as executing a script, or an interactive session within the terminal.

@@ -23,7 +23,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- * Class containing camera configuration info and optics calculation functions.
+ * Represents the parameters of the camera.
+ * 
  * @author Marcel Stefko
  * @author Kyle M. Douglass
  */

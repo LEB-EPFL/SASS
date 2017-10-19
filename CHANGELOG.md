@@ -9,8 +9,15 @@ All notable changes to this project will be documented in this file.
   image to the stack.
 - `PositionLogger` object for recording the fluorophores' initial
   positions in x, y, z to a file.
+- A `PSF` interface has been created to more easily extend the number
+  of PSF models used by SASS.
 
 ### Changed
+- The Emitter, Fluorophore, and Camera API's have been changed to
+  decouple the camera logic from light sources.
+- The PSF creation routines originally found in the `Emitter` class
+  are now located in a `Gaussian2D` class that implements the `PSF`
+  interface.
 - `PositionLogger` and `StateLogger` now extend an `AbstractLogger`
   base class.
 - `PositionLogger` and `StateLogger` now reside in the package

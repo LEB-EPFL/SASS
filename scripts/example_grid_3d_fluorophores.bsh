@@ -2,17 +2,18 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne.
  *
- * This script demonstrates how to randomly populate the field with
- * with a 2D distribution of fluorophores.
+ * This script demonstrates how to populate the field with a 3D
+ * distribution of fluorophores arranged on a square grid. The axial
+ * positions of the fluorophores ascend in a step-wise fashion.
  *
  */
 
 import ch.epfl.leb.sass.simulator.generators.realtime.*;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian3D;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
-RNG.setSeed(5);
+RNG.setSeed(1);
 
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(
@@ -47,13 +48,15 @@ Laser laser = new Laser(0.0, // start
 
 // Create a 2D Gaussian point-spread function
 double fwhm = camera.fwhm_digital; // From the Airy disk
-Gaussian2D gauss2D = new Gaussian2D(fwhm);
+Gaussian3D gauss3D = new Gaussian3D(fwhm, camera.NA);
 
 // generate emitters 
-ArrayList emitters = FluorophoreGenerator.generateFluorophoresRandom2D(
-        100, // number of fluorophores
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid3D(
+        4,  // spacing in pixels
+	-5, // Lower bound on z, pixels
+	5,  // Upper bound on z, pixels
 	camera,
-	gauss2D,
+	gauss3D,
 	fluo);
 		
 // add a gold bead to the field of view at random location
@@ -85,3 +88,4 @@ for (i=0;i<10000;i++) {
 //ip.updateAndRepaintWindow();
 
 //System.exit(0); // uncomment if you want termination immediately
+

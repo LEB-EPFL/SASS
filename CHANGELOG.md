@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file.
   positions in x, y, z to a file.
 - A `PSF` interface has been created to more easily extend the number
   of PSF models used by SASS.
+- A `Gaussian3D` PSF class was added for modeling PSF's as a
+  through-focus Gaussian beam.
+- Added new methods to FluorophoreGenerator and scripts for creating
+  3D fluorophore distributions.
 
 ### Changed
 - The Emitter, Fluorophore, and Camera API's have been changed to

@@ -4,7 +4,7 @@
     <description>Builds, tests, and runs the project SASS.</description>
     <import file="nbproject/build-impl.xml"/>
     <property name="pluginsDir"  location="/home/douglass/apps/Fiji.app/plugins" />
-    <property name="store.jar.name" value="SASS_v0.3.0.jar"/>
+    <property name="store.jar.name" value="SASS_v0.4.0.jar"/>
     <property name="store.dir" value="store"/>
     <property name="store.jar" value="${store.dir}/${store.jar.name}"/>
     <target name="-post-jar">

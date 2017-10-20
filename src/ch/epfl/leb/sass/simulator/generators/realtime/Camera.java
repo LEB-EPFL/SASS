@@ -150,4 +150,12 @@ public class Camera {
 
         fwhm_digital = airy_psf_radius_digital / pixel_size;
     }
+    
+    public int getRes_X() {
+        return this.res_x;
+    }
+    
+    public int getRes_Y() {
+        return this.res_y;
+    }
 }

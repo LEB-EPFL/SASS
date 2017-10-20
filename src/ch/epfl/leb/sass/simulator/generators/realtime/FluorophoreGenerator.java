@@ -169,6 +169,16 @@ public class FluorophoreGenerator {
         return result;
     }
     
+    /**
+     * 
+     * @param spacing
+     * @param cam
+     * @param fluo
+     * @return
+     * @deprecated Use {@link #generateFluorophoresGrid3D(int, double, double, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
+     *           instead.
+     */
+    @Deprecated
     public static ArrayList<Fluorophore3D> generate3DFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
         int limit_x = cam.res_x;
         int limit_y = cam.res_y;
@@ -176,6 +186,40 @@ public class FluorophoreGenerator {
         for (int i=spacing; i<limit_x; i+=spacing) {
             for (int j=spacing; j<limit_y; j+= spacing) {
                 result.add(fluo.createFluorophore3D(cam, i, j, ((-limit_y/2)+j)/100.0));
+            }
+        }       
+        return result;
+    }
+    
+    /**
+     * Create fluorophores on a 2D grid and step-wise in the axial direction.
+     * 
+     * @param spacing The distance along the grid between nearest neighbors.
+     * @param zLow The lower bound on the range in z in units of pixels.
+     * @param zHigh The upper bound on the range in z in units of pixels.
+     * @param camera The camera for determining the size of the field of view.
+     * @param psf The PSF of the microscope.
+     * @param fluorProp The fluorophore dynamics properties.
+     * @return The list of fluorophores.
+     */
+    public static ArrayList<Fluorophore> generateFluorophoresGrid3D(
+            int spacing,
+            double zLow,
+            double zHigh,
+            Camera camera,
+            PSF psf,
+            FluorophoreProperties fluorProp) {
+        int limitX = camera.getRes_X();
+        int limitY = camera.getRes_Y();
+        double numFluors = ((double) limitX - spacing) * ((double) limitY - spacing) / spacing / spacing;
+        double zSpacing  = (zHigh - zLow) / (numFluors - 1);
+        double z = zLow;
+        
+        ArrayList<Fluorophore> result = new ArrayList();
+        for (int i = spacing; i < limitX; i += spacing) {
+            for (int j = spacing; j < limitY; j += spacing) {
+                result.add(fluorProp.newFluorophore(psf, i, j, z));
+                z += zSpacing;
             }
         }       
         return result;

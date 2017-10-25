@@ -108,6 +108,16 @@ public class Camera {
     public final int res_y;
     
     /**
+     * Displacement of the coverslip surface from the objective's focal plane.
+     * 
+     * This value assumes that the microscope objective is inverted (facing up)
+     * and that the axial direction is positive going upwards. A negative value
+     * therefore implies that the coverslip has been moved down towards the
+     * objective bringing objects located above the coverslip into focus.
+     */
+    public double stagePosition = 0;
+    
+    /**
      * Initialize camera with parameters.
      * @param res_x horizontal resolution [pixels]
      * @param res_y vertical resolution [pixels]

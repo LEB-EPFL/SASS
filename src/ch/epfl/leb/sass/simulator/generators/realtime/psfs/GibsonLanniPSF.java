@@ -66,8 +66,11 @@ public class GibsonLanniPSF { //TODO: impelements PSF
     
     /**
      * The size in z of the PSF array [pixels].
+     * 
+     * This value is fixed at one because only one axial plane needs to be
+     * evaluated.
      */
-    private int sizeZ = 128;
+    private final int SIZEZ = 1;
     
     /**
      * Numerical aperture of the microscope.
@@ -144,7 +147,7 @@ public class GibsonLanniPSF { //TODO: impelements PSF
      * See Li, J., Xue, F., & Blu, T. (2017). JOSA A, 34(6), 1029-1034 for more
      * information.
      */
-    private final double MINWAVELENGTH = 0.436;
+    private final double MINWAVELENGTH = 436E-9;
     
     public static class Builder {
         
@@ -154,7 +157,6 @@ public class GibsonLanniPSF { //TODO: impelements PSF
         private int oversampling;
         private int sizeX;
         private int sizeY;
-        private int sizeZ;
         private double NA;
         private double wavelength;
         private double magnification;
@@ -170,8 +172,6 @@ public class GibsonLanniPSF { //TODO: impelements PSF
         private double resAxial;
         private double pZ;
         
-        
-        
         public Builder numBasis(int numBasis) {
             this.numBasis = numBasis;
             return this;
@@ -180,9 +180,12 @@ public class GibsonLanniPSF { //TODO: impelements PSF
             this.numSamples = numSamples;
             return this;
         }
+        public Builder oversampling(int oversampling) {
+            this.oversampling = oversampling;
+            return this;
+        }
         public Builder sizeX(int sizeX) {this.sizeX = sizeX; return this;}
         public Builder sizeY(int sizeY) {this.sizeY = sizeY; return this;}
-        public Builder sizeZ(int sizeZ) {this.sizeZ = sizeZ; return this;}
         public Builder NA(double NA) {this.NA = NA; return this;}
         public Builder wavelength(double wavelength) {
             this.wavelength = wavelength; return this;
@@ -223,7 +226,6 @@ public class GibsonLanniPSF { //TODO: impelements PSF
         this.oversampling = builder.oversampling;
         this.sizeX = builder.sizeX;
         this.sizeY = builder.sizeY;
-        this.sizeZ = builder.sizeZ;
         this.NA = builder.NA;
         this.wavelength = builder.wavelength;
         this.magnification = builder.magnification;
@@ -244,7 +246,7 @@ public class GibsonLanniPSF { //TODO: impelements PSF
      * Computes a digital representation of the PSF.
      * @return An image stack of the PSF.
      **/
-    private ImageStack computeDigitalPSF() {
+    private ImageStack computeDigitalPSF(double z) {
         double x0 = (this.sizeX - 1) / 2.0D;
         double y0 = (this.sizeY - 1) / 2.0D;
 
@@ -256,7 +258,7 @@ public class GibsonLanniPSF { //TODO: impelements PSF
         int maxRadius = (int) Math.round(Math.sqrt((this.sizeX - x0)
                         * (this.sizeX - x0) + (this.sizeY - y0) * (this.sizeY - y0))) + 1;
         double[] r = new double[maxRadius * this.oversampling];
-        double[][] h = new double[this.sizeZ][r.length];
+        double[][] h = new double[this.SIZEZ][r.length];
 
         double a = 0.0D;
         double b = Math.min(1.0D, this.ns / this.NA);
@@ -289,36 +291,36 @@ public class GibsonLanniPSF { //TODO: impelements PSF
         double OPD = 0;
         double W = 0;
 
-        double[][] Coef = new double[this.sizeZ][this.numBasis * 2];
-        double[][] Ffun = new double[this.numSamples][this.sizeZ * 2];
+        double[][] Coef = new double[this.SIZEZ][this.numBasis * 2];
+        double[][] Ffun = new double[this.numSamples][this.SIZEZ * 2];
 
-        for (int z = 0; z < this.sizeZ; z++) {
-                ti = (this.ti0 + this.resAxial * (z - (this.sizeZ - 1.0D) / 2.0D));
+        // Oil thickness.
+        ti = (this.ti0 + z);
 
-                for (int rhoi = 0; rhoi < this.numSamples; rhoi++) {
-                        rho = rhoi * deltaRho;
-                        OPD = this.ns
-                                        * this.pZ
-                                        * Math.sqrt(1.0D - this.NA * rho / this.ns
-                                                        * (this.NA * rho / this.ns));
-                        OPD = OPD
-                                        + this.ng
-                                        * (this.tg - this.tg0)
-                                        * Math.sqrt(1.0D - this.NA * rho / this.ng
-                                                        * (this.NA * rho / this.ng));
+        for (int rhoi = 0; rhoi < this.numSamples; rhoi++) {
+                rho = rhoi * deltaRho;
+                OPD = this.ns
+                                * this.pZ
+                                * Math.sqrt(1.0D - this.NA * rho / this.ns
+                                                * (this.NA * rho / this.ns));
+                OPD = OPD
+                                + this.ng
+                                * (this.tg - this.tg0)
+                                * Math.sqrt(1.0D - this.NA * rho / this.ng
+                                                * (this.NA * rho / this.ng));
 
-                        OPD = OPD
-                                        + this.ni
-                                        * (ti - this.ti0)
-                                        * Math.sqrt(1.0D - this.NA * rho / this.ni
-                                                        * (this.NA * rho / this.ni));
+                OPD = OPD
+                                + this.ni
+                                * (ti - this.ti0)
+                                * Math.sqrt(1.0D - this.NA * rho / this.ni
+                                                * (this.NA * rho / this.ni));
 
-                        W = k0 * OPD;
+                W = k0 * OPD;
 
-                        Ffun[rhoi][z] = Math.cos(W);
-                        Ffun[rhoi][z + this.sizeZ] = Math.sin(W);
-                }
+                Ffun[rhoi][0] = Math.cos(W);
+                Ffun[rhoi][this.SIZEZ] = Math.sin(W);
         }
+        
 
         // solve the linear system
         // begin....... (Using Common Math)
@@ -354,53 +356,48 @@ public class GibsonLanniPSF { //TODO: impelements PSF
 
         // obtain one component
         double maxValue = 0.0D;
-        for (int z = 0; z < this.sizeZ; z++) {
-                for (int n = 0; n < r.length; n++) {
-                        double realh = 0.0D;
-                        double imgh = 0.0D;
-                        for (int m = 0; m < this.numBasis; m++) {
-                                realh = realh + RM[m][n] * Coef[m][z];
-                                imgh = imgh + RM[m][n] * Coef[m][z + this.sizeZ];
 
-                        }
-                        h[z][n] = realh * realh + imgh * imgh;
+        for (int n = 0; n < r.length; n++) {
+                double realh = 0.0D;
+                double imgh = 0.0D;
+                for (int m = 0; m < this.numBasis; m++) {
+                        realh = realh + RM[m][n] * Coef[m][0];
+                        imgh = imgh + RM[m][n] * Coef[m][this.SIZEZ];
+
                 }
+                h[0][n] = realh * realh + imgh * imgh;
         }
 
         // assign
+        double[][] pixel = new double[this.SIZEZ][this.sizeX * this.sizeY];
 
-        double[][] pixel = new double[this.sizeZ][this.sizeX * this.sizeY];
 
-        for (int z = 0; z < this.sizeZ; z++) {
-                for (int x = 0; x < this.sizeX; x++) {
-                        for (int y = 0; y < this.sizeY; y++) {
-                                double rPixel = Math.sqrt((x - xp) * (x - xp) + (y - yp)
-                                                * (y - yp));
-                                int index = (int) Math.floor(rPixel * this.oversampling);
+        for (int x = 0; x < this.sizeX; x++) {
+                for (int y = 0; y < this.sizeY; y++) {
+                        double rPixel = Math.sqrt((x - xp) * (x - xp) + (y - yp)
+                                        * (y - yp));
+                        int index = (int) Math.floor(rPixel * this.oversampling);
 
-                                double value = h[z][index]
-                                                + (h[z][(index + 1)] - h[z][index])
-                                                * (rPixel - r[index]) * this.oversampling;
-                                pixel[z][(x + this.sizeX * y)] = value;
-                                if (value > maxValue) {
-                                        maxValue = value;
-                                }
+                        double value = h[0][index]
+                                        + (h[0][(index + 1)] - h[0][index])
+                                        * (rPixel - r[index]) * this.oversampling;
+                        pixel[0][(x + this.sizeX * y)] = value;
+                        if (value > maxValue) {
+                                maxValue = value;
                         }
                 }
         }
 
-        for (int z = 0; z < this.sizeZ; z++) {
-                double[] slice = new double[this.sizeX * this.sizeY];
+        double[] slice = new double[this.sizeX * this.sizeY];
 
-                for (int x = 0; x < this.sizeX; x++) {
-                        for (int y = 0; y < this.sizeY; y++) {
+        for (int x = 0; x < this.sizeX; x++) {
+                for (int y = 0; y < this.sizeY; y++) {
 
-                                double value = pixel[z][(x + this.sizeX * y)] / maxValue;
-                                slice[(x + this.sizeX * y)] = value;
-                        }
+                        double value = pixel[0][(x + this.sizeX * y)] / maxValue;
+                        slice[(x + this.sizeX * y)] = value;
                 }
-                stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, slice));
         }
+        stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, slice));
         
         return stack;
     }

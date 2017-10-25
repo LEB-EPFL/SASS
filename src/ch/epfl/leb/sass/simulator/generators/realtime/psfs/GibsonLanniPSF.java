@@ -25,12 +25,13 @@ import org.apache.commons.math3.special.BesselJ;
 
 import ij.ImageStack;
 import ij.process.FloatProcessor;
+
 /**
  * Computes an emitter PSF based on the Gibson-Lanni model.
  * 
- * This algorithm first described in Li, J., Xue, F., & Blu, T. (2017). Fast and
- * accurate three-dimensional point spread function computation for fluorescence
- * microscopy. JOSA A, 34(6), 1029-1034.
+ * This algorithm was first described in Li, J., Xue, F., & Blu, T. (2017). Fast
+ * and accurate three-dimensional point spread function computation for
+ * fluorescence microscopy. JOSA A, 34(6), 1029-1034.
  * 
  * The code is adapted from MicroscPSF-ImageJ by Jizhou Li:
  * https://github.com/hijizhou/MicroscPSF-ImageJ
@@ -147,7 +148,11 @@ public class GibsonLanniPSF { //TODO: impelements PSF
      * See Li, J., Xue, F., & Blu, T. (2017). JOSA A, 34(6), 1029-1034 for more
      * information.
      */
-    private final double MINWAVELENGTH = 436E-9;
+    private final double MINWAVELENGTH = 0.436;
+    
+    /**
+     * The array of x-positions.
+     */
     
     public static class Builder {
         
@@ -246,7 +251,7 @@ public class GibsonLanniPSF { //TODO: impelements PSF
      * Computes a digital representation of the PSF.
      * @return An image stack of the PSF.
      **/
-    private ImageStack computeDigitalPSF(double z) {
+    public ImageStack computeDigitalPSF(double z) {
         double x0 = (this.sizeX - 1) / 2.0D;
         double y0 = (this.sizeY - 1) / 2.0D;
 
@@ -368,36 +373,78 @@ public class GibsonLanniPSF { //TODO: impelements PSF
                 h[0][n] = realh * realh + imgh * imgh;
         }
 
-        // assign
-        double[][] pixel = new double[this.SIZEZ][this.sizeX * this.sizeY];
-
-
-        for (int x = 0; x < this.sizeX; x++) {
-                for (int y = 0; y < this.sizeY; y++) {
-                        double rPixel = Math.sqrt((x - xp) * (x - xp) + (y - yp)
-                                        * (y - yp));
-                        int index = (int) Math.floor(rPixel * this.oversampling);
-
-                        double value = h[0][index]
-                                        + (h[0][(index + 1)] - h[0][index])
-                                        * (rPixel - r[index]) * this.oversampling;
-                        pixel[0][(x + this.sizeX * y)] = value;
-                        if (value > maxValue) {
-                                maxValue = value;
-                        }
-                }
-        }
-
-        double[] slice = new double[this.sizeX * this.sizeY];
+        // Interpolate the PSF onto a 2D grid of physical coordinates
+        double[] pixel = new double[this.sizeX * this.sizeY];
+        double[] mgridX = new double[this.sizeX * this.sizeY];
+        double[] mgridY = new double[this.sizeX * this.sizeY];
 
         for (int x = 0; x < this.sizeX; x++) {
-                for (int y = 0; y < this.sizeY; y++) {
+            for (int y = 0; y < this.sizeY; y++) {
+                double rPixel = Math.sqrt((x - xp) * (x - xp) + (y - yp)
+                                * (y - yp));
 
-                        double value = pixel[0][(x + this.sizeX * y)] / maxValue;
-                        slice[(x + this.sizeX * y)] = value;
-                }
+                // Save the x- and y-coordinates
+                mgridX[x + this.sizeX * y] = 
+                        (x - (this.sizeX - 1) * 0.5) * this.resLateral;
+                mgridY[x + this.sizeX * y] = 
+                        (y - (this.sizeY - 1) * 0.5) * this.resLateral;
+
+                // Find the index of the 
+                int index = (int) Math.floor(rPixel * this.oversampling);
+
+                double value = h[0][index]
+                                + (h[0][(index + 1)] - h[0][index])
+                                * (rPixel - r[index]) * this.oversampling;
+                pixel[(x + this.sizeX * y)] = value;
+            }
         }
-        stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, slice));
+
+        
+        // Compute the constant that normalizes the PSF to its area
+        double normConst = 0;
+        for (int x = 0; x < this.sizeX; x++) {
+            for (int y = 0; y < this.sizeY; y++) {
+                normConst += pixel[x + this.sizeX * y] * this.resLateral * this.resLateral;
+            }
+        }
+        
+        // Compute the (discrete) cumulative distribution function.
+        // First, compute the sums in the y-direction.
+        double[] CDF = new double[this.sizeX * this.sizeY];
+        double sum = 0;
+        for (int x = 0; x < this.sizeX; x++) {
+            sum = 0;
+            for (int y = 0; y < this.sizeY; y++) {
+                // Normalize to the integrated area
+                pixel[x + this.sizeX * y] /= normConst;
+                
+                // Increment the sum in the y-direction and the CDF
+                sum += pixel[x + this.sizeX * y] * this.resLateral;
+                CDF[x + this.sizeX * y] = sum;
+            }
+        }
+        
+        // Next, compute the sums in the x-direction.
+        for (int y = 0; y < this.sizeY; y++) {
+            sum = 0;
+            for (int x = 0; x < this.sizeX; x++) {              
+                // Increment the sum in the x-direction
+                sum += CDF[x + y * this.sizeX] * this.resLateral;
+                CDF[x + y * this.sizeX] = sum;
+            }
+        }        
+        
+//        double[] slice = new double[this.sizeX * this.sizeY];
+        
+//        for (int x = 0; x < this.sizeX; x++) {
+//            for (int y = 0; y < this.sizeY; y++) {
+//
+//                double value = pixel[(x + this.sizeX * y)] / maxValue;
+//                slice[(x + this.sizeX * y)] = value;
+//            }
+//        }
+        stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, pixel));
+        stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, CDF));
         
         return stack;
     }

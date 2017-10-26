@@ -17,8 +17,8 @@ RNG.setSeed(5);
 
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(
-		    32, //res_x
-                    32, //res_y
+		    64, //res_x
+                    64, //res_y
                     100, //acq_speed, 
                     1.6, //readout_noise, 
                     0.06, //dark_current, 
@@ -34,7 +34,7 @@ Camera camera = new Camera(
 // fluorophores: all properties in units per frame
 FluorophoreProperties fluo = new PalmProperties(
 		    2500, // photons per fluorophore
-                    50,   // background
+                    0,   // background
                     100,  //ka
                     0,    // kb
                     7.8/1.2/100.0, // kd1
@@ -52,8 +52,9 @@ int numSamples = 1000;
 int oversampling = 2;
 int sizeX = 256;
 int sizeY = 256;
-double NA = 1.4;
-double wavelength = 0.610;
+double NA = 1.3;
+double wavelength = 0.600;
+double magnification = 60;
 double ns = 1.33;
 double ng0 = 1.5;
 double ng = 1.5;
@@ -62,24 +63,25 @@ double ni = 1.5;
 double ti0 = 150;
 double tg0 = 170;
 double tg = 170;
-double resLateral = 0.100;
+double resLateral = 0.1075;
+double resPSF = 0.0215;
 double resAxial = 0.250;
-double pZ = 2;
         
 GibsonLanniPSF.Builder builder = new GibsonLanniPSF.Builder();
 builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
        .sizeY(sizeY).NA(NA).wavelength(wavelength).ns(ns).ng0(ng0)
        .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
-       .resAxial(resAxial).resLateral(resLateral).pZ(pZ)
-       .oversampling(oversampling);
+       .resAxial(resAxial).resLateral(resLateral)
+       .oversampling(oversampling).magnification(magnification)
+       .resPSF(resPSF);
 		
 GibsonLanniPSF psf = builder.build();
 
 // generate emitters
-ArrayList emitters = FluorophoreGenerator.generateFluorophoresRandom3D(
-        20, // number of fluorophores
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid3D(
+        8, // number of fluorophores
 	0,  // Lower bound on z (units are pixels)
-	3,   // Upper bound on z (units are pixels)
+	4,   // Upper bound on z (units are pixels)
 	camera,
 	psf,
 	fluo);

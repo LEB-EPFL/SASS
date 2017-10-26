@@ -137,6 +137,14 @@ public class GibsonLanniPSF implements PSF {
     private double resLateral = 0.1;
     
     /**
+     * The lateral size of a pixel on the discrete PSF grid [microns].
+     * 
+     * This should be smaller than resLateral so that computation of the PSF
+     * is performed on a finer scale than the camera pixels.
+     */
+    private double resPSF = 0.02;
+    
+    /**
      * The pixel size in the axial direction [microns].
      */
     private double resAxial = 0.25;
@@ -179,6 +187,7 @@ public class GibsonLanniPSF implements PSF {
         private double tg0;
         private double tg;
         private double resLateral;
+        private double resPSF;
         private double resAxial;
         private double pZ;
         
@@ -215,6 +224,7 @@ public class GibsonLanniPSF implements PSF {
         public Builder resLateral(double resLateral) {
             this.resLateral = resLateral; return this;
         }
+        public Builder resPSF(double resPSF) { this.resPSF = resPSF; return this;}
         public Builder resAxial(double resAxial) {
             this.resAxial = resAxial;
             return this;
@@ -248,6 +258,7 @@ public class GibsonLanniPSF implements PSF {
         this.tg0 = builder.tg0;
         this.tg = builder.tg;
         this.resLateral = builder.resLateral;
+        this.resPSF = builder.resPSF;
         this.resAxial = builder.resAxial;
         this.pZ = builder.pZ;
     }
@@ -270,11 +281,11 @@ public class GibsonLanniPSF implements PSF {
             double emitterY,
             double emitterZ
     ) {
-        return this.interpCDF.value((pixelX - emitterX + 0.5) * this.resLateral, (pixelY - emitterY + 0.5) * this.resLateral) +
-               this.interpCDF.value((pixelX - emitterX - 0.5) * this.resLateral, (pixelY - emitterY - 0.5) * this.resLateral) -
-               this.interpCDF.value((pixelX - emitterX + 0.5) * this.resLateral, (pixelY - emitterY - 0.5) * this.resLateral) -
-               this.interpCDF.value((pixelX - emitterX - 0.5) * this.resLateral, (pixelY - emitterY + 0.5) * this.resLateral);
-               
+        double scalingFactor = this.resLateral;
+        return this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor) +
+               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY - 0.5) * scalingFactor) -
+               this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor, (pixelY - emitterY - 0.5) * scalingFactor) -
+               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor);       
     }
     
         /**
@@ -289,8 +300,8 @@ public class GibsonLanniPSF implements PSF {
     public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
                               double emitterY, double emitterZ) {
         double signature;
-        this.pZ = emitterZ; // TODO FIX THIS!
-        this.computeDigitalPSF(0); // Compute the PSF
+        this.pZ = emitterZ;
+        this.computeDigitalPSF(-2); // Compute the PSF; TODO: Allow stage displacement
         for(Pixel pixel: pixels) {
             signature = this.generatePixelSignature(
                     pixel.x, pixel.y, emitterX, emitterY, emitterZ);
@@ -299,13 +310,24 @@ public class GibsonLanniPSF implements PSF {
         }
     }
     
+    /**
+     * Computes the half-width of the PSF for determining which pixels contribute to the emitter signal.
+     * 
+     * This number was empirically determined to give good performance over a
+     * range of positions that might observed in SMLM. Decreasing it can improve
+     * the speed of the simulations but will result in an artifical cropping of
+     * the PSF's lateral extent.
+     * 
+     * @return The width of the PSF.
+     */
     @Override
     public double getRadius() {
-        return 5;
+        return 7;
     }
     
     /**
      * Computes a digital representation of the PSF.
+     * 
      * @return An image stack of the PSF.
      **/
     public ImageStack computeDigitalPSF(double z) {
@@ -401,11 +423,11 @@ public class GibsonLanniPSF implements PSF {
 
         double[][] RM = new double[this.numBasis][r.length];
         double beta = 0.0D;
-
+        
         double rm = 0.0D;
         for (int n = 0; n < r.length; n++) {
                 r[n] = (n * 1.0 / this.oversampling);
-                beta = k0 * this.NA * r[n] * this.resLateral;
+                beta = k0 * this.NA * r[n] * this.resPSF;
 
                 for (int m = 0; m < this.numBasis; m++) {
                         am = (3 * m + 1) * factor;
@@ -435,12 +457,16 @@ public class GibsonLanniPSF implements PSF {
 
         for (int x = 0; x < this.sizeX; x++) {
             for (int y = 0; y < this.sizeY; y++) {
+                // Distance in pixels from the center of the array
                 double rPixel = Math.sqrt((x - xp) * (x - xp) + (y - yp)
                                 * (y - yp));
 
-                // Find the index of the 
+                // Find the index of the PSF h array that matches this distance
                 int index = (int) Math.floor(rPixel * this.oversampling);
-
+                
+                // Perform a linear interpolation from h onto the current point.
+                // (1 / this.oversampling) is the distance between samples in
+                // the h array in units of pixels in the final output array.
                 double value = h[0][index]
                                 + (h[0][(index + 1)] - h[0][index])
                                 * (rPixel - r[index]) * this.oversampling;
@@ -453,7 +479,7 @@ public class GibsonLanniPSF implements PSF {
         double normConst = 0;
         for (int x = 0; x < this.sizeX; x++) {
             for (int y = 0; y < this.sizeY; y++) {
-                normConst += pixel[x + this.sizeX * y] * this.resLateral * this.resLateral;
+                normConst += pixel[x + this.sizeX * y] * this.resPSF * this.resPSF;
             }
         }
         
@@ -468,7 +494,7 @@ public class GibsonLanniPSF implements PSF {
                 pixel[x + this.sizeX * y] /= normConst;
                 
                 // Increment the sum in the y-direction and the CDF
-                sum += pixel[x + this.sizeX * y] * this.resLateral;
+                sum += pixel[x + this.sizeX * y] * this.resPSF;
                 CDF[x + this.sizeX * y] = sum;
             }
         }
@@ -478,7 +504,7 @@ public class GibsonLanniPSF implements PSF {
             sum = 0;
             for (int x = 0; x < this.sizeX; x++) {              
                 // Increment the sum in the x-direction
-                sum += CDF[x + y * this.sizeX] * this.resLateral;
+                sum += CDF[x + y * this.sizeX] * this.resPSF;
                 CDF[x + y * this.sizeX] = sum;
             }
         }        
@@ -486,13 +512,13 @@ public class GibsonLanniPSF implements PSF {
         // Construct the x-coordinates
         double[] mgridX = new double[this.sizeX];
         for (int x = 0; x < this.sizeX; x++) {
-            mgridX[x] = (x - 0.5 * (this.sizeX - 1)) * this.resLateral;
+            mgridX[x] = (x - 0.5 * (this.sizeX - 1)) * this.resPSF;
         }
         
         // Construct the y-coordinates
         double[] mgridY = new double[this.sizeY];
         for (int y = 0; y < this.sizeY; y++) {
-            mgridY[y] = (y - 0.5 * (this.sizeY - 1)) * this.resLateral;
+            mgridY[y] = (y - 0.5 * (this.sizeY - 1)) * this.resPSF;
         }
         
         stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, pixel));

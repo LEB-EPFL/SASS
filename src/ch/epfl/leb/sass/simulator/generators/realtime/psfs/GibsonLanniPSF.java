@@ -274,7 +274,7 @@ public class GibsonLanniPSF implements PSF {
                               double emitterY, double emitterZ) {
         double signature;
         this.pZ = emitterZ;
-        this.computeDigitalPSF(-5); // Compute the PSF; TODO: Allow stage displacement
+        this.computeDigitalPSF(-2.5); // Compute the PSF; TODO: Allow stage displacement
         for(Pixel pixel: pixels) {
             try {
                 signature = this.generatePixelSignature(
@@ -339,8 +339,8 @@ public class GibsonLanniPSF implements PSF {
         BesselJ bj1 = new BesselJ(1);
 
         for (int m = 0; m < this.numBasis; m++) {
-//			am = (3 * m + 1) * factor;
-                am = (3 * m + 1);
+		am = (3 * m + 1) * factor;
+//                am = (3 * m + 1);
                 for (int rhoi = 0; rhoi < this.numSamples; rhoi++) {
                         rho = rhoi * deltaRho;
                         Basis[rhoi][m] = bj0.value(am * rho);
@@ -371,7 +371,7 @@ public class GibsonLanniPSF implements PSF {
                 OPD += ti * Math.sqrt(this. ni * this.ni - rhoNA2) - this.ti0 * Math.sqrt(this.ni0 * this.ni0 - rhoNA2);
 
                 // OPD in the coverslip
-                OPD += this.tg * Math.sqrt(this.ng * this.ng - rhoNA2) * this.tg0 * Math.sqrt(this.ng0 * this.ng0 - rhoNA2);
+                OPD += this.tg * Math.sqrt(this.ng * this.ng - rhoNA2) - this.tg0 * Math.sqrt(this.ng0 * this.ng0 - rhoNA2);
 
                 W = k0 * OPD;
 

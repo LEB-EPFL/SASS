@@ -66,7 +66,7 @@ public class Gaussian3D implements PSF {
      * @param emitterX The emitter's x-position in fractions of a pixel.
      * @param emitterY The emitter's y-position in fractions of a pixel.
      * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored.
-     * @return The relative probability of a photon hitting this pixel.
+     * @return The probability of a photon hitting this pixel.
      * @throws org.apache.commons.math.MathException
      */
     @Override

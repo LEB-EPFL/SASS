@@ -17,14 +17,17 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.special.BesselJ;
+import org.apache.commons.math3.analysis.interpolation.PiecewiseBicubicSplineInterpolatingFunction;
 
 import ij.ImageStack;
 import ij.process.FloatProcessor;
+import java.util.ArrayList;
 
 /**
  * Computes an emitter PSF based on the Gibson-Lanni model.
@@ -38,7 +41,7 @@ import ij.process.FloatProcessor;
  * 
  * @author Kyle M. Douglass
  */
-public class GibsonLanniPSF { //TODO: impelements PSF
+public class GibsonLanniPSF implements PSF {
     
     /**
      * The number of rescaled Bessel functions to approximate the pupil.
@@ -150,9 +153,11 @@ public class GibsonLanniPSF { //TODO: impelements PSF
      */
     private final double MINWAVELENGTH = 0.436;
     
+    
     /**
-     * The array of x-positions.
+     * The spline representation of the PSF.
      */
+    private PiecewiseBicubicSplineInterpolatingFunction interpCDF;
     
     public static class Builder {
         
@@ -245,6 +250,58 @@ public class GibsonLanniPSF { //TODO: impelements PSF
         this.resLateral = builder.resLateral;
         this.resAxial = builder.resAxial;
         this.pZ = builder.pZ;
+    }
+    
+    /**
+     * Computes the relative probability of receiving a photon at pixel (pixelX, pixelY) from an emitter at
+     * (emitterX, emitterY, emitterZ).
+     * @param pixelX The pixel's x-position.
+     * @param pixelY The pixel's y-position.
+     * @param emitterX The emitter's x-position in fractions of a pixel.
+     * @param emitterY The emitter's y-position in fractions of a pixel.
+     * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored.
+     * @return The probability of a photon hitting this pixel.
+     */
+    @Override
+    public double generatePixelSignature(
+            int pixelX, 
+            int pixelY,
+            double emitterX,
+            double emitterY,
+            double emitterZ
+    ) {
+        return this.interpCDF.value((pixelX - emitterX + 0.5) * this.resLateral, (pixelY - emitterY + 0.5) * this.resLateral) +
+               this.interpCDF.value((pixelX - emitterX - 0.5) * this.resLateral, (pixelY - emitterY - 0.5) * this.resLateral) -
+               this.interpCDF.value((pixelX - emitterX + 0.5) * this.resLateral, (pixelY - emitterY - 0.5) * this.resLateral) -
+               this.interpCDF.value((pixelX - emitterX - 0.5) * this.resLateral, (pixelY - emitterY + 0.5) * this.resLateral);
+               
+    }
+    
+        /**
+     * Generates the digital signature (the PSF) of the emitter on its nearby pixels.
+     * 
+     * @param pixels The list of pixels spanned by the emitter's image.
+     * @param emitterX The emitter's x-position [pixels]
+     * @param emitterY The emitter's x-position [pixels]
+     * @param emitterZ The emitter's x-position [pixels]
+     */
+    @Override
+    public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
+                              double emitterY, double emitterZ) {
+        double signature;
+        this.pZ = emitterZ; // TODO FIX THIS!
+        this.computeDigitalPSF(0); // Compute the PSF
+        for(Pixel pixel: pixels) {
+            signature = this.generatePixelSignature(
+                    pixel.x, pixel.y, emitterX, emitterY, emitterZ);
+
+            pixel.setSignature(signature);
+        }
+    }
+    
+    @Override
+    public double getRadius() {
+        return 5;
     }
     
     /**
@@ -375,19 +432,11 @@ public class GibsonLanniPSF { //TODO: impelements PSF
 
         // Interpolate the PSF onto a 2D grid of physical coordinates
         double[] pixel = new double[this.sizeX * this.sizeY];
-        double[] mgridX = new double[this.sizeX * this.sizeY];
-        double[] mgridY = new double[this.sizeX * this.sizeY];
 
         for (int x = 0; x < this.sizeX; x++) {
             for (int y = 0; y < this.sizeY; y++) {
                 double rPixel = Math.sqrt((x - xp) * (x - xp) + (y - yp)
                                 * (y - yp));
-
-                // Save the x- and y-coordinates
-                mgridX[x + this.sizeX * y] = 
-                        (x - (this.sizeX - 1) * 0.5) * this.resLateral;
-                mgridY[x + this.sizeX * y] = 
-                        (y - (this.sizeY - 1) * 0.5) * this.resLateral;
 
                 // Find the index of the 
                 int index = (int) Math.floor(rPixel * this.oversampling);
@@ -434,17 +483,32 @@ public class GibsonLanniPSF { //TODO: impelements PSF
             }
         }        
         
-//        double[] slice = new double[this.sizeX * this.sizeY];
+        // Construct the x-coordinates
+        double[] mgridX = new double[this.sizeX];
+        for (int x = 0; x < this.sizeX; x++) {
+            mgridX[x] = (x - 0.5 * (this.sizeX - 1)) * this.resLateral;
+        }
         
-//        for (int x = 0; x < this.sizeX; x++) {
-//            for (int y = 0; y < this.sizeY; y++) {
-//
-//                double value = pixel[(x + this.sizeX * y)] / maxValue;
-//                slice[(x + this.sizeX * y)] = value;
-//            }
-//        }
+        // Construct the y-coordinates
+        double[] mgridY = new double[this.sizeY];
+        for (int y = 0; y < this.sizeY; y++) {
+            mgridY[y] = (y - 0.5 * (this.sizeY - 1)) * this.resLateral;
+        }
+        
         stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, pixel));
         stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, CDF));
+        
+        // Reshape CDF for interpolation
+        double[][] rCDF = new double[this.sizeY][this.sizeX];
+        for (int x = 0; x < this.sizeX; x++) {
+            for (int y = 0; y < this.sizeY; y++) {
+                rCDF[y][x] = CDF[x + y * this.sizeX];
+            }
+        }
+        
+        // Compute the interpolating spline for this PSF.
+        this.interpCDF = new PiecewiseBicubicSplineInterpolatingFunction(
+                mgridX, mgridY, rCDF);
         
         return stack;
     }

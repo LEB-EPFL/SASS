@@ -24,10 +24,13 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.special.BesselJ;
 import org.apache.commons.math3.analysis.interpolation.PiecewiseBicubicSplineInterpolatingFunction;
+import org.apache.commons.math3.exception.OutOfRangeException;
 
 import ij.ImageStack;
 import ij.process.FloatProcessor;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Computes an emitter PSF based on the Gibson-Lanni model.
@@ -54,7 +57,7 @@ public class GibsonLanniPSF implements PSF {
     private int numSamples = 1000;
     
     /**
-     * The oversampling ratio on the image space grid.
+     * The oversampling ratio on the image space grid when computing the radial PSF component.
      */
     private int oversampling = 2;
     
@@ -69,14 +72,6 @@ public class GibsonLanniPSF implements PSF {
     private int sizeY = 256;
     
     /**
-     * The size in z of the PSF array [pixels].
-     * 
-     * This value is fixed at one because only one axial plane needs to be
-     * evaluated.
-     */
-    private final int SIZEZ = 1;
-    
-    /**
      * Numerical aperture of the microscope.
      */
     private double NA = 1.4;
@@ -85,11 +80,6 @@ public class GibsonLanniPSF implements PSF {
      * The wavelength of light [microns].
      */
     private double wavelength = 0.610;
-    
-    /**
-     * The microscope magnification.
-     */
-    private double magnification = 100;
     
     /**
      * The refractive index of the sample.
@@ -145,11 +135,6 @@ public class GibsonLanniPSF implements PSF {
     private double resPSF = 0.02;
     
     /**
-     * The pixel size in the axial direction [microns].
-     */
-    private double resAxial = 0.25;
-    
-    /**
      * The emitter distance from the coverslip [microns].
      */
     private double pZ = 0;
@@ -177,7 +162,6 @@ public class GibsonLanniPSF implements PSF {
         private int sizeY;
         private double NA;
         private double wavelength;
-        private double magnification;
         private double ns;
         private double ng0;
         private double ng;
@@ -188,7 +172,6 @@ public class GibsonLanniPSF implements PSF {
         private double tg;
         private double resLateral;
         private double resPSF;
-        private double resAxial;
         private double pZ;
         
         public Builder numBasis(int numBasis) {
@@ -209,10 +192,6 @@ public class GibsonLanniPSF implements PSF {
         public Builder wavelength(double wavelength) {
             this.wavelength = wavelength; return this;
         }
-        public Builder magnification(double magnification) {
-            this.magnification = magnification;
-            return this;
-        }
         public Builder ns(double ns) {this.ns = ns; return this;}
         public Builder ng0(double ng0) {this.ng0 = ng0; return this;}
         public Builder ng(double ng) {this.ng = ng; return this;}
@@ -225,10 +204,6 @@ public class GibsonLanniPSF implements PSF {
             this.resLateral = resLateral; return this;
         }
         public Builder resPSF(double resPSF) { this.resPSF = resPSF; return this;}
-        public Builder resAxial(double resAxial) {
-            this.resAxial = resAxial;
-            return this;
-        }
         public Builder pZ(double pZ) {this.pZ = pZ; return this;}
         
         public GibsonLanniPSF build() {
@@ -248,7 +223,6 @@ public class GibsonLanniPSF implements PSF {
         this.sizeY = builder.sizeY;
         this.NA = builder.NA;
         this.wavelength = builder.wavelength;
-        this.magnification = builder.magnification;
         this.ns = builder.ns;
         this.ng0 = builder.ng0;
         this.ng = builder.ng;
@@ -259,7 +233,6 @@ public class GibsonLanniPSF implements PSF {
         this.tg = builder.tg;
         this.resLateral = builder.resLateral;
         this.resPSF = builder.resPSF;
-        this.resAxial = builder.resAxial;
         this.pZ = builder.pZ;
     }
     
@@ -285,7 +258,7 @@ public class GibsonLanniPSF implements PSF {
         return this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor) +
                this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY - 0.5) * scalingFactor) -
                this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor, (pixelY - emitterY - 0.5) * scalingFactor) -
-               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor);       
+               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor);
     }
     
         /**
@@ -301,10 +274,16 @@ public class GibsonLanniPSF implements PSF {
                               double emitterY, double emitterZ) {
         double signature;
         this.pZ = emitterZ;
-        this.computeDigitalPSF(-2); // Compute the PSF; TODO: Allow stage displacement
+        this.computeDigitalPSF(-5); // Compute the PSF; TODO: Allow stage displacement
         for(Pixel pixel: pixels) {
-            signature = this.generatePixelSignature(
-                    pixel.x, pixel.y, emitterX, emitterY, emitterZ);
+            try {
+                signature = this.generatePixelSignature(
+                        pixel.x, pixel.y, emitterX, emitterY, emitterZ);
+            } catch (org.apache.commons.math3.exception.OutOfRangeException ex) {
+                signature = 0.0;
+                Logger.getLogger(GibsonLanniPSF.class.getName())
+                      .log(Level.SEVERE, null, ex);
+            }
 
             pixel.setSignature(signature);
         }
@@ -313,16 +292,15 @@ public class GibsonLanniPSF implements PSF {
     /**
      * Computes the half-width of the PSF for determining which pixels contribute to the emitter signal.
      * 
-     * This number was empirically determined to give good performance over a
-     * range of positions that might observed in SMLM. Decreasing it can improve
-     * the speed of the simulations but will result in an artifical cropping of
-     * the PSF's lateral extent.
+     * This number is based on the greatest horizontal or vertical extent of the
+     * grid that the PSF is computed on.
      * 
      * @return The width of the PSF.
      */
     @Override
     public double getRadius() {
-        return 7;
+        double minSize = (double) Math.min(this.sizeX, this.sizeY) / 2;
+        return this.resPSF / this.resLateral * minSize - 1;
     }
     
     /**
@@ -342,7 +320,7 @@ public class GibsonLanniPSF implements PSF {
         int maxRadius = (int) Math.round(Math.sqrt((this.sizeX - x0)
                         * (this.sizeX - x0) + (this.sizeY - y0) * (this.sizeY - y0))) + 1;
         double[] r = new double[maxRadius * this.oversampling];
-        double[][] h = new double[this.SIZEZ][r.length];
+        double[] h = new double[r.length];
 
         double a = 0.0D;
         double b = Math.min(1.0D, this.ns / this.NA);
@@ -375,34 +353,30 @@ public class GibsonLanniPSF implements PSF {
         double OPD = 0;
         double W = 0;
 
-        double[][] Coef = new double[this.SIZEZ][this.numBasis * 2];
-        double[][] Ffun = new double[this.numSamples][this.SIZEZ * 2];
+        double[][] Coef = new double[1][this.numBasis * 2];
+        double[][] Ffun = new double[this.numSamples][2];
 
         // Oil thickness.
         ti = (this.ti0 + z);
-
+        double sqNA = this.NA * this.NA;
+        double rhoNA2;
         for (int rhoi = 0; rhoi < this.numSamples; rhoi++) {
                 rho = rhoi * deltaRho;
-                OPD = this.ns
-                                * this.pZ
-                                * Math.sqrt(1.0D - this.NA * rho / this.ns
-                                                * (this.NA * rho / this.ns));
-                OPD = OPD
-                                + this.ng
-                                * (this.tg - this.tg0)
-                                * Math.sqrt(1.0D - this.NA * rho / this.ng
-                                                * (this.NA * rho / this.ng));
+                rhoNA2 = rho * rho * sqNA;
+                
+                // OPD in the sample
+                OPD = this.pZ * Math.sqrt(this.ns * this.ns - rhoNA2);
+                
+                // OPD in the immersion medium
+                OPD += ti * Math.sqrt(this. ni * this.ni - rhoNA2) - this.ti0 * Math.sqrt(this.ni0 * this.ni0 - rhoNA2);
 
-                OPD = OPD
-                                + this.ni
-                                * (ti - this.ti0)
-                                * Math.sqrt(1.0D - this.NA * rho / this.ni
-                                                * (this.NA * rho / this.ni));
+                // OPD in the coverslip
+                OPD += this.tg * Math.sqrt(this.ng * this.ng - rhoNA2) * this.tg0 * Math.sqrt(this.ng0 * this.ng0 - rhoNA2);
 
                 W = k0 * OPD;
 
                 Ffun[rhoi][0] = Math.cos(W);
-                Ffun[rhoi][this.SIZEZ] = Math.sin(W);
+                Ffun[rhoi][1] = Math.sin(W);
         }
         
 
@@ -446,10 +420,10 @@ public class GibsonLanniPSF implements PSF {
                 double imgh = 0.0D;
                 for (int m = 0; m < this.numBasis; m++) {
                         realh = realh + RM[m][n] * Coef[m][0];
-                        imgh = imgh + RM[m][n] * Coef[m][this.SIZEZ];
+                        imgh = imgh + RM[m][n] * Coef[m][1];
 
                 }
-                h[0][n] = realh * realh + imgh * imgh;
+                h[n] = realh * realh + imgh * imgh;
         }
 
         // Interpolate the PSF onto a 2D grid of physical coordinates
@@ -467,8 +441,8 @@ public class GibsonLanniPSF implements PSF {
                 // Perform a linear interpolation from h onto the current point.
                 // (1 / this.oversampling) is the distance between samples in
                 // the h array in units of pixels in the final output array.
-                double value = h[0][index]
-                                + (h[0][(index + 1)] - h[0][index])
+                double value = h[index]
+                                + (h[(index + 1)] - h[index])
                                 * (rPixel - r[index]) * this.oversampling;
                 pixel[(x + this.sizeX * y)] = value;
             }

@@ -47,8 +47,10 @@ Laser laser = new Laser(0.0, // start
 
 // Create a 3D Gaussian point-spread function. The numerical aperture
 // is needed to compute the PSF's Rayleigh range.
-double fwhm = camera.fwhm_digital; // From the Airy disk
-Gaussian3D gauss3D = new Gaussian3D(fwhm, camera.NA);
+Gaussian3D.Builder builder = new Gaussian3D.Builder();
+builder.FWHM(camera.fwhm_digital); // From the Airy disk
+builder.NA(camera.NA);
+Gaussian3D gauss3D = builder.build();
 
 // generate emitters 
 ArrayList emitters = FluorophoreGenerator.generateFluorophoresRandom3D(

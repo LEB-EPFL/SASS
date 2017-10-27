@@ -20,6 +20,14 @@ package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 /**
  * Defines the Builder interface for constructing PSFs.
  * 
+ * Passing Builders instances, rather than PSF instances, to the simulation
+ * allows the PSF to be constructed at different times during the simulation.
+ * For example, one might set basic parameters like the wavelength in the
+ * beginning of the simulation and set the emitter's z-position immediately
+ * before a frame is computed. This means the simulation can dynamically create
+ * new PSF instances in response to changing simulation parameters.
+ * 
+ * 
  * @author Kyle M. Douglass
  */
 public interface PSFBuilder {

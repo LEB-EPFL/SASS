@@ -154,7 +154,6 @@ public class GibsonLanniPSF implements PSF {
      */
     private final double MINWAVELENGTH = 0.436;
     
-    
     /**
      * The spline representation of the PSF.
      */

@@ -106,7 +106,7 @@ for (i=0;i<10000;i++) {
 }
 
 // save and show; uncomment these lines to save and display stack
-generator.saveStack(new File("generated_stack.tif"));
+//generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

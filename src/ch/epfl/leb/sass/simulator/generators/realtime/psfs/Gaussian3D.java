@@ -37,7 +37,7 @@ import org.apache.commons.math.special.Erf;
 public class Gaussian3D implements PSF {
     
     /**
-     * The FWHM of the in-focus Gaussian PSF.
+     * The FWHM of the in-focus Gaussian PSF. [pixels]
      */
     private double FWHM;
     
@@ -49,13 +49,33 @@ public class Gaussian3D implements PSF {
     private double numericalAperture;
     
     /**
-     * Creates an instance of the two-dimensional Gaussian PSF class with a given full width half maximum.
-     * @param fwhm The full width half maximum of the Gaussian at its waist.
-     *        [pixels]
+     * The builder for constructing Gaussian2D instances.
      */
-    public Gaussian3D(double fwhm, double numericalAperture) {
-        this.FWHM = fwhm;
-        this.numericalAperture = numericalAperture;
+    public static class Builder implements PSFBuilder {
+        
+        // Properties of the 3D Gaussian PSF model
+        private double FWHM;
+        private double numericalAperture;
+        
+        public Builder FWHM(double fwhm) {this.FWHM = fwhm; return this;}
+        public Builder NA(double NA) {this.numericalAperture = NA; return this;}
+        
+        @Override
+        public Gaussian3D build() {
+            return new Gaussian3D(this);
+        }
+    }
+    
+    /**
+     * Creates an instance of the two-dimensional Gaussian PSF class with a given full width half maximum.
+     * 
+     * Creation of the instance is possible only through the Builder.
+     * 
+     * @param builder A Gaussian3D.Builder for constructing the PSF.
+     */
+    private Gaussian3D(Builder builder) {
+        this.FWHM = builder.FWHM;
+        this.numericalAperture = builder.numericalAperture;
     }
     
     /**

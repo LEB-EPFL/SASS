@@ -268,10 +268,14 @@ public class GibsonLanniPSF implements PSF {
             double emitterZ
     ) {
         double scalingFactor = this.resLateral;
-        return this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor) +
-               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY - 0.5) * scalingFactor) -
-               this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor, (pixelY - emitterY - 0.5) * scalingFactor) -
-               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor, (pixelY - emitterY + 0.5) * scalingFactor);
+        return this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor,
+                                    (pixelY - emitterY + 0.5) * scalingFactor) +
+               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor,
+                                    (pixelY - emitterY - 0.5) * scalingFactor) -
+               this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor,
+                                    (pixelY - emitterY - 0.5) * scalingFactor) -
+               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor,
+                                    (pixelY - emitterY + 0.5) * scalingFactor);
     }
     
         /**

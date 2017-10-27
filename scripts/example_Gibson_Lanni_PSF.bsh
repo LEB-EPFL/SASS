@@ -54,7 +54,6 @@ int sizeX = 1024;
 int sizeY = 1024;
 double NA = 1.3;
 double wavelength    = 0.600;
-double magnification = 60;
 double ns  = 1.33;
 double ng0 = 1.5;
 double ng  = 1.5;
@@ -64,22 +63,26 @@ double ti0 = 150;
 double tg0 = 170;
 double tg  = 170;
 double resLateral = 0.1075;
-double resPSF = 0.00215;
+double resPSF = 0.0215;
+
+// A negative displacement means to move the stage down in an
+// inverted microscope.
+double stageDisplacement = -2; 
         
 GibsonLanniPSF.Builder builder = new GibsonLanniPSF.Builder();
 builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
        .sizeY(sizeY).NA(NA).wavelength(wavelength).ns(ns).ng0(ng0)
        .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
        .resLateral(resLateral).oversampling(oversampling)
-       .resPSF(resPSF);
+       .resPSF(resPSF).stageDisplacement(stageDisplacement);
 		
 GibsonLanniPSF psf = builder.build();
 
 // generate emitters
 ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid3D(
-        16, // spacing
+        8, // spacing
 	0,  // Lower bound on z (units are pixels)
-	5,  // Upper bound on z (units are pixels)
+	4,  // Upper bound on z (units are pixels)
 	camera,
 	psf,
 	fluo);
@@ -98,15 +101,15 @@ STORMsim generator = new STORMsim(device);
 generator.setControlSignal(0.03);
 
 // simulate frames
-for (i=0;i<10000;i++) {
-    if (i%1000==0) {
+for (i=0;i<1000;i++) {
+    if (i%200==0) {
 		System.out.println(i);
 	}
 	generator.getNextImage();
 }
 
 // save and show; uncomment these lines to save and display stack
-//generator.saveStack(new File("generated_stack.tif"));
+generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

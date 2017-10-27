@@ -140,6 +140,14 @@ public class GibsonLanniPSF implements PSF {
     private double pZ = 0;
     
     /**
+     * The displacement of the stage away from the surface of the coverslip.
+     * 
+     * Negative numbers correspond to moving the stage downwards, which, for an
+     * inverted microscope, moves the focal plane upwards through the sample.
+     */
+    private double stageDisplacement = 0;
+    
+    /**
      * Determines the scaling factor for the basis Bessel functions [microns].
      * See Li, J., Xue, F., & Blu, T. (2017). JOSA A, 34(6), 1029-1034 for more
      * information.
@@ -152,7 +160,7 @@ public class GibsonLanniPSF implements PSF {
      */
     private PiecewiseBicubicSplineInterpolatingFunction interpCDF;
     
-    public static class Builder {
+    public static class Builder implements PSFBuilder {
         
         // Properties of the Gibson-Lanni PSF model
         private int numBasis;
@@ -173,6 +181,7 @@ public class GibsonLanniPSF implements PSF {
         private double resLateral;
         private double resPSF;
         private double pZ;
+        private double stageDisplacement;
         
         public Builder numBasis(int numBasis) {
             this.numBasis = numBasis;
@@ -205,7 +214,11 @@ public class GibsonLanniPSF implements PSF {
         }
         public Builder resPSF(double resPSF) { this.resPSF = resPSF; return this;}
         public Builder pZ(double pZ) {this.pZ = pZ; return this;}
+        public Builder stageDisplacement(double stageDisplacement) {
+            this.stageDisplacement = stageDisplacement; return this;
+        }
         
+        @Override
         public GibsonLanniPSF build() {
             return new GibsonLanniPSF(this);
         }
@@ -234,6 +247,7 @@ public class GibsonLanniPSF implements PSF {
         this.resLateral = builder.resLateral;
         this.resPSF = builder.resPSF;
         this.pZ = builder.pZ;
+        this.stageDisplacement = builder.stageDisplacement;
     }
     
     /**
@@ -274,7 +288,7 @@ public class GibsonLanniPSF implements PSF {
                               double emitterY, double emitterZ) {
         double signature;
         this.pZ = emitterZ;
-        this.computeDigitalPSF(-2.5); // Compute the PSF; TODO: Allow stage displacement
+        this.computeDigitalPSF(this.stageDisplacement); // Compute the PSF
         for(Pixel pixel: pixels) {
             try {
                 signature = this.generatePixelSignature(
@@ -368,10 +382,12 @@ public class GibsonLanniPSF implements PSF {
                 OPD = this.pZ * Math.sqrt(this.ns * this.ns - rhoNA2);
                 
                 // OPD in the immersion medium
-                OPD += ti * Math.sqrt(this. ni * this.ni - rhoNA2) - this.ti0 * Math.sqrt(this.ni0 * this.ni0 - rhoNA2);
+                OPD += ti * Math.sqrt(this. ni * this.ni - rhoNA2) -
+                       this.ti0 * Math.sqrt(this.ni0 * this.ni0 - rhoNA2);
 
                 // OPD in the coverslip
-                OPD += this.tg * Math.sqrt(this.ng * this.ng - rhoNA2) - this.tg0 * Math.sqrt(this.ng0 * this.ng0 - rhoNA2);
+                OPD += this.tg * Math.sqrt(this.ng * this.ng - rhoNA2) -
+                       this.tg0 * Math.sqrt(this.ng0 * this.ng0 - rhoNA2);
 
                 W = k0 * OPD;
 

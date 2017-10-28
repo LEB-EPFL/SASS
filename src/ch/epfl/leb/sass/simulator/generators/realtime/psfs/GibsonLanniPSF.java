@@ -35,8 +35,8 @@ import java.util.logging.Logger;
 /**
  * Computes an emitter PSF based on the Gibson-Lanni model.
  * 
- * This algorithm was first described in Li, J., Xue, F., & Blu, T. (2017). Fast
- * and accurate three-dimensional point spread function computation for
+ * This algorithm was first described in Li, J., Xue, F., and Blu, T. (2017).
+ * Fast and accurate three-dimensional point spread function computation for
  * fluorescence microscopy. JOSA A, 34(6), 1029-1034.
  * 
  * The code is adapted from MicroscPSF-ImageJ by Jizhou Li:

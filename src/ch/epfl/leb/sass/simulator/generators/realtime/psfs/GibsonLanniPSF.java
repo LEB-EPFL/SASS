@@ -247,6 +247,10 @@ public class GibsonLanniPSF implements PSF {
         this.resPSF = builder.resPSF;
         this.pZ = builder.pZ;
         this.stageDisplacement = builder.stageDisplacement;
+        
+        // This is necessary to initialize interpCDF in case
+        // generatePixelSignature() is called before generateSignature()
+        this.computeDigitalPSF(this.stageDisplacement);
     }
     
     /**
@@ -290,6 +294,11 @@ public class GibsonLanniPSF implements PSF {
     public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
                               double emitterY, double emitterZ) {
         double signature;
+        
+        // Setting pZ and the spline interpolation mean that this instance is
+        // mutable. In the future, consider making it completely immutable by
+        // forcing pZ to be set only through the builder and by interpolating
+        // the PSF in z as well so that it's precomputed.
         this.pZ = emitterZ;
         this.computeDigitalPSF(this.stageDisplacement); // Compute the PSF
         for(Pixel pixel: pixels) {

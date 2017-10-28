@@ -17,9 +17,13 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
+import java.awt.geom.Point2D;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *  Tests for the GibsonLanniPSF class.
@@ -27,7 +31,7 @@ import static org.junit.Assert.*;
  * @author Kyle M. Douglass
  */
 public class GibsonLanniPSFTest {
-    private GibsonLanniPSF psf = null;
+    private GibsonLanniPSF psf;
     
     public GibsonLanniPSFTest() {
     }
@@ -71,6 +75,18 @@ public class GibsonLanniPSFTest {
      */
     @Test
     public void testGeneratePixelSignature() {
+        // True answers and precision
+        double groundTruth = 0.02800;
+        double delta = 0.0001;
+
+        // Find the relative probability of a photon hitting a pixel at (0,0)
+        // an emitter located at the pixel's center.
+        double signature = this.psf.generatePixelSignature(0, 0, 0, -1, 0);
+        assertEquals(groundTruth, signature, delta);
+        
+        groundTruth = 0.03726;
+        signature = this.psf.generatePixelSignature(1, 1, 1, 1, 0);
+        assertEquals(groundTruth, signature, delta);
     }
 
     /**
@@ -78,6 +94,41 @@ public class GibsonLanniPSFTest {
      */
     @Test
     public void testGenerateSignature() {
+        // Precision
+        double delta = 0.0001;
+
+        // Test point at (0,0)
+        Point2D point = new Point2D.Double();
+        
+         // Ground-truth array
+         // Note that the ground truth is not symmetric about the center pixel
+         // because of the finite sampling of the CDF; it becomes more symmetric
+         // the smaller resPSF is and the larger sizeX/Y are.
+        ArrayList<Pixel> groundTruth = new ArrayList();
+        groundTruth.add(new Pixel( 1,  1, 0.03726)); // ( 1,  1)
+        groundTruth.add(new Pixel( 2,  1, 0.02800)); // ( 2,  1)
+        groundTruth.add(new Pixel( 0,  1, 0.03078)); // ( 0,  1)
+        groundTruth.add(new Pixel( 1,  2, 0.02800)); // ( 1,  2)
+        groundTruth.add(new Pixel( 1,  0, 0.03078)); // ( 1,  0)
+        
+        // Generate the test array whose signature values will be computed
+        ArrayList<Pixel> pixels = new ArrayList();
+        pixels.add(new Pixel( 1,  1, 0.0)); // ( 1,  1)
+        pixels.add(new Pixel( 2,  1, 0.0)); // ( 2,  1)
+        pixels.add(new Pixel( 0,  1, 0.0)); // ( 0,  1)
+        pixels.add(new Pixel( 1,  2, 0.0)); // ( 1,  2)
+        pixels.add(new Pixel( 1,  0, 0.0)); // ( 1,  0)
+        
+        // Critical test occurs here
+        this.psf.generateSignature(pixels, 1, 1, 2);
+        
+        // Verify that the signatures in the pixel array match the ground truth
+        for (int ctr = 0; ctr < pixels.size(); ctr++)
+        {
+            assertEquals(groundTruth.get(ctr).getSignature(),
+                    pixels.get(ctr).getSignature(),
+                    delta);
+        }
     }
 
     /**
@@ -85,13 +136,7 @@ public class GibsonLanniPSFTest {
      */
     @Test
     public void testGetRadius() {
-    }
-
-    /**
-     * Test of computeDigitalPSF method, of class GibsonLanniPSF.
-     */
-    @Test
-    public void testComputeDigitalPSF() {
+        assertEquals(this.psf.getRadius(), 24.6, 0.1);
     }
     
 }

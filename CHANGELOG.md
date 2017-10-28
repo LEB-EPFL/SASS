@@ -1,11 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [v0.5.0]
+## [Unreleased]
 
 ### Added
 - There is now a `GibsonLanniPSF` for modeling realistic 3D PSF's and
-  that can account for imaging details such as sample, coverslip, and
+  that can account for details such as sample, coverslip, and
   immersion media refractive indexes and thicknesses.
 - A `PSFBuilder` interface was added to allow for a PSF to be built at
   various times during the simulation, rather than all at once. This

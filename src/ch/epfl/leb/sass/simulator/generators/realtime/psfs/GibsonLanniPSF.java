@@ -334,7 +334,7 @@ public class GibsonLanniPSF implements PSF {
      * 
      * @return An image stack of the PSF.
      **/
-    public ImageStack computeDigitalPSF(double z) {
+    private ImageStack computeDigitalPSF(double z) {
         double x0 = (this.sizeX - 1) / 2.0D;
         double y0 = (this.sizeY - 1) / 2.0D;
 

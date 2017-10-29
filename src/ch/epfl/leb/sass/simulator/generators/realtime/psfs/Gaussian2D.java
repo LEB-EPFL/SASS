@@ -35,11 +35,30 @@ public class Gaussian2D implements PSF {
     private double FWHM;
     
     /**
-     * Creates an instance of the two-dimensional Gaussian PSF class with a given full width half maximum.
-     * @param fwhm The full width half maximum of the Gaussian. [pixels]
+     * The builder for constructing Gaussian2D instances.
      */
-    public Gaussian2D(double fwhm) {
-        this.FWHM = fwhm;
+    public static class Builder implements PSFBuilder {
+        
+        // Properties of the 2D Gaussian PSF model
+        private double FWHM;
+        
+        public Builder FWHM(double fwhm) {this.FWHM = fwhm; return this;}
+        
+        @Override
+        public Gaussian2D build() {
+            return new Gaussian2D(this);
+        }
+    }
+    
+    /**
+     * Creates an instance of the two-dimensional Gaussian PSF class with a given full width half maximum.
+     * 
+     * Creation of the instance is possible only through the Builder.
+     * 
+     * @param builder A Gaussian2D.Builder for constructing the PSF.
+     */
+    private Gaussian2D(Builder builder) {
+        this.FWHM = builder.FWHM;
     }
     
     /**
@@ -50,7 +69,7 @@ public class Gaussian2D implements PSF {
      * @param emitterX The emitter's x-position in fractions of a pixel.
      * @param emitterY The emitter's y-position in fractions of a pixel.
      * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored.
-     * @return The relative probability of a photon hitting this pixel.
+     * @return The probability of a photon hitting this pixel.
      * @throws org.apache.commons.math.MathException
      */
     @Override

@@ -3,12 +3,13 @@
  * Ecole Polytechnique Federale de Lausanne.
  *
  * This script demonstrates how to randomly populate the field with
- * with a 3D distribution of fluorophores.
+ * with a 3D distribution of fluorophores whose images are computed
+ * according to the Gibson-Lanni PSF>
  *
  */
 
 import ch.epfl.leb.sass.simulator.generators.realtime.*;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian3D;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.GibsonLanniPSF;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import java.util.ArrayList;
 
@@ -16,8 +17,8 @@ RNG.setSeed(5);
 
 // *** Initalize generator from the ground up ***
 Camera camera = new Camera(
-		    32, //res_x
-                    32, //res_y
+		    64, //res_x
+                    64, //res_y
                     100, //acq_speed, 
                     1.6, //readout_noise, 
                     0.06, //dark_current, 
@@ -33,7 +34,7 @@ Camera camera = new Camera(
 // fluorophores: all properties in units per frame
 FluorophoreProperties fluo = new PalmProperties(
 		    2500, // photons per fluorophore
-                    50,   // background
+                    0,   // background
                     100,  //ka
                     0,    // kb
                     7.8/1.2/100.0, // kd1
@@ -45,20 +46,45 @@ Laser laser = new Laser(0.0, // start
         500.0, // max
         0.0); // min
 
-// Create a 3D Gaussian point-spread function. The numerical aperture
-// is needed to compute the PSF's Rayleigh range.
-Gaussian3D.Builder builder = new Gaussian3D.Builder();
-builder.FWHM(camera.fwhm_digital); // From the Airy disk
-builder.NA(camera.NA);
-Gaussian3D gauss3D = builder.build();
+// Create a Gibson-Lanni point spread function.
+int numBasis   = 100;
+int numSamples = 1000;
+int oversampling = 2;
+int sizeX = 1024;
+int sizeY = 1024;
+double NA = 1.3;
+double wavelength    = 0.600;
+double ns  = 1.33;
+double ng0 = 1.5;
+double ng  = 1.5;
+double ni0 = 1.5;
+double ni  = 1.5;
+double ti0 = 150;
+double tg0 = 170;
+double tg  = 170;
+double resLateral = 0.1075;
+double resPSF = 0.0215;
 
-// generate emitters 
-ArrayList emitters = FluorophoreGenerator.generateFluorophoresRandom3D(
-        100, // number of fluorophores
-	-10,  // Lower bound on z (units are pixels)
-	10,   // Upper bound on z (units are pixels)
+// A negative displacement means to move the stage down in an
+// inverted microscope.
+double stageDisplacement = -2; 
+        
+GibsonLanniPSF.Builder builder = new GibsonLanniPSF.Builder();
+builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
+       .sizeY(sizeY).NA(NA).wavelength(wavelength).ns(ns).ng0(ng0)
+       .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
+       .resLateral(resLateral).oversampling(oversampling)
+       .resPSF(resPSF).stageDisplacement(stageDisplacement);
+		
+GibsonLanniPSF psf = builder.build();
+
+// generate emitters
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid3D(
+        8, // spacing
+	0,  // Lower bound on z (units are pixels)
+	4,  // Upper bound on z (units are pixels)
 	camera,
-	gauss3D,
+	psf,
 	fluo);
 		
 // add a gold bead to the field of view at random location
@@ -75,15 +101,15 @@ STORMsim generator = new STORMsim(device);
 generator.setControlSignal(0.03);
 
 // simulate frames
-for (i=0;i<10000;i++) {
-    if (i%1000==0) {
+for (i=0;i<1000;i++) {
+    if (i%200==0) {
 		System.out.println(i);
 	}
 	generator.getNextImage();
 }
 
 // save and show; uncomment these lines to save and display stack
-//generator.saveStack(new File("generated_stack.tif"));
+generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

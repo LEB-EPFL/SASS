@@ -42,8 +42,9 @@ Laser laser = new Laser(
     0.0); // min
 
 // Create a 2D Gaussian point-spread function
-double fwhm = camera.fwhm_digital; // From the Airy disk
-Gaussian2D gauss2D = new Gaussian2D(fwhm);
+Gaussian2D.Builder builder = new Gaussian2D.Builder();
+builder.FWHM(camera.fwhm_digital); // From the Airy disk
+Gaussian2D gauss2D = builder.build();
 
 // generate emitters
 File csv_file = new File("label_pix_sass.csv");
@@ -57,12 +58,12 @@ STORMsim generator = new STORMsim(device);
 generator.setControlSignal(0.01);
 
 // simulate frames
-for (i=0;i<10000;i++) {
-    if (i%1000==0) {
+for (i=0;i<1000;i++) {
+    if (i%200==0) {
 		System.out.println(i);
 	}
 	generator.getNextImage();
 }
 
 // Save the stack
-generator.saveStack(new File("generated_stack.tif"));
+//generator.saveStack(new File("generated_stack.tif"));

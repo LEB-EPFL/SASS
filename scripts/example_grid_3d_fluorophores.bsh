@@ -47,8 +47,9 @@ Laser laser = new Laser(0.0, // start
         0.0); // min
 
 // Create a 2D Gaussian point-spread function
-double fwhm = camera.fwhm_digital; // From the Airy disk
-Gaussian3D gauss3D = new Gaussian3D(fwhm, camera.NA);
+Gaussian3D.Builder builder = new Gaussian3D.Builder();
+builder.FWHM(camera.fwhm_digital).NA(camera.NA); // From the Airy disk
+Gaussian3D gauss3D = builder.build();
 
 // generate emitters 
 ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid3D(

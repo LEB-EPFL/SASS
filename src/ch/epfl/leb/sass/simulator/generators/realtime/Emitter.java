@@ -133,6 +133,7 @@ public abstract class Emitter extends Point2D.Double  {
     public Emitter(double x, double y, double z, PSF psf) {
         super(x, y);
         this.z = z;
+        // TODO: Pass a PSF builder to the emitter and build the PSF here.
         this.psf = psf;
         this.poisson = RNG.getPoissonGenerator();
         this.camera = null;

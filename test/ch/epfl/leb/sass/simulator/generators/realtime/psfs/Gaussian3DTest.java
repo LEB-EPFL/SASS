@@ -36,7 +36,9 @@ public class Gaussian3DTest {
     
     @Before
     public void setUp() {
-        this.gauss3d = new Gaussian3D(fwhm, numericalAperture);
+        Gaussian3D.Builder builder = new Gaussian3D.Builder();
+        builder.FWHM(fwhm).NA(numericalAperture);
+        this.gauss3d = builder.build();
     }
 
     /**

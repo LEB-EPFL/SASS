@@ -32,11 +32,12 @@ Placing the .jar file in `FIJI/plugins/` folder (file MUST have an underscore in
  - `Plugins -> SASS -> Command Prompt` launches BeanShell console. Generated images can be analyzed immediately with FIJI.
 
 ## Acknowledgements
-SASS uses adapted code and algorithms under GPL from following projects:
- - [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes
- - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko
- 
+
+SASS uses adapted code and algorithms from the following projects:
+ - [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes (GPL)
+ - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko (GPL)
+ - [MicroscPSF-ImageJ](https://github.com/hijizhou/MicroscPSF-ImageJ) by Jizhou Li (MIT)
  
  Many thanks to Dr. Kyle M. Douglass for guidance during this project.
 
-[Releases]: https://github.com/MStefko/SASS/releases
+[Releases]: https://github.com/LEB-EPFL/SASS/releases

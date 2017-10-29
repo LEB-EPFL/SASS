@@ -35,7 +35,9 @@ public class Gaussian2DTest {
     @Before
     public void setUp() {
         double fwhm = 3;
-        this.gauss2d = new Gaussian2D(fwhm);
+        Gaussian2D.Builder builder = new Gaussian2D.Builder();
+        builder.FWHM(fwhm);
+        this.gauss2d = builder.build();
     }
 
     /**

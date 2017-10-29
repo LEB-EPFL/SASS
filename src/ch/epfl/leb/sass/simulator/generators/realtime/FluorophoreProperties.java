@@ -19,7 +19,7 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 
 /**
  * Abstract class that creating fluorophores with specific blinking dynamics.
@@ -53,5 +53,6 @@ public abstract class FluorophoreProperties {
     @Deprecated
     public abstract Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z);
     
-    public abstract Fluorophore newFluorophore(PSF psf, double x, double y, double z);
+    public abstract Fluorophore newFluorophore(
+            PSFBuilder psfBuilder, double x, double y, double z);
 }

@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ch.epfl.leb.sass.simulator.loggers.StateLogger;
 
@@ -66,6 +67,11 @@ public abstract class Emitter extends Point2D.Double  {
      * A copy of the position logger.
      */
     protected final PositionLogger positionLogger = PositionLogger.getInstance();
+    
+    /**
+     * A builder for creating/updating the emitter PSF.
+     */
+    protected PSFBuilder builder;
     
     /**
      * The PSF model that's created by the emitter.
@@ -128,13 +134,17 @@ public abstract class Emitter extends Point2D.Double  {
      * @param x x-position in image [pixels, with sub-pixel precision]
      * @param y y-position in image [pixels, with sub-pixel precision]
      * @param z z-position in image [pixels, with sub-pixel precision]
-     * @param psf The emitter's point spread function.
+     * @param psfBuilder Builder for creating the emitter's PSF.
      */
-    public Emitter(double x, double y, double z, PSF psf) {
+    public Emitter(double x, double y, double z, PSFBuilder psfBuilder) {
         super(x, y);
         this.z = z;
-        // TODO: Pass a PSF builder to the emitter and build the PSF here.
-        this.psf = psf;
+        this.builder = psfBuilder;
+        
+        // Calculate the PSF.
+        psfBuilder.eX(x).eY(y).eZ(z);
+        
+        this.psf = psfBuilder.build();
         this.poisson = RNG.getPoissonGenerator();
         this.camera = null;
         
@@ -143,7 +153,7 @@ public abstract class Emitter extends Point2D.Double  {
         this.pixel_list = this.getPixelsWithinRadius(this, this.psf.getRadius());
         
         // Compute the signature on each pixel created by this emitter
-        this.psf.generateSignature(this.pixel_list, this.x, this.y, this.z);
+        this.psf.generateSignature(this.pixel_list);
         
         // Increment the number of emitters and assign the id.
         this.numberOfEmitters += 1;

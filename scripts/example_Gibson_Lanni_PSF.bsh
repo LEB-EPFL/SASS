@@ -76,15 +76,13 @@ builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
        .resLateral(resLateral).oversampling(oversampling)
        .resPSF(resPSF).stageDisplacement(stageDisplacement);
 		
-GibsonLanniPSF psf = builder.build();
-
 // generate emitters
 ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid3D(
         8, // spacing
 	0,  // Lower bound on z (units are pixels)
 	4,  // Upper bound on z (units are pixels)
 	camera,
-	psf,
+	builder,
 	fluo);
 		
 // add a gold bead to the field of view at random location

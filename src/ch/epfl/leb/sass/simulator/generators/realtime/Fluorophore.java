@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.Random;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
 
 /**
@@ -89,8 +89,8 @@ public class Fluorophore extends Emitter {
      * @param y y-position in pixels
      * @param z z-position in pixels
      */
-    public Fluorophore(PSF psf, double signal, StateSystem state_system, int start_state, double x, double y, double z) {
-        super(x, y, z, psf);
+    public Fluorophore(PSFBuilder psfBuilder, double signal, StateSystem state_system, int start_state, double x, double y, double z) {
+        super(x, y, z, psfBuilder);
         this.state_system = state_system;
         this.signal = signal;
         this.current_state = start_state;

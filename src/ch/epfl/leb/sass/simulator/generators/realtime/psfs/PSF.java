@@ -33,25 +33,17 @@ public interface PSF {
      * 
      * @param pixelX The pixel's x-position.
      * @param pixelY The pixel's y-position.
-     * @param emitterX The emitter's x-position in fractions of a pixel.
-     * @param emitterY The emitter's y-position in fractions of a pixel.
-     * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored for 2D PSFs.
      * @return The relative probability of a photon hitting this pixel.
      * @throws org.apache.commons.math.MathException
      */
-    public double generatePixelSignature(int pixelX, int pixelY, double emitterX,
-                                    double emitterY, double emitterZ)
+    public double generatePixelSignature(int pixelX, int pixelY)
                   throws MathException;
     
     /**
      * Computes the digitized PSF across all pixels within the emitter's vicinity.
      * @param pixels The list of pixels spanned by the emitter's image.
-     * @param emitterX The emitter's x-position [pixels]
-     * @param emitterY The emitter's x-position [pixels]
-     * @param emitterZ The emitter's x-position [pixels]
      */
-    public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
-                              double emitterY, double emitterZ);
+    public void generateSignature(ArrayList<Pixel> pixels);
     
     /**
      * Returns the radius of the circle that fully encloses the PSF.

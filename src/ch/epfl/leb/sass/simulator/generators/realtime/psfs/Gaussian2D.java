@@ -21,7 +21,6 @@ import static java.lang.Math.sqrt;
 import java.util.ArrayList;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
-import ch.epfl.leb.sass.simulator.generators.realtime.Emitter;
 import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,8 +30,26 @@ import java.util.logging.Logger;
  * 
  * @author Kyle M. Douglass
  */
-public class Gaussian2D implements PSF {
+public final class Gaussian2D implements PSF {
+    /**
+     * The FWHM of the in-focus Gaussian PSF. [pixels]
+     */
     private double FWHM;
+    
+    /**
+     * The emitter's x-position [microns].
+     */
+    private double eX = 0;
+    
+    /**
+     * The emitter's y-position [microns].
+     */
+    private double eY = 0;
+    
+    /**
+     * The emitter distance from the coverslip [microns].
+     */
+    private double eZ = 0;
     
     /**
      * The builder for constructing Gaussian2D instances.
@@ -41,8 +58,20 @@ public class Gaussian2D implements PSF {
         
         // Properties of the 2D Gaussian PSF model
         private double FWHM;
+        private double eX;
+        private double eY;
+        private double eZ;
         
         public Builder FWHM(double fwhm) {this.FWHM = fwhm; return this;}
+        
+         @Override
+        public Builder eX(double eX) {this.eX = eX; return this;}
+        
+        @Override
+        public Builder eY(double eY) {this.eY = eY; return this;}
+        
+        @Override
+        public Builder eZ(double eZ) {this.eZ = eZ; return this;}
         
         @Override
         public Gaussian2D build() {
@@ -59,52 +88,45 @@ public class Gaussian2D implements PSF {
      */
     private Gaussian2D(Builder builder) {
         this.FWHM = builder.FWHM;
+        this.eX = builder.eX;
+        this.eY = builder.eY;
+        this.eZ = builder.eZ;
     }
     
     /**
-     * Computes the relative probability of receiving a photon at pixel (pixelX, pixelY) from an emitter at
+     * Computes the relative probability of receiving a photon at the pixel.
      * (emitterX, emitterY). The z-position of the emitter is ignored.
      * @param pixelX The pixel's x-position.
      * @param pixelY The pixel's y-position.
-     * @param emitterX The emitter's x-position in fractions of a pixel.
-     * @param emitterY The emitter's y-position in fractions of a pixel.
-     * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored.
+
      * @return The probability of a photon hitting this pixel.
      * @throws org.apache.commons.math.MathException
      */
     @Override
-    public double generatePixelSignature(
-            int pixelX, 
-            int pixelY,
-            double emitterX,
-            double emitterY,
-            double emitterZ
-    ) throws MathException {
+    public double generatePixelSignature(int pixelX, int pixelY)
+            throws MathException {
         final double sigma = this.FWHM / 2.3548;
         final double denom = sqrt(2.0)*sigma;
-        return 0.25 *(Erf.erf((pixelX - emitterX + 0.5)/denom) - 
-                      Erf.erf((pixelX - emitterX - 0.5)/denom)) *
-                     (Erf.erf((pixelY - emitterY + 0.5)/denom) -
-                      Erf.erf((pixelY - emitterY - 0.5)/denom));
+        return 0.25 *(Erf.erf((pixelX - this.eX + 0.5)/denom) - 
+                      Erf.erf((pixelX - this.eX - 0.5)/denom)) *
+                     (Erf.erf((pixelY - this.eY + 0.5)/denom) -
+                      Erf.erf((pixelY - this.eY - 0.5)/denom));
     }
     
     /**
-     * Generates the digital signature (the PSF) of the emitter its nearby pixels.
+     * Generates the digital signature of the emitter on its nearby pixels.
      * @param pixels The list of pixels spanned by the emitter's image.
-     * @param emitterX The emitter's x-position [pixels]
-     * @param emitterY The emitter's x-position [pixels]
-     * @param emitterZ The emitter's x-position [pixels]
      */
-    public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
-                              double emitterY, double emitterZ) {
+    public void generateSignature(ArrayList<Pixel> pixels) {
         double signature;
         for(Pixel pixel: pixels) {
             try {
                 signature = this.generatePixelSignature(
-                        pixel.x, pixel.y, emitterX, emitterY, emitterZ);
+                        pixel.x, pixel.y);
             } catch (MathException ex) {
                 signature = 0.0;
-                Logger.getLogger(Gaussian2D.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(
+                        Gaussian2D.class.getName()).log(Level.SEVERE, null, ex);
             }
             pixel.setSignature(signature);
         }

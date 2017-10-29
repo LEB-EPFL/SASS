@@ -30,7 +30,7 @@ import org.junit.Before;
  */
 public class Gaussian3DTest {
     
-   private Gaussian3D gauss3d = null;
+   private PSFBuilder builder;
    private final double fwhm = 3;
    private final double numericalAperture = 1.3;
     
@@ -38,7 +38,7 @@ public class Gaussian3DTest {
     public void setUp() {
         Gaussian3D.Builder builder = new Gaussian3D.Builder();
         builder.FWHM(fwhm).NA(numericalAperture);
-        this.gauss3d = builder.build();
+        this.builder = builder;
     }
 
     /**
@@ -46,13 +46,17 @@ public class Gaussian3DTest {
      */
     @Test
     public void testGeneratePixelSignatureInFocus() throws Exception {
+        PSF psf;
+        
         // True answer and precision
         double groundTruth = 0.0932;
         double delta = 0.0001;
         
         // Find the relative probability of a photon hitting a pixel at (0,0)
         // an emitter located at the pixel's center.
-        double signature = this.gauss3d.generatePixelSignature(0, 0, 0, 0, 0);
+        builder.eX(0).eY(0).eZ(0);
+        psf = builder.build();
+        double signature = psf.generatePixelSignature(0, 0);
         assertEquals(signature, groundTruth, delta);
         
         // Now test the signature for an emitter not centered on the pixel
@@ -61,7 +65,9 @@ public class Gaussian3DTest {
         
         // Find the relative probability of a photon hitting a pixel at (0,0)
         // from an emitter located -.4 pixels from the pixel's center in x and y
-        signature = this.gauss3d.generatePixelSignature(0, 0, -0.4, -0.4, 0);
+        builder.eX(-0.4).eY(-0.4).eZ(0);
+        psf = builder.build();
+        signature = psf.generatePixelSignature(0, 0);
         assertEquals(signature, groundTruth, delta);
     }
     
@@ -70,6 +76,8 @@ public class Gaussian3DTest {
      */
     @Test
     public void testGeneratePixelSignatureOutOfFocus() throws Exception {
+        PSF psf;
+        
         // True answer and precision
         double groundTruth = 0.0748;
         double delta = 0.0001;
@@ -77,7 +85,9 @@ public class Gaussian3DTest {
         
         // Find the relative probability of a photon hitting a pixel at (0,0)
         // from an emitter located at the pixel's center.
-        double signature = this.gauss3d.generatePixelSignature(0, 0, 0, 0, z);
+        builder.eX(0).eY(0).eZ(z);
+        psf = builder.build();
+        double signature = psf.generatePixelSignature(0, 0);
         assertEquals(signature, groundTruth, delta);
         
         // Now test the signature for an emitter not centered on the pixel
@@ -86,7 +96,9 @@ public class Gaussian3DTest {
         
         // Find the relative probability of a photon hitting a pixel at (0,0)
         // an emitter located -.4 pixels from the pixel's center in x and y
-        signature = this.gauss3d.generatePixelSignature(0, 0, -0.4, -0.4, z);
+        builder.eX(-0.4).eY(-0.4).eZ(z);
+        psf = builder.build();
+        signature = psf.generatePixelSignature(0, 0);
         assertEquals(signature, groundTruth, delta);
     }
     
@@ -95,6 +107,8 @@ public class Gaussian3DTest {
      */
     @Test
     public void testGetSignatureInFocus() {
+        PSF psf;
+        
         // Test point at (0,0)
         Point2D point = new Point2D.Double();
         
@@ -117,8 +131,11 @@ public class Gaussian3DTest {
         pixels.add(new Pixel( 0,  1, 0.0)); // ( 0,  1)
         pixels.add(new Pixel( 1,  0, 0.0)); // ( 1,  0)
         
+        builder.eX(0).eY(0).eZ(z);
+        psf = builder.build();
+        
         // Critical test occurs here
-        this.gauss3d.generateSignature(pixels, 0, 0, z);
+        psf.generateSignature(pixels);
         
         // Verify that the signatures in the pixel array match the ground truth
         for (int ctr = 0; ctr < pixels.size(); ctr++)
@@ -134,42 +151,12 @@ public class Gaussian3DTest {
      */
     @Test
     public void testGetRadius() {
+        PSF psf;
+        
+        builder.eX(0).eY(0).eZ(0);
+        psf = builder.build();
+        
         double actualRadius = 5 * 1.2740;
-        assertEquals(this.gauss3d.getRadius(), actualRadius, 0.0001);
-    }
-    
-    /**
-     * Test of getFWHM method, of class Gaussian2D.
-     */
-    @Test
-    public void testGetFWHM() {
-        assertEquals(this.gauss3d.getFWHM(), 3.0, 0.0001);
-    }
-
-    /**
-     * Test of setFWHM method, of class Gaussian2D.
-     */
-    @Test
-    public void testSetFWHM() {
-        this.gauss3d.setFWHM(5);
-        assertEquals(5, this.gauss3d.getFWHM(), 0.0001);
-    }
-    
-        /**
-     * Test of getFWHM method, of class Gaussian2D.
-     */
-    @Test
-    public void testGetNumericalAperture() {
-        assertEquals(this.gauss3d.getNumericalAperture(), numericalAperture, 0.0001);
-    }
-
-    /**
-     * Test of setFWHM method, of class Gaussian2D.
-     */
-    @Test
-    public void testSetNumericalAperture() {
-        this.gauss3d.setNumericalAperture(1.2);
-        assertEquals(1.2, this.gauss3d.getNumericalAperture(), 0.0001);
-    }
-    
+        assertEquals(psf.getRadius(), actualRadius, 0.0001);
+    }  
 }

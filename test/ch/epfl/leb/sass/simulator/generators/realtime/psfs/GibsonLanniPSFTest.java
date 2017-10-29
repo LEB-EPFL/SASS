@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * @author Kyle M. Douglass
  */
 public class GibsonLanniPSFTest {
-    private GibsonLanniPSF psf;
+    private GibsonLanniPSF.Builder builder;
     
     public GibsonLanniPSFTest() {
     }
@@ -58,16 +58,15 @@ public class GibsonLanniPSFTest {
         double tg  = 170;
         double resLateral = 0.1;
         double resPSF = 0.02;
-        double pZ = 2;
         double stageDisplacement = -2;
                 
         builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
                 .sizeY(sizeY).NA(NA).wavelength(wavelength).ns(ns).ng0(ng0)
                 .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
                 .resLateral(resLateral).oversampling(oversampling)
-                .resPSF(resPSF).stageDisplacement(stageDisplacement).pZ(pZ);
-		
-        this.psf = builder.build();
+                .resPSF(resPSF).stageDisplacement(stageDisplacement);
+	
+        this.builder = builder;
     }
 
     /**
@@ -75,17 +74,23 @@ public class GibsonLanniPSFTest {
      */
     @Test
     public void testGeneratePixelSignature() {
+        GibsonLanniPSF psf;
+
         // True answers and precision
         double groundTruth = 0.02800;
         double delta = 0.0001;
 
         // Find the relative probability of a photon hitting a pixel at (0,0)
-        // an emitter located at the pixel's center.
-        double signature = this.psf.generatePixelSignature(0, 0, 0, -1, 0);
+        // an emitter located one pixel away in y.=.
+        this.builder.eX(0).eY(-1).eZ(2);
+        psf = this.builder.build();
+        double signature = psf.generatePixelSignature(0, 0);
         assertEquals(groundTruth, signature, delta);
         
         groundTruth = 0.03726;
-        signature = this.psf.generatePixelSignature(1, 1, 1, 1, 0);
+        this.builder.eX(1).eY(1).eZ(2);
+        psf = this.builder.build();
+        signature = psf.generatePixelSignature(1, 1);
         assertEquals(groundTruth, signature, delta);
     }
 
@@ -94,6 +99,8 @@ public class GibsonLanniPSFTest {
      */
     @Test
     public void testGenerateSignature() {
+        PSF psf;
+
         // Precision
         double delta = 0.0001;
 
@@ -119,8 +126,11 @@ public class GibsonLanniPSFTest {
         pixels.add(new Pixel( 1,  2, 0.0)); // ( 1,  2)
         pixels.add(new Pixel( 1,  0, 0.0)); // ( 1,  0)
         
+        this.builder.eX(1).eY(1).eZ(2);
+        psf = builder.build();
+        
         // Critical test occurs here
-        this.psf.generateSignature(pixels, 1, 1, 2);
+        psf.generateSignature(pixels);
         
         // Verify that the signatures in the pixel array match the ground truth
         for (int ctr = 0; ctr < pixels.size(); ctr++)
@@ -136,7 +146,10 @@ public class GibsonLanniPSFTest {
      */
     @Test
     public void testGetRadius() {
-        assertEquals(this.psf.getRadius(), 24.6, 0.1);
+        PSF psf;
+        this.builder.eZ(2);
+        psf = builder.build();
+        assertEquals(psf.getRadius(), 24.6, 0.1);
     }
     
 }

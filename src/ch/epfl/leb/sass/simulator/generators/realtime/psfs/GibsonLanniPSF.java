@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  * 
  * @author Kyle M. Douglass
  */
-public class GibsonLanniPSF implements PSF {
+public final class GibsonLanniPSF implements PSF {
     
     /**
      * The number of rescaled Bessel functions to approximate the pupil.
@@ -135,9 +135,19 @@ public class GibsonLanniPSF implements PSF {
     private double resPSF = 0.02;
     
     /**
+     * The emitter's x-position [pixels].
+     */
+    private double eX = 0;
+    
+    /**
+     * The emitter's y-position [pixels].
+     */
+    private double eY = 0;
+    
+    /**
      * The emitter distance from the coverslip [microns].
      */
-    private double pZ = 0;
+    private double eZ = 0;
     
     /**
      * The displacement of the stage away from the surface of the coverslip.
@@ -179,7 +189,9 @@ public class GibsonLanniPSF implements PSF {
         private double tg;
         private double resLateral;
         private double resPSF;
-        private double pZ;
+        private double eX;
+        private double eY;
+        private double eZ;
         private double stageDisplacement;
         
         public Builder numBasis(int numBasis) {
@@ -211,11 +223,22 @@ public class GibsonLanniPSF implements PSF {
         public Builder resLateral(double resLateral) {
             this.resLateral = resLateral; return this;
         }
-        public Builder resPSF(double resPSF) { this.resPSF = resPSF; return this;}
-        public Builder pZ(double pZ) {this.pZ = pZ; return this;}
+        public Builder resPSF(double resPSF) { 
+            this.resPSF = resPSF;
+            return this;
+        }
         public Builder stageDisplacement(double stageDisplacement) {
             this.stageDisplacement = stageDisplacement; return this;
         }
+        
+        @Override
+        public Builder eX(double eX) {this.eX = eX; return this;}
+        
+        @Override
+        public Builder eY(double eY) {this.eY = eY; return this;}
+        
+        @Override
+        public Builder eZ(double eZ) {this.eZ = eZ; return this;}
         
         @Override
         public GibsonLanniPSF build() {
@@ -245,11 +268,12 @@ public class GibsonLanniPSF implements PSF {
         this.tg = builder.tg;
         this.resLateral = builder.resLateral;
         this.resPSF = builder.resPSF;
-        this.pZ = builder.pZ;
+        this.eX = builder.eX;
+        this.eY = builder.eY;
+        this.eZ = builder.eZ;
         this.stageDisplacement = builder.stageDisplacement;
         
-        // This is necessary to initialize interpCDF in case
-        // generatePixelSignature() is called before generateSignature()
+        // Compute the signature for this PSF.
         this.computeDigitalPSF(this.stageDisplacement);
     }
     
@@ -258,53 +282,34 @@ public class GibsonLanniPSF implements PSF {
      * (emitterX, emitterY, emitterZ).
      * @param pixelX The pixel's x-position.
      * @param pixelY The pixel's y-position.
-     * @param emitterX The emitter's x-position in fractions of a pixel.
-     * @param emitterY The emitter's y-position in fractions of a pixel.
-     * @param emitterZ The emitter's z-position in fractions of a pixel. This is ignored.
      * @return The probability of a photon hitting this pixel.
      */
     @Override
-    public double generatePixelSignature(
-            int pixelX, 
-            int pixelY,
-            double emitterX,
-            double emitterY,
-            double emitterZ
-    ) {
+    public double generatePixelSignature(int pixelX, int pixelY) {
         double scalingFactor = this.resLateral;
-        return this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor,
-                                    (pixelY - emitterY + 0.5) * scalingFactor) +
-               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor,
-                                    (pixelY - emitterY - 0.5) * scalingFactor) -
-               this.interpCDF.value((pixelX - emitterX + 0.5) * scalingFactor,
-                                    (pixelY - emitterY - 0.5) * scalingFactor) -
-               this.interpCDF.value((pixelX - emitterX - 0.5) * scalingFactor,
-                                    (pixelY - emitterY + 0.5) * scalingFactor);
+        return this.interpCDF.value((pixelX - this.eX + 0.5) * scalingFactor,
+                                    (pixelY - this.eY + 0.5) * scalingFactor) +
+               this.interpCDF.value((pixelX - this.eX - 0.5) * scalingFactor,
+                                    (pixelY - this.eY - 0.5) * scalingFactor) -
+               this.interpCDF.value((pixelX - this.eX + 0.5) * scalingFactor,
+                                    (pixelY - this.eY - 0.5) * scalingFactor) -
+               this.interpCDF.value((pixelX - this.eX - 0.5) * scalingFactor,
+                                    (pixelY - this.eY + 0.5) * scalingFactor);
     }
     
         /**
      * Generates the digital signature (the PSF) of the emitter on its nearby pixels.
      * 
      * @param pixels The list of pixels spanned by the emitter's image.
-     * @param emitterX The emitter's x-position [pixels]
-     * @param emitterY The emitter's x-position [pixels]
-     * @param emitterZ The emitter's x-position [pixels]
      */
     @Override
-    public void generateSignature(ArrayList<Pixel> pixels, double emitterX,
-                              double emitterY, double emitterZ) {
+    public void generateSignature(ArrayList<Pixel> pixels) {
         double signature;
         
-        // Setting pZ and the spline interpolation mean that this instance is
-        // mutable. In the future, consider making it completely immutable by
-        // forcing pZ to be set only through the builder and by interpolating
-        // the PSF in z as well so that it's precomputed.
-        this.pZ = emitterZ;
         this.computeDigitalPSF(this.stageDisplacement); // Compute the PSF
         for(Pixel pixel: pixels) {
             try {
-                signature = this.generatePixelSignature(
-                        pixel.x, pixel.y, emitterX, emitterY, emitterZ);
+                signature = this.generatePixelSignature(pixel.x, pixel.y);
             } catch (org.apache.commons.math3.exception.OutOfRangeException ex) {
                 signature = 0.0;
                 Logger.getLogger(GibsonLanniPSF.class.getName())
@@ -391,7 +396,7 @@ public class GibsonLanniPSF implements PSF {
                 rhoNA2 = rho * rho * sqNA;
                 
                 // OPD in the sample
-                OPD = this.pZ * Math.sqrt(this.ns * this.ns - rhoNA2);
+                OPD = this.eZ * Math.sqrt(this.ns * this.ns - rhoNA2);
                 
                 // OPD in the immersion medium
                 OPD += ti * Math.sqrt(this. ni * this.ni - rhoNA2) -

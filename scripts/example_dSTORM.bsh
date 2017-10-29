@@ -49,14 +49,13 @@ Laser laser = new Laser(
 // Create a 2D Gaussian point-spread function
 Gaussian2D.Builder builder = new Gaussian2D.Builder();
 builder.FWHM(camera.fwhm_digital); // From the Airy disk
-Gaussian2D gauss2D = builder.build();
 
 // generate emitters 
 // create a grid
 ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid2D(
     10,// spacing in px
     camera,
-    gauss2D,
+    builder,
     fluo);
 
 // add a gold bead to the field of view at random location

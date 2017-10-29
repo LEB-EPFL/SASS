@@ -108,8 +108,8 @@ public abstract class Emitter extends Point2D.Double  {
      * @param x x-position in image [pixels, with sub-pixel precision]
      * @param y y-position in image [pixels, with sub-pixel precision]
      * @deprecated Camera instances are being decoupled from Emitter. Use the
-     *           {@link #Emitter(double, double, double, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF) } constructor
-     *           instead.
+     *             {@link #Emitter(double, double, double, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder) }
+     *             instead.
      */
     @Deprecated
     public Emitter(Camera camera, double x, double y) {

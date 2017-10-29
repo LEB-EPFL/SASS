@@ -62,7 +62,8 @@ public class Fluorophore extends Emitter {
      * @param start_state Initial state number
      * @param x x-position in pixels
      * @param y y-position in pixels
-     * @deprecated Use {@link #Fluorophore(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, double, ch.epfl.leb.sass.simulator.generators.realtime.StateSystem, int, double, double, double) instead.}
+     * @deprecated Use {@link #Fluorophore(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, double, ch.epfl.leb.sass.simulator.generators.realtime.StateSystem, int, double, double, double) }
+     *             instead.
      */
     @Deprecated
     public Fluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y) {
@@ -81,7 +82,7 @@ public class Fluorophore extends Emitter {
     
      /**
      * Initialize fluorophore and calculate its pattern on camera
-     * @param psf The image of the fluorophore on the camera
+     * @param psfBuilder The Builder for calculating microscope PSFs.
      * @param signal Number of photons per frame.
      * @param state_system Internal state system for this fluorophore
      * @param start_state Initial state number

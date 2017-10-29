@@ -41,21 +41,21 @@ public interface PSFBuilder {
     /**
      * Sets the emitter's x-position.
      * 
-     * @param x The emitter's x-position. [pixels]
+     * @param eX The emitter's x-position. [pixels]
      */
     public PSFBuilder eX(double eX);
     
     /**
      * Sets the emitter's y-position.
      * 
-     * @param y The emitter's y-position. [pixels]
+     * @param eY The emitter's y-position. [pixels]
      */
     public PSFBuilder eY(double eY);
     
     /**
      * Sets the emitter's z-position.
      * 
-     * @param z The emitter's z-position. [pixels]
+     * @param eZ The emitter's z-position. [pixels]
      */
     public PSFBuilder eZ(double eZ);
 }

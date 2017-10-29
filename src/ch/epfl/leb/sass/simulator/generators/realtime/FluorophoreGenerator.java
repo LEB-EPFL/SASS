@@ -49,8 +49,8 @@ public class FluorophoreGenerator {
      * @param cam camera properties
      * @param fluo fluorophore properties
      * @return
-     * @deprecated Use {@link #generateFluorophoresRandom2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
-     *           instead.
+     * @deprecated Use {@link #generateFluorophoresRandom2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties)  }
+     *             instead.
      */
     @Deprecated
     public static ArrayList<Fluorophore> generateFluorophoresRandom(int n_fluos, Camera cam, FluorophoreProperties fluo) {
@@ -130,8 +130,8 @@ public class FluorophoreGenerator {
      * @param cam Camera
      * @param fluo type of fluorophore
      * @return The list of fluorophores.
-     * @deprecated Use {@link #generateFluorophoresGrid2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
-     *           instead.
+     * @deprecated Use {@link #generateFluorophoresGrid2D(int, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties)  }
+     *             instead.
      */
     @Deprecated
     public static ArrayList<Fluorophore> generateFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
@@ -179,8 +179,8 @@ public class FluorophoreGenerator {
      * @param cam
      * @param fluo
      * @return
-     * @deprecated Use {@link #generateFluorophoresGrid3D(int, double, double, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties) }
-     *           instead.
+     * @deprecated Use {@link #generateFluorophoresGrid3D(int, double, double, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties)  }
+     *             instead.
      */
     @Deprecated
     public static ArrayList<Fluorophore3D> generate3DFluorophoresGrid(int spacing, Camera cam, FluorophoreProperties fluo) {
@@ -241,8 +241,8 @@ public class FluorophoreGenerator {
      * @return list of fluorophores
      * @throws FileNotFoundException
      * @throws IOException
-     * @deprecated Use {@link #generateFluorophoresFromCSV(java.io.File, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties, boolean) }
-     *           instead.
+     * @deprecated Use {@link #generateFluorophoresFromCSV(java.io.File, ch.epfl.leb.sass.simulator.generators.realtime.Camera, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties, boolean) }
+     *             instead.
      */
     @Deprecated
     public static ArrayList<Fluorophore> parseFluorophoresFromCsv(File file, Camera camera, FluorophoreProperties fluo, boolean rescale) throws FileNotFoundException, IOException {

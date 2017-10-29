@@ -37,4 +37,25 @@ public interface PSFBuilder {
      * @return The PSF model.
      */
     public PSF build();
+    
+    /**
+     * Sets the emitter's x-position.
+     * 
+     * @param eX The emitter's x-position. [pixels]
+     */
+    public PSFBuilder eX(double eX);
+    
+    /**
+     * Sets the emitter's y-position.
+     * 
+     * @param eY The emitter's y-position. [pixels]
+     */
+    public PSFBuilder eY(double eY);
+    
+    /**
+     * Sets the emitter's z-position.
+     * 
+     * @param eZ The emitter's z-position. [pixels]
+     */
+    public PSFBuilder eZ(double eZ);
 }

@@ -25,7 +25,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore3D;
 import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
 import ch.epfl.leb.sass.simulator.generators.realtime.MovingFluorophore;
 import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -120,8 +120,13 @@ public class SimpleProperties extends FluorophoreProperties {
     }
     
     @Override
-    public Fluorophore newFluorophore(PSF psf, double x, double y, double z) {
+    public Fluorophore newFluorophore(
+            PSFBuilder psfBuilder,
+            double x,
+            double y,
+            double z) {
         int startingState = 1; // Fluorophores start in the dark state
-        return new Fluorophore(psf, signal, state_system, startingState, x, y, z);
+        return new Fluorophore(
+                psfBuilder, signal, state_system, startingState, x, y, z);
     }
 }

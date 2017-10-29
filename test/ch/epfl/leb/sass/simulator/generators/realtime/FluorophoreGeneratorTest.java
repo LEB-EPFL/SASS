@@ -19,16 +19,13 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.ArrayList;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian3D;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
 import static org.mockito.Mockito.*;
 
 import java.awt.geom.Point2D;
-
-
 
 /**
  *
@@ -37,7 +34,7 @@ import java.awt.geom.Point2D;
 public class FluorophoreGeneratorTest {
     
     private Camera dummyCamera = null;
-    private PSF dummyPSF = null;
+    private PSFBuilder testPSFBuilder = null;
     private FluorophoreGenerator fluorGen = new FluorophoreGenerator();
     
     // Mocking FluorophoreProperties proved a bit difficult, so I chose the
@@ -45,13 +42,8 @@ public class FluorophoreGeneratorTest {
     private FluorophoreProperties fluorProp = new SimpleProperties(2500, 50, 3, 100, 1000);
     
     public FluorophoreGeneratorTest() {
-        this.dummyCamera    = mock(Camera.class);
-        this.dummyPSF       = mock(Gaussian3D.class);
-    }
-
-    @Before
-    public void setUp () {
-        
+        this.dummyCamera     = mock(Camera.class);
+        this.testPSFBuilder = new Gaussian3D.Builder();
     }
     
     /**
@@ -75,7 +67,7 @@ public class FluorophoreGeneratorTest {
                 zLow,
                 zHigh,
                 dummyCamera,
-                dummyPSF,
+                testPSFBuilder,
                 this.fluorProp);
 
         // There are ((32/4) - 1)^2 fluorophores

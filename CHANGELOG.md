@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file.
   various times during the simulation, rather than all at once. This
   addition is necessary to account for axial stage positions that
   might change during the simulation.
+
+### Changed
+- PSF instances are now immutable.
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]

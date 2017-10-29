@@ -44,11 +44,15 @@ Laser laser = new Laser(
 // Create a 2D Gaussian point-spread function
 Gaussian2D.Builder builder = new Gaussian2D.Builder();
 builder.FWHM(camera.fwhm_digital); // From the Airy disk
-Gaussian2D gauss2D = builder.build();
 
 // generate emitters
 File csv_file = new File("label_pix_sass.csv");
-ArrayList emitters = FluorophoreGenerator.generateFluorophoresFromCSV(csv_file, camera, gauss2D, fluo, false);
+ArrayList emitters = FluorophoreGenerator.generateFluorophoresFromCSV(
+    csv_file,
+    camera,
+    builder,
+    fluo,
+    false);
 
 // assemble the device and generator
 Device device = new Device(camera, fluo, laser, emitters, null);

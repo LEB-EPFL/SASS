@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import java.util.Random;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
 
 /**
@@ -62,7 +62,8 @@ public class Fluorophore extends Emitter {
      * @param start_state Initial state number
      * @param x x-position in pixels
      * @param y y-position in pixels
-     * @deprecated Use {@link #Fluorophore(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF, double, ch.epfl.leb.sass.simulator.generators.realtime.StateSystem, int, double, double, double) instead.}
+     * @deprecated Use {@link #Fluorophore(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, double, ch.epfl.leb.sass.simulator.generators.realtime.StateSystem, int, double, double, double) }
+     *             instead.
      */
     @Deprecated
     public Fluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y) {
@@ -81,7 +82,7 @@ public class Fluorophore extends Emitter {
     
      /**
      * Initialize fluorophore and calculate its pattern on camera
-     * @param psf The image of the fluorophore on the camera
+     * @param psfBuilder The Builder for calculating microscope PSFs.
      * @param signal Number of photons per frame.
      * @param state_system Internal state system for this fluorophore
      * @param start_state Initial state number
@@ -89,8 +90,8 @@ public class Fluorophore extends Emitter {
      * @param y y-position in pixels
      * @param z z-position in pixels
      */
-    public Fluorophore(PSF psf, double signal, StateSystem state_system, int start_state, double x, double y, double z) {
-        super(x, y, z, psf);
+    public Fluorophore(PSFBuilder psfBuilder, double signal, StateSystem state_system, int start_state, double x, double y, double z) {
+        super(x, y, z, psfBuilder);
         this.state_system = state_system;
         this.signal = signal;
         this.current_state = start_state;

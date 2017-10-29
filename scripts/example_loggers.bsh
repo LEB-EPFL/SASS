@@ -59,14 +59,13 @@ Laser laser = new Laser(
 // Create a 2D Gaussian point-spread function
 Gaussian2D.Builder builder = new Gaussian2D.Builder();
 builder.FWHM(camera.fwhm_digital);
-Gaussian2D gauss2D = builder.build();
 
 // generate emitters 
 // create a grid
 ArrayList emitters = FluorophoreGenerator.generateFluorophoresGrid2D(
     4, // spacing in pixels
     camera,
-    gauss2D,
+    builder,
     fluo);
 
 // Positions can be logged after fluorophore creation.

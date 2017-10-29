@@ -57,7 +57,7 @@ Example Scripts
 
 Example scripts for performing 2D and 3D simulations with PALM and
 STORM models may be found `in the examples folder
-<https://github.com/MStefko/SASS/tree/master/scripts>`_ in the SASS
+<https://github.com/LEB-EPFL/SASS/tree/master/scripts>`_ in the SASS
 parent directory.
 
-https://github.com/MStefko/SASS/tree/master/scripts
+https://github.com/LEB-EPFL/SASS/tree/master/scripts

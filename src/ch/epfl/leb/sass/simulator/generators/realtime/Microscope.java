@@ -23,6 +23,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Laser;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Objective;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Stage;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ij.process.FloatProcessor;
 import ij.process.ShortProcessor;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class Microscope {
      * @param cameraBuilder
      * @param laserBuilder
      * @param objectiveBuilder
+     * @param psfBuilder
      * @param stageBuilder
      * @param fluorProp
      * @param fluorophores
@@ -64,6 +66,7 @@ public class Microscope {
             Camera.Builder cameraBuilder,
             Laser.Builder laserBuilder,
             Objective.Builder objectiveBuilder,
+            PSFBuilder psfBuilder,
             Stage.Builder stageBuilder,
             FluorophoreProperties fluorProp,
             List<Fluorophore>fluorophores,

@@ -11,11 +11,14 @@ All notable changes to this project will be documented in this file.
   various times during the simulation, rather than all at once. This
   addition is necessary to account for axial stage positions that
   might change during the simulation.
+- Added a `Stage` component to represent the state of the microscope
+  stage.
 
 ### Changed
 - PSF instances are now immutable.
 - Optics-based logic was moved from the camera to a new `Objective`
-  class.
+  class, whereas the original camera logic was moved to a new `Camera`
+  class in the components package.
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]

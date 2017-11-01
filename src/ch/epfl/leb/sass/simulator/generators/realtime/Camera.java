@@ -22,8 +22,10 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
  * 
  * @author Marcel Stefko
  * @author Kyle M. Douglass
+ * @deprecated Use Camera class from the components package instead.
  */
-public class Camera {
+@Deprecated
+public final class Camera {
 
     /**
      * frame rate [frames/second]
@@ -188,7 +190,7 @@ public class Camera {
      * @param NA numerical aperture [-]
      * @param wavelength light wavelength [m]
      * @param magnification magnification of camera [-]
-     * @deprecated 
+     * @deprecated Use {@link #Camera(ch.epfl.leb.sass.simulator.generators.realtime.Camera.Builder) } instead.
      */
     @Deprecated
     public Camera(int res_x, int res_y, int acq_speed, double readout_noise,
@@ -239,11 +241,42 @@ public class Camera {
         this.wavelength = 0.65;
     }
     
+    /** 
+     * @deprecated Use {@link #getNX() } instead.
+     */
+    @Deprecated
     public int getRes_X() {
         return this.res_x;
     }
     
+    /**
+     * @deprecated Use {@link #getNY() } instead.
+     */
+    @Deprecated
     public int getRes_Y() {
+        return this.res_y;
+    }
+    
+    public double getAduPerElectron() { return this.ADU_per_electron; }
+    public int getAcqSpeed() { return this.acq_speed; }
+    public int getBaseline() { return this.baseline; }
+    public double getDarkCurrent() { return this.dark_current; }
+    public double getPixelSize() { return this.pixel_size; }
+    public double getQuantumEfficiency() { return this.quantum_efficiency; }
+    public double getReadoutNoise() { return this.readout_noise; }
+    public double getThermalNoise() { return this.thermal_noise; }
+    
+    /**
+     * @return The number of pixels in x.
+     */
+    public int getNX() {
+        return this.res_x;
+    }
+    
+    /**
+     * @return The number of pixels in y.
+     */
+    public int getNY() {
         return this.res_y;
     }
 }

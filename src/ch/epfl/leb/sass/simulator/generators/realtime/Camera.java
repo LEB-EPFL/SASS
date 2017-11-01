@@ -17,15 +17,18 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+
 /**
  * Represents the parameters of the camera.
  * 
  * @author Marcel Stefko
  * @author Kyle M. Douglass
- * @deprecated Use Camera class from the components package instead.
  */
-@Deprecated
-public final class Camera {
+public class Camera {
 
     /**
      * frame rate [frames/second]
@@ -72,19 +75,16 @@ public final class Camera {
     /**
      * numerical aperture [-]
      */
-    @Deprecated
     public final double NA;
 
     /**
      * light wavelength [m]
      */
-    @Deprecated
     public final double wavelength;
 
     /**
      * magnification of camera [-]
      */
-    @Deprecated
     public final double magnification;
     
     /**
@@ -95,7 +95,6 @@ public final class Camera {
     /**
      * digital representation of the FWHM
      */
-    @Deprecated
     public final double fwhm_digital;
     
     /**
@@ -118,63 +117,6 @@ public final class Camera {
      */
     public double stagePosition = 0;
     
-    public static class Builder {
-        private int acqSpeed;
-        private double readoutNoise;
-        private double darkCurrent;
-        private double quantumEfficiency;
-        private double aduPerElectron;
-        private int emGain;
-        private int baseline;
-        private double pixelSize;
-        private double thermalNoise;
-        private int nX;
-        private int nY;
-        
-        public Builder acqSpeed(int acqSpeed) {
-            this.acqSpeed = acqSpeed;
-            return this;
-        }
-        public Builder readoutNoise(double readoutNoise) {
-            this.readoutNoise = readoutNoise;
-            return this;
-        }
-        public Builder darkCurrent(double darkCurrent) {
-            this.darkCurrent = darkCurrent;
-            return this;
-        }
-        public Builder quantumEfficiency(double quantumEfficiency) {
-            this.quantumEfficiency = quantumEfficiency;
-            return this;
-        }
-        public Builder aduPerElectron(double aduPerElectron) {
-            this.aduPerElectron = aduPerElectron;
-            return this;
-        }
-        public Builder emGain(int emGain) {
-            this.emGain = emGain;
-            return this;
-        }
-        public Builder baseline(int baseline) {
-            this.baseline = baseline;
-            return this;
-        }
-        public Builder pixelSize(double pixelSize) {
-            this.pixelSize = pixelSize;
-            return this;
-        }
-        public Builder thermalNoise(double thermalNoise) {
-            this.thermalNoise = thermalNoise;
-            return this;
-        }
-        public Builder nX(int nX) { this.nX = nX; return this; }
-        public Builder nY(int nY) { this.nY = nY; return this; }
-        
-        public Camera build() {
-            return new Camera(this);
-        }
-    }
-    
     /**
      * Initialize camera with parameters.
      * @param res_x horizontal resolution [pixels]
@@ -190,9 +132,7 @@ public final class Camera {
      * @param NA numerical aperture [-]
      * @param wavelength light wavelength [m]
      * @param magnification magnification of camera [-]
-     * @deprecated Use {@link #Camera(ch.epfl.leb.sass.simulator.generators.realtime.Camera.Builder) } instead.
      */
-    @Deprecated
     public Camera(int res_x, int res_y, int acq_speed, double readout_noise,
             double dark_current, double quantum_efficiency,
             double ADU_per_electron, int EM_gain, int baseline,
@@ -221,62 +161,11 @@ public final class Camera {
         fwhm_digital = airy_psf_radius_digital / pixel_size;
     }
     
-    private Camera(Builder builder) {
-        this.ADU_per_electron = builder.aduPerElectron;
-        this.EM_gain = builder.emGain;
-        this.acq_speed = builder.acqSpeed;
-        this.baseline = builder.baseline;
-        this.dark_current = builder.darkCurrent;
-        this.pixel_size = builder.pixelSize;
-        this.quantum_efficiency = builder.quantumEfficiency;
-        this.readout_noise = builder.readoutNoise;
-        this.thermal_noise = builder.thermalNoise;
-        this.res_x = builder.nX;
-        this.res_y = builder.nY;
-        
-        // Deprecated fields
-        this.NA = 1.4;
-        this.fwhm_digital = 3;
-        this.magnification = 60;
-        this.wavelength = 0.65;
-    }
-    
-    /** 
-     * @deprecated Use {@link #getNX() } instead.
-     */
-    @Deprecated
     public int getRes_X() {
         return this.res_x;
     }
     
-    /**
-     * @deprecated Use {@link #getNY() } instead.
-     */
-    @Deprecated
     public int getRes_Y() {
-        return this.res_y;
-    }
-    
-    public double getAduPerElectron() { return this.ADU_per_electron; }
-    public int getAcqSpeed() { return this.acq_speed; }
-    public int getBaseline() { return this.baseline; }
-    public double getDarkCurrent() { return this.dark_current; }
-    public double getPixelSize() { return this.pixel_size; }
-    public double getQuantumEfficiency() { return this.quantum_efficiency; }
-    public double getReadoutNoise() { return this.readout_noise; }
-    public double getThermalNoise() { return this.thermal_noise; }
-    
-    /**
-     * @return The number of pixels in x.
-     */
-    public int getNX() {
-        return this.res_x;
-    }
-    
-    /**
-     * @return The number of pixels in y.
-     */
-    public int getNY() {
         return this.res_y;
     }
 }

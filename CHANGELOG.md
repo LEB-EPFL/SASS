@@ -13,12 +13,15 @@ All notable changes to this project will be documented in this file.
   might change during the simulation.
 - Added a `Stage` component to represent the state of the microscope
   stage.
+- Added a `Microscope`class to replace `Device`. This class integrates
+  the various new and refactored components.
 
 ### Changed
 - PSF instances are now immutable.
 - Optics-based logic was moved from the camera to a new `Objective`
   class, whereas the original camera logic was moved to a new `Camera`
   class in the components package.
+- The `Laser` has been moved to the components package.
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]

@@ -25,60 +25,60 @@ public final class Camera {
     /**
      * frame rate [frames/second]
      */
-    public int acqSpeed;
+    private int acqSpeed;
 
     /**
      * readout noise of camera [RMS]
      */
-    public double readoutNoise;
+    private double readoutNoise;
 
     /**
      * dark current [electrons/second/pixel]
      */
-    public double darkCurrent;
+    private double darkCurrent;
 
     /**
      * quantum efficiency [0.0-1.0]
      */
-    public double quantumEfficiency;
+    private double quantumEfficiency;
 
     /**
      * Conversion factor between camera's analog-to-digital units (ADU) and electrons. [-]
      */
-    public double aduPerElectron;
+    private double aduPerElectron;
     
     /**
      * Electron multiplication (EM) gain of the camera.
      * This may be set to zero for sensors without EM gain, such as CMOS
      * sensors.
      */
-    public int emGain;
+    private int emGain;
 
     /**
      * Camera pixel baseline (zero signal mean) [ADU]
      */
-    public int baseline;
+    private int baseline;
     
     /**
      * physical size of pixel
      */
-    public double pixelSize;
+    private double pixelSize;
 
 
     /**
      * noise in frame caused by dark current [electrons/frame/pixel]
      */
-    public double thermal_noise;
+    private double thermal_noise;
     
     /**
      * horizontal image size [pixels]
      */
-    public int nX;
+    private int nX;
 
     /**
      * vertical image size [pixels]
      */
-    public int nY;
+    private int nY;
     
     public static class Builder {
         private int acqSpeed;

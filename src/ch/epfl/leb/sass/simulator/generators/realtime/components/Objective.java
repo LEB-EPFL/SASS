@@ -81,4 +81,18 @@ public final class Objective {
 
         return airyDiskRadius;
     }
+    
+    /**
+     * @return The objective' numerical aperture
+     */
+    public double getNA() {
+        return this.NA;
+    }
+    
+    /**
+     * @return The objective's magnification.
+     */
+    public double getMag() {
+        return this.mag;
+    }
 }

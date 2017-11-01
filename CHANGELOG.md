@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## Unreleased
 
 ### Added
 - There is now a `GibsonLanniPSF` for modeling realistic 3D PSF's and
@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - PSF instances are now immutable.
+- Optics-based logic was moved from the camera to a new `Objective`
+  class.
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]

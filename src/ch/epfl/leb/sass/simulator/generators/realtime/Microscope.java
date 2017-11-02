@@ -116,7 +116,7 @@ public class Microscope {
      *
      * @return size of current FOV in square micrometers
      */
-    public double getFovSize_() {
+    public double getFovSize() {
         return (getPixelSize() * getPixelSize()) 
                * camera.getNX() * camera.getNY();
     }

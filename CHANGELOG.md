@@ -22,6 +22,9 @@ All notable changes to this project will be documented in this file.
   class, whereas the original camera logic was moved to a new `Camera`
   class in the components package.
 - The `Laser` has been moved to the components package.
+- Fluorophore generation is not setup by the user but executed by the
+  microscope.
+  
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]

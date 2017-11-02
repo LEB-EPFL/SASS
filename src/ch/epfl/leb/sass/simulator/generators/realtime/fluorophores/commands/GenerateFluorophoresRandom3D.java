@@ -28,11 +28,21 @@ import java.util.List;
  * 
  * @author Kyle M.Douglass
  */
-public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
+public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
     /**
      * The number of fluorophores to create.
      */
     private final int numFluors;
+    
+    /**
+     * The lower bound on the fluorophore z-position.
+     */
+    private final double zLow;
+    
+    /**
+     * The upper bound on the fluorophore z-position.
+     */
+    private final double zHigh;
     
     /**
      * The microscope camera.
@@ -54,6 +64,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      */
     public static class Builder {
         private int numFluors;
+        private double zLow;
+        private double zHigh;
         private Camera camera;
         private FluorophoreProperties fluorProp;
         private PSFBuilder psfBuilder;
@@ -62,6 +74,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
             this.numFluors = numFluors;
             return this;
         }
+        public Builder zLow(double zLow) { this.zLow = zLow; return this; }
+        public Builder zHigh(double zHigh) { this.zHigh = zHigh; return this; }
         public Builder camera(Camera camera) {
             this.camera = camera;
             return this;
@@ -75,8 +89,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
             return this;
         }
         
-        public GenerateFluorophoresRandom2D build() {
-            return new GenerateFluorophoresRandom2D(this);
+        public GenerateFluorophoresRandom3D build() {
+            return new GenerateFluorophoresRandom3D(this);
         }
     }
     
@@ -84,22 +98,26 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      * Creates a new GenerateFluorophoresRandom2D instance.
      * @param builder A Builder instance for this class.
      */
-    private GenerateFluorophoresRandom2D(Builder builder) {
+    private GenerateFluorophoresRandom3D(Builder builder) {
         this.camera = builder.camera;
         this.fluorProp = builder.fluorProp;
         this.numFluors = builder.numFluors;
         this.psfBuilder = builder.psfBuilder;
+        this.zLow = builder.zLow;
+        this.zHigh = builder.zHigh;
     }
     
     /**
      * Executes the command that generates the fluorophores.
      * 
-     * @return The list of fluorophores.
+     * @return The list of Fluorophores.
      */
     @Override
     public List<Fluorophore> generateFluorophores() {
-        return FluorophoreReceiver.generateFluorophoresRandom2D(
-                this.numFluors, 
+        return FluorophoreReceiver.generateFluorophoresRandom3D(
+                this.numFluors,
+                this.zLow,
+                this.zHigh,
                 this.camera,
                 this.psfBuilder,
                 this.fluorProp);        

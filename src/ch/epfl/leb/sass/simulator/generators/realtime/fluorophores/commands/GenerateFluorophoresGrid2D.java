@@ -28,11 +28,11 @@ import java.util.List;
  * 
  * @author Kyle M.Douglass
  */
-public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
+public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     /**
-     * The number of fluorophores to create.
+     * The spacing between neighboring fluorophores [pixels].
      */
-    private final int numFluors;
+    private final int spacing;
     
     /**
      * The microscope camera.
@@ -53,13 +53,13 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      * A builder for creating this command for fluorophore generation.
      */
     public static class Builder {
-        private int numFluors;
+        private int spacing;
         private Camera camera;
         private FluorophoreProperties fluorProp;
         private PSFBuilder psfBuilder;
         
-        public Builder numFluors(int numFluors) {
-            this.numFluors = numFluors;
+        public Builder spacing(int spacing) {
+            this.spacing = spacing;
             return this;
         }
         public Builder camera(Camera camera) {
@@ -75,8 +75,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
             return this;
         }
         
-        public GenerateFluorophoresRandom2D build() {
-            return new GenerateFluorophoresRandom2D(this);
+        public GenerateFluorophoresGrid2D build() {
+            return new GenerateFluorophoresGrid2D(this);
         }
     }
     
@@ -84,10 +84,10 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      * Creates a new GenerateFluorophoresRandom2D instance.
      * @param builder A Builder instance for this class.
      */
-    private GenerateFluorophoresRandom2D(Builder builder) {
+    private GenerateFluorophoresGrid2D(Builder builder) {
         this.camera = builder.camera;
         this.fluorProp = builder.fluorProp;
-        this.numFluors = builder.numFluors;
+        this.spacing = builder.spacing;
         this.psfBuilder = builder.psfBuilder;
     }
     
@@ -98,8 +98,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      */
     @Override
     public List<Fluorophore> generateFluorophores() {
-        return FluorophoreReceiver.generateFluorophoresRandom2D(
-                this.numFluors, 
+        return FluorophoreReceiver.generateFluorophoresGrid2D(
+                this.spacing, 
                 this.camera,
                 this.psfBuilder,
                 this.fluorProp);        

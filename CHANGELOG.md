@@ -24,6 +24,8 @@ All notable changes to this project will be documented in this file.
 - The `Laser` has been moved to the components package.
 - Fluorophore generation is not setup by the user but executed by the
   microscope.
+- `FluorophoreProperties` now has a wavelength property. The
+  wavelength property was removed from the camera.
   
     
 ## [v0.4.0]

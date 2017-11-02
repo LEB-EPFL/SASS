@@ -81,6 +81,10 @@ public class Microscope {
         this.fluorProp = fluorProp;
         this.obstructors = obstructors;
         
+        // Set the stage displacement for axially-dependent PSFs, the NA, and
+        // the Gaussian FWHM for those PSFs that use a Gaussian approximation
+        psfBuilder.stageDisplacement(stage.getZ()).NA(objective.getNA());
+        
         // Create the set of fluorophores.
         fluorBuilder.camera(camera).psfBuilder(psfBuilder).fluorProp(fluorProp);
         FluorophoreCommand fluorCommand = fluorBuilder.build();

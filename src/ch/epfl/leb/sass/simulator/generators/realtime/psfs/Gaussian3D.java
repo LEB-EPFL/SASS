@@ -88,6 +88,12 @@ public final class Gaussian3D implements PSF {
         public Builder eZ(double eZ) {this.eZ = eZ; return this;}
         
         @Override
+        public Builder stageDisplacement(double stageDisplacement) {
+            // This PSF does not depend on the stage displacement.
+            return this;
+        }
+        
+        @Override
         public Gaussian3D build() {
             return new Gaussian3D(this);
         }

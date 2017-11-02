@@ -230,6 +230,10 @@ public final class GibsonLanniPSF implements PSF {
         public Builder stageDisplacement(double stageDisplacement) {
             this.stageDisplacement = stageDisplacement; return this;
         }
+        public Builder FWHM(double FWHM) {
+            // This PSF does not use a Gaussian approximation.
+            return this;
+        }
         
         @Override
         public Builder eX(double eX) {this.eX = eX; return this;}

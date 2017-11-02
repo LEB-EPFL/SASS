@@ -53,6 +53,14 @@ public abstract class FluorophoreProperties {
     @Deprecated
     public abstract Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z);
     
+    /**
+     * Create fluorophore with the given properties.
+     * @param psfBuilder A PSFBuilder for constructing the microscope PSF.
+     * @param x Fluorophore x-position in pixels.
+     * @param y Fluorophore y-position in pixels.
+     * @param z Fluorophore z-position in pixels.
+     * @return A new fluorophore object.
+     */
     public abstract Fluorophore newFluorophore(
             PSFBuilder psfBuilder, double x, double y, double z);
 }

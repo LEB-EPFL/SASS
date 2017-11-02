@@ -58,4 +58,19 @@ public interface PSFBuilder {
      * @param eZ The emitter's z-position. [pixels]
      */
     public PSFBuilder eZ(double eZ);
+    
+    /**
+     * The numerical aperture of the objective.
+     */
+    public PSFBuilder NA(double NA);
+    
+    /**
+     * The Gaussian approximation's FWHM for this PSF.
+     */
+    public PSFBuilder FWHM(double FWHM);
+    
+    /**
+     * Sets the stage displacement for axially-dependent PSFs.
+     */
+    public PSFBuilder stageDisplacement(double stageDisplacement);
 }

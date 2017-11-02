@@ -64,7 +64,7 @@ public final class Gaussian2D implements PSF {
         
         public Builder FWHM(double fwhm) {this.FWHM = fwhm; return this;}
         
-         @Override
+        @Override
         public Builder eX(double eX) {this.eX = eX; return this;}
         
         @Override
@@ -72,6 +72,18 @@ public final class Gaussian2D implements PSF {
         
         @Override
         public Builder eZ(double eZ) {this.eZ = eZ; return this;}
+        
+        @Override
+        public Builder stageDisplacement(double stageDisplacement) {
+            // This PSF does not depend on the stage displacement.
+            return this;
+        }
+        
+        @Override
+        public Builder NA(double NA) {
+            // This PSF does not depend on the objective NA.
+            return this;
+        }
         
         @Override
         public Gaussian2D build() {

@@ -30,14 +30,39 @@ import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 public abstract class FluorophoreProperties {
     public final double signal;
     public final double background;
+    public final double wavelength;
     
-    public FluorophoreProperties(double signal, double background) {
+    /**
+     * 
+     * @param signal
+     * @param background
+     * @deprecated Use {@link #FluorophoreProperties(double, double, double) }
+     *             instead.
+     */
+    @Deprecated
+    public FluorophoreProperties(
+            double signal,
+            double background) {
         if (signal < 0.0 || background < 0.0) {
             throw new IllegalArgumentException();
         }
         
         this.signal = signal;
         this.background = background;
+        this.wavelength = 0;
+    }
+    
+    public FluorophoreProperties(
+            double signal,
+            double background,
+            double wavelength) {
+        if (signal < 0.0 || background < 0.0) {
+            throw new IllegalArgumentException();
+        }
+        
+        this.signal = signal;
+        this.background = background;
+        this.wavelength = wavelength;
     }
     
     /**
@@ -52,6 +77,10 @@ public abstract class FluorophoreProperties {
     
     @Deprecated
     public abstract Fluorophore3D createFluorophore3D(Camera camera, double x, double y, double z);
+    
+    public double getWavelength() {
+        return this.wavelength;
+    }
     
     /**
      * Create fluorophore with the given properties.

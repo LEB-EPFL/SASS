@@ -19,6 +19,8 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.FluorophoreCommandBuilder;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Laser;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Objective;
@@ -58,8 +60,8 @@ public class Microscope {
      * @param objectiveBuilder
      * @param psfBuilder
      * @param stageBuilder
+     * @param fluorBuilder
      * @param fluorProp
-     * @param fluorophores
      * @param obstructors 
      */
     public Microscope(
@@ -68,8 +70,8 @@ public class Microscope {
             Objective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
             Stage.Builder stageBuilder,
+            FluorophoreCommandBuilder fluorBuilder,
             FluorophoreProperties fluorProp,
-            List<Fluorophore>fluorophores,
             List<Obstructor> obstructors) {
         
         this.camera = cameraBuilder.build();
@@ -77,8 +79,12 @@ public class Microscope {
         this.objective = objectiveBuilder.build();
         this.stage = stageBuilder.build();
         this.fluorProp = fluorProp;
-        this.fluorophores = fluorophores;
         this.obstructors = obstructors;
+        
+        // Create the set of fluorophores.
+        fluorBuilder.camera(camera).psfBuilder(psfBuilder).fluorProp(fluorProp);
+        FluorophoreCommand fluorCommand = fluorBuilder.build();
+        this.fluorophores = fluorCommand.generateFluorophores();
         
         // Case where there are no obstructors in this simulation
         if (obstructors!=null)

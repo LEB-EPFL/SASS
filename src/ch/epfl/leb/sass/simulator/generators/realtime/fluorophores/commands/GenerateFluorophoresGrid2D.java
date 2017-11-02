@@ -52,7 +52,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     /**
      * A builder for creating this command for fluorophore generation.
      */
-    public static class Builder {
+    public static class Builder implements FluorophoreCommandBuilder {
         private int spacing;
         private Camera camera;
         private FluorophoreProperties fluorProp;
@@ -62,20 +62,24 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
             this.spacing = spacing;
             return this;
         }
+        @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
             return this;
         }
+        @Override
         public Builder fluorProp(FluorophoreProperties fluorProp) {
             this.fluorProp = fluorProp;
             return this;
         }
+        @Override
         public Builder psfBuilder(PSFBuilder psfBuilder) {
             this.psfBuilder = psfBuilder;
             return this;
         }
         
-        public GenerateFluorophoresGrid2D build() {
+        @Override
+        public FluorophoreCommand build() {
             return new GenerateFluorophoresGrid2D(this);
         }
     }

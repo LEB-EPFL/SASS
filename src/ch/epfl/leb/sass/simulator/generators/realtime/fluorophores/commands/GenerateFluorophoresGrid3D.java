@@ -62,7 +62,7 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
     /**
      * A builder for creating this command for fluorophore generation.
      */
-    public static class Builder {
+    public static class Builder implements FluorophoreCommandBuilder {
         private int spacing;
         private double zLow;
         private double zHigh;
@@ -76,20 +76,23 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
         }
         public Builder zLow(double zLow) { this.zLow = zLow; return this; }
         public Builder zHigh(double zHigh) { this.zHigh = zHigh; return this; }
+        @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
             return this;
         }
+        @Override
         public Builder fluorProp(FluorophoreProperties fluorProp) {
             this.fluorProp = fluorProp;
             return this;
         }
+        @Override
         public Builder psfBuilder(PSFBuilder psfBuilder) {
             this.psfBuilder = psfBuilder;
             return this;
         }
         
-        public GenerateFluorophoresGrid3D build() {
+        public FluorophoreCommand build() {
             return new GenerateFluorophoresGrid3D(this);
         }
     }

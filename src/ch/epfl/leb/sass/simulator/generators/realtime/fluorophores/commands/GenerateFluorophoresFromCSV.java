@@ -63,7 +63,7 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
     /**
      * A builder for creating this command for fluorophore generation.
      */
-    public static class Builder {
+    public static class Builder implements FluorophoreCommandBuilder {
         private File file;
         private Camera camera;
         private FluorophoreProperties fluorProp;
@@ -74,14 +74,17 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
             this.file = file;
             return this;
         }
+        @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
             return this;
         }
+        @Override
         public Builder fluorProp(FluorophoreProperties fluorProp) {
             this.fluorProp = fluorProp;
             return this;
         }
+        @Override
         public Builder psfBuilder(PSFBuilder psfBuilder) {
             this.psfBuilder = psfBuilder;
             return this;
@@ -91,7 +94,8 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
             return this;
         }
         
-        public GenerateFluorophoresFromCSV build() {
+        @Override
+        public FluorophoreCommand build() {
             return new GenerateFluorophoresFromCSV(this);
         }
     }

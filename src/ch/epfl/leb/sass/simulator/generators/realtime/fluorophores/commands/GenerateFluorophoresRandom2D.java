@@ -52,7 +52,7 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
     /**
      * A builder for creating this command for fluorophore generation.
      */
-    public static class Builder {
+    public static class Builder implements FluorophoreCommandBuilder {
         private int numFluors;
         private Camera camera;
         private FluorophoreProperties fluorProp;
@@ -62,20 +62,23 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
             this.numFluors = numFluors;
             return this;
         }
+        @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
             return this;
         }
+        @Override
         public Builder fluorProp(FluorophoreProperties fluorProp) {
             this.fluorProp = fluorProp;
             return this;
         }
+        @Override
         public Builder psfBuilder(PSFBuilder psfBuilder) {
             this.psfBuilder = psfBuilder;
             return this;
         }
         
-        public GenerateFluorophoresRandom2D build() {
+        public FluorophoreCommand build() {
             return new GenerateFluorophoresRandom2D(this);
         }
     }

@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
   stage.
 - Added a `Microscope`class to replace `Device`. This class integrates
   the various new and refactored components.
+- Added a set of Dynamics classes to separate fluorophore dynamical
+  systems from their creation logic.
 
 ### Changed
 - PSF instances are now immutable.

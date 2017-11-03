@@ -29,8 +29,15 @@ import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 /**
  *
  * @author stefko
+ * @deprecated Use the StormStateSystem instead.
  */
+@Deprecated
 public class dStormProperties extends FluorophoreProperties {
+    
+    /**
+     * Fluorophore start in the emitting state.
+     */
+    private final int startingState = 0; 
     
     private final double[][][] Mk;
     
@@ -163,7 +170,6 @@ public class dStormProperties extends FluorophoreProperties {
             double x,
             double y,
             double z) {
-        int startingState = 0; // Fluorophore start in the emitting state
         return new Fluorophore(
                 psfBuilder, signal, state_system, startingState, x, y, z);
     }

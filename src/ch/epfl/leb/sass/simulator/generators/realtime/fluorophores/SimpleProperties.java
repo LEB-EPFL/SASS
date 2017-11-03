@@ -32,8 +32,15 @@ import java.util.ArrayList;
 /**
  * SimpleProperties properties (signal, background values and time constants).
  * @author Marcel Stefko
+ * @deprecated Use the SimpleStateSystem instead.
  */
+@Deprecated
 public class SimpleProperties extends FluorophoreProperties {
+    
+    /**
+     * Fluorophores start in the dark state.
+     */
+    private final int startingState = 1; 
 
     private final double[][][] Mk;
     
@@ -190,7 +197,6 @@ public class SimpleProperties extends FluorophoreProperties {
             double x,
             double y,
             double z) {
-        int startingState = 1; // Fluorophores start in the dark state
         return new Fluorophore(
                 psfBuilder, signal, state_system, startingState, x, y, z);
     }

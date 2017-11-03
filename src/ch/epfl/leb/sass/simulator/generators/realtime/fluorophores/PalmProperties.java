@@ -29,8 +29,15 @@ import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 /**
  *
  * @author stefko
+ * @deprecated Use the PalmStateSystem instead.
  */
+@Deprecated
 public class PalmProperties extends FluorophoreProperties {
+    
+    /**
+     * Fluorophore start in the non-emitting state
+     */
+    private final int startingState = 1;
 
     private final double[][][] Mk;
     
@@ -180,7 +187,6 @@ public class PalmProperties extends FluorophoreProperties {
     @Override
     public Fluorophore newFluorophore(
             PSFBuilder psfBuilder, double x, double y, double z) {
-        int startingState = 1; // Fluorophore start in the non-emitting state
         return new Fluorophore(
                 psfBuilder, signal, state_system, startingState, x, y, z);
     }

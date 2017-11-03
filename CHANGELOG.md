@@ -22,8 +22,9 @@ All notable changes to this project will be documented in this file.
   class, whereas the original camera logic was moved to a new `Camera`
   class in the components package.
 - The `Laser` has been moved to the components package.
-- Fluorophore generation is not setup by the user but executed by the
-  microscope.
+- Fluorophore generation is no longer setup by the user but executed
+  by the microscope.
+- Obstructors are now setup by the microscope as well.
 - `FluorophoreProperties` now has a wavelength property. The
   wavelength property was removed from the camera.
   

@@ -26,6 +26,8 @@ import ch.epfl.leb.sass.simulator.generators.realtime.components.Laser;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Objective;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Stage;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
+import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.ObstructorCommandBuilder;
+import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.ObstructorCommand;
 import ij.process.FloatProcessor;
 import ij.process.ShortProcessor;
 import java.util.ArrayList;
@@ -72,30 +74,30 @@ public class Microscope {
             Stage.Builder stageBuilder,
             FluorophoreCommandBuilder fluorBuilder,
             FluorophoreProperties fluorProp,
-            List<Obstructor> obstructors) {
+            ObstructorCommandBuilder obstructorBuilder) {
         
         this.camera = cameraBuilder.build();
         this.laser = laserBuilder.build();
         this.objective = objectiveBuilder.build();
         this.stage = stageBuilder.build();
         this.fluorProp = fluorProp;
-        this.obstructors = obstructors;
         
         // Set the stage displacement for axially-dependent PSFs, the NA, and
         // the Gaussian FWHM for those PSFs that use a Gaussian approximation
+        double fwhm = objective.airyFWHM(fluorProp.getWavelength())
+                    / camera.getPixelSize();
         psfBuilder.stageDisplacement(stage.getZ()).NA(objective.getNA())
-                  .FWHM(objective.airyFWHM(fluorProp.getWavelength()));
+                  .FWHM(fwhm);
         
         // Create the set of fluorophores.
         fluorBuilder.camera(camera).psfBuilder(psfBuilder).fluorProp(fluorProp);
         FluorophoreCommand fluorCommand = fluorBuilder.build();
         this.fluorophores = fluorCommand.generateFluorophores();
         
-        // Case where there are no obstructors in this simulation
-        if (obstructors!=null)
-            this.obstructors = obstructors;
-        else
-            this.obstructors = new ArrayList<>();
+        // Build the obstructors
+        obstructorBuilder.camera(camera).stage(stage).psfBuilder(psfBuilder);
+        ObstructorCommand obstrCommand = obstructorBuilder.build();
+        this.obstructors = obstrCommand.generateObstructors();
         
         for (Fluorophore f: fluorophores) {
             f.recalculate_lifetimes(laser.getPower());

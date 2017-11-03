@@ -29,7 +29,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ArrayIndexOutOfBoundsException;
 import java.util.ArrayList;
-import java.util.Random;import javax.swing.JFileChooser;
+import java.util.Random;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**

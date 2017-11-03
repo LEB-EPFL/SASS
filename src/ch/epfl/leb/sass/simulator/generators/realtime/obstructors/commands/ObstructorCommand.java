@@ -15,23 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
+package ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
-import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
+import java.util.List;
+import ch.epfl.leb.sass.simulator.generators.realtime.Obstructor;
 
 /**
- * Interface for populating the field with fluorophores.
- * 
+ *
  * @author Kyle M. Douglass
  */
-public interface FluorophoreCommandBuilder {
+public interface ObstructorCommand {
     
-    public FluorophoreCommand build();
-    
-    public FluorophoreCommandBuilder camera(Camera camera);
-    public FluorophoreCommandBuilder fluorProp(FluorophoreProperties fluorProp);
-    public FluorophoreCommandBuilder psfBuilder(PSFBuilder psfBuilder);
+    public List<Obstructor> generateObstructors();
     
 }

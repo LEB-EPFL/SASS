@@ -11,7 +11,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
 import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
 import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
 import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
-import ch.epfl.leb.sass.simulator.generators.realtime.Obstructor;
+import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
@@ -60,7 +60,7 @@ stageBuilder.z(0); // Coverslip surface is at z = 0
 Gaussian2D.Builder psfBuilder = new Gaussian2D.Builder();
 
 // Fluorophores: all properties in units per frame
-FluorophoreProperties fluo = new PalmProperties(
+FluorophoreProperties fluorProp = new PalmProperties(
 		    2500,  // photons per fluorophore
 		    0.600, // wavelength, microns
                     50,    // background
@@ -72,18 +72,17 @@ FluorophoreProperties fluo = new PalmProperties(
                     15.7/100.0); // kr2
 
 // Fluorophore positions on a square grid
-GenerateFluorophoresGrid2D.Builder posBuilder = new GenerateFluorophoresGrid2D.Builder();
-posBuilder.spacing(4); // pixels
+GenerateFluorophoresGrid2D.Builder fluorBuilder = new GenerateFluorophoresGrid2D.Builder();
+fluorBuilder.spacing(4); // pixels
 		
-// Add a gold bead to the field of view at random location.
-// Leave the obstructors list empty if you do not want any beads.
-import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
-ArrayList obstructors = new ArrayList();
-Obstructor beads = new GoldBeads(1, cameraBuilder.build(), 3000);
-obstructors.add(beads);
+// Add a gold bead to the field of view at random location
+GenerateFiducialsRandom2D.Builder fidBuilder = new GenerateFiducialsRandom2D.Builder();
+fidBuilder.numFiducials(2); // Set to zero if you don't want fiducials
+fidBuilder.brightness(3000); // photons per frame
 
-// The microscope and the simulator
-Microscope microscope(
+// Now that we have setup all the components, we assemble the
+// microscope and the simulator.
+Microscope microscope = new Microscope(
     cameraBuilder,
     laserBuilder,
     objectiveBuilder,
@@ -91,8 +90,7 @@ Microscope microscope(
     stageBuilder,
     fluorBuilder,
     fluorProp,
-    obstructors
-)
+    fidBuilder);
 
 // The simulation engine
 SimEngine generator = new SimEngine(microscope);
@@ -109,7 +107,7 @@ for (i=0;i<10000;i++) {
 }
 
 // save and show; uncomment these lines to save and display stack
-generator.saveStack(new File("generated_stack.tif"));
+//generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

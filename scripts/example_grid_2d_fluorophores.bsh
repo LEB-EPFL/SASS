@@ -71,6 +71,9 @@ FluorophoreProperties fluorProp = new PalmProperties(
                     0.4/100.0, //kr1
                     15.7/100.0); // kr2
 
+// Fluorescence wavelength
+double wavelength = 0.6; // microns
+
 // Fluorophore positions on a square grid
 GenerateFluorophoresGrid2D.Builder fluorBuilder = new GenerateFluorophoresGrid2D.Builder();
 fluorBuilder.spacing(4); // pixels
@@ -79,6 +82,8 @@ fluorBuilder.spacing(4); // pixels
 GenerateFiducialsRandom2D.Builder fidBuilder = new GenerateFiducialsRandom2D.Builder();
 fidBuilder.numFiducials(2); // Set to zero if you don't want fiducials
 fidBuilder.brightness(3000); // photons per frame
+
+
 
 // Now that we have setup all the components, we assemble the
 // microscope and the simulator.
@@ -90,6 +95,7 @@ Microscope microscope = new Microscope(
     stageBuilder,
     fluorBuilder,
     fluorProp,
+    wavelength,
     fidBuilder);
 
 // The simulation engine
@@ -107,7 +113,7 @@ for (i=0;i<10000;i++) {
 }
 
 // save and show; uncomment these lines to save and display stack
-//generator.saveStack(new File("generated_stack.tif"));
+generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

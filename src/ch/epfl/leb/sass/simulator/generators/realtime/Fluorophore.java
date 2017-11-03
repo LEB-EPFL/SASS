@@ -90,7 +90,14 @@ public class Fluorophore extends Emitter {
      * @param y y-position in pixels
      * @param z z-position in pixels
      */
-    public Fluorophore(PSFBuilder psfBuilder, double signal, StateSystem state_system, int start_state, double x, double y, double z) {
+    public Fluorophore(
+            PSFBuilder psfBuilder,
+            double signal,
+            StateSystem state_system,
+            int start_state,
+            double x,
+            double y,
+            double z) {
         super(x, y, z, psfBuilder);
         this.state_system = state_system;
         this.signal = signal;

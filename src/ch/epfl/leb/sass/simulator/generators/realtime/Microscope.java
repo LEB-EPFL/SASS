@@ -46,6 +46,7 @@ public class Microscope {
     private final Objective objective;
     private final Stage stage;
     private final FluorophoreProperties fluorProp;
+    private final double wavelength;
     private final List<Fluorophore> fluorophores;
     private List<Obstructor> obstructors;
     
@@ -62,9 +63,10 @@ public class Microscope {
      * @param objectiveBuilder
      * @param psfBuilder
      * @param stageBuilder
-     * @param fluorBuilder
+     * @param fluorBuilder Positions fluorophore's within the field of view.
      * @param fluorProp
-     * @param obstructors 
+     * @param wavelength The fluorescence wavelength.
+     * @param obstructorBuilder Creates the obstructors, e.g. fiducials.
      */
     public Microscope(
             Camera.Builder cameraBuilder,
@@ -74,6 +76,7 @@ public class Microscope {
             Stage.Builder stageBuilder,
             FluorophoreCommandBuilder fluorBuilder,
             FluorophoreProperties fluorProp,
+            double wavelength,
             ObstructorCommandBuilder obstructorBuilder) {
         
         this.camera = cameraBuilder.build();
@@ -81,10 +84,11 @@ public class Microscope {
         this.objective = objectiveBuilder.build();
         this.stage = stageBuilder.build();
         this.fluorProp = fluorProp;
+        this.wavelength = wavelength;
         
         // Set the stage displacement for axially-dependent PSFs, the NA, and
         // the Gaussian FWHM for those PSFs that use a Gaussian approximation
-        double fwhm = objective.airyFWHM(fluorProp.getWavelength())
+        double fwhm = objective.airyFWHM(wavelength)
                     / camera.getPixelSize();
         psfBuilder.stageDisplacement(stage.getZ()).NA(objective.getNA())
                   .FWHM(fwhm);

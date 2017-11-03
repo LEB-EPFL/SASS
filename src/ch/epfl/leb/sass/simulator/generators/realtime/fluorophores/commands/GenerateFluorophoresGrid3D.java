@@ -67,6 +67,7 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
         private double zLow;
         private double zHigh;
         private Camera camera;
+        private double wavelength;
         private FluorophoreProperties fluorProp;
         private PSFBuilder psfBuilder;
         

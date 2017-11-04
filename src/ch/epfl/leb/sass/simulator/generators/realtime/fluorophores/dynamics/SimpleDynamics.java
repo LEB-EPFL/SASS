@@ -27,7 +27,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
  * @author Marcel Stefko
  * @author Kyle M. Douglass
  */
-public class SimpleDynamics extends AbstractDynamics {
+public class SimpleDynamics extends FluorophoreDynamics {
     
     /**
      * Fluorophores start in the dark state.
@@ -35,75 +35,139 @@ public class SimpleDynamics extends AbstractDynamics {
     public final static int STARTINGSTATE = 1;   
     
     /**
-     * Creates the SimpleDynamics by calling the AbstractStateSystem constructor.
+     * Creates the SimpleDynamics by calling FlurophoreDynamics constructor.
+     * 
+     * @param signal The average number of photons emitted per frame.
+     * @param wavelength The center wavelength of the fluorescence light.
      * @param stateSystem
      * @param startingState
      * @param Mk Array of transition rates and their dependence on laser power.
      */
     private SimpleDynamics(
+            double signal,
+            double wavelength,
             StateSystem stateSystem,
             int startingState,
             double[][][] Mk) {
-        super(stateSystem, startingState, Mk);
+        super(signal, wavelength, stateSystem, startingState, Mk);
     }
     
     /**
-     * Initialize fluorophore with given properties.
+     *  Builder for creating Simple dynamical systems.
+     **/
+    public static class Builder implements FluorophoreDynamicsBuilder {
+        private double signal;
+        private double wavelength;
+        private double tOn;
+        private double tOff;
+        private double tBl;
+        
+        /**
+         * The average number of photons per fluorophore per frame
+         * @param signal
+         * @return SimpleDynamics builder
+         */
+        public Builder signal(double signal) {
+            this.signal = signal;
+            return this;
+        }
+        
+        /**
+         * The center wavelength of the fluorescence emission
+         * @param wavelength
+         * @return SimpleDynamics builder
+         */
+        public Builder wavelength(double wavelength) {
+            this.wavelength = wavelength;
+            return this;
+        }
+        
+        /**
+         * The average on time
+         * @param tOn
+         * @return SimpleDynamics builder
+         */
+        public Builder tOn(double tOn) {
+            this.tOn = tOn;
+            return this;
+        }
+        
+        /**
+         * The average off time
+         * @param tOff
+         * @return SimpleDynamics builder
+         */
+        public Builder tOff(double tOff) {
+            this.tOff = tOff;
+            return this;
+        }
+        
+        /**
+         * The average bleaching time
+         * @param tBl
+         * @return SimpleDynamics builder
+         */
+        public Builder tBl(double tBl) {
+            this.tBl = tBl;
+            return this;
+        }
+    
+    /**
+     * Creates a Simple dynamical system.
      * 
-     * @param Ton mean on-time with unit laser power [frames]
-     * @param Toff mean off-time with unit laser power [frames]
-     * @param Tbl mean bleaching time with unit laser power [frames]
      */
-    public static SimpleDynamics build(
-            double Ton, 
-            double Toff,
-            double Tbl) {
-        if ( !(Ton>=0.0 && Toff>=0.0 && Tbl>=0.0) ) {
-            throw new IllegalArgumentException("Lifetimes must be non-negative!");
-        }
-        double k_on, k_off, k_bl;
-        if (Ton==0.0) {
-            k_off = Double.POSITIVE_INFINITY;
-        } else {
-            k_off = 1 / Ton;
-        }
-        if (Toff==0.0) {
-            k_on = Double.POSITIVE_INFINITY;
-        } else {
-            k_on = 1 / Toff;
-        }
-        if (Tbl==0.0) {
-            k_bl = Double.POSITIVE_INFINITY;
-        } else {
-            k_bl = 1 / Tbl;
-        }
-        
-        
-        // 3 states
-        double[][][] Mk = new double[][][] {
-            // state 0: active
-            {
-                { 0.0 },       // active
-                { k_off },     // dark
-                { 0.0, k_bl }, // bleached
-            },
-            // state 1: dark
-            {
-                { 0.0, k_on }, // active
-                { 0.0 },       // dark
-                { 0.0, k_bl }, // bleached
-            },
-            // state 2: long dark
-            {
-                { 0.0 }, // active
-                { 0.0 }, // dark
-                { 0.0 }, // bleached
+        public SimpleDynamics build() {
+            if ( !(tOn>=0.0 && tOff>=0.0 && tBl>=0.0) ) {
+                throw new IllegalArgumentException("Lifetimes must be non-negative!");
             }
-        };
-        
-        StateSystem stateSystem = new StateSystem(3, Mk);
-        
-        return new SimpleDynamics(stateSystem, STARTINGSTATE, Mk);
-    }
+            double k_on, k_off, k_bl;
+            if (tOn==0.0) {
+                k_off = Double.POSITIVE_INFINITY;
+            } else {
+                k_off = 1 / tOn;
+            }
+            if (tOff==0.0) {
+                k_on = Double.POSITIVE_INFINITY;
+            } else {
+                k_on = 1 / tOff;
+            }
+            if (tBl==0.0) {
+                k_bl = Double.POSITIVE_INFINITY;
+            } else {
+                k_bl = 1 / tBl;
+            }
 
+
+            // 3 states
+            double[][][] Mk = new double[][][] {
+                // state 0: active
+                {
+                    { 0.0 },       // active
+                    { k_off },     // dark
+                    { 0.0, k_bl }, // bleached
+                },
+                // state 1: dark
+                {
+                    { 0.0, k_on }, // active
+                    { 0.0 },       // dark
+                    { 0.0, k_bl }, // bleached
+                },
+                // state 2: long dark
+                {
+                    { 0.0 }, // active
+                    { 0.0 }, // dark
+                    { 0.0 }, // bleached
+                }
+            };
+
+            StateSystem stateSystem = new StateSystem(3, Mk);
+
+            return new SimpleDynamics(
+                    signal,
+                    wavelength,
+                    stateSystem,
+                    STARTINGSTATE,
+                    Mk);
+        }
+    }
 }

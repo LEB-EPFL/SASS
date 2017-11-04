@@ -19,7 +19,7 @@ package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
-import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import java.io.BufferedReader;
@@ -52,23 +52,30 @@ public class FluorophoreReceiver {
      * @param numFluors The number of fluorophores to add to the field of view.
      * @param camera The camera for determining the size of the field of view.
      * @param psfBuilder Builder for calculating microscope PSFs.
-     * @param fluorProp The fluorophore dynamics properties.
+     * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
     public static ArrayList<Fluorophore> generateFluorophoresRandom2D(
             int numFluors,
             Camera camera,
             PSFBuilder psfBuilder,
-            FluorophoreProperties fluorProp) {
+            FluorophoreDynamics fluorDynamics) {
         Random rnd = RNG.getUniformGenerator();
         ArrayList<Fluorophore> result = new ArrayList();
         double x;
         double y;
         double z = 0;
+        Fluorophore fluorophore;
         for (int i=0; i < numFluors; i++) {
             x = camera.getNX() * rnd.nextDouble();
             y = camera.getNY() * rnd.nextDouble();
-            result.add(fluorProp.newFluorophore(psfBuilder, x, y, z));
+            fluorophore = new Fluorophore(
+                psfBuilder,
+                fluorDynamics.getSignal(),
+                fluorDynamics.getStateSystem(),
+                fluorDynamics.getStartingState(),
+                x, y, z);
+            result.add(fluorophore);
         }
         return result;
     }
@@ -81,7 +88,7 @@ public class FluorophoreReceiver {
      * @param zHigh The upper bound on the range in z in units of pixels
      * @param camera The camera for determining the size of the field of view.
      * @param psfBuilder Builder for calculating microscope PSFs.
-     * @param fluorProp The fluorophore dynamics properties.
+     * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
     public static ArrayList<Fluorophore> generateFluorophoresRandom3D(
@@ -90,17 +97,24 @@ public class FluorophoreReceiver {
             double zHigh,
             Camera camera,
             PSFBuilder psfBuilder,
-            FluorophoreProperties fluorProp) {
+            FluorophoreDynamics fluorDynamics) {
         Random rnd = RNG.getUniformGenerator();
         ArrayList<Fluorophore> result = new ArrayList();
         double x;
         double y;
         double z;
+        Fluorophore fluorophore;
         for (int i=0; i < numFluors; i++) {
             x = camera.getNX() * rnd.nextDouble();
             y = camera.getNY() * rnd.nextDouble();
             z = (zHigh - zLow) * rnd.nextDouble() + zLow;
-            result.add(fluorProp.newFluorophore(psfBuilder, x, y, z));
+            fluorophore = new Fluorophore(
+                psfBuilder,
+                fluorDynamics.getSignal(),
+                fluorDynamics.getStateSystem(),
+                fluorDynamics.getStartingState(),
+                x, y, z);
+            result.add(fluorophore);
         }
         return result;
     }
@@ -111,22 +125,28 @@ public class FluorophoreReceiver {
      * @param spacing The distance along the grid between nearest neighbors.
      * @param camera The camera for determining the size of the field of view.
      * @param psfBuilder Builder for calculating microscope PSFs.
-     * @param fluorProp The fluorophore dynamics properties.
+     * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
     public static ArrayList<Fluorophore> generateFluorophoresGrid2D(
             int spacing,
             Camera camera,
             PSFBuilder psfBuilder,
-            FluorophoreProperties fluorProp) {
+            FluorophoreDynamics fluorDynamics) {
         int limitX = camera.getNX();
         int limitY = camera.getNY();
         double z = 0.0;
         ArrayList<Fluorophore> result = new ArrayList();
-               
+        Fluorophore fluorophore;       
         for (int i=spacing; i < limitX; i+=spacing) {
             for (int j=spacing; j < limitY; j+= spacing) {
-                result.add(fluorProp.newFluorophore(psfBuilder, i, j, z));
+                fluorophore = new Fluorophore(
+                    psfBuilder,
+                    fluorDynamics.getSignal(),
+                    fluorDynamics.getStateSystem(),
+                    fluorDynamics.getStartingState(),
+                    i, j, z);
+                result.add(fluorophore);
             }
         }       
         return result;
@@ -140,7 +160,7 @@ public class FluorophoreReceiver {
      * @param zHigh The upper bound on the range in z in units of pixels.
      * @param camera The camera for determining the size of the field of view.
      * @param psfBuilder Builder for calculating microscope PSFs.
-     * @param fluorProp The fluorophore dynamics properties.
+     * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
     public static ArrayList<Fluorophore> generateFluorophoresGrid3D(
@@ -149,7 +169,7 @@ public class FluorophoreReceiver {
             double zHigh,
             Camera camera,
             PSFBuilder psfBuilder,
-            FluorophoreProperties fluorProp) {
+            FluorophoreDynamics fluorDynamics) {
         int limitX = camera.getNX();
         int limitY = camera.getNY();
         double numFluors = ((double) limitX - spacing) * ((double) limitY - spacing) / spacing / spacing;
@@ -157,9 +177,16 @@ public class FluorophoreReceiver {
         double z = zLow;
         
         ArrayList<Fluorophore> result = new ArrayList();
+        Fluorophore fluorophore;
         for (int i = spacing; i < limitX; i += spacing) {
             for (int j = spacing; j < limitY; j += spacing) {
-                result.add(fluorProp.newFluorophore(psfBuilder, i, j, z));
+                fluorophore = new Fluorophore(
+                    psfBuilder,
+                    fluorDynamics.getSignal(),
+                    fluorDynamics.getStateSystem(),
+                    fluorDynamics.getStartingState(),
+                    i, j, z);
+                result.add(fluorophore);
                 z += zSpacing;
             }
         }       
@@ -172,7 +199,7 @@ public class FluorophoreReceiver {
      * @param file The CSV file. If this is null, then a dialog is opened.
      * @param camera The camera for determining the size of the field of view.
      * @param psfBuilder Builder for calculating microscope PSFs.
-     * @param fluorProp The fluorophore dynamics properties.
+     * @param fluorDynamics The fluorophore dynamics properties.
      * @param rescale if true, positions are rescaled to fit into frame,
      *  otherwise positions outside of frame are cropped
      * @return list of fluorophores.
@@ -183,7 +210,7 @@ public class FluorophoreReceiver {
             File file,
             Camera camera,
             PSFBuilder psfBuilder,
-            FluorophoreProperties fluorProp,
+            FluorophoreDynamics fluorDynamics,
             boolean rescale) throws FileNotFoundException, IOException {
         if (file==null) {
             file = getFileFromDialog();
@@ -194,6 +221,7 @@ public class FluorophoreReceiver {
         double x;
         double y;
         double z;
+        Fluorophore fluorophore;
         BufferedReader br;
         String line;
         String splitBy = ",";
@@ -217,11 +245,17 @@ public class FluorophoreReceiver {
                 z = 0.0;
             }
             // Ignore entries with negative x- and y-positions.
-            if (x>=0.0 && y>=0.0)
+            if (x>=0.0 && y>=0.0) {
                 // we subtract 0.5 to make the positions agree with how ThunderSTORM computes positions
                 // i.e. origin is in the very top left of image, not in the center of top left pixel as it is in our simulation
-                result.add(fluorProp.newFluorophore(
-                        psfBuilder, x - 0.5, y - 0.5, z));
+                fluorophore = new Fluorophore(
+                    psfBuilder,
+                    fluorDynamics.getSignal(),
+                    fluorDynamics.getStateSystem(),
+                    fluorDynamics.getStartingState(),
+                    x - 0.5, y - 0.5, z);
+                result.add(fluorophore);
+            }
         }
         
         // rescale positions to fit into frame        
@@ -234,8 +268,15 @@ public class FluorophoreReceiver {
             }
             double factor = camera.getNX()/max_x_coord;
             for (Fluorophore f: result) {
-                result_rescaled.add(fluorProp.newFluorophore(
-                        psfBuilder, f.x*factor, f.y*factor, f.z));
+                fluorophore = new Fluorophore(
+                    psfBuilder,
+                    fluorDynamics.getSignal(),
+                    fluorDynamics.getStateSystem(),
+                    fluorDynamics.getStartingState(),
+                    f.x * factor,
+                    f.y * factor,
+                    f.z * factor);
+                result_rescaled.add(fluorophore);
             }
             return result_rescaled;
         // or crop fluorophores outside of frame

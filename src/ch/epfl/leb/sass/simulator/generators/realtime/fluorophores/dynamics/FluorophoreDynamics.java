@@ -22,16 +22,32 @@ import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
 /**
  * A fluorophore state system.
  */
-public abstract class AbstractDynamics {
+public abstract class FluorophoreDynamics {
     
+    /**
+     * The state system describing the fluorescence dynamics.
+     */
     protected final StateSystem stateSystem;
     
     /**
-     * Fluorophores start in the dark state.
+     * Fluorophores start in this state.
      */
     private final int startingState; 
 
+    /**
+     * The matrix of rate constants and their dependence on the light source.
+     */
     private final double[][][] Mk;
+    
+    /**
+     * The center wavelength of the fluorescence emission.
+     */
+    private final double wavelength;
+    
+    /**
+     * The average number of photons output per frame per fluorophore.
+     */
+    private final double signal;
     
     /**
      * Initializes the state system with the transition rates and starting state.
@@ -40,10 +56,14 @@ public abstract class AbstractDynamics {
      * @param startingState
      * @param Mk 
      */
-    protected AbstractDynamics(
+    protected FluorophoreDynamics(
+            double signal,
+            double wavelength,
             StateSystem stateSystem, 
             int startingState,
             double[][][] Mk) {
+        this.signal = signal;
+        this.wavelength = wavelength;
         this.stateSystem = stateSystem;
         this.startingState = startingState;
         this.Mk = Mk;
@@ -54,4 +74,8 @@ public abstract class AbstractDynamics {
     public int getStartingState() { return this.startingState; }
     
     public double[][][] getMk() { return this.Mk; }
+    
+    public double getWavelength() { return this.wavelength; }
+    
+    public double getSignal() { return this.signal; }
 }

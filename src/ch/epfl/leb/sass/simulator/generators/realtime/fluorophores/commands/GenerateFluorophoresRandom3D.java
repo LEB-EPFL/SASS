@@ -18,7 +18,7 @@
 package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
-import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import java.util.List;
@@ -52,7 +52,7 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
     /**
      * The set of properties that define the fluorophore dynamics.
      */
-    private final FluorophoreProperties fluorProp;
+    private final FluorophoreDynamics fluorDynamics;
     
     /**
      * A builder for creating PSFs.
@@ -67,7 +67,7 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
         private double zLow;
         private double zHigh;
         private Camera camera;
-        private FluorophoreProperties fluorProp;
+        private FluorophoreDynamics fluorDynamics;
         private PSFBuilder psfBuilder;
         
         public Builder numFluors(int numFluors) {
@@ -82,8 +82,8 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
             return this;
         }
         @Override
-        public Builder fluorProp(FluorophoreProperties fluorProp) {
-            this.fluorProp = fluorProp;
+        public Builder fluorDynamics(FluorophoreDynamics fluorDynamics) {
+            this.fluorDynamics = fluorDynamics;
             return this;
         }
         @Override
@@ -103,7 +103,7 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
      */
     private GenerateFluorophoresRandom3D(Builder builder) {
         this.camera = builder.camera;
-        this.fluorProp = builder.fluorProp;
+        this.fluorDynamics = builder.fluorDynamics;
         this.numFluors = builder.numFluors;
         this.psfBuilder = builder.psfBuilder;
         this.zLow = builder.zLow;
@@ -123,6 +123,6 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
                 this.zHigh,
                 this.camera,
                 this.psfBuilder,
-                this.fluorProp);        
+                this.fluorDynamics);        
     }
 }

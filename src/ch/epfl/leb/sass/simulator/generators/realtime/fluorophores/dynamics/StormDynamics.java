@@ -27,7 +27,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
  * @author Marcel Stefko
  * @author Kyle M. Douglass
  */
-public class StormDynamics extends AbstractDynamics {
+public class StormDynamics extends FluorophoreDynamics {
     
     /**
      * Fluorophores start in the dark state.
@@ -35,66 +35,160 @@ public class StormDynamics extends AbstractDynamics {
     public final static int STARTINGSTATE = 1;   
     
     /**
-     * Creates the StormDynamics by calling the AbstractStateSystem constructor.
+     * Creates the StormDynamics by calling the FluorophoreDynamics constructor.
+     * 
+     * @param signal The average number of photons emitted per frame.
+     * @param wavelength The center wavelength of the fluorescence light.
      * @param stateSystem
      * @param startingState
      * @param Mk Array of transition rates and their dependence on laser power.
      */
     private StormDynamics(
+            double signal,
+            double wavelength,
             StateSystem stateSystem,
             int startingState,
             double[][][] Mk) {
-        super(stateSystem, startingState, Mk);
+        super(signal, wavelength, stateSystem, startingState, Mk);
     }
     
-    public static StormDynamics build(
-            double k_bl, 
-            double k_triplet,
-            double k_triplet_recovery,
-            double k_dark, 
-            double k_dark_recovery,
-            double k_dark_recovery_constant) {
+    public static class Builder implements FluorophoreDynamicsBuilder {
         
-        if (k_bl<0.0 || k_triplet<=0.0 || k_triplet_recovery<0.0 ||
-            k_dark<0.0 || k_dark_recovery<0.0 || k_dark_recovery_constant<0.0) {
-            throw new IllegalArgumentException("Rates must be positive.");
+        private double signal;
+        private double wavelength;
+        private double kBl;
+        private double kTriplet;
+        private double kTripletRecovery;
+        private double kDark;
+        private double kDarkRecovery;
+        private double kDarkRecoveryConstant;
+        
+        /**
+         * The average number of photons per fluorophore per frame
+         * @param signal
+         * @return StormDynamics builder
+         */
+        public Builder signal(double signal) {
+            this.signal = signal;
+            return this;
         }
         
-        // 4 available states
-        double [][][]Mk = new double[][][] {
-            // state 0: active
-            {
-                { 0.0 }, // active
-                { k_triplet }, // triplet
-                { 0.0 }, // reduced
-                { 0.0, k_bl }, // bleached
-            },
-            // state 1: triplet
-            {
-                { k_triplet_recovery }, // active
-                { 0.0 }, // triplet
-                { k_dark }, // reduced
-                { 0.0 }, // bleached
-            },
-            // state 2: reduced
-            {
-                { k_dark_recovery_constant, k_dark_recovery}, // active
-                { 0.0 }, // triplet
-                { 0.0 }, // reduced
-                { 0.0 }, // bleached
-            },
-            // state 4: bleached
-            {
-                { 0.0 }, // active
-                { 0.0 }, // triplet
-                { 0.0 }, // reduced
-                { 0.0 }, // bleached
-            }
-        };
+        /**
+         * The center wavelength of the fluorescence emission
+         * @param wavelength
+         * @return StormDynamics builder
+         */
+        public Builder wavelength(double wavelength) {
+            this.wavelength = wavelength;
+            return this;
+        }
         
-        StateSystem stateSystem = new StateSystem(4, Mk);
+        /**
+         * The bleaching rate
+         * @return StormDynamics Builder
+         */
+        public Builder kBl(double kBl) {
+            this.kBl = kBl;
+            return this;
+        }
         
-        return new StormDynamics(stateSystem, STARTINGSTATE, Mk);
-    }
+        /**
+         * The transition to the triplet state
+         * @param kTriplet
+         * @return StormDynamics builder
+         */
+        public Builder kTriplet(double kTriplet) {
+            this.kTriplet = kTriplet;
+            return this;
+        }
+        
+        /**
+         * The recovery rate from the triplet state
+         * @param kTripletRecovery
+         * @return StormDynamics builder
+         */
+        public Builder kTripletRecovery(double kTripletRecovery) {
+            this.kTripletRecovery = kTripletRecovery;
+            return this;
+        }
+        
+        /**
+         * The transition to the dark state
+         * @param kDark
+         * @return StormDynamics builder
+         */
+        public Builder kDark(double kDark) {
+            this.kDark = kDark;
+            return this;
+        }
+        
+        /**
+         * The recovery from the dark state
+         * @param kDarkRecovery
+         * @return StormDynamics builder
+         */
+        public Builder kDarkRecovery(double kDarkRecovery) {
+            this.kDarkRecovery = kDarkRecovery;
+            return this;
+        }
+        
+        /**
+         * The constant recovery rate from the dark state
+         * @param kDarkRecoveryConstant
+         * @return StormDynamics builder
+         */
+        public Builder kDarkRecoveryConstant(double kDarkRecoveryConstant) {
+            this.kDarkRecoveryConstant = kDarkRecoveryConstant;
+            return this;
+        }
+        
+        public StormDynamics build() {
 
+            if (kBl<0.0 || kTriplet<=0.0 || kTripletRecovery<0.0 ||
+                kDark<0.0 || kDarkRecovery<0.0 || kDarkRecoveryConstant<0.0) {
+                throw new IllegalArgumentException("Rates must be positive.");
+            }
+
+            // 4 available states
+            double [][][]Mk = new double[][][] {
+                // state 0: active
+                {
+                    { 0.0 }, // active
+                    { kTriplet }, // triplet
+                    { 0.0 }, // reduced
+                    { 0.0, kBl }, // bleached
+                },
+                // state 1: triplet
+                {
+                    { kTripletRecovery }, // active
+                    { 0.0 }, // triplet
+                    { kDark }, // reduced
+                    { 0.0 }, // bleached
+                },
+                // state 2: reduced
+                {
+                    { kDarkRecoveryConstant, kDarkRecovery}, // active
+                    { 0.0 }, // triplet
+                    { 0.0 }, // reduced
+                    { 0.0 }, // bleached
+                },
+                // state 4: bleached
+                {
+                    { 0.0 }, // active
+                    { 0.0 }, // triplet
+                    { 0.0 }, // reduced
+                    { 0.0 }, // bleached
+                }
+            };
+
+            StateSystem stateSystem = new StateSystem(4, Mk);
+
+            return new StormDynamics(
+                    signal,
+                    wavelength,
+                    stateSystem,
+                    STARTINGSTATE,
+                    Mk);
+        }
+    }
 }

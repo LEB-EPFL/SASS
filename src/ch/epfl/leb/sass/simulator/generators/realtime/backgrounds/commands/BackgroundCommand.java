@@ -15,24 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
-
-import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
+package ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands;
 
 /**
- * Interface for populating the field with fluorophores.
- * 
+ * Commands for creating a background in an image.
  * @author Kyle M. Douglass
  */
-public interface FluorophoreCommandBuilder {
+public interface BackgroundCommand {
     
-    public FluorophoreCommand build();
-    
-    public FluorophoreCommandBuilder camera(Camera camera);
-    public FluorophoreCommandBuilder fluorDynamics(
-            FluorophoreDynamics fluorDynamics);
-    public FluorophoreCommandBuilder psfBuilder(PSFBuilder psfBuilder);
-    
+    public float[][] generateBackground();
+
 }

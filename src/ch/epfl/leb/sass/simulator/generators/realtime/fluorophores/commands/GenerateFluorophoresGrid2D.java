@@ -18,7 +18,7 @@
 package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
-import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import java.util.List;
@@ -42,7 +42,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     /**
      * The set of properties that define the fluorophore dynamics.
      */
-    private final FluorophoreProperties fluorProp;
+    private final FluorophoreDynamics fluorDynamics;
     
     /**
      * A builder for creating PSFs.
@@ -55,7 +55,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     public static class Builder implements FluorophoreCommandBuilder {
         private int spacing;
         private Camera camera;
-        private FluorophoreProperties fluorProp;
+        private FluorophoreDynamics fluorDynamics;
         private PSFBuilder psfBuilder;
         
         public Builder spacing(int spacing) {
@@ -68,8 +68,8 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
             return this;
         }
         @Override
-        public Builder fluorProp(FluorophoreProperties fluorProp) {
-            this.fluorProp = fluorProp;
+        public Builder fluorDynamics(FluorophoreDynamics fluorDynamics) {
+            this.fluorDynamics = fluorDynamics;
             return this;
         }
         @Override
@@ -90,7 +90,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
      */
     private GenerateFluorophoresGrid2D(Builder builder) {
         this.camera = builder.camera;
-        this.fluorProp = builder.fluorProp;
+        this.fluorDynamics = builder.fluorDynamics;
         this.spacing = builder.spacing;
         this.psfBuilder = builder.psfBuilder;
     }
@@ -106,6 +106,6 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
                 this.spacing, 
                 this.camera,
                 this.psfBuilder,
-                this.fluorProp);        
+                this.fluorDynamics);        
     }
 }

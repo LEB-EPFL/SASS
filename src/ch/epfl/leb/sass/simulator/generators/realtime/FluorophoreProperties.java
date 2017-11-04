@@ -26,7 +26,9 @@ import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
  * 
  * @author Marcel Stefko
  * @author Kyle M. Douglass
+ * @deprecated Use the FluorophoreDynamics class instead.
  */
+@Deprecated
 public abstract class FluorophoreProperties {
     public final double signal;
     public final double background;

@@ -15,24 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
-
-import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
+package ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands;
 
 /**
- * Interface for populating the field with fluorophores.
- * 
+ * Interface BackgroundCommand builders.
  * @author Kyle M. Douglass
  */
-public interface FluorophoreCommandBuilder {
+public interface BackgroundCommandBuilder {
     
-    public FluorophoreCommand build();
+    public BackgroundCommand build();
     
-    public FluorophoreCommandBuilder camera(Camera camera);
-    public FluorophoreCommandBuilder fluorDynamics(
-            FluorophoreDynamics fluorDynamics);
-    public FluorophoreCommandBuilder psfBuilder(PSFBuilder psfBuilder);
+    /**
+     * Sets the number of pixels of the images in the x-direction.
+     * @param nX Number of pixels in x.
+     * @return The very same builder object.
+     */
+    public BackgroundCommandBuilder nX(int nX);
+    
+    /**
+     * Sets the number of pixels of the images in the y-direction.
+     * @param nY Number of pixels in y.
+     * @return The very same builder object.
+     */
+    public BackgroundCommandBuilder nY(int nY);
     
 }

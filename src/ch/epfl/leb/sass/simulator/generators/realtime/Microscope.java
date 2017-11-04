@@ -19,6 +19,8 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamicsBuilder;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.FluorophoreCommandBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
@@ -28,9 +30,10 @@ import ch.epfl.leb.sass.simulator.generators.realtime.components.Stage;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.ObstructorCommandBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.ObstructorCommand;
+import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.BackgroundCommandBuilder;
+import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.BackgroundCommand;
 import ij.process.FloatProcessor;
 import ij.process.ShortProcessor;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import cern.jet.random.Poisson;
@@ -45,10 +48,10 @@ public class Microscope {
     private final Laser laser;
     private final Objective objective;
     private final Stage stage;
-    private final FluorophoreProperties fluorProp;
-    private final double wavelength;
+    private final FluorophoreDynamics fluorDynamics;
     private final List<Fluorophore> fluorophores;
     private List<Obstructor> obstructors;
+    private final BackgroundCommand background;
     
     // Random number generators
     private final Poisson poisson = RNG.getPoissonGenerator();
@@ -63,10 +66,10 @@ public class Microscope {
      * @param objectiveBuilder
      * @param psfBuilder
      * @param stageBuilder
-     * @param fluorBuilder Positions fluorophore's within the field of view.
-     * @param fluorProp
-     * @param wavelength The fluorescence wavelength.
+     * @param positionBuilder Positions fluorophore's within the field of view.
+     * @param fluorDynamicsBuilder
      * @param obstructorBuilder Creates the obstructors, e.g. fiducials.
+     * @param backgroundBuilder Creates the background signal on the image.
      */
     public Microscope(
             Camera.Builder cameraBuilder,
@@ -74,28 +77,34 @@ public class Microscope {
             Objective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
             Stage.Builder stageBuilder,
-            FluorophoreCommandBuilder fluorBuilder,
-            FluorophoreProperties fluorProp,
-            double wavelength,
-            ObstructorCommandBuilder obstructorBuilder) {
+            FluorophoreCommandBuilder positionBuilder,
+            FluorophoreDynamicsBuilder fluorDynamicsBuilder,
+            ObstructorCommandBuilder obstructorBuilder,
+            BackgroundCommandBuilder backgroundBuilder) {
         
+        // Build objects that do not require further setup
         this.camera = cameraBuilder.build();
         this.laser = laserBuilder.build();
         this.objective = objectiveBuilder.build();
         this.stage = stageBuilder.build();
-        this.fluorProp = fluorProp;
-        this.wavelength = wavelength;
+        this.fluorDynamics = fluorDynamicsBuilder.build();
+        
+        // Extract the wavelength from the fluorophores
+        double wavelength;
+        wavelength = this.fluorDynamics.getWavelength();
         
         // Set the stage displacement for axially-dependent PSFs, the NA, and
         // the Gaussian FWHM for those PSFs that use a Gaussian approximation
-        double fwhm = objective.airyFWHM(wavelength)
-                    / camera.getPixelSize();
-        psfBuilder.stageDisplacement(stage.getZ()).NA(objective.getNA())
+        double fwhm = objective.airyFWHM(wavelength) / camera.getPixelSize();
+        psfBuilder.stageDisplacement(stage.getZ())
+                  .NA(objective.getNA())
                   .FWHM(fwhm);
         
         // Create the set of fluorophores.
-        fluorBuilder.camera(camera).psfBuilder(psfBuilder).fluorProp(fluorProp);
-        FluorophoreCommand fluorCommand = fluorBuilder.build();
+        positionBuilder.camera(camera)
+                       .psfBuilder(psfBuilder)
+                       .fluorDynamics(fluorDynamics);
+        FluorophoreCommand fluorCommand = positionBuilder.build();
         this.fluorophores = fluorCommand.generateFluorophores();
         
         // Build the obstructors
@@ -103,6 +112,11 @@ public class Microscope {
         ObstructorCommand obstrCommand = obstructorBuilder.build();
         this.obstructors = obstrCommand.generateObstructors();
         
+        // Set the size of the background image and build it
+        backgroundBuilder.nX(camera.getNX()).nY(camera.getNY());
+        this.background = backgroundBuilder.build();
+        
+        // Determine the lifetimes for each fluorophore's current state
         for (Fluorophore f: fluorophores) {
             f.recalculate_lifetimes(laser.getPower());
         }
@@ -194,6 +208,7 @@ public class Microscope {
             f.applyTo(pixels);
         }
         
+        addBackground(pixels);
         addNoise(pixels);
         
         // Convert signal to ADU and add baseline.
@@ -210,17 +225,24 @@ public class Microscope {
     }
     
     /**
+     * Adds the background signal to the image.
+     * @param image The image to which a background will be added.
+     */
+    private void addBackground(float[][] image) {
+        float[][] backgroundSignal = this.background.generateBackground();
+        
+        for (int row=0; row < image.length; row++) {
+            for (int col=0; col < image[row].length; col++) {
+                image[row][col] += backgroundSignal[row][col];
+            }
+        }
+    }
+    
+    /**
      * Simulates noise sources.
      * @param image image to be noised up.
      */
     private void addNoise(float[][] image) {
-        // Add a uniform background to each pixel.
-        // TODO: Move the background to a more logical location.
-        for (int row=0; row < image.length; row++) {
-            for (int col=0; col < image[row].length; col++) {
-                image[row][col] += this.fluorProp.background;
-            }
-        }
         
         // Poisson noise
         addPoissonNoise(image);

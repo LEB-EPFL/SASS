@@ -15,24 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands;
-
-import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
+package ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics;
 
 /**
- * Interface for populating the field with fluorophores.
- * 
- * @author Kyle M. Douglass
+ * Interface for creating fluorophore dynamics.
  */
-public interface FluorophoreCommandBuilder {
-    
-    public FluorophoreCommand build();
-    
-    public FluorophoreCommandBuilder camera(Camera camera);
-    public FluorophoreCommandBuilder fluorDynamics(
-            FluorophoreDynamics fluorDynamics);
-    public FluorophoreCommandBuilder psfBuilder(PSFBuilder psfBuilder);
-    
+public interface FluorophoreDynamicsBuilder {
+    public FluorophoreDynamics build();
 }

@@ -31,7 +31,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
 /**
  * A number of constantly-shining gold beads interspersed in the frame.
  * @author Marcel Stefko
- * @deprecated Use Fiducials class instead.
+ * @deprecated Use GenerateFiducialsRandom2D class instead.
  */
 @Deprecated
 public class GoldBeads implements Obstructor {

@@ -4,7 +4,7 @@
  *
  * This script demonstrates how to randomly populate the field with
  * with a 3D distribution of fluorophores whose images are computed
- * according to the Gibson-Lanni PSF>
+ * according to the Gibson-Lanni PSF.
  *
  */
 
@@ -19,7 +19,6 @@ import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.Gener
 import ch.epfl.leb.sass.simulator.generators.realtime.components.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.GibsonLanniPSF;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresGrid3D;
-import java.util.ArrayList;
 
 // The seed determines the outputs of the random number generator.
 RNG.setSeed(42);

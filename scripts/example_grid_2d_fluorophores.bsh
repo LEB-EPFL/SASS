@@ -2,8 +2,8 @@
  * Copyright (C) 2017 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne.
  *
- * This script demonstrates how to randomly populate the field with
- * with a 2D distribution of fluorophores.
+ * This script demonstrates how to populate the field with with a 2D
+ * distribution of fluorophores on a square grid.
  *
  */
 
@@ -17,7 +17,6 @@ import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.Gener
 import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.PalmProperties;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresGrid2D;
 import java.util.ArrayList;
 
@@ -32,7 +31,6 @@ Camera.Builder cameraBuilder = new Camera.Builder();
 
 cameraBuilder.nX(32); // Number of pixels in x
 cameraBuilder.nY(32); // Number of pixels in y
-cameraBuilder.acqSpeed(100);     // Frames per second
 cameraBuilder.readoutNoise(1.6); // Standard deviation, electrons
 cameraBuilder.darkCurrent(0.06); 
 cameraBuilder.quantumEfficiency(0.8);
@@ -117,7 +115,7 @@ for (i=0;i<10000;i++) {
 }
 
 // save and show; uncomment these lines to save and display stack
-generator.saveStack(new File("generated_stack.tif"));
+//generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

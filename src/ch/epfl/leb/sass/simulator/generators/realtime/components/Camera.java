@@ -23,11 +23,6 @@ package ch.epfl.leb.sass.simulator.generators.realtime.components;
 public final class Camera {
 
     /**
-     * frame rate [frames/second]
-     */
-    private int acqSpeed;
-
-    /**
      * readout noise of camera [RMS]
      */
     private double readoutNoise;
@@ -81,7 +76,6 @@ public final class Camera {
     private int nY;
     
     public static class Builder {
-        private int acqSpeed;
         private double readoutNoise;
         private double darkCurrent;
         private double quantumEfficiency;
@@ -93,10 +87,6 @@ public final class Camera {
         private int nX;
         private int nY;
         
-        public Builder acqSpeed(int acqSpeed) {
-            this.acqSpeed = acqSpeed;
-            return this;
-        }
         public Builder readoutNoise(double readoutNoise) {
             this.readoutNoise = readoutNoise;
             return this;
@@ -140,7 +130,6 @@ public final class Camera {
     private Camera(Builder builder) {
         this.aduPerElectron = builder.aduPerElectron;
         this.emGain = builder.emGain;
-        this.acqSpeed = builder.acqSpeed;
         this.baseline = builder.baseline;
         this.darkCurrent = builder.darkCurrent;
         this.pixelSize = builder.pixelSize;
@@ -152,7 +141,6 @@ public final class Camera {
     }
     
     public double getAduPerElectron() { return this.aduPerElectron; }
-    public int getAcqSpeed() { return this.acqSpeed; }
     public int getBaseline() { return this.baseline; }
     public double getDarkCurrent() { return this.darkCurrent; }
     public int getEmGain() { return this.emGain; }

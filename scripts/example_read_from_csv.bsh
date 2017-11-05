@@ -1,62 +1,107 @@
 /**
- * This setups a simulation with a logger for logging the state
- * transitions.
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne.
+ *
+ * This script demonstrates how to populate a field with fluorophores
+ * whose positions are defined in a CSV file.
+ *
  */
 
+import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
+import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
+import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
+import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.SimpleDynamics;
+import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.GenerateFiducialsRandom2D;
+import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.GenerateUniformBackground;
+import ch.epfl.leb.sass.simulator.generators.realtime.components.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
-import ch.epfl.leb.sass.simulator.generators.realtime.*;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
-import java.util.ArrayList;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresFromCSV;
 
-RNG.setSeed(1);
+// The seed determines the outputs of the random number generator.
+RNG.setSeed(42);
 
-// *** Initalize generator from the ground up ***
-Camera camera = new Camera(
-    64, //res_x
-    64, //res_y
-    100, //acq_speed, 
-    1.6, //readout_noise, 
-    0.06, //dark_current, 
-    0.8, //quantum_efficiency, 
-    2.2,  // ADU_per_electron
-    0,    // EM_gain
-    100,  // baseline, ADU 
-    6.45 * 1e-6, //pixel_size, 
-    1.4, //NA, 
-    680 * 1e-9, //wavelength, 
-    60); //magnification)
+// We will build the simulation by first setting up the components and
+// then assembling them together to form a microscope.
 
-// Fluorophores: Rate constants in units per frame
-FluorophoreProperties fluo = new SimpleProperties(
-    2500,              // signal, photons
-    0,                 // background, photons
-    3,                 // mean on-time
-    100,               // mean off-time
-    99999999           // mean bleaching time
-);
+// Camera
+Camera.Builder cameraBuilder = new Camera.Builder();
 
-// laser
-Laser laser = new Laser(
-    0.0, // start
-    500.0, // max
-    0.0); // min
+cameraBuilder.nX(64); // Number of pixels in x
+cameraBuilder.nY(64); // Number of pixels in y
+cameraBuilder.readoutNoise(1.6); // Standard deviation, electrons
+cameraBuilder.darkCurrent(0.06); 
+cameraBuilder.quantumEfficiency(0.8);
+cameraBuilder.aduPerElectron(2.2);
+cameraBuilder.emGain(0);       // Set to zero for CMOS cameras
+cameraBuilder.baseline(100);   // ADU
+cameraBuilder.pixelSize(6.45); // microns
 
-// Create a 2D Gaussian point-spread function
-Gaussian2D.Builder builder = new Gaussian2D.Builder();
-builder.FWHM(camera.fwhm_digital); // From the Airy disk
+// Objective
+Objective.Builder objectiveBuilder = new Objective.Builder();
 
-// generate emitters
-File csv_file = new File("label_pix_sass.csv");
-ArrayList emitters = FluorophoreGenerator.generateFluorophoresFromCSV(
-    csv_file,
-    camera,
-    builder,
-    fluo,
-    false);
+objectiveBuilder.NA(1.4); // Numerical aperture
+objectiveBuilder.mag(60); // Magnification
 
-// assemble the device and generator
-Device device = new Device(camera, fluo, laser, emitters, null);
-STORMsim generator = new STORMsim(device);
+// Laser
+Laser.Builder laserBuilder = new Laser.Builder();
+
+laserBuilder.currentPower(0.0);
+laserBuilder.minPower(0.0);
+laserBuilder.maxPower(500.0);
+
+// Stage
+Stage.Builder stageBuilder = new Stage.Builder();
+
+stageBuilder.x(0);
+stageBuilder.y(0);
+stageBuilder.z(0); // Coverslip surface is at z = 0
+
+// PSF, create a 2D Gaussian point-spread function
+Gaussian2D.Builder psfBuilder = new Gaussian2D.Builder();
+
+// Fluorophore dynamics and properties; rates are in units of 1/frames
+SimpleDynamics.Builder fluorPropBuilder = new SimpleDynamics.Builder();
+
+fluorPropBuilder.signal(2500); // Photons per fluorophore per frame
+fluorPropBuilder.wavelength(0.68); // Wavelength, microns
+fluorPropBuilder.tOn(3);           // Mean on time
+fluorPropBuilder.tOff(100);        // Mean off time
+fluorPropBuilder.tBl(10000);       // Mean bleaching time
+
+// Generate the flourophores from the CSV file
+File csvFile = new File("label_pix_sass.csv");
+GenerateFluorophoresFromCSV.Builder fluorPosBuilder = new GenerateFluorophoresFromCSV.Builder();
+fluorPosBuilder.file(csvFile);  // The file containing the locations.
+fluorPosBuilder.rescale(false); // Rescale positions to fit image?
+
+// Add fiducials to the field of view at a random location
+GenerateFiducialsRandom2D.Builder fidBuilder = new GenerateFiducialsRandom2D.Builder();
+fidBuilder.numFiducials(2); // Set to zero if you don't want fiducials
+fidBuilder.brightness(3000); // photons per frame
+
+// Add a constant background
+GenerateUniformBackground.Builder backgroundBuilder = new GenerateUniformBackground.Builder();
+backgroundBuilder.backgroundSignal(10); // photons
+
+
+
+// Now that we have setup all the components, we assemble the
+// microscope and the simulator.
+Microscope microscope = new Microscope(
+    cameraBuilder,
+    laserBuilder,
+    objectiveBuilder,
+    psfBuilder,
+    stageBuilder,
+    fluorPosBuilder,
+    fluorPropBuilder,
+    fidBuilder,
+    backgroundBuilder);
+
+// The simulation engine
+SimEngine generator = new SimEngine(microscope);
 
 // set laser power
 generator.setControlSignal(0.01);

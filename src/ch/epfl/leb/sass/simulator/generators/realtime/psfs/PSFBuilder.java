@@ -73,4 +73,14 @@ public interface PSFBuilder {
      * Sets the stage displacement for axially-dependent PSFs.
      */
     public PSFBuilder stageDisplacement(double stageDisplacement);
+    
+    /**
+     * Wavelength of the light.
+     */
+    public PSFBuilder wavelength(double wavelength);
+    
+    /**
+     * Object space pixel size
+     */
+    public PSFBuilder resLateral(double resLateral);
 }

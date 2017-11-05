@@ -98,7 +98,9 @@ public class Microscope {
         double fwhm = objective.airyFWHM(wavelength) / camera.getPixelSize();
         psfBuilder.stageDisplacement(stage.getZ())
                   .NA(objective.getNA())
-                  .FWHM(fwhm);
+                  .FWHM(fwhm)
+                  .wavelength(wavelength)
+                  .resLateral(camera.getPixelSize() / objective.getMag());
         
         // Create the set of fluorophores.
         positionBuilder.camera(camera)

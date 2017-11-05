@@ -86,6 +86,17 @@ public final class Gaussian2D implements PSF {
         }
         
         @Override
+        public Builder wavelength(double wavelength) {
+            // This PSF does not directly use the wavelength.
+            return this;
+        }
+        @Override
+        public Builder resLateral(double resLateral) {
+            // This PSF does not directly use the object space pixel size.
+            return this;
+        }
+        
+        @Override
         public Gaussian2D build() {
             return new Gaussian2D(this);
         }

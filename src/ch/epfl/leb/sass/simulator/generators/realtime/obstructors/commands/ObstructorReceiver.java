@@ -44,8 +44,10 @@ public class ObstructorReceiver {
         double x;
         double y;
         
-        // Place fiducials in the focal plane
-        double z = stage.getZ();
+        // Place fiducials in the focal plane; negative sign means that minus
+        // moves the stage down, which scans upwards in z in an inverted
+        // microscope.
+        double z = -stage.getZ();
         
         for (int i=0; i < numBeads; i++) {
             x = camera.getNX() * rnd.nextDouble();

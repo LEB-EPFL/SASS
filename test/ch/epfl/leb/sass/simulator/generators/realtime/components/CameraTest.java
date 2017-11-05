@@ -31,7 +31,7 @@ public class CameraTest {
     public CameraTest() {
         Camera.Builder builder = new Camera.Builder();
         
-        builder.acqSpeed(100).aduPerElectron(2.2).baseline(100).darkCurrent(1)
+        builder.aduPerElectron(2.2).baseline(100).darkCurrent(1)
                .emGain(100).pixelSize(6.5).quantumEfficiency(0.7)
                .readoutNoise(1.6).thermalNoise(0.2).nX(256).nY(256);
         
@@ -48,18 +48,6 @@ public class CameraTest {
         double expResult = 2.2;
         double result = instance.getAduPerElectron();
         assertEquals(expResult, result, 0.0);
-    }
-
-    /**
-     * Test of getAcqSpeed method, of class Camera.
-     */
-    @Test
-    public void testGetAcqSpeed() {
-        System.out.println("getAcqSpeed");
-        Camera instance = this.camera;
-        int expResult = 100;
-        int result = instance.getAcqSpeed();
-        assertEquals(expResult, result);
     }
 
     /**

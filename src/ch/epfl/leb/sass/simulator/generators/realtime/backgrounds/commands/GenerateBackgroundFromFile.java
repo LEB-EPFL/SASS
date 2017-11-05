@@ -29,7 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Constant overlay loaded from an image.
+ * Constant overlay loaded from a tif image.
  * 
  * @author Marcel Stefko
  */
@@ -112,14 +112,6 @@ public final class GenerateBackgroundFromFile implements BackgroundCommand  {
      */
     public float[][] generateBackground() {
         return pixels;
-    }
-    
-    public void applyTo(float[][] pixels) {
-        for (int row=0; row<pixels.length; row++) {
-            for (int col=0; col<pixels[row].length; col++) {
-                pixels[row][col] += this.pixels[row][col];
-            }
-        }
     }
     
     /**

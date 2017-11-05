@@ -19,6 +19,10 @@ All notable changes to this project will be documented in this file.
   systems from their creation logic.
 
 ### Changed
+- Major API changes were made in this version. The purpose was to
+  assign properties to components in a way that better matched a real
+  microscope (e.g. a camera should not have a wavelength). The change
+  to a builder based API is intended to make the scripting easier.
 - PSF instances are now immutable.
 - Optics-based logic was moved from the camera to a new `Objective`
   class, whereas the original camera logic was moved to a new `Camera`

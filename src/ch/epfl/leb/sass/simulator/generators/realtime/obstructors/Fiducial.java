@@ -33,8 +33,7 @@ public class Fiducial extends Emitter implements Obstructor {
      * @param brightness
      * @param x
      * @param y
-     * @deprecated Use {@link #GoldBead(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, double, double, double, double) }
-     *             instead.
+     * @deprecated
      */
     @Deprecated
     public Fiducial(Camera camera, double brightness, double x, double y) {

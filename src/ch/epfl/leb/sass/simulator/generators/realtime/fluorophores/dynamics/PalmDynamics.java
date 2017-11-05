@@ -86,7 +86,7 @@ public class PalmDynamics extends FluorophoreDynamics {
                 
         /**
          * The activation rate
-         * @param ka
+         * @param kA
          */
         public Builder kA(double kA) { this.kA = kA; return this; }
                 

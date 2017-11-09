@@ -14,6 +14,8 @@ Contains [ALICA v0.2.1]
   might change during the simulation.
 - Added a `Stage` component to represent the state of the microscope
   stage.
+- Added functionality through the `BackgroundCommand` to build custom
+  backgrounds for the simulations.
 - Added a `Microscope`class to replace `Device`. This class integrates
   the various new and refactored components.
 - Added a set of Dynamics classes to separate fluorophore dynamical
@@ -31,7 +33,8 @@ Contains [ALICA v0.2.1]
 - The `Laser` has been moved to the components package.
 - Fluorophore generation is no longer setup by the user but executed
   by the microscope.
-- Obstructors are now setup by the microscope as well.
+- Obstructors are now setup by the microscope as well. `GoldBeads` are
+  now created by a `ObstructorCommand` object.
 - `FluorophoreProperties` now has a wavelength property. The
   wavelength property was removed from the camera.
   

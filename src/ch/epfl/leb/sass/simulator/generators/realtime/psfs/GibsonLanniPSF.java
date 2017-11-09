@@ -20,17 +20,19 @@ package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.QRDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.special.BesselJ;
 import org.apache.commons.math3.analysis.interpolation.PiecewiseBicubicSplineInterpolatingFunction;
-import org.apache.commons.math3.exception.OutOfRangeException;
 
+import java.lang.Math;
 import ij.ImageStack;
 import ij.process.FloatProcessor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashMap;
 
 /**
  * Computes an emitter PSF based on the Gibson-Lanni model.
@@ -135,6 +137,11 @@ public final class GibsonLanniPSF implements PSF {
     private double resPSF = 0.02;
     
     /**
+     * The spacing between discrete axial planes for the PSF computation.
+     */
+    private double resPSFAxial = 0.005;
+    
+    /**
      * The emitter's x-position [pixels].
      */
     private double eX = 0;
@@ -150,6 +157,15 @@ public final class GibsonLanniPSF implements PSF {
     private double eZ = 0;
     
     /**
+     * The maximum radius from the center for drawing the PSF.
+     * 
+     * If this value is smaller than that calculated by the getRadius() method,
+     * then this one is returned instead. This can help speed up simulations
+     * where most of the fluorophores lie near the same focal plane.
+     */
+    private double maxRadius = 30;
+    
+    /**
      * The displacement of the stage away from the surface of the coverslip.
      * 
      * Negative numbers correspond to moving the stage downwards, which, for an
@@ -163,11 +179,25 @@ public final class GibsonLanniPSF implements PSF {
      * information.
      */
     private final double MINWAVELENGTH = 0.436;
+      
+    /**
+     * The name of the linear algebra solver used to compute Bessel series coefficients.
+     * 
+     * This must be either "qrd" (QR decomposition; fast but less accurate) or
+     * "svd" (singlar value decomposition; slow but more accurate).
+     */
+    private String solverName = "qrd";
     
     /**
-     * The spline representation of the PSF.
+     * Reference to the interpolator for this emitter's current position.
      */
-    private PiecewiseBicubicSplineInterpolatingFunction interpCDF;
+    private PiecewiseBicubicSplineInterpolatingFunction interpCDF ;
+    
+    /**
+     * Cache for PSF  interpolators.
+     */
+    private static HashMap<Long, PiecewiseBicubicSplineInterpolatingFunction>
+                        interpolators = new HashMap<>();
     
     public static class Builder implements PSFBuilder {
         
@@ -189,10 +219,13 @@ public final class GibsonLanniPSF implements PSF {
         private double tg;
         private double resLateral;
         private double resPSF;
+        private double resPSFAxial;
         private double eX;
         private double eY;
         private double eZ;
+        private double maxRadius;
         private double stageDisplacement;
+        private String solver;
         
         public Builder numBasis(int numBasis) {
             this.numBasis = numBasis;
@@ -227,8 +260,26 @@ public final class GibsonLanniPSF implements PSF {
             this.resPSF = resPSF;
             return this;
         }
+        public Builder resPSFAxial(double resPSFAxial) {
+            this.resPSFAxial = resPSFAxial;
+            return this;
+        }
+        public Builder maxRadius(double maxRadius) {
+            this.maxRadius = maxRadius;
+            return this;
+        }
         public Builder stageDisplacement(double stageDisplacement) {
             this.stageDisplacement = stageDisplacement; return this;
+        }
+        public Builder solver(String solver) {
+            if (solver.equals("svd") | solver.equals("qrd")) {
+                this.solver = solver;
+                return this;
+            } else {
+                System.out.println("Solver must be either \"svd\" or \"qrd\". Choosing \"qrd\"...");
+                this.solver = "qrd";
+                return this;
+            }
         }
         public Builder FWHM(double FWHM) {
             // This PSF does not use a Gaussian approximation.
@@ -272,13 +323,20 @@ public final class GibsonLanniPSF implements PSF {
         this.tg = builder.tg;
         this.resLateral = builder.resLateral;
         this.resPSF = builder.resPSF;
+        this.resPSFAxial = builder.resPSFAxial;
         this.eX = builder.eX;
         this.eY = builder.eY;
         this.eZ = builder.eZ;
+        this.maxRadius = builder.maxRadius;
         this.stageDisplacement = builder.stageDisplacement;
+        this.solverName = builder.solver;
         
         // Compute the signature for this PSF.
         this.computeDigitalPSF(this.stageDisplacement);
+        
+        // Set the interpolator for this emitter's z-plane.
+        Long zPlane = getNearestZPlane(eZ);
+        this.interpCDF = interpolators.get(zPlane);
     }
     
     /**
@@ -310,7 +368,13 @@ public final class GibsonLanniPSF implements PSF {
     public void generateSignature(ArrayList<Pixel> pixels) {
         double signature;
         
-        this.computeDigitalPSF(this.stageDisplacement); // Compute the PSF
+        // Compute the PSF
+        this.computeDigitalPSF(this.stageDisplacement); 
+        
+        // Get the interpolator for this emitter's z-plane.
+        Long zPlane = getNearestZPlane(eZ);
+        this.interpCDF = interpolators.get(zPlane);
+        
         for(Pixel pixel: pixels) {
             try {
                 signature = this.generatePixelSignature(pixel.x, pixel.y);
@@ -328,29 +392,41 @@ public final class GibsonLanniPSF implements PSF {
      * Computes the half-width of the PSF for determining which pixels contribute to the emitter signal.
      * 
      * This number is based on the greatest horizontal or vertical extent of the
-     * grid that the PSF is computed on.
+     * grid that the PSF is computed on. If maxRadius is smaller than that
+     * determined by the PSF's computational grid, then maxRadius is returned.
      * 
      * @return The width of the PSF.
      */
     @Override
     public double getRadius() {
-        double minSize = (double) Math.min(this.sizeX, this.sizeY) / 2;
-        return this.resPSF / this.resLateral * minSize - 1;
+        double minPixel = (double) Math.min(this.sizeX, this.sizeY) / 2;
+        double minSize =  this.resPSF / this.resLateral * minPixel - 1;
+        return Math.min(minSize, this.maxRadius);
     }
     
     /**
      * Computes a digital representation of the PSF.
      * 
+     * @param z The stage displacement.
      * @return An image stack of the PSF.
      **/
-    private ImageStack computeDigitalPSF(double z) {
+    private void computeDigitalPSF(double z) {
+        
+        // Has a PSF has already been computed for this emitter's z-plane?
+        Long zDiscrete = getNearestZPlane(this.eZ);
+        if (interpolators.containsKey(zDiscrete)) {
+            // PSF already computed for this z-plane, so don't do anything.
+            return;
+        }
+        
+        // Otherwise, compute the PSF and store the result in the hash map
         double x0 = (this.sizeX - 1) / 2.0D;
         double y0 = (this.sizeY - 1) / 2.0D;
 
         double xp = x0;
         double yp = y0;
 
-        ImageStack stack = new ImageStack(this.sizeX, this.sizeY);
+        //ImageStack stack = new ImageStack(this.sizeX, this.sizeY);
 
         int maxRadius = (int) Math.round(Math.sqrt((this.sizeX - x0)
                         * (this.sizeX - x0) + (this.sizeY - y0) * (this.sizeY - y0))) + 1;
@@ -419,14 +495,18 @@ public final class GibsonLanniPSF implements PSF {
 
         // solve the linear system
         // begin....... (Using Common Math)
-
         RealMatrix coefficients = new Array2DRowRealMatrix(Basis, false);
         RealMatrix rhsFun = new Array2DRowRealMatrix(Ffun, false);
-        DecompositionSolver solver = new SingularValueDecomposition(
-                        coefficients).getSolver(); // slower but more accurate
-        // DecompositionSolver solver = new
-        // QRDecomposition(coefficients).getSolver(); // faster, less accurate
-
+        
+        DecompositionSolver solver = null;
+        if (this.solverName.equals("svd")) {
+            // slower but more accurate
+            solver = new SingularValueDecomposition(coefficients).getSolver();
+        } else {
+            // faster, less accurate
+            solver = new QRDecomposition(coefficients).getSolver();
+        }
+        
         RealMatrix solution = solver.solve(rhsFun);
         Coef = solution.getData();
 
@@ -532,8 +612,8 @@ public final class GibsonLanniPSF implements PSF {
             mgridY[y] = (y - 0.5 * (this.sizeY - 1)) * this.resPSF;
         }
         
-        stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, pixel));
-        stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, CDF));
+        //stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, pixel));
+        //stack.addSlice(new FloatProcessor(this.sizeX, this.sizeY, CDF));
         
         // Reshape CDF for interpolation
         double[][] rCDF = new double[this.sizeY][this.sizeX];
@@ -547,6 +627,22 @@ public final class GibsonLanniPSF implements PSF {
         this.interpCDF = new PiecewiseBicubicSplineInterpolatingFunction(
                 mgridX, mgridY, rCDF);
         
-        return stack;
+        interpolators.put(zDiscrete,
+                    new PiecewiseBicubicSplineInterpolatingFunction(
+                            mgridX, mgridY, rCDF));
+    }
+    
+    /**
+     * Computes the z-coordinate of the closest axial plane to the emitter.
+     * 
+     * The coordinate of the plane is an integer
+     * 
+     * @param z The z-value of the emitter.
+     * @return The z-coordinate of the nearest computational plane.
+     */
+    private Long getNearestZPlane(double z) {
+        long zDiscrete;
+        zDiscrete = Math.round(z / this.resPSFAxial);
+        return zDiscrete;
     }
 }

@@ -82,6 +82,16 @@ psfBuilder.tg(170);          // Coverslip actual thickness
 psfBuilder.resPSF(0.0215);   // Resolution of the calculation grid.
                              // Should be >= 5 times the object space
                              // pixel size in microns.
+psfBuilder.resPSFAxial(0.005); // The axial resolution of the
+                               // computational grid.
+psfBuilder.solver("qrd");    // Can be either "svd" or "qrd". SVD is
+                             // is slow but accurate, "qrd" is fast
+                             // but less accurate.
+//psfBuilder.maxRadius(4);   // Use this to reduce the number of
+                             // pixels that the PSF is drawn onto.
+                             // This can significantly speed up
+                             // simulation times. Otherwise, don't set
+                             // it or leave it at a large number (>20)
 
 // Fluorophore dynamics and properties; rates are in units of 1/frames
 PalmDynamics.Builder fluorPropBuilder = new PalmDynamics.Builder();

@@ -58,13 +58,17 @@ public class GibsonLanniPSFTest {
         double tg  = 170;
         double resLateral = 0.1;
         double resPSF = 0.02;
+        double resPSFAxial = 0.005;
+        double maxRadius = 45;
         double stageDisplacement = -2;
+        String solver = "svd";
                 
         builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
                 .sizeY(sizeY).NA(NA).wavelength(wavelength).ns(ns).ng0(ng0)
                 .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
                 .resLateral(resLateral).oversampling(oversampling)
-                .resPSF(resPSF).stageDisplacement(stageDisplacement);
+                .resPSF(resPSF).stageDisplacement(stageDisplacement)
+                .solver(solver).resPSFAxial(resPSFAxial).maxRadius(maxRadius);
 	
         this.builder = builder;
     }
@@ -150,6 +154,17 @@ public class GibsonLanniPSFTest {
         this.builder.eZ(2);
         psf = builder.build();
         assertEquals(psf.getRadius(), 24.6, 0.1);
+    }
+    
+    /**
+     * Test of getRadius method, of class GibsonLanniPSF, with maxRadius small.
+     */
+    @Test
+    public void testGetRadiusSmallMaxRadius() {
+        PSF psf;
+        this.builder.eZ(2).maxRadius(3);
+        psf = builder.build();
+        assertEquals(psf.getRadius(), 3, 0.1);
     }
     
 }

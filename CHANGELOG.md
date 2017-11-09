@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
   computational grid.
 - The `GibsonLanniPSF.Builder` also now has a `maxRadius()` method for
   setting an upper limit on the size of the area that the PSF is drawn
-  onto. Reducing it can signficantly speed up simulation times.
+  onto. Reducing it can significantly speed up simulation times.
 
 ### Fixed
 - PSF instances are not, in fact, immutable because their fields are

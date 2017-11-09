@@ -1,6 +1,26 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Changed
+- The `GibsonLanniPSF` now caches computation results to avoid
+  repetitive calculations.
+- The `GibsonLanniPSF.Builder` now has a `solver()` method for setting
+  the solver for the Bessel function coefficients. It accepts either
+  "svd" or "qrd" as arguments. (SVD stands for singular value
+  decomposition and QRD stands for QR decomposition.)
+- The `GibsonLanniPSF.Builder` also now has a `resPSFAxial()` method
+  for determining the spacing between axial planes of the
+  computational grid.
+- The `GibsonLanniPSF.Builder` also now has a `maxRadius()` method for
+  setting an upper limit on the size of the area that the PSF is drawn
+  onto. Reducing it can signficantly speed up simulation times.
+
+### Fixed
+- PSF instances are not, in fact, immutable because their fields are
+  not `final`.
+
 ## [v0.5.0]
 Contains [ALICA v0.2.1]	
 

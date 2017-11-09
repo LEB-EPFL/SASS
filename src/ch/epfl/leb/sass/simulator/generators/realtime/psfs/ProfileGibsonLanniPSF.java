@@ -48,6 +48,7 @@ public class ProfileGibsonLanniPSF {
         double tg = 170;
         double resLateral = 0.1;
         double resPSF = 0.02;
+        double resPSFAxial = 0.005;
         double stageDisplacement = -2;
         String solver = "qrd";
         
@@ -57,9 +58,14 @@ public class ProfileGibsonLanniPSF {
                 .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
                 .resLateral(resLateral).oversampling(oversampling)
                 .resPSF(resPSF).stageDisplacement(stageDisplacement)
-                .solver(solver);
+                .solver(solver).resPSFAxial(resPSFAxial);
 		
         GibsonLanniPSF psf = builder.build();
+        
+        // Create the pixel signature
+        //builder.eX(0).eY(-1).eZ(2);
+        //psf = builder.build();
+        //double signature = psf.generatePixelSignature(0, 0);
         
         //ImageStack stack = psf.computeDigitalPSF(-5);
         //ImagePlus imp = new ImagePlus("Gibson-Lanni PSF", stack);

@@ -59,12 +59,14 @@ public class GibsonLanniPSFTest {
         double resLateral = 0.1;
         double resPSF = 0.02;
         double stageDisplacement = -2;
+        String solver = "svd";
                 
         builder.numBasis(numBasis).numSamples(numSamples).sizeX(sizeX)
                 .sizeY(sizeY).NA(NA).wavelength(wavelength).ns(ns).ng0(ng0)
                 .ng(ng).ni0(ni0).ni(ni).ti0(ti0).tg0(tg0).tg(tg)
                 .resLateral(resLateral).oversampling(oversampling)
-                .resPSF(resPSF).stageDisplacement(stageDisplacement);
+                .resPSF(resPSF).stageDisplacement(stageDisplacement)
+                .solver(solver);
 	
         this.builder = builder;
     }

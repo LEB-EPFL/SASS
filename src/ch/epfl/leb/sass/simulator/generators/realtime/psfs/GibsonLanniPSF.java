@@ -20,6 +20,7 @@ package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.QRDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.special.BesselJ;
@@ -169,6 +170,15 @@ public final class GibsonLanniPSF implements PSF {
      */
     private PiecewiseBicubicSplineInterpolatingFunction interpCDF;
     
+    /**
+     * The name of the linear algebra solver used to compute Bessel series coefficients.
+     * 
+     * This must be either "qrd" (QR decomposition; fast but less accurate) or
+     * "svd" (singlar value decomposition; slow but more accurate).
+     */
+    private String solverName = "qrd";
+    
+    
     public static class Builder implements PSFBuilder {
         
         // Properties of the Gibson-Lanni PSF model
@@ -193,6 +203,7 @@ public final class GibsonLanniPSF implements PSF {
         private double eY;
         private double eZ;
         private double stageDisplacement;
+        private String solver;
         
         public Builder numBasis(int numBasis) {
             this.numBasis = numBasis;
@@ -229,6 +240,16 @@ public final class GibsonLanniPSF implements PSF {
         }
         public Builder stageDisplacement(double stageDisplacement) {
             this.stageDisplacement = stageDisplacement; return this;
+        }
+        public Builder solver(String solver) {
+            if (solver.equals("svd") | solver.equals("qrd")) {
+                this.solver = solver;
+                return this;
+            } else {
+                System.out.println("Solver must be either \"svd\" or \"qrd\". Choosing \"qrd\"...");
+                this.solver = "qrd";
+                return this;
+            }
         }
         public Builder FWHM(double FWHM) {
             // This PSF does not use a Gaussian approximation.
@@ -276,6 +297,7 @@ public final class GibsonLanniPSF implements PSF {
         this.eY = builder.eY;
         this.eZ = builder.eZ;
         this.stageDisplacement = builder.stageDisplacement;
+        this.solverName = builder.solver;
         
         // Compute the signature for this PSF.
         this.computeDigitalPSF(this.stageDisplacement);
@@ -419,14 +441,18 @@ public final class GibsonLanniPSF implements PSF {
 
         // solve the linear system
         // begin....... (Using Common Math)
-
         RealMatrix coefficients = new Array2DRowRealMatrix(Basis, false);
         RealMatrix rhsFun = new Array2DRowRealMatrix(Ffun, false);
-        DecompositionSolver solver = new SingularValueDecomposition(
-                        coefficients).getSolver(); // slower but more accurate
-        // DecompositionSolver solver = new
-        // QRDecomposition(coefficients).getSolver(); // faster, less accurate
-
+        
+        DecompositionSolver solver = null;
+        if (this.solverName.equals("svd")) {
+            // slower but more accurate
+            solver = new SingularValueDecomposition(coefficients).getSolver();
+        } else {
+            // faster, less accurate
+            solver = new QRDecomposition(coefficients).getSolver();
+        }
+        
         RealMatrix solution = solver.solve(rhsFun);
         Coef = solution.getData();
 

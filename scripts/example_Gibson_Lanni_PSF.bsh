@@ -82,6 +82,9 @@ psfBuilder.tg(170);          // Coverslip actual thickness
 psfBuilder.resPSF(0.0215);   // Resolution of the calculation grid.
                              // Should be >= 5 times the object space
                              // pixel size in microns.
+psfBuilder.solver("svd");    // Can be either "svd" or "qrd". SVD is
+                             // is slow but accurate, "qrd" is fast
+                             // but less accurate.
 
 // Fluorophore dynamics and properties; rates are in units of 1/frames
 PalmDynamics.Builder fluorPropBuilder = new PalmDynamics.Builder();
@@ -142,7 +145,7 @@ for (i=0;i<1000;i++) {
 }
 
 // save and show; uncomment these lines to save and display stack
-//generator.saveStack(new File("generated_stack.tif"));
+generator.saveStack(new File("generated_stack.tif"));
 //import ij.ImagePlus;
 //ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
 //ip.show();

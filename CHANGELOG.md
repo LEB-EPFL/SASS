@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## v0.5.0
+## [v0.5.0]
 Contains [ALICA v0.2.1]	
 
 ### Added

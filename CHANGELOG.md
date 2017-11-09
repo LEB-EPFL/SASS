@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## Unreleased
 
 ### Added
 - There is now a `GibsonLanniPSF` for modeling realistic 3D PSF's and
@@ -11,9 +11,29 @@ All notable changes to this project will be documented in this file.
   various times during the simulation, rather than all at once. This
   addition is necessary to account for axial stage positions that
   might change during the simulation.
+- Added a `Stage` component to represent the state of the microscope
+  stage.
+- Added a `Microscope`class to replace `Device`. This class integrates
+  the various new and refactored components.
+- Added a set of Dynamics classes to separate fluorophore dynamical
+  systems from their creation logic.
 
 ### Changed
+- Major API changes were made in this version. The purpose was to
+  assign properties to components in a way that better matched a real
+  microscope (e.g. a camera should not have a wavelength). The change
+  to a builder based API is intended to make the scripting easier.
 - PSF instances are now immutable.
+- Optics-based logic was moved from the camera to a new `Objective`
+  class, whereas the original camera logic was moved to a new `Camera`
+  class in the components package.
+- The `Laser` has been moved to the components package.
+- Fluorophore generation is no longer setup by the user but executed
+  by the microscope.
+- Obstructors are now setup by the microscope as well.
+- `FluorophoreProperties` now has a wavelength property. The
+  wavelength property was removed from the camera.
+  
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]

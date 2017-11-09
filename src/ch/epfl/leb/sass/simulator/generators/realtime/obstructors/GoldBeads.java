@@ -19,9 +19,11 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.obstructors;
 
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.Emitter;
 import ch.epfl.leb.sass.simulator.generators.realtime.Obstructor;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
@@ -29,9 +31,11 @@ import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
 /**
  * A number of constantly-shining gold beads interspersed in the frame.
  * @author Marcel Stefko
+ * @deprecated Use GenerateFiducialsRandom2D class instead.
  */
+@Deprecated
 public class GoldBeads implements Obstructor {
-    private final ArrayList<GoldBead> beads;
+    private final List<GoldBead> beads;
     private final Random random;
     
     /**
@@ -57,17 +61,4 @@ public class GoldBeads implements Obstructor {
         }
     }
     
-}
-
-class GoldBead extends Emitter {
-    private final double brightness;
-    public GoldBead(Camera camera, double brightness, double x, double y) {
-        super(camera, x, y);
-        this.brightness = brightness;
-    }
-
-    @Override
-    protected double simulateBrightness() {
-        return flicker(brightness);
-    }
 }

@@ -22,7 +22,9 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
 /**
  * Class representing the laser shining on the sample.
  * @author Marcel Stefko
+ * @deprecated Use Laser in the components package instead.
  */
+@Deprecated
 public class Laser {
     
     private double current_power;

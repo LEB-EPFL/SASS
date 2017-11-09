@@ -48,11 +48,11 @@ public class GUI extends PlugInFrame {
      * Initialize the new frame
      */
     public GUI() {
-        super("STORMsim");
+        super("SASS - SMLM Acquisition Simulation Software");
         setSize(200, 200);
         initComponents();
         setVisible(true);
-        InitSettingsFrame f = new InitSettingsFrame(null, false, this);
+        InitializeSimulation f = new InitializeSimulation(null, false, this);
         f.setVisible(true);
 
         

@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [v0.5.1]
 
 ### Changed
 - The `GibsonLanniPSF` now caches computation results to avoid
@@ -185,3 +185,4 @@ Contains [ALICA v0.0.2]
 [v0.3.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.3.0
 [v0.4.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.4.0
 [v0.5.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.5.0
+[v0.5.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.5.1

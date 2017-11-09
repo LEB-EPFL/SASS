@@ -1,6 +1,7 @@
 # SMLM Acquisition Simulation Software
 
-[![Build Status](https://travis-ci.org/LEB-EPFL/SASS.svg?branch=master)](https://travis-ci.org/LEB-EPFL/SASS)
+- [![Build Status](https://travis-ci.org/LEB-EPFL/SASS.svg?branch=master)](https://travis-ci.org/LEB-EPFL/SASS)
+- [![Join the chat at https://gitter.im/smlm-acquisition-simulation-software/Lobby](https://badges.gitter.im/smlm-acquisition-simulation-software/Lobby.svg)](https://gitter.im/smlm-acquisition-simulation-software/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Toolkit for simulating non-stationary fluorescence photodynamics and
 real-time control systems for single molecule localization microscopy
@@ -31,13 +32,17 @@ Placing the .jar file in `FIJI/plugins/` folder (file MUST have an underscore in
  - `Plugins -> SASS -> GUI` launches an interactive simulator (not all options are available through the GUI).
  - `Plugins -> SASS -> Command Prompt` launches BeanShell console. Generated images can be analyzed immediately with FIJI.
 
+## Where to find help
+
+- Questions about how to use SASS: https://gitter.im/smlm-acquisition-simulation-software/Lobby
+- Bug reports: https://github.com/LEB-EPFL/SASS/issues
+- Feature requests: https://github.com/LEB-EPFL/SASS/issues
+
 ## Acknowledgements
 
 SASS uses adapted code and algorithms from the following projects:
  - [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes (GPL)
  - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko (GPL)
  - [MicroscPSF-ImageJ](https://github.com/hijizhou/MicroscPSF-ImageJ) by Jizhou Li (MIT)
- 
- Many thanks to Dr. Kyle M. Douglass for guidance during this project.
 
 [Releases]: https://github.com/LEB-EPFL/SASS/releases

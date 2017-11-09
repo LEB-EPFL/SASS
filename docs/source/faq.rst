@@ -15,11 +15,13 @@ What are the advantages of SASS over other SMLM simulators?
   environment.
 - Allows for dynamic adjustment of the illumination *during* a
   simulation.
-- Easy-to-use script interface via Beanshell and the [example
-  scripts.](https://github.com/LEB-EPFL/SASS/tree/master/scripts)
+- Easy-to-use script interface via Beanshell and the `example
+  scripts`_.
 - Interfaces are available for extending simulation attributes, such
-  as PSF generation, background, fiducial markers, and customized
-  custom fluorophore photophysics.
+  as PSF generation, background, fiducial markers, and custom
+  fluorophore photophysics.
+
+.. _`example scripts`: https://github.com/LEB-EPFL/SASS/tree/master/scripts
 
 What does SASS stand for?
 -------------------------
@@ -85,6 +87,6 @@ functions that depend on the emitter's distance from the coverslip.
 
 - z = 0 corresponds to the coverslip surface.
 - Negative z-positions correspond to moving the stage downwards on an
-  inverted microscope. A stage z-position of -2 microns therefore
+  inverted microscope. For example, a stage z-position of -2 microns
   corresponds to a focal volume that is located +2 microns above the
   coverslip surface.

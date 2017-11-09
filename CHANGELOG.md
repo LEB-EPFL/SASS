@@ -1,7 +1,8 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## v0.5.0
+Contains [ALICA v0.2.1]	
 
 ### Added
 - There is now a `GibsonLanniPSF` for modeling realistic 3D PSF's and
@@ -160,3 +161,4 @@ Contains [ALICA v0.0.2]
 [v0.2.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.2.1
 [v0.3.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.3.0
 [v0.4.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.4.0
+[v0.5.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.5.0

@@ -54,8 +54,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class InitializeSimulation extends java.awt.Dialog {
 
-    File emitterCsvFile;
-    File backgroundTifFile;
+    Model model = new Model();
+    File emitterCsvFile = new File("");
+    File backgroundTifFile = new File("");
     GUI main;
     private final AnalyzerFactory analyzer_factory;
     private final ControllerFactory controller_factory;
@@ -225,7 +226,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         backgroundUniformSignal = new javax.swing.JTextField();
         jLabel53 = new javax.swing.JLabel();
         backgroundChooseFile = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        initializeSimulation = new javax.swing.JButton();
 
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1046,10 +1047,10 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Initialize");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        initializeSimulation.setText("Initialize");
+        initializeSimulation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                initializeSimulationActionPerformed(evt);
             }
         });
 
@@ -1079,7 +1080,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
                 .addGap(532, 532, 532)
-                .addComponent(jButton1)
+                .addComponent(initializeSimulation)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -1109,7 +1110,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(initializeSimulation)
                 .addContainerGap())
         );
 
@@ -1206,39 +1207,38 @@ public class InitializeSimulation extends java.awt.Dialog {
         emittersChooseFile.setEnabled(false);
     }//GEN-LAST:event_emittersRandomButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Camera.Builder cameraBuilder = new Camera.Builder();
-        Objective.Builder objectiveBuilder = new Objective.Builder();
-        Stage.Builder stageBuilder = new Stage.Builder();
-        SimpleDynamics.Builder fluorPropBuilder = new SimpleDynamics.Builder();
-        Laser.Builder laserBuilder = new Laser.Builder();
+    private void initializeSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeSimulationActionPerformed
+
         try {
-            cameraBuilder.nX(Integer.parseInt(cameraSizeX.getText()));
-            cameraBuilder.nY(Integer.parseInt(cameraSizeY.getText()));
-            cameraBuilder.readoutNoise(Double.parseDouble(cameraReadoutNoise.getText()));
-            cameraBuilder.darkCurrent(Double.parseDouble(cameraDarkCurrent.getText()));
-            cameraBuilder.quantumEfficiency(Double.parseDouble(cameraQuantumEfficiency.getText()));
-            cameraBuilder.aduPerElectron(Double.parseDouble(cameraAduPerElectron.getText()));
-            cameraBuilder.emGain(Integer.parseInt(cameraEmGain.getText()));
-            cameraBuilder.baseline(Integer.parseInt(cameraBaseline.getText()));
-            cameraBuilder.pixelSize(Double.parseDouble(cameraPixelSize.getText()));
+            model.setCameraNX(Integer.parseInt(cameraSizeX.getText()));
+            model.setCameraNY(Integer.parseInt(cameraSizeY.getText()));
+            model.setCameraReadoutNoise(Double.parseDouble(cameraReadoutNoise.getText()));
+            model.setCameraDarkCurrent(Double.parseDouble(cameraDarkCurrent.getText()));
+            model.setCameraQuantumEfficiency(Double.parseDouble(cameraQuantumEfficiency.getText()));
+            model.setCameraAduPerElectron(Double.parseDouble(cameraAduPerElectron.getText()));
+            model.setCameraEmGain(Integer.parseInt(cameraEmGain.getText()));
+            model.setCameraBaseline(Integer.parseInt(cameraBaseline.getText()));
+            model.setCameraPixelSize(Double.parseDouble(cameraPixelSize.getText()));
             
-            objectiveBuilder.NA(Double.parseDouble(objectiveNA.getText()));
-            objectiveBuilder.mag(Double.parseDouble(objectiveMag.getText()));
+            model.setObjectiveNa(Double.parseDouble(objectiveNA.getText()));
+            model.setObjectiveMag(Double.parseDouble(objectiveMag.getText()));
             
-            stageBuilder.x(0);
-            stageBuilder.y(0);
-            stageBuilder.z(Double.parseDouble(stageZ.getText()));
+            model.setStageX(0);
+            model.setStageY(0);
+            model.setStageZ(Double.parseDouble(stageZ.getText()));
 
-            fluorPropBuilder.signal(Double.parseDouble(fluorPropSignal.getText()));
-            fluorPropBuilder.wavelength(Double.parseDouble(fluorPropWavelength.getText()));
-            fluorPropBuilder.tOn(Double.parseDouble(fluorPropTOn.getText()));
-            fluorPropBuilder.tOff(Double.parseDouble(fluorPropTOff.getText()));
-            fluorPropBuilder.tBl(Double.parseDouble(fluorPropTBleached.getText()));
+            model.setFluorophoreSignal(Double.parseDouble(fluorPropSignal.getText()));
+            model.setFluorophoreWavelength(Double.parseDouble(fluorPropWavelength.getText()));
+            model.setFluorophoreTOn(Double.parseDouble(fluorPropTOn.getText()));
+            model.setFluorophoreTOff(Double.parseDouble(fluorPropTOff.getText()));
+            model.setFluorophoreTBl(Double.parseDouble(fluorPropTBleached.getText()));
 
-            laserBuilder.currentPower(Double.parseDouble(laserInitPower.getText()));
-            laserBuilder.minPower(Double.parseDouble(laserMinPower.getText()));
-            laserBuilder.maxPower(Double.parseDouble(laserMaxPower.getText()));
+            model.setLaserCurrentPower(Double.parseDouble(laserInitPower.getText()));
+            model.setLaserMinPower(Double.parseDouble(laserMinPower.getText()));
+            model.setLaserMaxPower(Double.parseDouble(laserMaxPower.getText()));
+            
+            model.setFiducialsNumber(Integer.parseInt(fiducialsNumber.getText()));
+            model.setFiducialsSignal(Integer.parseInt(fiducialsSignal.getText()));
             
         } catch (NumberFormatException ex) {
             IJ.showMessage("Error in parsing of numerical values.");
@@ -1248,83 +1248,25 @@ public class InitializeSimulation extends java.awt.Dialog {
             return;
         }
         
-        Gaussian2D.Builder psfBuilder = new Gaussian2D.Builder();
-        
-        FluorophoreCommandBuilder fluorPosBuilder = null;
         String selectedEmitterButton = ButtonGroupUtils.getSelectedButtonText(this.emittersButtons);
-        if (selectedEmitterButton.equals(emittersRandomButton.getText())) {
-            // Random fluorophore distributions
-            try {
-                GenerateFluorophoresRandom2D.Builder tempPosBuilder = new GenerateFluorophoresRandom2D.Builder();
-                tempPosBuilder.numFluors(Integer.parseInt(emittersRandomNumber.getText()));
-                fluorPosBuilder = tempPosBuilder;
-            } catch (Exception ex) {
-                IJ.showMessage("Error in emitter position parsing.");
-                return;
-            }
-        } else if (selectedEmitterButton.equals(emittersGridButton.getText())) {
-            // Fluorophore distributions on a square grid
-            try {
-                GenerateFluorophoresGrid2D.Builder tempPosBuilder = new GenerateFluorophoresGrid2D.Builder();
-                tempPosBuilder.spacing(Integer.parseInt(emittersGridSpacing.getText()));
-                fluorPosBuilder = tempPosBuilder;
-            } catch (Exception ex) {
-                IJ.showMessage("Error in emitter position parsing.");
-                return;
-            }
-        } else if (selectedEmitterButton.equals(emittersCsvButton.getText())) {
-            // Parse fluorophore positions from a CSV file
-            GenerateFluorophoresFromCSV.Builder tempPosBuilder = new GenerateFluorophoresFromCSV.Builder();
-            tempPosBuilder.file(emitterCsvFile);
-            tempPosBuilder.rescale(false);
-            fluorPosBuilder = tempPosBuilder;
-        }
+        model.setEmittersCurrentSelection(selectedEmitterButton);
+        model.setEmittersRandomNumber(Integer.parseInt(emittersRandomNumber.getText()));
+        model.setEmittersGridSpacing(Integer.parseInt(emittersGridSpacing.getText()));
+        model.setEmittersCsvFile(emitterCsvFile.toString());
+        model.setEmittersRandomButtonText(emittersRandomButton.getText());
+        model.setEmittersGridButtonText(emittersGridButton.getText());
+        model.setEmittersCsvFileButtonText(emittersCsvButton.getText());
         
-        
-        GenerateFiducialsRandom2D.Builder fidBuilder = new GenerateFiducialsRandom2D.Builder();
-        fidBuilder.numFiducials(Integer.parseInt(fiducialsNumber.getText())); // Set to zero if you don't want fiducials
-        fidBuilder.brightness(Integer.parseInt(fiducialsSignal.getText())); // photons per frame
-        
-        BackgroundCommandBuilder backgroundBuilder = null;
         String selectedBackgroundButton = ButtonGroupUtils.getSelectedButtonText(this.backgroundButtons);
-        if (selectedBackgroundButton.equals(backgroundUniformButton.getText())) {
-            try {
-                GenerateUniformBackground.Builder tempBuilder = new GenerateUniformBackground.Builder();
-                tempBuilder.backgroundSignal(Integer.parseInt(backgroundUniformSignal.getText()));
-                backgroundBuilder = tempBuilder;
-            } catch (NumberFormatException ex) {
-                IJ.showMessage("Error in parsing of numerical values.");
-                return;
-            } catch (Exception ex) {
-                IJ.showMessage("Error in device component intialization.");
-                return;
-            }
-        } else if (selectedBackgroundButton.equals(backgroundTifButton.getText())) {
-            try {
-                GenerateBackgroundFromFile.Builder tempBuilder = new GenerateBackgroundFromFile.Builder();
-                tempBuilder.file(backgroundTifFile);
-                backgroundBuilder = tempBuilder;
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                IJ.showMessage("Error in background loading. The image is not large enough.");
-                return;
-            } catch (Exception ex) {
-                IJ.showMessage("Error in background loading.");
-                return;
-            }
-        }
+        model.setBackgroundCurrentSelection(selectedBackgroundButton);
+        model.setBackgroundUniformSignal(Integer.parseInt(backgroundUniformSignal.getText()));
+        model.setBackgroundTifFile(backgroundTifFile.toString());
+        model.setBackgroundUniformButtonText(backgroundUniformButton.getText());
+        model.setBackgroundTifFileButtonText(backgroundTifButton.getText());
         
         // Now that we have setup all the components, we assemble the
         // microscope and the simulator.
-        Microscope microscope = new Microscope(
-            cameraBuilder,
-            laserBuilder,
-            objectiveBuilder,
-            psfBuilder,
-            stageBuilder,
-            fluorPosBuilder,
-            fluorPropBuilder,
-            fidBuilder,
-            backgroundBuilder);
+        Microscope microscope = model.build();
 
         // The simulation engine
         SimEngine generator = new SimEngine(microscope);
@@ -1349,7 +1291,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         App app = new App(analyzer_factory.build(), generator, controller_factory.build(), controller_tickrate);
         main.setApp(app);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_initializeSimulationActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1387,7 +1329,7 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField fluorPropTOff;
     private javax.swing.JTextField fluorPropTOn;
     private javax.swing.JTextField fluorPropWavelength;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton initializeSimulation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

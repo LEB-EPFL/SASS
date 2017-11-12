@@ -152,7 +152,7 @@ public class Model implements Serializable {
     public String getBackgroundCurrentSelection() {
         return backgroundCurrentSelection;
     }
-    public double getBackgroundUniformSignal() {
+    public float getBackgroundUniformSignal() {
         return backgroundUniformSignal;
     }
     public String getBackgroundTifFile() {

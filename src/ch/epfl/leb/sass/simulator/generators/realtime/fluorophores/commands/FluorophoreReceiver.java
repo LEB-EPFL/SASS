@@ -216,11 +216,14 @@ public class FluorophoreReceiver {
             file = getFileFromDialog();
         }
         
+        System.out.println("Building fluorophore PSF's...");
+        
         // load all fluorophores
         ArrayList<Fluorophore> result = new ArrayList();
         double x;
         double y;
         double z;
+        int counter = 0;
         Fluorophore fluorophore;
         BufferedReader br;
         String line;
@@ -246,6 +249,7 @@ public class FluorophoreReceiver {
             }
             // Ignore entries with negative x- and y-positions.
             if (x>=0.0 && y>=0.0) {
+                
                 // we subtract 0.5 to make the positions agree with how ThunderSTORM computes positions
                 // i.e. origin is in the very top left of image, not in the center of top left pixel as it is in our simulation
                 fluorophore = new Fluorophore(
@@ -255,11 +259,19 @@ public class FluorophoreReceiver {
                     fluorDynamics.getStartingState(),
                     x - 0.5, y - 0.5, z);
                 result.add(fluorophore);
+                
+                counter++;
+                if (counter % 5000 == 0) {
+                    System.out.println("Processed fluorophore number: " + counter);
+                }
             }
         }
         
+        System.out.println("Done building PSF's.");
+        
         // rescale positions to fit into frame        
         if (rescale) {
+            System.out.println("Building rescaled PSF's....");
             ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
             double max_x_coord = 0.0;
             for (Fluorophore f: result) {
@@ -278,6 +290,8 @@ public class FluorophoreReceiver {
                     f.z * factor);
                 result_rescaled.add(fluorophore);
             }
+            
+            System.out.println("Done building rescaled PSF's.");
             return result_rescaled;
         // or crop fluorophores outside of frame
         } else {

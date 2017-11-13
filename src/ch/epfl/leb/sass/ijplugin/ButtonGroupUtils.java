@@ -22,7 +22,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
 /**
- * Parses a button group.
+ * Utilities for working with button groups.
  * 
  * See https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup#13232816
  * 
@@ -30,6 +30,11 @@ import javax.swing.ButtonGroup;
  */
 public class ButtonGroupUtils {
 
+    /**
+     * Determines the label of the current selected button.
+     * @param buttonGroup
+     * @return The text label of the selected button.
+     */
     public static String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -40,5 +45,22 @@ public class ButtonGroupUtils {
         }
 
         return null;
+    }
+    
+    /**
+     * Selects the button in a button group based on its text label.
+     * @param buttonGroup
+     * @param text The text label of the desired button to select.
+     */
+    public static void selectButtonModelFromText(ButtonGroup buttonGroup, String text) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            
+
+            if (button.getText().equals(text)) {
+                button.setSelected(true);
+            }
+        }
+
     }
 }

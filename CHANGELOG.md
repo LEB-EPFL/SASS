@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+- You can now save and load simulation settings from the GUI.
+
 ## [v0.5.1]
 
 ### Changed

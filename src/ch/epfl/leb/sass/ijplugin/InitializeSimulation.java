@@ -20,32 +20,20 @@
 package ch.epfl.leb.sass.ijplugin;
 
 
-import ch.epfl.leb.sass.ijplugin.ButtonGroupUtils;
 import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
 import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
-import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.SimpleDynamics;
-import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.GenerateFiducialsRandom2D;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.FluorophoreCommandBuilder;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresRandom2D;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresGrid2D;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresFromCSV;
-import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.BackgroundCommandBuilder;
-import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.GenerateUniformBackground;
-import ch.epfl.leb.sass.simulator.generators.realtime.components.*;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
-import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.analyzers.AnalyzerFactory;
 import ch.epfl.leb.alica.analyzers.AnalyzerSetupPanel;
 import ch.epfl.leb.alica.controllers.ControllerFactory;
-import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.GenerateBackgroundFromFile;
 import ij.IJ;
 import java.awt.GridLayout;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.ButtonModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -55,7 +43,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class InitializeSimulation extends java.awt.Dialog {
 
     Model model = new Model();
-    File emitterCsvFile = new File("");
+    File emittersCsvFile = new File("");
     File backgroundTifFile = new File("");
     GUI main;
     private final AnalyzerFactory analyzer_factory;
@@ -168,7 +156,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         jPanel3 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        objectiveNA = new javax.swing.JTextField();
+        objectiveNa = new javax.swing.JTextField();
         objectiveMag = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -178,11 +166,11 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        fluorPropSignal = new javax.swing.JTextField();
-        fluorPropWavelength = new javax.swing.JTextField();
-        fluorPropTOn = new javax.swing.JTextField();
-        fluorPropTOff = new javax.swing.JTextField();
-        fluorPropTBleached = new javax.swing.JTextField();
+        fluorophoreSignal = new javax.swing.JTextField();
+        fluorophoreWavelength = new javax.swing.JTextField();
+        fluorophoreTOn = new javax.swing.JTextField();
+        fluorophoreTOff = new javax.swing.JTextField();
+        fluorophoreTBl = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
@@ -227,6 +215,8 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel53 = new javax.swing.JLabel();
         backgroundChooseFile = new javax.swing.JButton();
         initializeSimulation = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        openButton = new javax.swing.JButton();
 
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -557,8 +547,10 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel24.setText("Magnification");
 
-        objectiveNA.setText("1.3");
+        objectiveNa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        objectiveNa.setText("1.3");
 
+        objectiveMag.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         objectiveMag.setText("60");
 
         jLabel25.setText("--");
@@ -577,7 +569,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(objectiveMag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(objectiveNA, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(objectiveNa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25)
@@ -585,7 +577,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {objectiveMag, objectiveNA});
+        jPanel3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {objectiveMag, objectiveNa});
 
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -593,7 +585,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
-                    .addComponent(objectiveNA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(objectiveNa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -615,25 +607,25 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel37.setText("tBleached");
 
-        fluorPropSignal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        fluorPropSignal.setText("1500");
+        fluorophoreSignal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fluorophoreSignal.setText("1500");
 
-        fluorPropWavelength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        fluorPropWavelength.setText("0.68");
+        fluorophoreWavelength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fluorophoreWavelength.setText("0.68");
 
-        fluorPropTOn.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        fluorPropTOn.setText("3");
+        fluorophoreTOn.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fluorophoreTOn.setText("3");
 
-        fluorPropTOff.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        fluorPropTOff.setText("100");
-        fluorPropTOff.addActionListener(new java.awt.event.ActionListener() {
+        fluorophoreTOff.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fluorophoreTOff.setText("100");
+        fluorophoreTOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fluorPropTOffActionPerformed(evt);
+                fluorophoreTOffActionPerformed(evt);
             }
         });
 
-        fluorPropTBleached.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        fluorPropTBleached.setText("5000");
+        fluorophoreTBl.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fluorophoreTBl.setText("5000");
 
         jLabel38.setText("photons / frame");
 
@@ -659,11 +651,11 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jLabel37))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fluorPropWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fluorPropTOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fluorPropTOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fluorPropTBleached, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fluorPropSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fluorophoreWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreTOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreTOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreTBl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel38)
@@ -674,7 +666,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {fluorPropSignal, fluorPropTBleached, fluorPropTOff, fluorPropTOn, fluorPropWavelength});
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {fluorophoreSignal, fluorophoreTBl, fluorophoreTOff, fluorophoreTOn, fluorophoreWavelength});
 
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -682,27 +674,27 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
-                    .addComponent(fluorPropSignal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreSignal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel38))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel34)
-                    .addComponent(fluorPropWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel39))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
-                    .addComponent(fluorPropTOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreTOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel40))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
-                    .addComponent(fluorPropTOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreTOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel41))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel37)
-                    .addComponent(fluorPropTBleached, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluorophoreTBl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel42))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -715,10 +707,13 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel29.setText("Initial power");
 
+        laserMinPower.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         laserMinPower.setText("0.0");
 
+        laserMaxPower.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         laserMaxPower.setText("100.0");
 
+        laserInitPower.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         laserInitPower.setText("1.0");
 
         jLabel30.setText("mW");
@@ -815,9 +810,9 @@ public class InitializeSimulation extends java.awt.Dialog {
         emittersButtons.add(emittersRandomButton);
         emittersRandomButton.setSelected(true);
         emittersRandomButton.setText("Random");
-        emittersRandomButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emittersRandomButtonActionPerformed(evt);
+        emittersRandomButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                emittersRandomButtonStateChanged(evt);
             }
         });
 
@@ -828,14 +823,9 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         emittersButtons.add(emittersCsvButton);
         emittersCsvButton.setText("From .csv file");
-        emittersCsvButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emittersCsvButtonActionPerformed(evt);
-            }
-        });
-        emittersCsvButton.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                emittersCsvButtonPropertyChange(evt);
+        emittersCsvButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                emittersCsvButtonStateChanged(evt);
             }
         });
 
@@ -849,9 +839,9 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         emittersButtons.add(emittersGridButton);
         emittersGridButton.setText("Grid");
-        emittersGridButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emittersGridButtonActionPerformed(evt);
+        emittersGridButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                emittersGridButtonStateChanged(evt);
             }
         });
 
@@ -876,18 +866,20 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(emittersChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel46)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                        .addComponent(jLabel45)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(emittersRandomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                        .addComponent(jLabel46)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(emittersGridSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(emittersGridSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(13, 13, 13)
                                 .addComponent(jLabel47))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel45)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(emittersRandomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(emittersChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {emittersGridSpacing, emittersRandomNumber});
@@ -941,18 +933,15 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jLabel48)
                     .addComponent(jLabel49))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fiducialsNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fiducialsSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fiducialsSignal, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                    .addComponent(fiducialsNumber))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel50)
                     .addComponent(jLabel51))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
-
-        jPanel8Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {fiducialsNumber, fiducialsSignal});
-
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
@@ -974,17 +963,17 @@ public class InitializeSimulation extends java.awt.Dialog {
         backgroundButtons.add(backgroundUniformButton);
         backgroundUniformButton.setSelected(true);
         backgroundUniformButton.setText("Uniform");
-        backgroundUniformButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backgroundUniformButtonActionPerformed(evt);
+        backgroundUniformButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                backgroundUniformButtonStateChanged(evt);
             }
         });
 
         backgroundButtons.add(backgroundTifButton);
         backgroundTifButton.setText("From .tif file");
-        backgroundTifButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backgroundTifButtonActionPerformed(evt);
+        backgroundTifButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                backgroundTifButtonStateChanged(evt);
             }
         });
 
@@ -1010,25 +999,19 @@ public class InitializeSimulation extends java.awt.Dialog {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(backgroundUniformButton)
+                    .addComponent(backgroundTifButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(backgroundChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(backgroundChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
                                 .addComponent(jLabel52)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(backgroundUniformSignal)
+                                .addComponent(backgroundUniformSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel53))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(backgroundUniformButton)
-                                    .addComponent(backgroundTifButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 138, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addComponent(jLabel53)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1054,6 +1037,20 @@ public class InitializeSimulation extends java.awt.Dialog {
             }
         });
 
+        saveButton.setText("Save...");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        openButton.setText("Open...");
+        openButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -1073,16 +1070,23 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(532, 532, 532)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(initializeSimulation)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(openButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton)
+                .addGap(441, 441, 441))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {initializeSimulation, openButton, saveButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -1110,7 +1114,10 @@ public class InitializeSimulation extends java.awt.Dialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(initializeSimulation)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(initializeSimulation)
+                    .addComponent(saveButton)
+                    .addComponent(openButton))
                 .addContainerGap())
         );
 
@@ -1135,9 +1142,9 @@ public class InitializeSimulation extends java.awt.Dialog {
         updateControllerSetupPanel();
     }//GEN-LAST:event_cb_controller_setupPopupMenuWillBecomeInvisible
 
-    private void fluorPropTOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fluorPropTOffActionPerformed
+    private void fluorophoreTOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fluorophoreTOffActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fluorPropTOffActionPerformed
+    }//GEN-LAST:event_fluorophoreTOffActionPerformed
 
     private void cameraBaselineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cameraBaselineActionPerformed
         // TODO add your handling code here:
@@ -1159,22 +1166,6 @@ public class InitializeSimulation extends java.awt.Dialog {
         // background_file_label.setText(backgroundTifFile.getName());
     }//GEN-LAST:event_backgroundChooseFileActionPerformed
 
-    private void backgroundUniformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundUniformButtonActionPerformed
-        backgroundUniformSignal.setEnabled(true);
-        backgroundChooseFile.setEnabled(false);
-    }//GEN-LAST:event_backgroundUniformButtonActionPerformed
-
-    private void backgroundTifButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundTifButtonActionPerformed
-        backgroundUniformSignal.setEnabled(false);
-        backgroundChooseFile.setEnabled(true);
-    }//GEN-LAST:event_backgroundTifButtonActionPerformed
-
-    private void emittersGridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emittersGridButtonActionPerformed
-        emittersRandomNumber.setEnabled(false);
-        emittersGridSpacing.setEnabled(true);
-        emittersChooseFile.setEnabled(false);
-    }//GEN-LAST:event_emittersGridButtonActionPerformed
-
     private void emittersChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emittersChooseFileActionPerformed
         JFileChooser fc = new JFileChooser();
         int returnVal;
@@ -1187,28 +1178,11 @@ public class InitializeSimulation extends java.awt.Dialog {
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        emitterCsvFile = fc.getSelectedFile();
-        //emitter_file_label.setText(emitterCsvFile.getName());
+        emittersCsvFile = fc.getSelectedFile();
+        //emitter_file_label.setText(emittersCsvFile.getName());
     }//GEN-LAST:event_emittersChooseFileActionPerformed
 
-    private void emittersCsvButtonPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_emittersCsvButtonPropertyChange
-
-    }//GEN-LAST:event_emittersCsvButtonPropertyChange
-
-    private void emittersCsvButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emittersCsvButtonActionPerformed
-        emittersRandomNumber.setEnabled(false);
-        emittersGridSpacing.setEnabled(false);
-        emittersChooseFile.setEnabled(true);
-    }//GEN-LAST:event_emittersCsvButtonActionPerformed
-
-    private void emittersRandomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emittersRandomButtonActionPerformed
-        emittersRandomNumber.setEnabled(true);
-        emittersGridSpacing.setEnabled(false);
-        emittersChooseFile.setEnabled(false);
-    }//GEN-LAST:event_emittersRandomButtonActionPerformed
-
-    private void initializeSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeSimulationActionPerformed
-
+    private void updateModel() {
         try {
             model.setCameraNX(Integer.parseInt(cameraSizeX.getText()));
             model.setCameraNY(Integer.parseInt(cameraSizeY.getText()));
@@ -1220,25 +1194,25 @@ public class InitializeSimulation extends java.awt.Dialog {
             model.setCameraBaseline(Integer.parseInt(cameraBaseline.getText()));
             model.setCameraPixelSize(Double.parseDouble(cameraPixelSize.getText()));
             
-            model.setObjectiveNa(Double.parseDouble(objectiveNA.getText()));
+            model.setObjectiveNa(Double.parseDouble(objectiveNa.getText()));
             model.setObjectiveMag(Double.parseDouble(objectiveMag.getText()));
             
             model.setStageX(0);
             model.setStageY(0);
             model.setStageZ(Double.parseDouble(stageZ.getText()));
 
-            model.setFluorophoreSignal(Double.parseDouble(fluorPropSignal.getText()));
-            model.setFluorophoreWavelength(Double.parseDouble(fluorPropWavelength.getText()));
-            model.setFluorophoreTOn(Double.parseDouble(fluorPropTOn.getText()));
-            model.setFluorophoreTOff(Double.parseDouble(fluorPropTOff.getText()));
-            model.setFluorophoreTBl(Double.parseDouble(fluorPropTBleached.getText()));
+            model.setFluorophoreSignal(Double.parseDouble(fluorophoreSignal.getText()));
+            model.setFluorophoreWavelength(Double.parseDouble(fluorophoreWavelength.getText()));
+            model.setFluorophoreTOn(Double.parseDouble(fluorophoreTOn.getText()));
+            model.setFluorophoreTOff(Double.parseDouble(fluorophoreTOff.getText()));
+            model.setFluorophoreTBl(Double.parseDouble(fluorophoreTBl.getText()));
 
             model.setLaserCurrentPower(Double.parseDouble(laserInitPower.getText()));
             model.setLaserMinPower(Double.parseDouble(laserMinPower.getText()));
             model.setLaserMaxPower(Double.parseDouble(laserMaxPower.getText()));
             
             model.setFiducialsNumber(Integer.parseInt(fiducialsNumber.getText()));
-            model.setFiducialsSignal(Integer.parseInt(fiducialsSignal.getText()));
+            model.setFiducialsSignal(Double.parseDouble(fiducialsSignal.getText()));
             
         } catch (NumberFormatException ex) {
             IJ.showMessage("Error in parsing of numerical values.");
@@ -1252,17 +1226,64 @@ public class InitializeSimulation extends java.awt.Dialog {
         model.setEmittersCurrentSelection(selectedEmitterButton);
         model.setEmittersRandomNumber(Integer.parseInt(emittersRandomNumber.getText()));
         model.setEmittersGridSpacing(Integer.parseInt(emittersGridSpacing.getText()));
-        model.setEmittersCsvFile(emitterCsvFile.toString());
+        model.setEmittersCsvFile(emittersCsvFile.toString());
         model.setEmittersRandomButtonText(emittersRandomButton.getText());
         model.setEmittersGridButtonText(emittersGridButton.getText());
         model.setEmittersCsvFileButtonText(emittersCsvButton.getText());
         
         String selectedBackgroundButton = ButtonGroupUtils.getSelectedButtonText(this.backgroundButtons);
         model.setBackgroundCurrentSelection(selectedBackgroundButton);
-        model.setBackgroundUniformSignal(Integer.parseInt(backgroundUniformSignal.getText()));
+        model.setBackgroundUniformSignal(Float.parseFloat(backgroundUniformSignal.getText()));
         model.setBackgroundTifFile(backgroundTifFile.toString());
         model.setBackgroundUniformButtonText(backgroundUniformButton.getText());
         model.setBackgroundTifFileButtonText(backgroundTifButton.getText());
+    }
+    
+    /**
+     * Updates the GUI with values from the microscope model.
+     */
+    private void updateView() {
+        cameraSizeX.setText(String.valueOf(model.getCameraNX()));
+        cameraSizeY.setText(String.valueOf(model.getCameraNY()));
+        cameraReadoutNoise.setText(String.valueOf(model.getCameraReadoutNoise()));
+        cameraDarkCurrent.setText(String.valueOf(model.getCameraDarkCurrent()));
+        cameraQuantumEfficiency.setText(String.valueOf(model.getCameraQuantumEfficiency()));
+        cameraAduPerElectron.setText(String.valueOf(model.getCameraAduPerElectron()));
+        cameraEmGain.setText(String.valueOf(model.getCameraEmGain()));
+        cameraBaseline.setText(String.valueOf(model.getCameraBaseline()));
+        cameraPixelSize.setText(String.valueOf(model.getCameraPixelSize()));
+        
+        objectiveNa.setText(String.valueOf(model.getObjectiveNa()));
+        objectiveMag.setText(String.valueOf(model.getObjectiveMag()));
+        
+        stageZ.setText(String.valueOf(model.getStageZ()));
+        
+        fluorophoreSignal.setText(String.valueOf(model.getFluorophoreSignal()));
+        fluorophoreWavelength.setText(String.valueOf(model.getFluorophoreWavelength()));
+        fluorophoreTOn.setText(String.valueOf(model.getFluorophoreTOn()));
+        fluorophoreTOff.setText(String.valueOf(model.getFluorophoreTOff()));
+        fluorophoreTBl.setText(String.valueOf(model.getFluorophoreTBl()));
+        
+        laserInitPower.setText(String.valueOf(model.getLaserCurrentPower()));
+        laserMinPower.setText(String.valueOf(model.getLaserMinPower()));
+        laserMaxPower.setText(String.valueOf(model.getLaserMaxPower()));
+        
+        fiducialsNumber.setText(String.valueOf(model.getFiducialsNumber()));
+        fiducialsSignal.setText(String.valueOf(model.getFiducialsSignal()));
+        
+        emittersRandomNumber.setText(String.valueOf(model.getEmittersRandomNumber()));
+        emittersGridSpacing.setText(String.valueOf(model.getEmittersGridSpacing()));
+        emittersCsvFile = new File(model.getEmittersCsvFile());
+        ButtonGroupUtils.selectButtonModelFromText(emittersButtons, model.getEmittersCurrentSelection());
+        
+        backgroundUniformSignal.setText(String.valueOf(model.getBackgroundUniformSignal()));
+        backgroundTifFile = new File(model.getBackgroundTifFile());
+        ButtonGroupUtils.selectButtonModelFromText(backgroundButtons, model.getBackgroundCurrentSelection());
+    }
+    
+    private void initializeSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeSimulationActionPerformed
+
+        updateModel();
         
         // Now that we have setup all the components, we assemble the
         // microscope and the simulator.
@@ -1292,6 +1313,116 @@ public class InitializeSimulation extends java.awt.Dialog {
         main.setApp(app);
         this.dispose();
     }//GEN-LAST:event_initializeSimulationActionPerformed
+    /**
+     * Opens a SASS settings file and updates the GUI accordingly.
+     */
+    private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
+        
+        JFileChooser fc = new JFileChooser();
+        int returnVal;
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+        //set a default filename
+        fc.setSelectedFile(new File("simulation.sass"));
+        //Set an extension filter
+        fc.setFileFilter(new FileNameExtensionFilter("SASS settings","sass"));
+        returnVal = fc.showOpenDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        
+        FileInputStream fileIn = null;
+        try {
+            fileIn = new FileInputStream(fc.getSelectedFile());
+            model = Model.read(fileIn);
+            updateView();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (fileIn != null) {
+                try {
+                    fileIn.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }//GEN-LAST:event_openButtonActionPerformed
+
+    /**
+     * Saves the GUI settings to a file.
+     */
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        JFileChooser fc = new JFileChooser();
+        int returnVal;
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+        //set a default filename
+        fc.setSelectedFile(new File("simulation.sass"));
+        //Set an extension filter
+        fc.setFileFilter(new FileNameExtensionFilter("SASS settings","sass"));
+        returnVal = fc.showOpenDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        
+        FileOutputStream fileOut = null;
+        try {
+            fileOut = new FileOutputStream(fc.getSelectedFile());
+            updateModel();
+            model.write(fileOut);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (fileOut != null) {
+                try {
+                    fileOut.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void emittersRandomButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_emittersRandomButtonStateChanged
+        if (emittersRandomButton.isSelected()) {
+            emittersRandomNumber.setEnabled(true);
+        } else {
+            emittersRandomNumber.setEnabled(false);
+        }
+    }//GEN-LAST:event_emittersRandomButtonStateChanged
+
+    private void emittersGridButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_emittersGridButtonStateChanged
+        if (emittersGridButton.isSelected()) {
+            emittersGridSpacing.setEnabled(true);
+        } else {
+            emittersGridSpacing.setEnabled(false);
+        }
+    }//GEN-LAST:event_emittersGridButtonStateChanged
+
+    private void emittersCsvButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_emittersCsvButtonStateChanged
+        if (emittersCsvButton.isSelected()) {
+            emittersChooseFile.setEnabled(true);
+        } else {
+            emittersChooseFile.setEnabled(false);
+        }
+    }//GEN-LAST:event_emittersCsvButtonStateChanged
+
+    private void backgroundUniformButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_backgroundUniformButtonStateChanged
+        if (backgroundUniformButton.isSelected()) {
+            backgroundUniformSignal.setEnabled(true);
+        } else {
+            backgroundUniformSignal.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_backgroundUniformButtonStateChanged
+
+    private void backgroundTifButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_backgroundTifButtonStateChanged
+        if (backgroundTifButton.isSelected()) {
+            backgroundChooseFile.setEnabled(true);
+        } else {
+            backgroundChooseFile.setEnabled(false);
+        }
+    }//GEN-LAST:event_backgroundTifButtonStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1324,11 +1455,11 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField emittersRandomNumber;
     private javax.swing.JTextField fiducialsNumber;
     private javax.swing.JTextField fiducialsSignal;
-    private javax.swing.JTextField fluorPropSignal;
-    private javax.swing.JTextField fluorPropTBleached;
-    private javax.swing.JTextField fluorPropTOff;
-    private javax.swing.JTextField fluorPropTOn;
-    private javax.swing.JTextField fluorPropWavelength;
+    private javax.swing.JTextField fluorophoreSignal;
+    private javax.swing.JTextField fluorophoreTBl;
+    private javax.swing.JTextField fluorophoreTOff;
+    private javax.swing.JTextField fluorophoreTOn;
+    private javax.swing.JTextField fluorophoreWavelength;
     private javax.swing.JButton initializeSimulation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1396,8 +1527,10 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField laserMaxPower;
     private javax.swing.JTextField laserMinPower;
     private javax.swing.JTextField objectiveMag;
-    private javax.swing.JTextField objectiveNA;
+    private javax.swing.JTextField objectiveNa;
+    private javax.swing.JButton openButton;
     private java.awt.Panel panel6;
+    private javax.swing.JButton saveButton;
     private javax.swing.JTextField stageZ;
     // End of variables declaration//GEN-END:variables
 

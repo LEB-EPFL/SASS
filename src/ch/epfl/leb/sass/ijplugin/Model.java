@@ -30,6 +30,11 @@ import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.*;
 import ij.IJ;
 import java.io.File;
 import java.io.Serializable;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 
 /**
@@ -351,5 +356,42 @@ public class Model implements Serializable {
             fidBuilder,
             backgroundBuilder
         );
+    }
+    
+    /**
+     * Saves the model's state to a file.
+     * 
+     * @param fileOut The output stream to the file.
+     */
+    public void write(FileOutputStream fileOut) {
+         try {
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+         } catch (IOException ex) {
+            ex.printStackTrace();
+      }
+    }
+    
+    /**
+     * Loads a model from a file.
+     * 
+     * @param fileIn The input stream from the file.
+     */
+    public static Model read(FileInputStream fileIn) {
+        Model model = null;
+        try {
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            model = (Model) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException ex) {
+           ex.printStackTrace();
+        } catch (ClassNotFoundException c) {
+           c.printStackTrace();
+        }
+        
+        return model;
     }
 }

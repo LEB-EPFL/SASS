@@ -218,6 +218,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         saveButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
 
+        setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {

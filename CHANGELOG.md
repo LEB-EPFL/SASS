@@ -1,7 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## Unreleased
+
+### Added
+- You can now save and load simulation settings from the GUI.
 
 ### Changed
 - A status report on PSF calculation is now output to the console for

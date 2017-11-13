@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- A status report on PSF calculation is now output to the console for
+  every 5000 calculations.
+
 ## [v0.5.1]
 
 ### Changed

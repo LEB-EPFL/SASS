@@ -59,17 +59,17 @@ comments.
 The column labels **should not** be included in the file; they are
 illustrated here only to indicate which columns correspond to x and y.
 
-+-----------+-----------+----------------------+
-| x, pixels | y, pixels | (optional) z, pixels |
-+===========+===========+======================+
-|    1.2376 |    4.2340 |               0.0000 |
-+-----------+-----------+----------------------+
-|    2.7300 |    3.7105 |               0.0000 |
-+-----------+-----------+----------------------+
-|    2.4360 |    1.2887 |               0.0000 |
-+-----------+-----------+----------------------+
-|       ... |       ... |                  ... |
-+-----------+-----------+----------------------+
++-----------+-----------+-------------------------+
+| x, pixels | y, pixels | (optional) z, arb. units|
++===========+===========+=========================+
+|    1.2376 |    4.2340 |                  0.0000 |
++-----------+-----------+-------------------------+
+|    2.7300 |    3.7105 |                  0.0000 |
++-----------+-----------+-------------------------+
+|    2.4360 |    1.2887 |                  0.0000 |
++-----------+-----------+-------------------------+
+|       ... |       ... |                     ... |
++-----------+-----------+-------------------------+
 
 The units of the values are in pixels, and the origin is in the upper
 left-hand corner of the generated image stacks. This means, for
@@ -78,6 +78,18 @@ of a 32x32 pixel image.
 
 The coordinate system in x and y is identical to that used by
 `ThunderSTORM <http://zitmen.github.io/thunderstorm/>`_.
+
+What are the units for the axial (z) direction?
+-----------------------------------------------
+
+The units of the values in the z-column of the fluorophore position
+lists can be any unit that you want, so long as you are consistent in
+your choice of units for the properties of the various simulation
+components.
+
+For example, if the you specify the fluorophore z-positions in
+microns, then you should use microns for the fluorescence wavelength,
+stage displacement, and other values that require a length.
 
 How is the stage z-displacement property used?
 ----------------------------------------------

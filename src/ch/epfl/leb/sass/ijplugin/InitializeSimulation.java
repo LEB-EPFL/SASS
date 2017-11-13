@@ -1284,7 +1284,7 @@ public class InitializeSimulation extends java.awt.Dialog {
     private void initializeSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeSimulationActionPerformed
 
         updateModel();
-        
+
         // Now that we have setup all the components, we assemble the
         // microscope and the simulator.
         Microscope microscope = model.build();

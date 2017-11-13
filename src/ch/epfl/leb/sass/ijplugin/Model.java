@@ -44,20 +44,6 @@ import java.io.IOException;
  */
 public class Model implements Serializable {
     
-    private final transient Camera.Builder cameraBuilder = new Camera.Builder();
-    private final transient Objective.Builder objectiveBuilder =
-            new Objective.Builder();
-    private final transient Stage.Builder stageBuilder = new Stage.Builder();
-    private final transient SimpleDynamics.Builder fluorPropBuilder = 
-            new SimpleDynamics.Builder();
-    private final transient Laser.Builder laserBuilder = new Laser.Builder();
-    private final transient Gaussian2D.Builder psfBuilder = 
-            new Gaussian2D.Builder();
-    private transient FluorophoreCommandBuilder fluorPosBuilder = null;
-    private final transient GenerateFiducialsRandom2D.Builder fidBuilder = 
-            new GenerateFiducialsRandom2D.Builder();
-    private transient BackgroundCommandBuilder backgroundBuilder = null;
-    
     private int cameraNX;
     private int cameraNY;
     private double cameraReadoutNoise;
@@ -267,6 +253,17 @@ public class Model implements Serializable {
      * @return A new microscope built from the model parameters.
      */
     public Microscope build() {
+        Camera.Builder cameraBuilder = new Camera.Builder();
+        Objective.Builder objectiveBuilder = new Objective.Builder();
+        Stage.Builder stageBuilder = new Stage.Builder();
+        SimpleDynamics.Builder fluorPropBuilder = new SimpleDynamics.Builder();
+        Laser.Builder laserBuilder = new Laser.Builder();
+        Gaussian2D.Builder psfBuilder = new Gaussian2D.Builder();
+        FluorophoreCommandBuilder fluorPosBuilder = null;
+        GenerateFiducialsRandom2D.Builder fidBuilder = 
+                new GenerateFiducialsRandom2D.Builder();
+        BackgroundCommandBuilder backgroundBuilder = null;
+        
         cameraBuilder.nX(cameraNX);
         cameraBuilder.nY(cameraNY);
         cameraBuilder.readoutNoise(cameraReadoutNoise);

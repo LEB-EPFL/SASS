@@ -196,6 +196,8 @@ public class Fluorophore extends Emitter {
         }
         // If the fluorophore was on during that frame, write a line in the frame logger
         if (on_time > 0.0) {
+            // Round time_elapsed to the lower integer, to get the current frame
+            // If on_time = 1.0, then frame = int(time_elapsed), hence 0.9999 rather than 1
             int frame = (int) (time_elapsed + 0.999999);
             frameLogger.logFrame(frame, this.getId(), this.x, this.y, this.z, on_time);
         }

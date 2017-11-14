@@ -87,10 +87,8 @@ public abstract class Emitter extends Point2D.Double  {
     protected PSF psf;
     
     /**
-     * The emitter's position.
+     * The emitter's z-position.
      */
-    public double x;
-    public double y;
     public double z;
 
     /**
@@ -148,8 +146,6 @@ public abstract class Emitter extends Point2D.Double  {
      */
     public Emitter(double x, double y, double z, PSFBuilder psfBuilder) {
         super(x, y);
-        this.x = x;
-        this.y = y;
         this.z = z;
         this.builder = psfBuilder;
         

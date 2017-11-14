@@ -26,12 +26,15 @@ import static java.lang.Math.floor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import ch.epfl.leb.sass.simulator.loggers.FrameLogger;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSF;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ch.epfl.leb.sass.simulator.loggers.StateLogger;
+import ch.epfl.leb.sass.simulator.loggers.FrameLogger;
 
 /**
  * A point source of light and tools to compute its signature on a digital detector.
@@ -67,6 +70,11 @@ public abstract class Emitter extends Point2D.Double  {
      * A copy of the position logger.
      */
     protected final PositionLogger positionLogger = PositionLogger.getInstance();
+
+    /**
+     * A copy of the frame logger.
+     */
+    protected final FrameLogger frameLogger = FrameLogger.getInstance();
     
     /**
      * A builder for creating/updating the emitter PSF.
@@ -79,8 +87,10 @@ public abstract class Emitter extends Point2D.Double  {
     protected PSF psf;
     
     /**
-     * The emitter's z-position.
+     * The emitter's position.
      */
+    public double x;
+    public double y;
     public double z;
 
     /**
@@ -138,6 +148,8 @@ public abstract class Emitter extends Point2D.Double  {
      */
     public Emitter(double x, double y, double z, PSFBuilder psfBuilder) {
         super(x, y);
+        this.x = x;
+        this.y = y;
         this.z = z;
         this.builder = psfBuilder;
         

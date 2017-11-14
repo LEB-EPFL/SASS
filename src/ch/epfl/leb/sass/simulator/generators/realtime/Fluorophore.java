@@ -194,6 +194,11 @@ public class Fluorophore extends Emitter {
                 remaining_time = 0.0;
             }
         }
+        // If the fluorophore was on during that frame, write a line in the frame logger
+        if (on_time > 0.0) {
+            int frame = (int) (time_elapsed + 0.999999);
+            frameLogger.logFrame(frame, this.getId(), this.x, this.y, this.z, on_time);
+        }
         return flicker(on_time*signal);
     }
 }

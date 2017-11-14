@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+Contains [ALICA v0.2.4]		
 
 ### Added
 - You can now save and load simulation settings from the GUI.
@@ -9,6 +10,10 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - A status report on PSF calculation is now output to the console for
   every 5000 calculations.
+
+### Fixed
+- Fixed a cropping issue with the self-tuning PI controller dialog on
+  Linux.
 
 ## [v0.5.1]
 
@@ -182,6 +187,7 @@ Contains [ALICA v0.0.2]
 - default.nix was added to more easily port the development
   environment across machines.
 
+[ALICA v0.2.4]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.4
 [ALICA v0.2.1]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.1
 [ALICA v0.0.2]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.0.2
 [ALICA v0.1.0]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.1.0

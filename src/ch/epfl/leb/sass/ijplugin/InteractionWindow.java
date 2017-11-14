@@ -37,7 +37,7 @@ public class InteractionWindow extends javax.swing.JFrame {
         javax.swing.JPanel a_panel = analyzer.getStatusPanel();
         if (a_panel != null) {
             p_analyzer.add(a_panel);
-            a_panel.setBounds(5,5,230,170);
+            a_panel.setBounds(5,5,300,200);
             a_panel.revalidate();
             a_panel.repaint();
             p_analyzer.validate();
@@ -46,7 +46,7 @@ public class InteractionWindow extends javax.swing.JFrame {
         javax.swing.JPanel c_panel = controller.getStatusPanel();
         if (c_panel != null) {
             p_controller.add(c_panel);
-            c_panel.setBounds(5,5,230,170);
+            c_panel.setBounds(5,5,300,200);
             c_panel.revalidate();
             c_panel.repaint();
             p_controller.validate();
@@ -71,22 +71,22 @@ public class InteractionWindow extends javax.swing.JFrame {
         p_analyzer.setLayout(p_analyzerLayout);
         p_analyzerLayout.setHorizontalGroup(
             p_analyzerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 258, Short.MAX_VALUE)
+            .addGap(0, 261, Short.MAX_VALUE)
         );
         p_analyzerLayout.setVerticalGroup(
             p_analyzerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout p_controllerLayout = new javax.swing.GroupLayout(p_controller);
         p_controller.setLayout(p_controllerLayout);
         p_controllerLayout.setHorizontalGroup(
             p_controllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 261, Short.MAX_VALUE)
         );
         p_controllerLayout.setVerticalGroup(
             p_controllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 279, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -97,17 +97,20 @@ public class InteractionWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(p_analyzer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(p_controller, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(p_controller, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {p_analyzer, p_controller});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(p_analyzer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(p_controller, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(p_controller, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(p_analyzer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();

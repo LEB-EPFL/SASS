@@ -471,7 +471,59 @@ public class ModelTest {
         float result = instance.getBackgroundUniformSignal();
         assertEquals(expResult, result, 0.0);
     }
+    
+    /**
+     * Test of getBackgroundRandomFeatureSize method, of class Model.
+     */
+    @Test
+    public void testGetBackgroundRandomFeatureSize() {
+        System.out.println("getBackgroundRandomFeatureSize");
+        Model instance = new Model();
+        double expResult = 25;
+        instance.setBackgroundRandomFeatureSize(expResult);
+        double result = instance.getBackgroundRandomFeatureSize();
+        assertEquals(expResult, result, 0.0);
+    }
 
+    /**
+     * Test of getBackgroundRandomMinValue method, of class Model.
+     */
+    @Test
+    public void testGetBackgroundRandomMinValue() {
+        System.out.println("getBackgroundRandomMinValue");
+        Model instance = new Model();
+        float expResult = 25;
+        instance.setBackgroundRandomMinValue(expResult);
+        double result = instance.getBackgroundRandomMinValue();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getBackgroundRandomMaxValue method, of class Model.
+     */
+    @Test
+    public void testGetBackgroundRandomMaxValue() {
+        System.out.println("getBackgroundRandomMaxValue");
+        Model instance = new Model();
+        float expResult = 25;
+        instance.setBackgroundRandomMaxValue(expResult);
+        double result = instance.getBackgroundRandomMaxValue();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getBackgroundRandomFeatureSize method, of class Model.
+     */
+    @Test
+    public void testGetBackgroundRandomSeed() {
+        System.out.println("getBackgroundRandomMaxValue");
+        Model instance = new Model();
+        int expResult = 42;
+        instance.setBackgroundRandomSeed(expResult);
+        int result = instance.getBackgroundRandomSeed();
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of getBackgroundTifFile method, of class Model.
      */
@@ -498,6 +550,20 @@ public class ModelTest {
         assertEquals(expResult, result);
     }
 
+    /**
+     * Test of getBackgroundRandomButtonText() {
+     * 
+     */
+    @Test
+    public void testGetBackgroundRandomButtonText() {
+        System.out.println("getBackgroundRandomButtonText");
+        Model instance = new Model();
+        String expResult = "Random";
+        instance.setBackgroundRandomButtonText(expResult);
+        String result = instance.getBackgroundRandomButtonText();
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of getBackgroundTifFileButtonText method, of class Model.
      */

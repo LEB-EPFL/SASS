@@ -1292,16 +1292,14 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel52" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="backgroundUniformSignal" min="-2" pref="64" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabel53" min="-2" max="-2" attributes="0"/>
-                              </Group>
                               <Component id="backgroundChooseFile" alignment="0" min="-2" pref="155" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabel52" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="backgroundUniformSignal" linkSize="14" min="-2" pref="64" max="-2" attributes="0"/>
+                                      </Group>
                                       <Group type="102" attributes="0">
                                           <Component id="jLabel55" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
@@ -1329,6 +1327,7 @@
                                       <Component id="jLabel59" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel60" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel61" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel53" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>

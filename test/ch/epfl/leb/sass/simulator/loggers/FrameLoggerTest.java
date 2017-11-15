@@ -60,25 +60,25 @@ public class FrameLoggerTest {
         double x = 2.3;
         double y = 2.5;
         double z = 0.7;
-        double time_on = 0.8;
+        double brightness = 0.8;
         logger.setPerformLogging(true);
 
         // Method call to test is here.
-        logger.logFrame(frame, id, x, y, z, time_on);
+        logger.logFrame(frame, id, x, y, z, brightness);
 
         int actualFrame = logger.getFrame().get(0);
         int actualId = logger.getId().get(0);
         double actualX = logger.getX().get(0);
         double actualY = logger.getY().get(0);
         double actualZ = logger.getZ().get(0);
-        double actualTimeOn = logger.getTimeOn().get(0);
+        double actualBrightness = logger.getBrightness().get(0);
 
         assertEquals(frame, actualFrame);
         assertEquals(id, actualId);
         assertEquals(x, actualX, 0.001);
         assertEquals(y, actualY, 0.001);
         assertEquals(z, actualZ, 0.001);
-        assertEquals(time_on, actualTimeOn, 0.001);
+        assertEquals(brightness, actualBrightness, 0.001);
     }
 
     /**
@@ -105,7 +105,7 @@ public class FrameLoggerTest {
         assertEquals(0.0, logger.getX().size(), 0.001);
         assertEquals(0.0, logger.getY().size(), 0.001);
         assertEquals(0.0, logger.getZ().size(), 0.001);
-        assertEquals(0.0, logger.getTimeOn().size(), 0.001);
+        assertEquals(0.0, logger.getBrightness().size(), 0.001);
     }
     
         /**
@@ -133,7 +133,7 @@ public class FrameLoggerTest {
             String line2 = bufferedReader.readLine();
             String line3 = bufferedReader.readLine();
             
-            assertTrue(line1.equals("frame,id,x,y,z,time_on"));
+            assertTrue(line1.equals("frame,id,x,y,z,brightness"));
             assertTrue(line2.equals("1,1,10.0000,5.0000,1.0000,0.8000"));
             assertTrue(line3.equals("2,5,20.0000,5.0000,1.1000,0.6000"));
         } catch (IOException e)

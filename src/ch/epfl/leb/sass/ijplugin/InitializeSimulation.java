@@ -1059,15 +1059,13 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel52)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(backgroundUniformSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel53))
                             .addComponent(backgroundChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel52)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(backgroundUniformSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel9Layout.createSequentialGroup()
                                         .addComponent(jLabel55)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1089,11 +1087,12 @@ public class InitializeSimulation extends java.awt.Dialog {
                                     .addComponent(jLabel58)
                                     .addComponent(jLabel59)
                                     .addComponent(jLabel60)
-                                    .addComponent(jLabel61))))))
+                                    .addComponent(jLabel61)
+                                    .addComponent(jLabel53, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addGap(37, 131, Short.MAX_VALUE))
         );
 
-        jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {backgroundRandomFeatureSize, backgroundRandomMaxValue, backgroundRandomMinValue, backgroundRandomSeed});
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {backgroundRandomFeatureSize, backgroundRandomMaxValue, backgroundRandomMinValue, backgroundRandomSeed, backgroundUniformSignal});
 
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

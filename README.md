@@ -34,9 +34,10 @@ Placing the .jar file in `FIJI/plugins/` folder (file MUST have an underscore in
 
 ## Where to find help
 
-- Questions about how to use SASS: https://gitter.im/smlm-acquisition-simulation-software/Lobby
+- How to use SASS: https://gitter.im/smlm-acquisition-simulation-software/Lobby
 - Bug reports: https://github.com/LEB-EPFL/SASS/issues
 - Feature requests: https://github.com/LEB-EPFL/SASS/issues
+- Developer questions: https://gitter.im/smlm-acquisition-simulation-software/Lobby
 
 ## Acknowledgements
 
@@ -44,5 +45,6 @@ SASS uses adapted code and algorithms from the following projects:
  - [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes (GPL)
  - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko (GPL)
  - [MicroscPSF-ImageJ](https://github.com/hijizhou/MicroscPSF-ImageJ) by Jizhou Li (MIT)
+ - [OpenSimplexNoise](https://gist.github.com/KdotJPG/b1270127455a94ac5d19) by Kurt Spencer (Unlicense/Public Domain)
 
 [Releases]: https://github.com/LEB-EPFL/SASS/releases

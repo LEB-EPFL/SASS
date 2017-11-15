@@ -6,6 +6,10 @@ Contains [ALICA v0.2.4]
 
 ### Added
 - You can now save and load simulation settings from the GUI.
+- There is now a `FrameLogger` for recording the frames that a
+  fluorophore is on. This produces larger log files than the
+  StateLogger, but does not require post-processing to extract the
+  frame numbers.
 
 ### Changed
 - A status report on PSF calculation is now output to the console for

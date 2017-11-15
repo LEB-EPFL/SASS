@@ -214,6 +214,19 @@ public class InitializeSimulation extends java.awt.Dialog {
         backgroundUniformSignal = new javax.swing.JTextField();
         jLabel53 = new javax.swing.JLabel();
         backgroundChooseFile = new javax.swing.JButton();
+        backgroundRandomButton = new javax.swing.JRadioButton();
+        jLabel54 = new javax.swing.JLabel();
+        jLabel55 = new javax.swing.JLabel();
+        jLabel56 = new javax.swing.JLabel();
+        jLabel57 = new javax.swing.JLabel();
+        backgroundRandomFeatureSize = new javax.swing.JTextField();
+        backgroundRandomMinValue = new javax.swing.JTextField();
+        backgroundRandomMaxValue = new javax.swing.JTextField();
+        backgroundRandomSeed = new javax.swing.JTextField();
+        jLabel58 = new javax.swing.JLabel();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel60 = new javax.swing.JLabel();
+        jLabel61 = new javax.swing.JLabel();
         initializeSimulation = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
@@ -880,7 +893,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel47))
                             .addComponent(emittersChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {emittersGridSpacing, emittersRandomNumber});
@@ -941,7 +954,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel50)
                     .addComponent(jLabel51))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -993,6 +1006,46 @@ public class InitializeSimulation extends java.awt.Dialog {
             }
         });
 
+        backgroundButtons.add(backgroundRandomButton);
+        backgroundRandomButton.setText("Random");
+        backgroundRandomButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                backgroundRandomButtonStateChanged(evt);
+            }
+        });
+
+        jLabel54.setText("Feature size");
+
+        jLabel55.setText("Min.");
+
+        jLabel56.setText("Max.");
+
+        jLabel57.setText("Seed");
+
+        backgroundRandomFeatureSize.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        backgroundRandomFeatureSize.setText("10");
+        backgroundRandomFeatureSize.setEnabled(false);
+
+        backgroundRandomMinValue.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        backgroundRandomMinValue.setText("10");
+        backgroundRandomMinValue.setEnabled(false);
+
+        backgroundRandomMaxValue.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        backgroundRandomMaxValue.setText("50");
+        backgroundRandomMaxValue.setEnabled(false);
+
+        backgroundRandomSeed.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        backgroundRandomSeed.setText("0");
+        backgroundRandomSeed.setEnabled(false);
+
+        jLabel58.setText("pixels");
+
+        jLabel59.setText("photons");
+
+        jLabel60.setText("photons");
+
+        jLabel61.setText("--");
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -1002,18 +1055,46 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(backgroundUniformButton)
                     .addComponent(backgroundTifButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backgroundRandomButton)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(backgroundChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addComponent(jLabel52)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(backgroundUniformSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel53)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel53))
+                            .addComponent(backgroundChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel55)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(backgroundRandomMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel56)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(backgroundRandomMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel57)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(backgroundRandomSeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel54)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(backgroundRandomFeatureSize, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel58)
+                                    .addComponent(jLabel59)
+                                    .addComponent(jLabel60)
+                                    .addComponent(jLabel61))))))
+                .addGap(37, 131, Short.MAX_VALUE))
         );
+
+        jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {backgroundRandomFeatureSize, backgroundRandomMaxValue, backgroundRandomMinValue, backgroundRandomSeed});
+
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
@@ -1024,6 +1105,28 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jLabel52)
                     .addComponent(backgroundUniformSignal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel53))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(backgroundRandomButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel54)
+                    .addComponent(backgroundRandomFeatureSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel58))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel55)
+                    .addComponent(backgroundRandomMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel59))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel56)
+                    .addComponent(backgroundRandomMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel60))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel57)
+                    .addComponent(backgroundRandomSeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel61))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(backgroundTifButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1106,9 +1209,9 @@ public class InitializeSimulation extends java.awt.Dialog {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1235,8 +1338,13 @@ public class InitializeSimulation extends java.awt.Dialog {
         String selectedBackgroundButton = ButtonGroupUtils.getSelectedButtonText(this.backgroundButtons);
         model.setBackgroundCurrentSelection(selectedBackgroundButton);
         model.setBackgroundUniformSignal(Float.parseFloat(backgroundUniformSignal.getText()));
+        model.setBackgroundRandomFeatureSize(Double.parseDouble(backgroundRandomFeatureSize.getText()));
+        model.setBackgroundRandomMinValue(Float.parseFloat(backgroundRandomMinValue.getText()));
+        model.setBackgroundRandomMaxValue(Float.parseFloat(backgroundRandomMaxValue.getText()));
+        model.setBackgroundRandomSeed(Integer.parseInt(backgroundRandomSeed.getText()));
         model.setBackgroundTifFile(backgroundTifFile.toString());
         model.setBackgroundUniformButtonText(backgroundUniformButton.getText());
+        model.setBackgroundRandomButtonText(backgroundRandomButton.getText());
         model.setBackgroundTifFileButtonText(backgroundTifButton.getText());
     }
     
@@ -1278,6 +1386,10 @@ public class InitializeSimulation extends java.awt.Dialog {
         ButtonGroupUtils.selectButtonModelFromText(emittersButtons, model.getEmittersCurrentSelection());
         
         backgroundUniformSignal.setText(String.valueOf(model.getBackgroundUniformSignal()));
+        backgroundRandomFeatureSize.setText(String.valueOf(model.getBackgroundRandomFeatureSize()));
+        backgroundRandomMinValue.setText(String.valueOf(model.getBackgroundRandomMinValue()));
+        backgroundRandomMaxValue.setText(String.valueOf(model.getBackgroundRandomMaxValue()));
+        backgroundRandomSeed.setText(String.valueOf(model.getBackgroundRandomSeed()));
         backgroundTifFile = new File(model.getBackgroundTifFile());
         ButtonGroupUtils.selectButtonModelFromText(backgroundButtons, model.getBackgroundCurrentSelection());
     }
@@ -1425,11 +1537,30 @@ public class InitializeSimulation extends java.awt.Dialog {
         }
     }//GEN-LAST:event_backgroundTifButtonStateChanged
 
+    private void backgroundRandomButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_backgroundRandomButtonStateChanged
+        if (backgroundRandomButton.isSelected()) {
+            backgroundRandomFeatureSize.setEnabled(true);
+            backgroundRandomMinValue.setEnabled(true);
+            backgroundRandomMaxValue.setEnabled(true);
+            backgroundRandomSeed.setEnabled(true);
+        } else {
+            backgroundRandomFeatureSize.setEnabled(false);
+            backgroundRandomMinValue.setEnabled(false);
+            backgroundRandomMaxValue.setEnabled(false);
+            backgroundRandomSeed.setEnabled(false);
+        }
+    }//GEN-LAST:event_backgroundRandomButtonStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel analyzer_panel;
     private javax.swing.ButtonGroup backgroundButtons;
     private javax.swing.JButton backgroundChooseFile;
+    private javax.swing.JRadioButton backgroundRandomButton;
+    private javax.swing.JTextField backgroundRandomFeatureSize;
+    private javax.swing.JTextField backgroundRandomMaxValue;
+    private javax.swing.JTextField backgroundRandomMinValue;
+    private javax.swing.JTextField backgroundRandomSeed;
     private javax.swing.JRadioButton backgroundTifButton;
     private javax.swing.JRadioButton backgroundUniformButton;
     private javax.swing.JTextField backgroundUniformSignal;
@@ -1511,7 +1642,15 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

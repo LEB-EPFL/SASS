@@ -10,6 +10,8 @@ Contains [ALICA v0.2.4]
   fluorophore is on. This produces larger log files than the
   StateLogger, but does not require post-processing to extract the
   frame numbers.
+- It is now possible to generate random background patterns using
+  `GenerateRandomBackground`.
 
 ### Changed
 - A status report on PSF calculation is now output to the console for

@@ -85,7 +85,12 @@ public class Model implements Serializable {
     
     private String backgroundCurrentSelection;
     private float backgroundUniformSignal;
+    private double backgroundRandomFeatureSize;
+    private float backgroundRandomMinValue;
+    private float backgroundRandomMaxValue;
+    private int backgroundRandomSeed;
     private String backgroundTifFile;
+    private String backgroundRandomButtonText;
     private String backgroundUniformButtonText;
     private String backgroundTifFileButtonText;
     
@@ -146,11 +151,26 @@ public class Model implements Serializable {
     public float getBackgroundUniformSignal() {
         return backgroundUniformSignal;
     }
-    public String getBackgroundTifFile() {
-        return backgroundTifFile;
-    }
     public String getBackgroundUniformButtonText() {
         return backgroundUniformButtonText;
+    }
+    public double getBackgroundRandomFeatureSize() {
+        return backgroundRandomFeatureSize;
+    }
+    public float getBackgroundRandomMinValue() {
+        return backgroundRandomMinValue;
+    }
+    public float getBackgroundRandomMaxValue() {
+        return backgroundRandomMaxValue;
+    }
+    public int getBackgroundRandomSeed() {
+        return backgroundRandomSeed;
+    }
+    public String getBackgroundRandomButtonText() {
+        return backgroundRandomButtonText;
+    }
+    public String getBackgroundTifFile() {
+        return backgroundTifFile;
     }
     public String getBackgroundTifFileButtonText() {
         return backgroundTifFileButtonText;
@@ -238,12 +258,27 @@ public class Model implements Serializable {
     public void setBackgroundUniformSignal(float signal) {
         backgroundUniformSignal = signal;
     }
-    public void setBackgroundTifFile(String filename) {
-        backgroundTifFile = filename;
-    }
     public void setBackgroundUniformButtonText(String text) {
         backgroundUniformButtonText = text;
     }
+    public void setBackgroundRandomFeatureSize(double featureSize) {
+        backgroundRandomFeatureSize = featureSize;
+    }
+    public void setBackgroundRandomMinValue(float minValue) {
+        backgroundRandomMinValue = minValue;
+    }
+    public void setBackgroundRandomMaxValue(float maxValue) {
+        backgroundRandomMaxValue = maxValue;
+    }
+    public void setBackgroundRandomSeed(int seed) {
+        backgroundRandomSeed = seed;
+    }
+    public void setBackgroundRandomButtonText(String text) {
+        backgroundRandomButtonText = text;
+    }
+    public void setBackgroundTifFile(String filename) {
+        backgroundTifFile = filename;
+    }    
     public void setBackgroundTifFileButtonText(String text) {
         backgroundTifFileButtonText = text;
     }
@@ -339,6 +374,19 @@ public class Model implements Serializable {
                 IJ.showMessage("Error in background loading. The image is not large enough.");
             } catch (Exception ex) {
                 IJ.showMessage("Error in background loading.");
+            }
+        } else if (backgroundCurrentSelection.equals(backgroundRandomButtonText)) {
+            try {
+                GenerateRandomBackground.Builder tempBuilder = new GenerateRandomBackground.Builder();
+                tempBuilder.featureSize(backgroundRandomFeatureSize);
+                tempBuilder.min(backgroundRandomMinValue);
+                tempBuilder.max(backgroundRandomMaxValue);
+                tempBuilder.seed(backgroundRandomSeed);
+                backgroundBuilder = tempBuilder;
+                } catch (NumberFormatException ex) {
+                IJ.showMessage("Error in parsing of numerical values.");
+            } catch (Exception ex) {
+                IJ.showMessage("Error in device component intialization.");
             }
         }
         

@@ -20,6 +20,11 @@ Contains [ALICA v0.2.4]
 ### Fixed
 - Fixed a cropping issue with the self-tuning PI controller dialog on
   Linux.
+- The `GibsonLanniPSF` cache is now erased everytime a new builder is
+  created for this PSF type. This prevents caching calculations done
+  for previous simulations.
+- The Save... button in the Initialize Simulation window is now
+  properly displayed as a Save dialog.
 
 ## [v0.5.1]
 

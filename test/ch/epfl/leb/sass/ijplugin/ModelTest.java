@@ -419,6 +419,45 @@ public class ModelTest {
         String result = instance.getEmittersCsvFileButtonText();
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of getEmitters3DCheckBoxEnabled method, of class Model.
+     */
+    @Test
+    public void testGetEmitters3DCheckBoxEnabled() {
+        System.out.println("getEmitters3DCheckBoxEnabled");
+        Model instance = new Model();
+        boolean expResult = true;
+        instance.setEmitters3DCheckBoxEnabled(expResult);
+        boolean result = instance.getEmitters3DCheckBoxEnabled();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getEmitters3DMinZ method, of class Model.
+     */
+    @Test
+    public void testGetEmitters3DMinZ() {
+        System.out.println("getEmitters3DMinZ");
+        Model instance = new Model();
+        double expResult = 0.0;
+        instance.setEmitters3DMinZ(expResult);
+        double result = instance.getEmitters3DMinZ();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getEmitters3DMaxZ method, of class Model.
+     */
+    @Test
+    public void testGetEmitters3DMaxZ() {
+        System.out.println("getEmitters3DMaxZ");
+        Model instance = new Model();
+        double expResult = 3.2;
+        instance.setEmitters3DMaxZ(expResult);
+        double result = instance.getEmitters3DMaxZ();
+        assertEquals(expResult, result, 0.0);
+    }
 
     /**
      * Test of getFiducialsNumber method, of class Model.
@@ -575,5 +614,265 @@ public class ModelTest {
         instance.setBackgroundTifFileButtonText(expResult);
         String result = instance.getBackgroundTifFileButtonText();
         assertEquals(expResult, result);
-    }    
+    }
+    
+    /**
+     * Test of getPsfCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetPsfCurrentSelection() {
+        System.out.println("getPsfCurrentSelection");
+        Model instance = new Model();
+        String expResult = "Gaussian 2D";
+        instance.setPsfCurrentSelection(expResult);
+        String result = instance.getPsfCurrentSelection();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGaussian2dText method, of class Model.
+     */
+    @Test
+    public void testGetPsfGaussian2dText() {
+        System.out.println("getPsfGaussian2dText");
+        Model instance = new Model();
+        String expResult = "Gaussian 2D";
+        instance.setPsfGaussian2dText(expResult);
+        String result = instance.getPsfGaussian2dText();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGaussian3dText method, of class Model.
+     */
+    @Test
+    public void testGetPsfGaussian3dText() {
+        System.out.println("getPsfGaussian3dText");
+        Model instance = new Model();
+        String expResult = "Gaussian 3D";
+        instance.setPsfGaussian3dText(expResult);
+        String result = instance.getPsfGaussian3dText();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNumBasis, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNumBasis() {
+        System.out.println("getPsfGibsonLanniNumBasis");
+        Model instance = new Model();
+        int expResult = 100;
+        instance.setPsfGibsonLanniNumBasis(expResult);
+        int result = instance.getPsfGibsonLanniNumBasis();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNumSamples, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNumSamples() {
+        System.out.println("getPsfGibsonLanniNumSamples");
+        Model instance = new Model();
+        int expResult = 1000;
+        instance.setPsfGibsonLanniNumSamples(expResult);
+        int result = instance.getPsfGibsonLanniNumSamples();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniOversampling, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniOversampling() {
+        System.out.println("getPsfGibsonLanniOversampling");
+        Model instance = new Model();
+        int expResult = 2;
+        instance.setPsfGibsonLanniOversampling(expResult);
+        int result = instance.getPsfGibsonLanniOversampling();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniSizeX, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniSizeX() {
+        System.out.println("getPsfGibsonLanniSizeX");
+        Model instance = new Model();
+        int expResult = 32;
+        instance.setPsfGibsonLanniSizeX(expResult);
+        int result = instance.getPsfGibsonLanniSizeX();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniSizeY, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniSizeY() {
+        System.out.println("getPsfGibsonLanniSizeY");
+        Model instance = new Model();
+        int expResult = 32;
+        instance.setPsfGibsonLanniSizeY(expResult);
+        int result = instance.getPsfGibsonLanniSizeY();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNs, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNs() {
+        System.out.println("getPsfGibsonLanniNs");
+        Model instance = new Model();
+        double expResult = 1.33;
+        instance.setPsfGibsonLanniNs(expResult);
+        double result = instance.getPsfGibsonLanniNs();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNg0, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNg0() {
+        System.out.println("getPsfGibsonLanniNg0");
+        Model instance = new Model();
+        double expResult = 1.5;
+        instance.setPsfGibsonLanniNg0(expResult);
+        double result = instance.getPsfGibsonLanniNg0();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNg, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNg() {
+        System.out.println("getPsfGibsonLanniNg");
+        Model instance = new Model();
+        double expResult = 1.5;
+        instance.setPsfGibsonLanniNg(expResult);
+        double result = instance.getPsfGibsonLanniNg();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNi0, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNi0() {
+        System.out.println("getPsfGibsonLanniNi0");
+        Model instance = new Model();
+        double expResult = 1.5;
+        instance.setPsfGibsonLanniNi0(expResult);
+        double result = instance.getPsfGibsonLanniNi0();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniNi, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniNi() {
+        System.out.println("getPsfGibsonLanniNi");
+        Model instance = new Model();
+        double expResult = 1.5;
+        instance.setPsfGibsonLanniNi(expResult);
+        double result = instance.getPsfGibsonLanniNi();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniTi0, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniTi0() {
+        System.out.println("getPsfGibsonLanniTi0");
+        Model instance = new Model();
+        double expResult = 150;
+        instance.setPsfGibsonLanniTi0(expResult);
+        double result = instance.getPsfGibsonLanniTi0();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniTg0, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniTg0() {
+        System.out.println("getPsfGibsonLanniTg0");
+        Model instance = new Model();
+        double expResult = 170;
+        instance.setPsfGibsonLanniTg0(expResult);
+        double result = instance.getPsfGibsonLanniTg0();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniTg, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniTg() {
+        System.out.println("getPsfGibsonLanniTg");
+        Model instance = new Model();
+        double expResult = 170;
+        instance.setPsfGibsonLanniTg(expResult);
+        double result = instance.getPsfGibsonLanniTg();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniResPsf, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniResPsf() {
+        System.out.println("getPsfGibsonLanniResPsf");
+        Model instance = new Model();
+        double expResult = 0.0215;
+        instance.setPsfGibsonLanniResPsf(expResult);
+        double result = instance.getPsfGibsonLanniResPsf();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniResPsfAxial, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniResPsfAxial() {
+        System.out.println("getPsfGibsonLanniResPsfAxial");
+        Model instance = new Model();
+        double expResult = 0.005;
+        instance.setPsfGibsonLanniResPsfAxial(expResult);
+        double result = instance.getPsfGibsonLanniResPsfAxial();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniSolver, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniSolver() {
+        System.out.println("getPsfGibsonLanniSolver");
+        Model instance = new Model();
+        String expResult = "svd";
+        instance.setPsfGibsonLanniSolver(expResult);
+        String result = instance.getPsfGibsonLanniSolver();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPsfGibsonLanniMaxRadius, of class Model.
+     */
+    @Test
+    public void testGetPsfGibsonLanniMaxRadius() {
+        System.out.println("getPsfGibsonLanniMaxRadius");
+        Model instance = new Model();
+        int expResult = 15;
+        instance.setPsfGibsonLanniMaxRadius(expResult);
+        int result = instance.getPsfGibsonLanniMaxRadius();
+        assertEquals(expResult, result);
+    }
 }

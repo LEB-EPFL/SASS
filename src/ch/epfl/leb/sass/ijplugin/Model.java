@@ -24,7 +24,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.components.Objective;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Stage;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.SimpleDynamics;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.*;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian2D;
+import ch.epfl.leb.sass.simulator.generators.realtime.psfs.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.*;
 import ij.IJ;
@@ -79,6 +79,9 @@ public class Model implements Serializable {
     private String emittersRandomButtonText;
     private String emittersGridButtonText;
     private String emittersCsvFileButtonText;
+    private boolean emitters3DCheckBoxEnabled;
+    private double emitters3DMinZ;
+    private double emitters3DMaxZ;
     
     private int fiducialsNumber;
     private double fiducialsSignal;
@@ -93,6 +96,28 @@ public class Model implements Serializable {
     private String backgroundRandomButtonText;
     private String backgroundUniformButtonText;
     private String backgroundTifFileButtonText;
+    
+    private String psfCurrentSelection;
+    private String psfGaussian2dText;
+    private String psfGaussian3dText;
+    private int psfGibsonLanniNumBasis;
+    private int psfGibsonLanniNumSamples;
+    private int psfGibsonLanniOversampling;
+    private int psfGibsonLanniSizeX;
+    private int psfGibsonLanniSizeY;
+    private double psfGibsonLanniNs;
+    private double psfGibsonLanniNg0;
+    private double psfGibsonLanniNg;
+    private double psfGibsonLanniNi0;
+    private double psfGibsonLanniNi;
+    private double psfGibsonLanniTi0;
+    private double psfGibsonLanniTg0;
+    private double psfGibsonLanniTg;
+    private double psfGibsonLanniResPsf;
+    private double psfGibsonLanniResPsfAxial;
+    private String psfGibsonLanniSolver;
+    private int psfGibsonLanniMaxRadius;
+    private String psfGibsonLanniText;
     
     // Getters
     //--------------------------------------------------------------------------
@@ -141,6 +166,11 @@ public class Model implements Serializable {
     public String getEmittersCsvFileButtonText() {
         return emittersCsvFileButtonText;
     }
+    public boolean getEmitters3DCheckBoxEnabled() {
+        return emitters3DCheckBoxEnabled;
+    }
+    public double getEmitters3DMinZ() { return emitters3DMinZ; }
+    public double getEmitters3DMaxZ() { return emitters3DMaxZ; }
     
     public int getFiducialsNumber() { return fiducialsNumber; }
     public double getFiducialsSignal() { return fiducialsSignal;}
@@ -148,32 +178,44 @@ public class Model implements Serializable {
     public String getBackgroundCurrentSelection() {
         return backgroundCurrentSelection;
     }
-    public float getBackgroundUniformSignal() {
-        return backgroundUniformSignal;
-    }
+    public float getBackgroundUniformSignal() { return backgroundUniformSignal; }
     public String getBackgroundUniformButtonText() {
         return backgroundUniformButtonText;
     }
     public double getBackgroundRandomFeatureSize() {
         return backgroundRandomFeatureSize;
     }
-    public float getBackgroundRandomMinValue() {
-        return backgroundRandomMinValue;
-    }
-    public float getBackgroundRandomMaxValue() {
-        return backgroundRandomMaxValue;
-    }
-    public int getBackgroundRandomSeed() {
-        return backgroundRandomSeed;
-    }
+    public float getBackgroundRandomMinValue() { return backgroundRandomMinValue; }
+    public float getBackgroundRandomMaxValue() { return backgroundRandomMaxValue; }
+    public int getBackgroundRandomSeed() { return backgroundRandomSeed; }
     public String getBackgroundRandomButtonText() {
-        return backgroundRandomButtonText;
-    }
-    public String getBackgroundTifFile() {
-        return backgroundTifFile;
-    }
+        return backgroundRandomButtonText;}
+    public String getBackgroundTifFile() { return backgroundTifFile; }
     public String getBackgroundTifFileButtonText() {
         return backgroundTifFileButtonText;
+    }
+    public String getPsfCurrentSelection() { return psfCurrentSelection; }
+    public String getPsfGaussian2dText() { return psfGaussian2dText; }
+    public String getPsfGaussian3dText() { return psfGaussian3dText; }
+    public int getPsfGibsonLanniNumBasis() { return psfGibsonLanniNumBasis; }
+    public int getPsfGibsonLanniNumSamples() { return psfGibsonLanniNumSamples; }
+    public int getPsfGibsonLanniOversampling() { return psfGibsonLanniOversampling; }
+    public int getPsfGibsonLanniSizeX() { return psfGibsonLanniSizeX; }
+    public int getPsfGibsonLanniSizeY() { return psfGibsonLanniSizeY; }
+    public double getPsfGibsonLanniNs() { return psfGibsonLanniNs; }
+    public double getPsfGibsonLanniNg0() { return psfGibsonLanniNg0; }
+    public double getPsfGibsonLanniNg() { return psfGibsonLanniNg; }
+    public double getPsfGibsonLanniNi0() { return psfGibsonLanniNi0; }
+    public double getPsfGibsonLanniNi() { return psfGibsonLanniNi; }
+    public double getPsfGibsonLanniTi0() { return psfGibsonLanniTi0; }
+    public double getPsfGibsonLanniTg0() { return psfGibsonLanniTg0; }
+    public double getPsfGibsonLanniTg() { return psfGibsonLanniTg; }
+    public double getPsfGibsonLanniResPsf() { return psfGibsonLanniResPsf; }
+    public double getPsfGibsonLanniResPsfAxial() { return psfGibsonLanniResPsfAxial; }
+    public String getPsfGibsonLanniSolver() { return psfGibsonLanniSolver; }
+    public int getPsfGibsonLanniMaxRadius() { return psfGibsonLanniMaxRadius; }
+    public String getPsfGibsonLanniText() {
+        return psfGibsonLanniText;
     }
     
     // Setters
@@ -245,6 +287,15 @@ public class Model implements Serializable {
     public void setEmittersCsvFileButtonText(String text) {
         emittersCsvFileButtonText = text;
     }
+    public void setEmitters3DCheckBoxEnabled(boolean enabled) {
+        emitters3DCheckBoxEnabled = enabled;
+    }
+    public void setEmitters3DMinZ(double min) {
+        emitters3DMinZ = min;
+    }
+    public void setEmitters3DMaxZ(double max) {
+        emitters3DMaxZ = max;
+    }
     
     public void setFiducialsNumber(int number) {
         fiducialsNumber = number;
@@ -282,6 +333,48 @@ public class Model implements Serializable {
     public void setBackgroundTifFileButtonText(String text) {
         backgroundTifFileButtonText = text;
     }
+    public void setPsfCurrentSelection(String text) {
+        psfCurrentSelection = text;
+    }
+    public void setPsfGaussian2dText(String text) {
+        psfGaussian2dText = text;
+    }
+    public void setPsfGaussian3dText(String text) {
+        psfGaussian3dText = text;
+    }
+    public void setPsfGibsonLanniNumBasis(int numBasis) {
+        psfGibsonLanniNumBasis = numBasis;
+    }
+    public void setPsfGibsonLanniNumSamples(int numSamples) {
+        psfGibsonLanniNumSamples = numSamples;
+    }
+    public void setPsfGibsonLanniOversampling(int oversampling) {
+        psfGibsonLanniOversampling = oversampling; }
+    public void setPsfGibsonLanniSizeX(int sizeX) {  psfGibsonLanniSizeX = sizeX; }
+    public void setPsfGibsonLanniSizeY(int sizeY) {  psfGibsonLanniSizeY = sizeY; }
+    public void setPsfGibsonLanniNs(double ns) {  psfGibsonLanniNs = ns; }
+    public void setPsfGibsonLanniNg0(double ng0) { psfGibsonLanniNg0 = ng0; }
+    public void setPsfGibsonLanniNg(double ng) {  psfGibsonLanniNg = ng; }
+    public void setPsfGibsonLanniNi0(double ni0) {  psfGibsonLanniNi0 = ni0; }
+    public void setPsfGibsonLanniNi(double ni) {  psfGibsonLanniNi =  ni; }
+    public void setPsfGibsonLanniTi0(double ti0) {  psfGibsonLanniTi0 = ti0; }
+    public void setPsfGibsonLanniTg0(double tg0) {  psfGibsonLanniTg0 = tg0; }
+    public void setPsfGibsonLanniTg(double tg) {  psfGibsonLanniTg = tg; }
+    public void setPsfGibsonLanniResPsf(double resPsf) {
+        psfGibsonLanniResPsf = resPsf;
+    }
+    public void setPsfGibsonLanniResPsfAxial(double resPsfAxial) {
+        psfGibsonLanniResPsfAxial = resPsfAxial;
+    }
+    public void setPsfGibsonLanniSolver(String solver) {
+        psfGibsonLanniSolver = solver;
+    }
+    public void setPsfGibsonLanniMaxRadius(int maxRadius) {
+        psfGibsonLanniMaxRadius = maxRadius;
+    }
+    public void setPsfGibsonLanniText(String text) {
+        psfGibsonLanniText = text;
+    }
     
     /**
      * Builds a microscope from the model parameters.
@@ -293,7 +386,7 @@ public class Model implements Serializable {
         Stage.Builder stageBuilder = new Stage.Builder();
         SimpleDynamics.Builder fluorPropBuilder = new SimpleDynamics.Builder();
         Laser.Builder laserBuilder = new Laser.Builder();
-        Gaussian2D.Builder psfBuilder = new Gaussian2D.Builder();
+        PSFBuilder psfBuilder = null;
         FluorophoreCommandBuilder fluorPosBuilder = null;
         GenerateFiducialsRandom2D.Builder fidBuilder = 
                 new GenerateFiducialsRandom2D.Builder();
@@ -329,8 +422,8 @@ public class Model implements Serializable {
         laserBuilder.minPower(laserMinPower);
         laserBuilder.maxPower(laserMaxPower);
 
-        if (emittersCurrentSelection.equals(emittersRandomButtonText)) {
-            // Random fluorophore distributions
+        if (emittersCurrentSelection.equals(emittersRandomButtonText) & !(emitters3DCheckBoxEnabled)) {
+            // Random 2D fluorophore distributions
             try {
                 GenerateFluorophoresRandom2D.Builder tempPosBuilder = new GenerateFluorophoresRandom2D.Builder();
                 tempPosBuilder.numFluors(emittersRandomNumber);
@@ -338,8 +431,8 @@ public class Model implements Serializable {
             } catch (Exception ex) {
                 IJ.showMessage("Error in emitter position parsing.");
             }
-        } else if (emittersCurrentSelection.equals(emittersGridButtonText)) {
-            // Fluorophore distributions on a square grid
+        } else if (emittersCurrentSelection.equals(emittersGridButtonText) & !(emitters3DCheckBoxEnabled)) {
+            // Fluorophore distributions in 2D on a square grid
             try {
                 GenerateFluorophoresGrid2D.Builder tempPosBuilder = new GenerateFluorophoresGrid2D.Builder();
                 tempPosBuilder.spacing(emittersGridSpacing);
@@ -347,6 +440,28 @@ public class Model implements Serializable {
             } catch (Exception ex) {
                 IJ.showMessage("Error in emitter position parsing.");
             }
+        } else if (emittersCurrentSelection.equals(emittersRandomButtonText) & emitters3DCheckBoxEnabled) {
+            // Random 3D fluorophore distributions
+            try {
+                GenerateFluorophoresRandom3D.Builder tempPosBuilder = new GenerateFluorophoresRandom3D.Builder();
+                tempPosBuilder.numFluors(emittersRandomNumber);
+                tempPosBuilder.zLow(emitters3DMinZ);
+                tempPosBuilder.zHigh(emitters3DMaxZ);
+                fluorPosBuilder = tempPosBuilder;
+            } catch (Exception ex) {
+                IJ.showMessage("Error in emitter position parsing.");
+            }
+        } else if (emittersCurrentSelection.equals(emittersGridButtonText) & !(emitters3DCheckBoxEnabled)) {
+            // Fluorophore distributions in 3D on a square grid
+            try {
+                GenerateFluorophoresGrid3D.Builder tempPosBuilder = new GenerateFluorophoresGrid3D.Builder();
+                tempPosBuilder.spacing(emittersGridSpacing);
+                tempPosBuilder.zLow(emitters3DMinZ);
+                tempPosBuilder.zHigh(emitters3DMaxZ);
+                fluorPosBuilder = tempPosBuilder;
+            } catch (Exception ex) {
+                IJ.showMessage("Error in emitter position parsing.");
+            } 
         } else if (emittersCurrentSelection.equals(emittersCsvFileButtonText)) {
             // Parse fluorophore positions from a CSV file
             GenerateFluorophoresFromCSV.Builder tempPosBuilder = new GenerateFluorophoresFromCSV.Builder();
@@ -388,6 +503,33 @@ public class Model implements Serializable {
             } catch (Exception ex) {
                 IJ.showMessage("Error in device component intialization.");
             }
+        }
+        
+        if (psfCurrentSelection.equals(psfGaussian2dText)) {
+            psfBuilder = new Gaussian2D.Builder();
+        } else if (psfCurrentSelection.equals(psfGaussian3dText)) {
+            psfBuilder = new Gaussian3D.Builder();
+        } else if (psfCurrentSelection.equals(psfGibsonLanniText)) {
+            GibsonLanniPSF.Builder tempBuilder = new GibsonLanniPSF.Builder();
+            tempBuilder.numBasis(psfGibsonLanniNumBasis)
+                    .numSamples(psfGibsonLanniNumSamples)
+                    .oversampling(psfGibsonLanniOversampling)
+                    .sizeX(psfGibsonLanniSizeX)
+                    .sizeY(psfGibsonLanniSizeY)
+                    .ns(psfGibsonLanniNs)
+                    .ng0(psfGibsonLanniNg0)
+                    .ng(psfGibsonLanniNg)
+                    .ni0(psfGibsonLanniNi0)
+                    .ni(psfGibsonLanniNi)
+                    .ti0(psfGibsonLanniTi0)
+                    .tg0(psfGibsonLanniTg0)
+                    .tg(psfGibsonLanniTg)
+                    .resPSF(psfGibsonLanniResPsf)
+                    .resPSFAxial(psfGibsonLanniResPsfAxial)
+                    .solver(psfGibsonLanniSolver)
+                    .maxRadius(psfGibsonLanniMaxRadius);
+            psfBuilder = tempBuilder;
+            
         }
         
         return new Microscope(

@@ -34,6 +34,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.ButtonModel;
+import java.awt.CardLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -200,6 +201,14 @@ public class InitializeSimulation extends java.awt.Dialog {
         emittersGridSpacing = new javax.swing.JTextField();
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        emitters3DCheckBox = new javax.swing.JCheckBox();
+        jLabel96 = new javax.swing.JLabel();
+        jLabel97 = new javax.swing.JLabel();
+        emitters3DMinZ = new javax.swing.JTextField();
+        emitters3DMaxZ = new javax.swing.JTextField();
+        jLabel98 = new javax.swing.JLabel();
+        jLabel99 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel48 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
@@ -230,6 +239,67 @@ public class InitializeSimulation extends java.awt.Dialog {
         initializeSimulation = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
+        psfParentPanel = new javax.swing.JPanel();
+        psfComboBox = new javax.swing.JComboBox<>();
+        jSeparator1 = new javax.swing.JSeparator();
+        psfCardPanel = new javax.swing.JPanel();
+        psfGaussian2DCard = new javax.swing.JPanel();
+        psfGaussian2DLabel = new javax.swing.JLabel();
+        psfGaussian3DCard = new javax.swing.JPanel();
+        psfGaussian3DLabel = new javax.swing.JLabel();
+        psfGibsonLanniCard = new javax.swing.JScrollPane();
+        psfGibsonLanniPanel = new javax.swing.JPanel();
+        jLabel62 = new javax.swing.JLabel();
+        jLabel63 = new javax.swing.JLabel();
+        jLabel64 = new javax.swing.JLabel();
+        jLabel65 = new javax.swing.JLabel();
+        jLabel66 = new javax.swing.JLabel();
+        jLabel67 = new javax.swing.JLabel();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
+        jLabel70 = new javax.swing.JLabel();
+        jLabel71 = new javax.swing.JLabel();
+        jLabel72 = new javax.swing.JLabel();
+        jLabel73 = new javax.swing.JLabel();
+        jLabel74 = new javax.swing.JLabel();
+        jLabel75 = new javax.swing.JLabel();
+        jLabel76 = new javax.swing.JLabel();
+        jLabel77 = new javax.swing.JLabel();
+        jLabel78 = new javax.swing.JLabel();
+        glNumBasis = new javax.swing.JTextField();
+        glNumSamples = new javax.swing.JTextField();
+        glOversampling = new javax.swing.JTextField();
+        glSizeX = new javax.swing.JTextField();
+        glSizeY = new javax.swing.JTextField();
+        glNs = new javax.swing.JTextField();
+        glNg0 = new javax.swing.JTextField();
+        glNg = new javax.swing.JTextField();
+        glNi0 = new javax.swing.JTextField();
+        glNi = new javax.swing.JTextField();
+        glTi0 = new javax.swing.JTextField();
+        glTg0 = new javax.swing.JTextField();
+        glTg = new javax.swing.JTextField();
+        glResPsf = new javax.swing.JTextField();
+        glResPsfAxial = new javax.swing.JTextField();
+        glSolver = new javax.swing.JTextField();
+        glMaxRadius = new javax.swing.JTextField();
+        jLabel79 = new javax.swing.JLabel();
+        jLabel80 = new javax.swing.JLabel();
+        jLabel81 = new javax.swing.JLabel();
+        jLabel82 = new javax.swing.JLabel();
+        jLabel83 = new javax.swing.JLabel();
+        jLabel84 = new javax.swing.JLabel();
+        jLabel85 = new javax.swing.JLabel();
+        jLabel86 = new javax.swing.JLabel();
+        jLabel87 = new javax.swing.JLabel();
+        jLabel88 = new javax.swing.JLabel();
+        jLabel89 = new javax.swing.JLabel();
+        jLabel90 = new javax.swing.JLabel();
+        jLabel91 = new javax.swing.JLabel();
+        jLabel92 = new javax.swing.JLabel();
+        jLabel93 = new javax.swing.JLabel();
+        jLabel94 = new javax.swing.JLabel();
+        jLabel95 = new javax.swing.JLabel();
 
         setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         setResizable(false);
@@ -336,7 +406,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 10, Short.MAX_VALUE)
                         .addComponent(controller_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,11 +488,6 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         cameraBaseline.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         cameraBaseline.setText("100");
-        cameraBaseline.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cameraBaselineActionPerformed(evt);
-            }
-        });
 
         cameraPixelSize.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         cameraPixelSize.setText("6.5");
@@ -461,44 +526,28 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jLabel13)
                     .addComponent(jLabel10)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraSizeX, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel14))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraSizeY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel15))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraReadoutNoise, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel16))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraDarkCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel17))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraQuantumEfficiency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel18))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraAduPerElectron, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel19))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraEmGain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel20))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraBaseline, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel21))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cameraPixelSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel22)))
+                    .addComponent(cameraSizeX, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraSizeY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraReadoutNoise, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraDarkCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraQuantumEfficiency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraAduPerElectron, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraEmGain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraBaseline, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cameraPixelSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel22))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -867,6 +916,29 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel47.setText("pixels");
 
+        emitters3DCheckBox.setText("3D");
+        emitters3DCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                emitters3DCheckBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel96.setText("Min. z-position");
+
+        jLabel97.setText("Max. z-position");
+
+        emitters3DMinZ.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        emitters3DMinZ.setText("0");
+        emitters3DMinZ.setEnabled(false);
+
+        emitters3DMaxZ.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        emitters3DMaxZ.setText("2");
+        emitters3DMaxZ.setEnabled(false);
+
+        jLabel98.setText("µm");
+
+        jLabel99.setText("µm");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -874,26 +946,50 @@ public class InitializeSimulation extends java.awt.Dialog {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(emittersRandomButton)
-                    .addComponent(emittersGridButton)
-                    .addComponent(emittersCsvButton)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator2)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(emittersRandomButton)
+                                    .addComponent(emittersGridButton)
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                                        .addComponent(jLabel45)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(emittersRandomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                                        .addComponent(jLabel46)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(emittersGridSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel47))
+                                            .addComponent(emittersChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(emitters3DCheckBox)
+                                    .addComponent(emittersCsvButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel97)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                                        .addComponent(jLabel45)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(emittersRandomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                                        .addComponent(jLabel46)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(emittersGridSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel47))
-                            .addComponent(emittersChooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel96)
+                                .addGap(13, 13, 13)))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(emitters3DMinZ, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                            .addComponent(emitters3DMaxZ))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel98)
+                            .addComponent(jLabel99, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {emittersGridSpacing, emittersRandomNumber});
@@ -916,9 +1012,23 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jLabel47))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emittersCsvButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emittersChooseFile)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(emitters3DCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel96)
+                    .addComponent(emitters3DMinZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel98))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel97)
+                    .addComponent(emitters3DMaxZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel99))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Fiducials"));
@@ -1023,7 +1133,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel57.setText("Seed");
 
         backgroundRandomFeatureSize.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        backgroundRandomFeatureSize.setText("10");
+        backgroundRandomFeatureSize.setText("50");
         backgroundRandomFeatureSize.setEnabled(false);
 
         backgroundRandomMinValue.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -1054,7 +1164,6 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(backgroundUniformButton)
-                    .addComponent(backgroundTifButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backgroundRandomButton)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
@@ -1088,8 +1197,9 @@ public class InitializeSimulation extends java.awt.Dialog {
                                     .addComponent(jLabel59)
                                     .addComponent(jLabel60)
                                     .addComponent(jLabel61)
-                                    .addComponent(jLabel53, javax.swing.GroupLayout.Alignment.TRAILING))))))
-                .addGap(37, 131, Short.MAX_VALUE))
+                                    .addComponent(jLabel53, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                    .addComponent(backgroundTifButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 132, Short.MAX_VALUE))
         );
 
         jPanel9Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {backgroundRandomFeatureSize, backgroundRandomMaxValue, backgroundRandomMinValue, backgroundRandomSeed, backgroundUniformSignal});
@@ -1154,6 +1264,404 @@ public class InitializeSimulation extends java.awt.Dialog {
             }
         });
 
+        psfParentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("PSF"));
+
+        psfComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gaussian 2D", "Gaussian 3D", "Gibson-Lanni" }));
+        psfComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                psfComboBoxItemStateChanged(evt);
+            }
+        });
+
+        psfCardPanel.setLayout(new java.awt.CardLayout());
+
+        psfGaussian2DCard.setName("Gaussian 2D"); // NOI18N
+
+        psfGaussian2DLabel.setText("Nothing to configure.");
+
+        javax.swing.GroupLayout psfGaussian2DCardLayout = new javax.swing.GroupLayout(psfGaussian2DCard);
+        psfGaussian2DCard.setLayout(psfGaussian2DCardLayout);
+        psfGaussian2DCardLayout.setHorizontalGroup(
+            psfGaussian2DCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfGaussian2DCardLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(psfGaussian2DLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(127, Short.MAX_VALUE))
+        );
+        psfGaussian2DCardLayout.setVerticalGroup(
+            psfGaussian2DCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfGaussian2DCardLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(psfGaussian2DLabel)
+                .addContainerGap(287, Short.MAX_VALUE))
+        );
+
+        psfCardPanel.add(psfGaussian2DCard, "Gaussian 2D");
+        psfGaussian2DCard.getAccessibleContext().setAccessibleName("");
+        psfGaussian2DCard.getAccessibleContext().setAccessibleDescription("");
+
+        psfGaussian3DCard.setName("Gaussian 3D"); // NOI18N
+
+        psfGaussian3DLabel.setText("Nothing to configure.");
+
+        javax.swing.GroupLayout psfGaussian3DCardLayout = new javax.swing.GroupLayout(psfGaussian3DCard);
+        psfGaussian3DCard.setLayout(psfGaussian3DCardLayout);
+        psfGaussian3DCardLayout.setHorizontalGroup(
+            psfGaussian3DCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfGaussian3DCardLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(psfGaussian3DLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(158, Short.MAX_VALUE))
+        );
+        psfGaussian3DCardLayout.setVerticalGroup(
+            psfGaussian3DCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfGaussian3DCardLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(psfGaussian3DLabel)
+                .addContainerGap(287, Short.MAX_VALUE))
+        );
+
+        psfCardPanel.add(psfGaussian3DCard, "Gaussian 3D");
+
+        psfGibsonLanniCard.setName("Gibson-Lanni"); // NOI18N
+
+        jLabel62.setText("Number of Bessels");
+
+        jLabel63.setText("Number of samples");
+
+        jLabel64.setText("Oversampling");
+
+        jLabel65.setText("Grid size, x");
+
+        jLabel66.setText("Grid size, y");
+
+        jLabel67.setText("Sample refractive index (n)");
+
+        jLabel68.setText("Coverslip, design n");
+
+        jLabel69.setText("Coverslip, actual n");
+
+        jLabel70.setText("Immersion medium, design n");
+
+        jLabel71.setText("Immersion medium, actual n");
+
+        jLabel72.setText("Immersion medium, design thickness");
+
+        jLabel73.setText("Coverslip, design thickness");
+
+        jLabel74.setText("Coverslip, actual thickness");
+
+        jLabel75.setText("Resolution");
+
+        jLabel76.setText("Axial resolution");
+
+        jLabel77.setText("Solver");
+
+        jLabel78.setText("Maximum radius");
+
+        glNumBasis.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNumBasis.setText("100");
+
+        glNumSamples.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNumSamples.setText("1000");
+
+        glOversampling.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glOversampling.setText("2");
+
+        glSizeX.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glSizeX.setText("1024");
+
+        glSizeY.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glSizeY.setText("1024");
+
+        glNs.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNs.setText("1.33");
+
+        glNg0.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNg0.setText("1.5");
+
+        glNg.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNg.setText("1.5");
+
+        glNi0.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNi0.setText("1.5");
+
+        glNi.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glNi.setText("1.5");
+
+        glTi0.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glTi0.setText("150");
+
+        glTg0.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glTg0.setText("170");
+
+        glTg.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glTg.setText("170");
+
+        glResPsf.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glResPsf.setText("0.0215");
+
+        glResPsfAxial.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glResPsfAxial.setText("0.005");
+
+        glSolver.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glSolver.setText("svd");
+
+        glMaxRadius.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        glMaxRadius.setText("15");
+
+        jLabel79.setText("--");
+
+        jLabel80.setText("--");
+
+        jLabel81.setText("--");
+
+        jLabel82.setText("pixels");
+
+        jLabel83.setText("pixels");
+
+        jLabel84.setText("--");
+
+        jLabel85.setText("--");
+
+        jLabel86.setText("--");
+
+        jLabel87.setText("--");
+
+        jLabel88.setText("--");
+
+        jLabel89.setText("µm");
+
+        jLabel90.setText("µm");
+
+        jLabel91.setText("µm");
+
+        jLabel92.setText("µm");
+
+        jLabel93.setText("µm");
+
+        jLabel94.setText("svd or qrd");
+
+        jLabel95.setText("pixels");
+
+        javax.swing.GroupLayout psfGibsonLanniPanelLayout = new javax.swing.GroupLayout(psfGibsonLanniPanel);
+        psfGibsonLanniPanel.setLayout(psfGibsonLanniPanelLayout);
+        psfGibsonLanniPanelLayout.setHorizontalGroup(
+            psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel62)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNumBasis, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel63)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNumSamples, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel64)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glOversampling, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel65)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glSizeX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel66)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glSizeY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel67)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel68)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNg0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel78)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glMaxRadius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel77)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glSolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel76)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glResPsfAxial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel75)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glResPsf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel74)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glTg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel73)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glTg0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel69)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel70)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNi0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel71)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glNi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel72)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(glTi0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel79)
+                    .addComponent(jLabel80)
+                    .addComponent(jLabel81)
+                    .addComponent(jLabel82)
+                    .addComponent(jLabel83)
+                    .addComponent(jLabel84)
+                    .addComponent(jLabel85)
+                    .addComponent(jLabel86)
+                    .addComponent(jLabel87)
+                    .addComponent(jLabel88)
+                    .addComponent(jLabel89)
+                    .addComponent(jLabel90)
+                    .addComponent(jLabel91)
+                    .addComponent(jLabel92)
+                    .addComponent(jLabel93)
+                    .addComponent(jLabel94)
+                    .addComponent(jLabel95))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        psfGibsonLanniPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {glMaxRadius, glNg, glNg0, glNi, glNi0, glNs, glNumBasis, glNumSamples, glOversampling, glResPsf, glResPsfAxial, glSizeX, glSizeY, glSolver, glTg, glTg0, glTi0});
+
+        psfGibsonLanniPanelLayout.setVerticalGroup(
+            psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfGibsonLanniPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel62)
+                    .addComponent(glNumBasis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel79))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel63)
+                    .addComponent(glNumSamples, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel80))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel64)
+                    .addComponent(glOversampling, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel81))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel65)
+                    .addComponent(glSizeX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel82))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel66)
+                    .addComponent(glSizeY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel83))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel67)
+                    .addComponent(glNs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel84))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel68)
+                    .addComponent(glNg0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel85))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel69)
+                    .addComponent(glNg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel86))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel70)
+                    .addComponent(glNi0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel87))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel71)
+                    .addComponent(glNi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel88))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel72)
+                    .addComponent(glTi0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel89))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel73)
+                    .addComponent(glTg0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel90))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel74)
+                    .addComponent(glTg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel91))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel75)
+                    .addComponent(glResPsf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel92))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel76)
+                    .addComponent(glResPsfAxial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel93))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel77)
+                    .addComponent(glSolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel94))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(psfGibsonLanniPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel78)
+                    .addComponent(glMaxRadius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel95))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
+        psfGibsonLanniCard.setViewportView(psfGibsonLanniPanel);
+
+        psfCardPanel.add(psfGibsonLanniCard, "Gibson-Lanni");
+
+        javax.swing.GroupLayout psfParentPanelLayout = new javax.swing.GroupLayout(psfParentPanel);
+        psfParentPanel.setLayout(psfParentPanelLayout);
+        psfParentPanelLayout.setHorizontalGroup(
+            psfParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, psfParentPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(psfParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(psfCardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(psfComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap())
+        );
+        psfParentPanelLayout.setVerticalGroup(
+            psfParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(psfParentPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(psfComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(psfCardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -1161,23 +1669,24 @@ public class InitializeSimulation extends java.awt.Dialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(psfParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(19, 19, 19))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(43, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(initializeSimulation)
@@ -1185,7 +1694,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addComponent(openButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saveButton)
-                .addGap(441, 441, 441))
+                .addGap(529, 529, 529))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {initializeSimulation, openButton, saveButton});
@@ -1196,22 +1705,24 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(psfParentPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1248,10 +1759,6 @@ public class InitializeSimulation extends java.awt.Dialog {
     private void fluorophoreTOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fluorophoreTOffActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fluorophoreTOffActionPerformed
-
-    private void cameraBaselineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cameraBaselineActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cameraBaselineActionPerformed
 
     private void backgroundChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backgroundChooseFileActionPerformed
         JFileChooser fc = new JFileChooser();
@@ -1333,6 +1840,9 @@ public class InitializeSimulation extends java.awt.Dialog {
         model.setEmittersRandomButtonText(emittersRandomButton.getText());
         model.setEmittersGridButtonText(emittersGridButton.getText());
         model.setEmittersCsvFileButtonText(emittersCsvButton.getText());
+        model.setEmitters3DCheckBoxEnabled(emitters3DCheckBox.isSelected());
+        model.setEmitters3DMinZ(Double.parseDouble(emitters3DMinZ.getText()));
+        model.setEmitters3DMaxZ(Double.parseDouble(emitters3DMaxZ.getText()));
         
         String selectedBackgroundButton = ButtonGroupUtils.getSelectedButtonText(this.backgroundButtons);
         model.setBackgroundCurrentSelection(selectedBackgroundButton);
@@ -1345,6 +1855,28 @@ public class InitializeSimulation extends java.awt.Dialog {
         model.setBackgroundUniformButtonText(backgroundUniformButton.getText());
         model.setBackgroundRandomButtonText(backgroundRandomButton.getText());
         model.setBackgroundTifFileButtonText(backgroundTifButton.getText());
+        
+        model.setPsfCurrentSelection(String.valueOf(psfComboBox.getSelectedItem()));
+        model.setPsfGaussian2dText(psfGaussian2DCard.getName());
+        model.setPsfGaussian3dText(psfGaussian3DCard.getName());
+        model.setPsfGibsonLanniNumBasis(Integer.parseInt(glNumBasis.getText()));
+        model.setPsfGibsonLanniNumSamples(Integer.parseInt(glNumSamples.getText()));
+        model.setPsfGibsonLanniOversampling(Integer.parseInt(glOversampling.getText()));
+        model.setPsfGibsonLanniSizeX(Integer.parseInt(glSizeX.getText()));
+        model.setPsfGibsonLanniSizeY(Integer.parseInt(glSizeY.getText()));
+        model.setPsfGibsonLanniNs(Double.parseDouble(glNs.getText()));
+        model.setPsfGibsonLanniNg0(Double.parseDouble(glNg0.getText()));
+        model.setPsfGibsonLanniNg(Double.parseDouble(glNg.getText()));
+        model.setPsfGibsonLanniNi0(Double.parseDouble(glNi0.getText()));
+        model.setPsfGibsonLanniNi(Double.parseDouble(glNi.getText()));
+        model.setPsfGibsonLanniTi0(Double.parseDouble(glTi0.getText()));
+        model.setPsfGibsonLanniTg0(Double.parseDouble(glTg0.getText()));
+        model.setPsfGibsonLanniTg(Double.parseDouble(glTg.getText()));
+        model.setPsfGibsonLanniResPsf(Double.parseDouble(glResPsf.getText()));
+        model.setPsfGibsonLanniResPsfAxial(Double.parseDouble(glResPsfAxial.getText()));
+        model.setPsfGibsonLanniSolver(glSolver.getText());
+        model.setPsfGibsonLanniMaxRadius(Integer.parseInt(glMaxRadius.getText()));
+        model.setPsfGibsonLanniText(psfGibsonLanniCard.getName());
     }
     
     /**
@@ -1383,6 +1915,9 @@ public class InitializeSimulation extends java.awt.Dialog {
         emittersGridSpacing.setText(String.valueOf(model.getEmittersGridSpacing()));
         emittersCsvFile = new File(model.getEmittersCsvFile());
         ButtonGroupUtils.selectButtonModelFromText(emittersButtons, model.getEmittersCurrentSelection());
+        emitters3DCheckBox.setSelected(model.getEmitters3DCheckBoxEnabled());
+        emitters3DMinZ.setText(String.valueOf(model.getEmitters3DMinZ()));
+        emitters3DMaxZ.setText(String.valueOf(model.getEmitters3DMaxZ()));
         
         backgroundUniformSignal.setText(String.valueOf(model.getBackgroundUniformSignal()));
         backgroundRandomFeatureSize.setText(String.valueOf(model.getBackgroundRandomFeatureSize()));
@@ -1391,6 +1926,26 @@ public class InitializeSimulation extends java.awt.Dialog {
         backgroundRandomSeed.setText(String.valueOf(model.getBackgroundRandomSeed()));
         backgroundTifFile = new File(model.getBackgroundTifFile());
         ButtonGroupUtils.selectButtonModelFromText(backgroundButtons, model.getBackgroundCurrentSelection());
+        
+        psfComboBox.setSelectedItem(model.getPsfCurrentSelection());
+        glNumBasis.setText(String.valueOf(model.getPsfGibsonLanniNumBasis()));
+        glNumSamples.setText(String.valueOf(model.getPsfGibsonLanniNumSamples()));
+        glOversampling.setText(String.valueOf(model.getPsfGibsonLanniOversampling()));
+        glSizeX.setText(String.valueOf(model.getPsfGibsonLanniSizeX()));
+        glSizeY.setText(String.valueOf(model.getPsfGibsonLanniSizeY()));
+        glNs.setText(String.valueOf(model.getPsfGibsonLanniNs()));
+        glNg0.setText(String.valueOf(model.getPsfGibsonLanniNg0()));
+        glNg.setText(String.valueOf(model.getPsfGibsonLanniNg()));
+        glNi0.setText(String.valueOf(model.getPsfGibsonLanniNi0()));
+        glNi.setText(String.valueOf(model.getPsfGibsonLanniNi()));
+        glTi0.setText(String.valueOf(model.getPsfGibsonLanniTi0()));
+        glTg0.setText(String.valueOf(model.getPsfGibsonLanniTg0()));
+        glTg.setText(String.valueOf(model.getPsfGibsonLanniTg()));
+        glResPsf.setText(String.valueOf(model.getPsfGibsonLanniResPsf()));
+        glResPsfAxial.setText(String.valueOf(model.getPsfGibsonLanniResPsfAxial()));
+        glSolver.setText(model.getPsfGibsonLanniSolver());
+        glMaxRadius.setText(String.valueOf(model.getPsfGibsonLanniMaxRadius()));
+        
     }
     
     private void initializeSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeSimulationActionPerformed
@@ -1466,12 +2021,12 @@ public class InitializeSimulation extends java.awt.Dialog {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         JFileChooser fc = new JFileChooser();
         int returnVal;
-        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
         //set a default filename
         fc.setSelectedFile(new File("simulation.sass"));
         //Set an extension filter
         fc.setFileFilter(new FileNameExtensionFilter("SASS settings","sass"));
-        returnVal = fc.showOpenDialog(null);
+        returnVal = fc.showSaveDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
@@ -1514,8 +2069,11 @@ public class InitializeSimulation extends java.awt.Dialog {
     private void emittersCsvButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_emittersCsvButtonStateChanged
         if (emittersCsvButton.isSelected()) {
             emittersChooseFile.setEnabled(true);
+            emitters3DCheckBox.setSelected(false);
+            emitters3DCheckBox.setEnabled(false);
         } else {
             emittersChooseFile.setEnabled(false);
+            emitters3DCheckBox.setEnabled(true);
         }
     }//GEN-LAST:event_emittersCsvButtonStateChanged
 
@@ -1550,6 +2108,21 @@ public class InitializeSimulation extends java.awt.Dialog {
         }
     }//GEN-LAST:event_backgroundRandomButtonStateChanged
 
+    private void psfComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_psfComboBoxItemStateChanged
+        CardLayout cl = (CardLayout)(psfCardPanel.getLayout());
+        cl.show(psfCardPanel, (String)evt.getItem());
+    }//GEN-LAST:event_psfComboBoxItemStateChanged
+
+    private void emitters3DCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_emitters3DCheckBoxItemStateChanged
+        if (emitters3DCheckBox.isSelected()) {
+            emitters3DMinZ.setEnabled(true);
+            emitters3DMaxZ.setEnabled(true);
+        } else {
+            emitters3DMinZ.setEnabled(false);
+            emitters3DMaxZ.setEnabled(false);
+        }
+    }//GEN-LAST:event_emitters3DCheckBoxItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel analyzer_panel;
@@ -1577,6 +2150,9 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JPanel controller_panel;
     private javax.swing.JTextField e_controller_tickrate;
     private javax.swing.JTextField e_max_controller_output;
+    private javax.swing.JCheckBox emitters3DCheckBox;
+    private javax.swing.JTextField emitters3DMaxZ;
+    private javax.swing.JTextField emitters3DMinZ;
     private javax.swing.ButtonGroup emittersButtons;
     private javax.swing.JButton emittersChooseFile;
     private javax.swing.JRadioButton emittersCsvButton;
@@ -1591,6 +2167,23 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField fluorophoreTOff;
     private javax.swing.JTextField fluorophoreTOn;
     private javax.swing.JTextField fluorophoreWavelength;
+    private javax.swing.JTextField glMaxRadius;
+    private javax.swing.JTextField glNg;
+    private javax.swing.JTextField glNg0;
+    private javax.swing.JTextField glNi;
+    private javax.swing.JTextField glNi0;
+    private javax.swing.JTextField glNs;
+    private javax.swing.JTextField glNumBasis;
+    private javax.swing.JTextField glNumSamples;
+    private javax.swing.JTextField glOversampling;
+    private javax.swing.JTextField glResPsf;
+    private javax.swing.JTextField glResPsfAxial;
+    private javax.swing.JTextField glSizeX;
+    private javax.swing.JTextField glSizeY;
+    private javax.swing.JTextField glSolver;
+    private javax.swing.JTextField glTg;
+    private javax.swing.JTextField glTg0;
+    private javax.swing.JTextField glTi0;
     private javax.swing.JButton initializeSimulation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1650,9 +2243,47 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel60;
     private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
+    private javax.swing.JLabel jLabel63;
+    private javax.swing.JLabel jLabel64;
+    private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel66;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
+    private javax.swing.JLabel jLabel75;
+    private javax.swing.JLabel jLabel76;
+    private javax.swing.JLabel jLabel77;
+    private javax.swing.JLabel jLabel78;
+    private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel80;
+    private javax.swing.JLabel jLabel81;
+    private javax.swing.JLabel jLabel82;
+    private javax.swing.JLabel jLabel83;
+    private javax.swing.JLabel jLabel84;
+    private javax.swing.JLabel jLabel85;
+    private javax.swing.JLabel jLabel86;
+    private javax.swing.JLabel jLabel87;
+    private javax.swing.JLabel jLabel88;
+    private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel90;
+    private javax.swing.JLabel jLabel91;
+    private javax.swing.JLabel jLabel92;
+    private javax.swing.JLabel jLabel93;
+    private javax.swing.JLabel jLabel94;
+    private javax.swing.JLabel jLabel95;
+    private javax.swing.JLabel jLabel96;
+    private javax.swing.JLabel jLabel97;
+    private javax.swing.JLabel jLabel98;
+    private javax.swing.JLabel jLabel99;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1662,6 +2293,8 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField laserInitPower;
     private javax.swing.JTextField laserMaxPower;
     private javax.swing.JTextField laserMinPower;
@@ -1669,6 +2302,15 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField objectiveNa;
     private javax.swing.JButton openButton;
     private java.awt.Panel panel6;
+    private javax.swing.JPanel psfCardPanel;
+    private javax.swing.JComboBox<String> psfComboBox;
+    private javax.swing.JPanel psfGaussian2DCard;
+    private javax.swing.JLabel psfGaussian2DLabel;
+    private javax.swing.JPanel psfGaussian3DCard;
+    private javax.swing.JLabel psfGaussian3DLabel;
+    private javax.swing.JScrollPane psfGibsonLanniCard;
+    private javax.swing.JPanel psfGibsonLanniPanel;
+    private javax.swing.JPanel psfParentPanel;
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField stageZ;
     // End of variables declaration//GEN-END:variables

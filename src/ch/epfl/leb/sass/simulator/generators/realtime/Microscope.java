@@ -37,6 +37,7 @@ import ij.process.ShortProcessor;
 import java.util.Arrays;
 import java.util.List;
 import cern.jet.random.Poisson;
+import ij.IJ;
 
 /**
  * Integrates all the components into one microscope.
@@ -101,7 +102,6 @@ public class Microscope {
                   .FWHM(fwhm)
                   .wavelength(wavelength)
                   .resLateral(camera.getPixelSize() / objective.getMag());
-        
         // Create the set of fluorophores.
         positionBuilder.camera(camera)
                        .psfBuilder(psfBuilder)

@@ -195,6 +195,9 @@ public final class GibsonLanniPSF implements PSF {
     
     /**
      * Cache for PSF  interpolators.
+     * 
+     * This is cleared every time a new Builder is created to prevent problems
+     * when parameters change between simulations.
      */
     private static HashMap<Long, PiecewiseBicubicSplineInterpolatingFunction>
                         interpolators = new HashMap<>();
@@ -226,6 +229,13 @@ public final class GibsonLanniPSF implements PSF {
         private double maxRadius;
         private double stageDisplacement;
         private String solver;
+        
+        public Builder() {
+        // Clear the cache every time a new Builder is created.
+        // This prevents erroneous calculations in new simulations with
+        // with different values for the stage displacement.
+        interpolators = new HashMap<>();
+        }
         
         public Builder numBasis(int numBasis) {
             this.numBasis = numBasis;

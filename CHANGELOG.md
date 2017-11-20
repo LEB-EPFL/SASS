@@ -16,6 +16,8 @@ Contains [ALICA v0.2.4]
 ### Changed
 - A status report on PSF calculation is now output to the console for
   every 5000 calculations.
+- Each simulation output is now displayed in its own plot for easier
+  tracking of the simulation parameters over time.
 
 ### Fixed
 - Fixed a cropping issue with the self-tuning PI controller dialog on
@@ -25,6 +27,9 @@ Contains [ALICA v0.2.4]
   for previous simulations.
 - The Save... button in the Initialize Simulation window is now
   properly displayed as a Save dialog.
+- The latency bug that caused a pause during every tenth simulation
+  frame in GUI mode has been fixed. The latency came from updating the
+  original status plots, which have been changed in this version.
 
 ## [v0.5.1]
 

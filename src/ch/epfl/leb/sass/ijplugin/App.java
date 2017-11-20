@@ -21,17 +21,12 @@ package ch.epfl.leb.sass.ijplugin;
 
 import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.ImageGenerator;
+import ch.epfl.leb.sass.simulator.SimulatorStatusFrame;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
 import ij.ImagePlus;
-import ij.gui.GenericDialog;
-import ij.gui.Plot;
 import ij.process.ImageProcessor;
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +36,7 @@ import java.util.logging.Logger;
  */
 public class App extends Simulator {
     private final ImagePlus imp;
-    private final Plot plot;
+    private final SimulatorStatusFrame statusFrame;
     private final int controller_tickrate;
     private Worker worker;
     private final InteractionWindow interaction_window;
@@ -65,8 +60,7 @@ public class App extends Simulator {
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
-        plot = new Plot("Controller history", "Frame id.", "Value");
-        plot.show();
+        statusFrame = new SimulatorStatusFrame();
         controller_tickrate = 20;
         interaction_window = new InteractionWindow(analyzer, controller);
     }
@@ -90,8 +84,7 @@ public class App extends Simulator {
         interaction_window = new InteractionWindow(analyzer, controller);
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
-        plot = new Plot("Controller history", "Frame id.", "Value (normalized)");
-        plot.show();
+        statusFrame = new SimulatorStatusFrame();
     }
     
     /**
@@ -128,11 +121,12 @@ public class App extends Simulator {
     }
     
     /**
-     * Return the controller plot handle
-     * @return plot with controller history
+     * Return the handle for the status frame.
+     * 
+     * @return Plots with the simulation history.
      */
-    public Plot getPlot() {
-        return plot;
+    public SimulatorStatusFrame getStatusFrame() {
+        return statusFrame;
     }
     
     public int getControllerTickrate() {
@@ -154,9 +148,6 @@ public class App extends Simulator {
     public ArrayList<Double> getControllerSetpoint() {
         return controllerSetpoint;
     }
-    
-    
-    
 }
 
 class Worker extends Thread {
@@ -179,6 +170,7 @@ class Worker extends Thread {
     @Override
     public void run() {
         ImageProcessor ip;
+        SimulatorStatusFrame statusFrame = app.getStatusFrame();
         while (!stop) {
             app.incrementCounter();
             ip = generator.getNextImage();
@@ -207,56 +199,20 @@ class Worker extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            // Update the status frame.
+            // Important: the status plots are only updated every 10 frames!!!
             if (app.getImageCount()%10==0) {
-                updatePlot();
+                int numFrames = app.getImageCount();
+                statusFrame.updateGraph(
+                        numFrames,
+                        app.getGeneratorTrueSignal().get(numFrames - 1),
+                        app.getAnalyzerOutput().get(numFrames - 1),
+                        app.getControllerSetpoint().get(numFrames - 1),
+                        app.getControllerOutput().get(numFrames - 1)
+                );
             }
         }
-    }
-    
-    public void updatePlot() {
-        Plot plot = app.getPlot();
-        double real_max = 0.01;
-        double laser_max = 0.01;
-        double signal_max = 0.01;
-        
-        
-        
-        int count = app.getImageCount()-1;
-        double[] x = new double[count]; 
-        double[] real = new double[count];
-        double[] laser = new double[count]; 
-        double[] spot = new double[count];
-        double[] set_point = new double[count];
-        for (int i=1; i<=count; i++) {
-            x[i-1] = (double) i;
-            real[i-1] = app.getGeneratorTrueSignal().get(i);
-            laser[i-1] = app.getControllerOutput().get(i);
-            spot[i-1] = app.getAnalyzerOutput().get(i);
-            set_point[i-1] = app.getControllerSetpoint().get(i);
-        }
-        
-        
-        
-        for (int i=0; i<count; i++) {
-            laser[i] = laser[i] / getMax(laser) * getMax(real);
-        }
-        
-        plot.setColor(Color.black);
-        plot.addPoints(x, real, Plot.LINE);
-        plot.setFont(new Font("Helvetica", Font.PLAIN, 14));
-        plot.addLabel(0.02,0.1,"True signal");
-        plot.setColor(Color.red);
-        plot.addPoints(x, spot, Plot.LINE);
-        plot.addLabel(0.02,0.2,"Measured signal");
-        plot.setColor(Color.blue);
-        plot.addPoints(x, set_point, Plot.LINE);
-        plot.addLabel(0.02,0.3,"Setpoint");
-        plot.setColor(Color.orange);
-        plot.addPoints(x, laser, Plot.LINE);
-        plot.addLabel(0.02,0.4,"Laser power");
-        plot.setLimits(getMin(x), getMax(x), 0, 1.2 * getMax(real)); // hack to get a correct rescale
-        plot.draw();
-        
     }
     
     private double getMin(double[] arr) {

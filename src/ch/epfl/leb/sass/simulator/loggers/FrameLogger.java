@@ -39,6 +39,7 @@ public class FrameLogger extends AbstractLogger{
     private ArrayList<Double> x = new ArrayList();
     private ArrayList<Double> y = new ArrayList();
     private ArrayList<Double> z = new ArrayList();
+    private ArrayList<Double> brightness = new ArrayList();
     private ArrayList<Double> time_on = new ArrayList();
 
 
@@ -62,9 +63,11 @@ public class FrameLogger extends AbstractLogger{
      * @param x x-position of the emitter
      * @param y y-position of the emitter
      * @param z z-position of the emitter
+     * @param brightness the apparent brightness of the fluorophore on the frame
+     * in number of photons
      * @param time_on the amount of time the emitter "id" stays on in the current frame
      */
-    public void logFrame(int frame, int id, double x, double y, double z, double time_on) {
+    public void logFrame(int frame, int id, double x, double y, double z, double brightness, double time_on) {
         if ( !(this.performLogging) )
             return;
 
@@ -73,6 +76,7 @@ public class FrameLogger extends AbstractLogger{
         this.x.add(x);
         this.y.add(y);
         this.z.add(z);
+        this.brightness.add(brightness);
         this.time_on.add(time_on);
     }
 
@@ -94,6 +98,8 @@ public class FrameLogger extends AbstractLogger{
         return this.z;
     }
 
+    public ArrayList<Double> getBrightness() { return this.brightness; }
+    
     public ArrayList<Double> getTimeOn() { return this.time_on; }
 
     /**
@@ -109,16 +115,17 @@ public class FrameLogger extends AbstractLogger{
         FileWriter fileWriter = new FileWriter(this.filename);
         PrintWriter printWriter = new PrintWriter(fileWriter);
 
-        printWriter.println("frame,id,x,y,z,time_on");
+        printWriter.println("frame,id,x,y,z,brightness,time_on");
 
         for(int ctr = 0; ctr < this.frame.size(); ctr++) {
             printWriter.printf(
-                    "%d,%d,%.4f,%.4f,%.4f,%.4f%n",
+                    "%d,%d,%.4f,%.4f,%.4f,%.4f,%.4f%n",
                     this.frame.get(ctr),
                     this.id.get(ctr),
                     this.x.get(ctr),
                     this.y.get(ctr),
                     this.z.get(ctr),
+                    this.brightness.get(ctr),
                     this.time_on.get(ctr)
             );
         }
@@ -138,6 +145,7 @@ public class FrameLogger extends AbstractLogger{
         this.x = new ArrayList();
         this.y = new ArrayList();
         this.z = new ArrayList();
+        this.brightness = new ArrayList();
         this.time_on = new ArrayList();
     }
 }

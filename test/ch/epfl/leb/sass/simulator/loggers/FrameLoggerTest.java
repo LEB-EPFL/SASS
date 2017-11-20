@@ -60,17 +60,19 @@ public class FrameLoggerTest {
         double x = 2.3;
         double y = 2.5;
         double z = 0.7;
+        double brightness = 0.8;
         double time_on = 0.8;
         logger.setPerformLogging(true);
 
         // Method call to test is here.
-        logger.logFrame(frame, id, x, y, z, time_on);
+        logger.logFrame(frame, id, x, y, z, brightness, time_on);
 
         int actualFrame = logger.getFrame().get(0);
         int actualId = logger.getId().get(0);
         double actualX = logger.getX().get(0);
         double actualY = logger.getY().get(0);
         double actualZ = logger.getZ().get(0);
+        double actualBrightness = logger.getBrightness().get(0);
         double actualTimeOn = logger.getTimeOn().get(0);
 
         assertEquals(frame, actualFrame);
@@ -78,6 +80,7 @@ public class FrameLoggerTest {
         assertEquals(x, actualX, 0.001);
         assertEquals(y, actualY, 0.001);
         assertEquals(z, actualZ, 0.001);
+        assertEquals(brightness, actualBrightness, 0.001);
         assertEquals(time_on, actualTimeOn, 0.001);
     }
 
@@ -89,7 +92,7 @@ public class FrameLoggerTest {
         // Give the logger some initial state
         logger.setFilename("textLogFile.txt");
         logger.setPerformLogging(true);
-        logger.logFrame(1, 1, 10.0, 0.4, 0.8, 0.9);
+        logger.logFrame(1, 1, 10.0, 0.4, 0.8, 0.9, 0.2);
 
         assertTrue("textLogFile.txt".equals(logger.getFilename()));
         assertEquals(true, logger.getPerformLogging());
@@ -105,6 +108,7 @@ public class FrameLoggerTest {
         assertEquals(0.0, logger.getX().size(), 0.001);
         assertEquals(0.0, logger.getY().size(), 0.001);
         assertEquals(0.0, logger.getZ().size(), 0.001);
+        assertEquals(0.0, logger.getBrightness().size(), 0.001);
         assertEquals(0.0, logger.getTimeOn().size(), 0.001);
     }
     
@@ -119,8 +123,8 @@ public class FrameLoggerTest {
         logger.setPerformLogging(true);
         
         // Add some data to the logger
-        this.logger.logFrame(1, 1, 10.0, 5.0, 1.0, 0.8);
-        this.logger.logFrame(2, 5, 20.0, 5.0, 1.1, 0.6);
+        this.logger.logFrame(1, 1, 10.0, 5.0, 1.0, 0.8, 0.2);
+        this.logger.logFrame(2, 5, 20.0, 5.0, 1.1, 0.6, 0.3);
         
         // Critical test
         logger.saveLogFile();
@@ -133,9 +137,9 @@ public class FrameLoggerTest {
             String line2 = bufferedReader.readLine();
             String line3 = bufferedReader.readLine();
             
-            assertTrue(line1.equals("frame,id,x,y,z,time_on"));
-            assertTrue(line2.equals("1,1,10.0000,5.0000,1.0000,0.8000"));
-            assertTrue(line3.equals("2,5,20.0000,5.0000,1.1000,0.6000"));
+            assertTrue(line1.equals("frame,id,x,y,z,brightness,time_on"));
+            assertTrue(line2.equals("1,1,10.0000,5.0000,1.0000,0.8000,0.2000"));
+            assertTrue(line3.equals("2,5,20.0000,5.0000,1.1000,0.6000,0.3000"));
         } catch (IOException e)
         {
             throw e;

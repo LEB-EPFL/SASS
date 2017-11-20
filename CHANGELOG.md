@@ -30,6 +30,8 @@ Contains [ALICA v0.2.4]
 - The latency bug that caused a pause during every tenth simulation
   frame in GUI mode has been fixed. The latency came from updating the
   original status plots, which have been changed in this version.
+- Loggers now properly check for filename collisions to prevent
+  overwriting previously saved data.
 
 ## [v0.5.1]
 

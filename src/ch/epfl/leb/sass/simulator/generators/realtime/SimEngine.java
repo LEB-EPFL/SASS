@@ -20,28 +20,24 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
 import ch.epfl.leb.sass.simulator.generators.AbstractGenerator;
-import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.ConstantBackground;
-import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
-import ij.IJ;
-import ij.ImagePlus;
 import ij.ImageStack;
-import ij.gui.GenericDialog;
-import ij.io.FileSaver;
 import ij.process.ImageProcessor;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implementation of the ImageGenerator interface with methods required by AbstractGenerator.
  * @author Marcel Stefko
  */
 public class SimEngine extends AbstractGenerator {
+    /**
+     * Scaling factor for the density.
+     * 
+     * Multiplying the estimated density by a factor of 100 means that the
+     * output returns spots per 10 um x 10 um = 100 um^2 area.
+     */
+    private final double SCALEFACTOR = 100;
     private Microscope microscope;
 
     private ArrayList<Double> emitterHistory;
@@ -63,7 +59,8 @@ public class SimEngine extends AbstractGenerator {
     
     @Override
     public double getTrueSignal(int image_no) {
-        return emitterHistory.get(image_no) / microscope.getFovSize() * 10000;
+        return emitterHistory.get(image_no) /
+               microscope.getFovSize() * SCALEFACTOR;
     }
 
     @Override
@@ -77,16 +74,13 @@ public class SimEngine extends AbstractGenerator {
     }
     
     /**
-     * Advance the simulation by one time step (i.e. one frame), but do not create an image.
+     * Advance the simulation by one time step (i.e. one frame).
+     * 
+     * Simulates a frame but does not create an image.
      */
     @Override
     public void incrementTimeStep() {
         emitterHistory.add(microscope.getOnEmitterCount());
-        
-        // Returned ImageProcess instance is not captured. This was easier than
-        // outright avoiding any image creation that happens inside
-        // simulateFrame() because the Fluorophore state transitions are handled
-        // inside a long chain of method calls. -kmd
         microscope.simulateFrame();
     }
 
@@ -114,15 +108,25 @@ public class SimEngine extends AbstractGenerator {
 
     /**
      *
-     * @return length of one pixel side in micrometers
+     * @return Length of one pixel side in object-space units.
      */
     @Override
-    public double getPixelSizeUm() {
-        return microscope.getPixelSize();
+    public double getObjectSpacePixelSize() {
+        return microscope.getObjectSpacePixelSize();
     }
 
+    /**
+     * 
+     * @return The size of the FOV in square object-space units.
+     */
     @Override
-    public double getFOVSizeUm2() {
+    public double getFOVSize() {
         return microscope.getFovSize();
+    }
+    
+    @Override
+    public String getShortTrueSignalDescription() {
+        String descr = "counts/" + String.valueOf((int) SCALEFACTOR) + " µm^2";
+        return descr;
     }
 }

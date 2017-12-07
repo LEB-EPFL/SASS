@@ -139,20 +139,22 @@ public class Microscope {
      * @return size of current FOV in square micrometers
      */
     public double getFovSize() {
-        return (getPixelSize() * getPixelSize()) 
+        return (getObjectSpacePixelSize() * getObjectSpacePixelSize()) 
                * camera.getNX() * camera.getNY();
     }
     
     /**
+     * The size of a pixel after division by the objective magnification.
      * 
-     * @return length of one pixel side in micrometers
+     * @return Length of one pixel side in object space units
      */
-    public double getPixelSize() {
+    public double getObjectSpacePixelSize() {
         return this.camera.getPixelSize() / this.objective.getMag();
     }
     
     /**
      * Modifies the laser power to desired value.
+     * 
      * @param laserPower new laser power
      */
     public void setLaserPower(double laserPower) {

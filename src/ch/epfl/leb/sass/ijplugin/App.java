@@ -60,7 +60,21 @@ public class App extends Simulator {
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
-        statusFrame = new SimulatorStatusFrame();
+        
+        // The units of the manual controller setpoint are the same as the
+        // as the laser, not the analyzer output like the other controllers.
+        String setpointLabel = "";
+        if ("Manual".equals(controller.getName())) {
+            setpointLabel = "mW";
+        } else {
+            setpointLabel = analyzer.getShortReturnDescription();
+        }
+        statusFrame = new SimulatorStatusFrame(
+                generator.getShortTrueSignalDescription(),
+                analyzer.getShortReturnDescription(),
+                setpointLabel,
+                "mW"
+        );
         controller_tickrate = 20;
         interaction_window = new InteractionWindow(analyzer, controller);
     }
@@ -72,7 +86,10 @@ public class App extends Simulator {
      * @param controller
      */
     public App(Analyzer analyzer,
-            ImageGenerator generator, Controller controller, int controller_tickrate) {
+            ImageGenerator generator,
+            Controller controller,
+            int controller_tickrate
+    ) {
         super(analyzer, generator, controller);
         if (controller_tickrate<1) {
             throw new IllegalArgumentException("Wrong controller tickrate!");
@@ -84,7 +101,21 @@ public class App extends Simulator {
         interaction_window = new InteractionWindow(analyzer, controller);
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
-        statusFrame = new SimulatorStatusFrame();
+        
+        // The units of the manual controller setpoint are the same as the
+        // as the laser, not the analyzer output like the other controllers.
+        String setpointLabel = "";
+        if ("Manual".equals(controller.getName())) {
+            setpointLabel = "mW";
+        } else {
+            setpointLabel = analyzer.getShortReturnDescription();
+        }
+        statusFrame = new SimulatorStatusFrame(
+                generator.getShortTrueSignalDescription(),
+                analyzer.getShortReturnDescription(),
+                setpointLabel,
+                "mW"
+        );
     }
     
     /**
@@ -176,7 +207,13 @@ class Worker extends Thread {
             ip = generator.getNextImage();
             long time_start, time_end;
             time_start = System.nanoTime();
-            analyzer.processImage(ip.getPixelsCopy(), ip.getWidth(), ip.getHeight(), generator.getPixelSizeUm(), time_start);
+            analyzer.processImage(
+                    ip.getPixelsCopy(),
+                    ip.getWidth(),
+                    ip.getHeight(),
+                    generator.getObjectSpacePixelSize(),
+                    time_start
+            );
             time_end = System.nanoTime();
             System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
 

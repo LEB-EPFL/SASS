@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
-Contains [ALICA v0.2.4]		
+Contains [ALICA v0.2.5]		
 
 ### Added
 - You can now save and load simulation settings from the GUI.

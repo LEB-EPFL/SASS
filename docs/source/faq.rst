@@ -71,13 +71,24 @@ illustrated here only to indicate which columns correspond to x and y.
 |       ... |       ... |                     ... |
 +-----------+-----------+-------------------------+
 
-The units of the values are in pixels, and the origin is in the upper
-left-hand corner of the generated image stacks. This means, for
-example, that a fluorophore at position (16, 16) will be in the center
-of a 32x32 pixel image.
+The units of the values are in pixels, and, **for imports from CSV
+files only**, the origin is in the upper left-hand corner of the
+generated image stacks, not the center of the upper left pixel. After
+import into SASS, there is an implicit subtraction of half a pixel
+from the x- and y-coordinate values which shifts the coordinate system
+into the one used by SASS. This is done to preserve the same relative
+pixel locations when importing from the same file into SASS or
+ThunderSTORM.
 
-The coordinate system in x and y is identical to that used by
-`ThunderSTORM <http://zitmen.github.io/thunderstorm/>`_.
+For example, a fluorophore with a position in the CSV file at (15.5,
+15.5) will lie at the center of a pixel in ThunderSTORM. To get it to
+lie at the center of a pixel in SASS, 0.5 is subtracted from each
+coordinate to make the resulting position (15, 15). Because the origin
+is at a pixel center in SASS, so to will be this fluorophore's
+position.
+
+Check out `ThunderSTORM <http://zitmen.github.io/thunderstorm/>`_ for
+more information.
 
 What are the units for the axial (z) direction?
 -----------------------------------------------

@@ -64,17 +64,17 @@ public class InitializeSimulation extends java.awt.Dialog {
         initComponents();
         
         // Populate the dropdown menus of analyzer, controller and laser
-        cb_analyzer_setup.removeAllItems();
+        analyzerComboBox.removeAllItems();
         for (String key: analyzer_factory.getProductNameList()) {
-            cb_analyzer_setup.addItem(key);
+            analyzerComboBox.addItem(key);
         }
-        cb_analyzer_setup.setSelectedItem(analyzer_factory.getSelectedProductName());
+        analyzerComboBox.setSelectedItem(analyzer_factory.getSelectedProductName());
         
-        cb_controller_setup.removeAllItems();
+        controllerComboBox.removeAllItems();
         for (String key: controller_factory.getProductNameList()) {
-            cb_controller_setup.addItem(key);
+            controllerComboBox.addItem(key);
         }
-        cb_controller_setup.setSelectedItem(controller_factory.getSelectedProductName());
+        controllerComboBox.setSelectedItem(controller_factory.getSelectedProductName());
         
 
         // update the setup panels
@@ -116,11 +116,11 @@ public class InitializeSimulation extends java.awt.Dialog {
         backgroundButtons = new javax.swing.ButtonGroup();
         panel6 = new java.awt.Panel();
         jLabel1 = new javax.swing.JLabel();
-        cb_analyzer_setup = new javax.swing.JComboBox();
+        analyzerComboBox = new javax.swing.JComboBox();
         analyzer_panel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        cb_controller_setup = new javax.swing.JComboBox();
+        controllerComboBox = new javax.swing.JComboBox();
         controller_panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         e_controller_tickrate = new javax.swing.JTextField();
@@ -316,13 +316,9 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel1.setText("Analyzer:");
 
-        cb_analyzer_setup.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-                cb_analyzer_setupPopupMenuWillBecomeInvisible(evt);
-            }
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+        analyzerComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                analyzerComboBoxItemStateChanged(evt);
             }
         });
 
@@ -348,7 +344,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(cb_analyzer_setup, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(analyzerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel6Layout.createSequentialGroup()
                 .addContainerGap(22, Short.MAX_VALUE)
@@ -361,7 +357,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(cb_analyzer_setup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(analyzerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(analyzer_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -369,13 +365,9 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel2.setText("Controller:");
 
-        cb_controller_setup.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-                cb_controller_setupPopupMenuWillBecomeInvisible(evt);
-            }
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+        controllerComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                controllerComboBoxItemStateChanged(evt);
             }
         });
 
@@ -418,7 +410,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(cb_controller_setup, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(controllerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -436,7 +428,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cb_controller_setup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(controllerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -1798,16 +1790,6 @@ public class InitializeSimulation extends java.awt.Dialog {
         dispose();
     }//GEN-LAST:event_closeDialog
 
-    private void cb_analyzer_setupPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cb_analyzer_setupPopupMenuWillBecomeInvisible
-        analyzer_factory.selectProduct((String) cb_analyzer_setup.getSelectedItem());
-        updateAnalyzerSetupPanel();
-    }//GEN-LAST:event_cb_analyzer_setupPopupMenuWillBecomeInvisible
-
-    private void cb_controller_setupPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cb_controller_setupPopupMenuWillBecomeInvisible
-        controller_factory.selectProduct((String) cb_controller_setup.getSelectedItem());
-        updateControllerSetupPanel();
-    }//GEN-LAST:event_cb_controller_setupPopupMenuWillBecomeInvisible
-
     private void fluorophoreTOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fluorophoreTOffActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fluorophoreTOffActionPerformed
@@ -1931,6 +1913,9 @@ public class InitializeSimulation extends java.awt.Dialog {
         model.setPsfGibsonLanniSolver(glSolver.getText());
         model.setPsfGibsonLanniMaxRadius(Integer.parseInt(glMaxRadius.getText()));
         model.setPsfGibsonLanniText(psfGibsonLanniCard.getName());
+        
+        model.setAnalyzerCurrentSelection(String.valueOf(analyzerComboBox.getSelectedItem()));
+        model.setControllerCurrentSelection(String.valueOf(controllerComboBox.getSelectedItem()));
     }
     
     /**
@@ -2000,6 +1985,9 @@ public class InitializeSimulation extends java.awt.Dialog {
         glResPsfAxial.setText(String.valueOf(model.getPsfGibsonLanniResPsfAxial()));
         glSolver.setText(model.getPsfGibsonLanniSolver());
         glMaxRadius.setText(String.valueOf(model.getPsfGibsonLanniMaxRadius()));
+        
+        analyzerComboBox.setSelectedItem(model.getAnalyzerCurrentSelection());
+        controllerComboBox.setSelectedItem(model.getControllerCurrentSelection());
         
     }
     
@@ -2183,10 +2171,21 @@ public class InitializeSimulation extends java.awt.Dialog {
         cl.show(fluorophoreCardPanel, (String)evt.getItem());
     }//GEN-LAST:event_fluorophoreComboBoxItemStateChanged
 
+    private void analyzerComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_analyzerComboBoxItemStateChanged
+        analyzer_factory.selectProduct((String) analyzerComboBox.getSelectedItem());
+        updateAnalyzerSetupPanel();
+    }//GEN-LAST:event_analyzerComboBoxItemStateChanged
+
+    private void controllerComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_controllerComboBoxItemStateChanged
+        controller_factory.selectProduct((String) controllerComboBox.getSelectedItem());
+        updateControllerSetupPanel();
+    }//GEN-LAST:event_controllerComboBoxItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel FluorophoreParentPanel;
     private javax.swing.JPanel SimpleFluorophorePanel;
+    private javax.swing.JComboBox analyzerComboBox;
     private javax.swing.JPanel analyzer_panel;
     private javax.swing.ButtonGroup backgroundButtons;
     private javax.swing.JButton backgroundChooseFile;
@@ -2207,8 +2206,7 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField cameraReadoutNoise;
     private javax.swing.JTextField cameraSizeX;
     private javax.swing.JTextField cameraSizeY;
-    private javax.swing.JComboBox cb_analyzer_setup;
-    private javax.swing.JComboBox cb_controller_setup;
+    private javax.swing.JComboBox controllerComboBox;
     private javax.swing.JPanel controller_panel;
     private javax.swing.JTextField e_controller_tickrate;
     private javax.swing.JTextField e_max_controller_output;

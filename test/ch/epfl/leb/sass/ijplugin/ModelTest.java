@@ -901,4 +901,30 @@ public class ModelTest {
         int result = instance.getPsfGibsonLanniMaxRadius();
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of getAnalyzerCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetAnalyzerCurrentSelection() {
+        System.out.println("getAnalyzerCurrentSelection");
+        Model instance = new Model();
+        String expResult = "SpotCounter";
+        instance.setAnalyzerCurrentSelection(expResult);
+        String result = instance.getAnalyzerCurrentSelection();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getControllerCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetControllerCurrentSelection() {
+        System.out.println("getControllerCurrentSelection");
+        Model instance = new Model();
+        String expResult = "PI";
+        instance.setControllerCurrentSelection(expResult);
+        String result = instance.getControllerCurrentSelection();
+        assertEquals(expResult, result);
+    }
 }

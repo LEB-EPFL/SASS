@@ -121,6 +121,9 @@ public class Model implements Serializable {
     private int psfGibsonLanniMaxRadius;
     private String psfGibsonLanniText;
     
+    private String analyzerCurrentSelection;
+    private String controllerCurrentSelection;
+    
     // Getters
     //--------------------------------------------------------------------------
     public int getCameraNX() { return cameraNX; }
@@ -222,6 +225,13 @@ public class Model implements Serializable {
     public int getPsfGibsonLanniMaxRadius() { return psfGibsonLanniMaxRadius; }
     public String getPsfGibsonLanniText() {
         return psfGibsonLanniText;
+    }
+    
+    public String getAnalyzerCurrentSelection() {
+        return analyzerCurrentSelection;
+    }
+    public String getControllerCurrentSelection() {
+        return controllerCurrentSelection;
     }
     
     // Setters
@@ -386,6 +396,13 @@ public class Model implements Serializable {
     }
     public void setPsfGibsonLanniText(String text) {
         psfGibsonLanniText = text;
+    }
+    
+    public void setAnalyzerCurrentSelection(String text) {
+        analyzerCurrentSelection = text;
+    }
+    public void setControllerCurrentSelection(String text) {
+        controllerCurrentSelection = text;
     }
     
     /**

@@ -133,7 +133,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="cb_analyzer_setup" min="-2" pref="93" max="-2" attributes="0"/>
+                  <Component id="analyzerComboBox" min="-2" pref="93" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
@@ -149,7 +149,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cb_analyzer_setup" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="analyzerComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="analyzer_panel" max="-2" attributes="0"/>
@@ -164,14 +164,14 @@
             <Property name="text" type="java.lang.String" value="Analyzer:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cb_analyzer_setup">
+        <Component class="javax.swing.JComboBox" name="analyzerComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="cb_analyzer_setupPopupMenuWillBecomeInvisible"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="analyzerComboBoxItemStateChanged"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="analyzer_panel">
@@ -218,7 +218,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="cb_controller_setup" min="-2" pref="97" max="-2" attributes="0"/>
+                                  <Component id="controllerComboBox" min="-2" pref="97" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -245,7 +245,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cb_controller_setup" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="controllerComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -270,14 +270,14 @@
             <Property name="text" type="java.lang.String" value="Controller:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cb_controller_setup">
+        <Component class="javax.swing.JComboBox" name="controllerComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="cb_controller_setupPopupMenuWillBecomeInvisible"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="controllerComboBoxItemStateChanged"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="controller_panel">

@@ -185,6 +185,32 @@ public class ModelTest {
         double result = instance.getObjectiveMag();
         assertEquals(expResult, result, 0.0);
     }
+    
+    /**
+     * Test of getFluorophoreCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetFluorophoreCurrentSelection() {
+        System.out.println("getFluorophoreCurrentSelection");
+        Model instance = new Model();
+        String expResult = "Simple";
+        instance.setFluorophoreCurrentSelection(expResult);
+        String result = instance.getFluorophoreCurrentSelection();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getFluorophoreSimpleText method, of class Model.
+     */
+    @Test
+    public void testGetFluorophoreSimpleText() {
+        System.out.println("getFluorophoreSimpleText");
+        Model instance = new Model();
+        String expResult = "Simple";
+        instance.setFluorophoreSimpleText(expResult);
+        String result = instance.getFluorophoreSimpleText();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of getFluorophoreSignal method, of class Model.

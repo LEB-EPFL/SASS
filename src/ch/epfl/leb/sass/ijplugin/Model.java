@@ -58,6 +58,8 @@ public class Model implements Serializable {
     private double objectiveNa;
     private double objectiveMag;
     
+    private String fluorophoreCurrentSelection;
+    private String fluorophoreSimpleText;
     private double fluorophoreSignal;
     private double fluorophoreWavelength;
     private double fluorophoreTOn;
@@ -137,6 +139,10 @@ public class Model implements Serializable {
     public double getObjectiveNa() { return objectiveNa; }
     public double getObjectiveMag() { return objectiveMag; }
     
+    public String getFluorophoreCurrentSelection() {
+        return fluorophoreCurrentSelection;
+    }
+    public String getFluorophoreSimpleText() { return fluorophoreSimpleText; }
     public double getFluorophoreSignal() { return fluorophoreSignal; }
     public double getFluorophoreWavelength() { return fluorophoreWavelength; }
     public double getFluorophoreTOn() { return fluorophoreTOn; }
@@ -246,6 +252,12 @@ public class Model implements Serializable {
     public void setObjectiveNa(double na) { objectiveNa = na; }
     public void setObjectiveMag(double mag) { objectiveMag = mag; }
     
+    public void setFluorophoreCurrentSelection(String text) {
+        fluorophoreCurrentSelection = text;
+    }
+    public void setFluorophoreSimpleText(String text) {
+        fluorophoreSimpleText = text;
+    }
     public void setFluorophoreSignal(double signal) {
         fluorophoreSignal = signal;
     }
@@ -411,9 +423,11 @@ public class Model implements Serializable {
 
         fluorPropBuilder.signal(fluorophoreSignal);
         fluorPropBuilder.wavelength(fluorophoreWavelength);
-        fluorPropBuilder.tOn(fluorophoreTOn);
-        fluorPropBuilder.tOff(fluorophoreTOff);
-        fluorPropBuilder.tBl(fluorophoreTBl);
+        if (fluorophoreCurrentSelection.equals(fluorophoreSimpleText)) {
+            fluorPropBuilder.tOn(fluorophoreTOn);
+            fluorPropBuilder.tOff(fluorophoreTOff);
+            fluorPropBuilder.tBl(fluorophoreTBl);
+        }
 
         fidBuilder.numFiducials(fiducialsNumber); // Set to zero if you don't want fiducials
         fidBuilder.brightness(fiducialsSignal);

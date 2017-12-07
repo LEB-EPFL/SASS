@@ -111,13 +111,17 @@ public class Simulator {
             throw new IllegalArgumentException("Wrong simulation parameters!");
         }
         
+        double pixelSize = generator.getObjectSpacePixelSize();
         ImageProcessor ip;
         for (image_count = 1; image_count <= no_of_images; image_count++) {
             JSONObject history_entry = new JSONObject();
             
             ip = generator.getNextImage();
-            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 
-                    generator.getPixelSizeUm()*generator.getPixelSizeUm()*ip.getWidth()*ip.getHeight(), 
+            analyzer.processImage(
+                    ip.getPixelsCopy(),
+                    ip.getWidth(),
+                    ip.getHeight(), 
+                    pixelSize, 
                     10);
             //System.out.println(image_count);
             if (image_count % controller_refresh_rate == 0) {

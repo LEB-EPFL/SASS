@@ -60,4 +60,6 @@ public abstract class AbstractGenerator implements ImageGenerator {
     public ImageStack getStack() {
         return stack;
     }
+    
+    
 }

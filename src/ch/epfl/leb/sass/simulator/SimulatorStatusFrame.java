@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -51,42 +52,57 @@ public class SimulatorStatusFrame extends javax.swing.JFrame {
     /** 
      * Creates a new status frame that indicates the time evolution of the simulation parameters.
      */
-    public SimulatorStatusFrame() {
-        String title = "Simulation Outputs";
-        CombinedDomainXYPlot combineddomainxyplot = new CombinedDomainXYPlot(new NumberAxis("Frame"));
-
+    public SimulatorStatusFrame(
+            String groundTruthYLabel,
+            String analyzerYLabel
+    ) {
+        String seriesLabel = "";
+        String yLabel = "";
+        CombinedDomainXYPlot combineddomainxyplot = new CombinedDomainXYPlot(
+                new NumberAxis("Simulation Outputs")
+        );
+        Font yLabelFont = new Font("Dialog", Font.PLAIN, 10);
         datasets = new XYSeriesCollection[4];
         for (int i = 0; i < SUBPLOT_COUNT; i++) {
-            XYSeries timeseries = new XYSeries("Frame");
+            switch (i) {
+                case 0:
+                    seriesLabel = "True density";
+                    yLabel = groundTruthYLabel;
+                    break;
+                case 1:
+                    seriesLabel = "Analyzer output";
+                    yLabel = analyzerYLabel;
+                    break;
+                case 2:
+                    seriesLabel = "Setpoint";
+                    yLabel = analyzerYLabel;
+                    break;
+                case 3:
+                    seriesLabel = "Controller output";
+                    yLabel = "mW";
+                    break;
+            }
+            
+            XYSeries timeseries = new XYSeries(seriesLabel);
             datasets[i] = new XYSeriesCollection(timeseries);
 
-            switch (i) {
-                    case 0:
-                            title = "True signal";
-                            break;
-                    case 1:
-                            title = "Estimated signal";
-                            break;
-                    case 2:
-                            title = "Setpoint";
-                            break;
-                    case 3:
-                            title = "Laser output";
-                            break;
-            }
-
-            NumberAxis numberaxis = new NumberAxis(title);
+            NumberAxis numberaxis = new NumberAxis(yLabel);
             numberaxis.setAutoRangeIncludesZero(false);
             numberaxis.setNumberFormatOverride(new DecimalFormat("###0.00")); 
             XYPlot xyplot = new XYPlot(datasets[i], null, numberaxis, new StandardXYItemRenderer());
             xyplot.setBackgroundPaint(Color.lightGray);
             xyplot.setDomainGridlinePaint(Color.white);
             xyplot.setRangeGridlinePaint(Color.white);
+            xyplot.getRangeAxis().setLabelFont(yLabelFont);
             combineddomainxyplot.add(xyplot);
         }
 
-        JFreeChart jfreechart = new JFreeChart("", combineddomainxyplot);
-        jfreechart.removeLegend();
+        JFreeChart jfreechart = new JFreeChart(
+                "",
+                JFreeChart.DEFAULT_TITLE_FONT,
+                combineddomainxyplot,
+                true
+        );
         jfreechart.setBorderPaint(Color.black);
         jfreechart.setBorderVisible(true);
         jfreechart.setBackgroundPaint(Color.white);

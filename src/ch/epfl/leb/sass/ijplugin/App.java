@@ -60,9 +60,20 @@ public class App extends Simulator {
         generator.getNextImage();
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
+        
+        // The units of the manual controller setpoint are the same as the
+        // as the laser, not the analyzer output like the other controllers.
+        String setpointLabel = "";
+        if ("Manual".equals(controller.getName())) {
+            setpointLabel = "mW";
+        } else {
+            setpointLabel = analyzer.getShortReturnDescription();
+        }
         statusFrame = new SimulatorStatusFrame(
                 generator.getShortTrueSignalDescription(),
-                analyzer.getShortReturnDescription()
+                analyzer.getShortReturnDescription(),
+                setpointLabel,
+                "mW"
         );
         controller_tickrate = 20;
         interaction_window = new InteractionWindow(analyzer, controller);
@@ -90,9 +101,20 @@ public class App extends Simulator {
         interaction_window = new InteractionWindow(analyzer, controller);
         imp = new ImagePlus("Sim window", generator.getStack());
         imp.show();
+        
+        // The units of the manual controller setpoint are the same as the
+        // as the laser, not the analyzer output like the other controllers.
+        String setpointLabel = "";
+        if ("Manual".equals(controller.getName())) {
+            setpointLabel = "mW";
+        } else {
+            setpointLabel = analyzer.getShortReturnDescription();
+        }
         statusFrame = new SimulatorStatusFrame(
                 generator.getShortTrueSignalDescription(),
-                analyzer.getShortReturnDescription()
+                analyzer.getShortReturnDescription(),
+                setpointLabel,
+                "mW"
         );
     }
     

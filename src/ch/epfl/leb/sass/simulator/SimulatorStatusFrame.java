@@ -50,11 +50,18 @@ public class SimulatorStatusFrame extends javax.swing.JFrame {
     private XYSeriesCollection datasets[];
     
     /** 
-     * Creates a new status frame that indicates the time evolution of the simulation parameters.
+     * Creates a new status frame.
+     * 
+     * @param groundTruthYLabel The y-axis label for the ground truth signal.
+     * @param analyzerYLabel The units output by the analyzer.
+     * @param setpointYLabel The units of the controller setpoint.
+     * @param outputYLabel The units output by the controller.
      */
     public SimulatorStatusFrame(
             String groundTruthYLabel,
-            String analyzerYLabel
+            String analyzerYLabel,
+            String setpointYLabel,
+            String outputYLabel
     ) {
         String seriesLabel = "";
         String yLabel = "";
@@ -75,11 +82,11 @@ public class SimulatorStatusFrame extends javax.swing.JFrame {
                     break;
                 case 2:
                     seriesLabel = "Setpoint";
-                    yLabel = analyzerYLabel;
+                    yLabel = setpointYLabel;
                     break;
                 case 3:
                     seriesLabel = "Controller output";
-                    yLabel = "mW";
+                    yLabel = outputYLabel;
                     break;
             }
             
@@ -89,7 +96,12 @@ public class SimulatorStatusFrame extends javax.swing.JFrame {
             NumberAxis numberaxis = new NumberAxis(yLabel);
             numberaxis.setAutoRangeIncludesZero(false);
             numberaxis.setNumberFormatOverride(new DecimalFormat("###0.00")); 
-            XYPlot xyplot = new XYPlot(datasets[i], null, numberaxis, new StandardXYItemRenderer());
+            XYPlot xyplot = new XYPlot(
+                    datasets[i],
+                    null,
+                    numberaxis,
+                    new StandardXYItemRenderer()
+            );
             xyplot.setBackgroundPaint(Color.lightGray);
             xyplot.setDomainGridlinePaint(Color.white);
             xyplot.setRangeGridlinePaint(Color.white);

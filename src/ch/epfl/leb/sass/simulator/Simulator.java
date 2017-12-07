@@ -45,6 +45,14 @@ import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
 public class Simulator {
 
     /**
+     * The time duration of each frame.
+     * 
+     * This is here only for compatibility with ALICA's analyzers, which require
+     * a time argument.
+     */
+    protected final long TIMEPERFRAME = 10;
+    
+    /**
      * Analyzer which analyzes generated images
      */
     protected final Analyzer analyzer;
@@ -122,7 +130,7 @@ public class Simulator {
                     ip.getWidth(),
                     ip.getHeight(), 
                     pixelSize, 
-                    10);
+                    TIMEPERFRAME);
             //System.out.println(image_count);
             if (image_count % controller_refresh_rate == 0) {
                 double analyzer_batch_output = analyzer.getBatchOutput();

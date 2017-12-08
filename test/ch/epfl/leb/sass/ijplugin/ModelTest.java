@@ -211,7 +211,20 @@ public class ModelTest {
         String result = instance.getFluorophoreSimpleText();
         assertEquals(expResult, result);
     }
-
+    
+    /**
+     * Test of getFluorophorePalmText method, of class Model.
+     */
+    @Test
+    public void testGetFluorophorePalmText() {
+        System.out.println("getFluorophorePalmText");
+        Model instance = new Model();
+        String expResult = "PALM";
+        instance.setFluorophorePalmText(expResult);
+        String result = instance.getFluorophorePalmText();
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of getFluorophoreSignal method, of class Model.
      */
@@ -274,6 +287,103 @@ public class ModelTest {
         double expResult = 1000;
         instance.setFluorophoreTBl(expResult);
         double result = instance.getFluorophoreTBl();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmWavelength method, of class Model.
+     */
+    @Test
+    public void testGetPalmWavelength() {
+        System.out.println("getPalmWavelength");
+        Model instance = new Model();
+        double expResult = 0.58;
+        instance.setPalmWavelength(expResult);
+        double result = instance.getPalmWavelength();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmSignal method, of class Model.
+     */
+    @Test public void testGetPalmSignal() {
+        System.out.println("getPalmSignal");
+        Model instance = new Model();
+        double expResult = 1250;
+        instance.setPalmSignal(expResult);
+        double result = instance.getPalmSignal();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKA method, of class Model.
+     */
+    @Test public void testGetPalmKA() {
+        System.out.println("getPalmKA");
+        Model instance = new Model();
+        double expResult = 10;
+        instance.setPalmKA(expResult);
+        double result = instance.getPalmKA();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKB method, of class Model.
+     */
+    @Test public void testGetPalmKB() {
+        System.out.println("getPalmKB");
+        Model instance = new Model();
+        double expResult = 5;
+        instance.setPalmKB(expResult);
+        double result = instance.getPalmKB();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKD1 method, of class Model.
+     */
+    @Test public void testGetPalmKD1() {
+        System.out.println("getPalmKD1");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKD1(expResult);
+        double result = instance.getPalmKD1();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKR1 method, of class Model.
+     */
+    @Test public void testGetPalmKR1() {
+        System.out.println("getPalmKR1");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKR1(expResult);
+        double result = instance.getPalmKR1();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKD2 method, of class Model.
+     */
+    @Test public void testGetPalmKD2() {
+        System.out.println("getPalmKD2");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKD2(expResult);
+        double result = instance.getPalmKD2();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKR2 method, of class Model.
+     */
+    @Test public void testGetPalmKR2() {
+        System.out.println("getPalmKR2");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKR2(expResult);
+        double result = instance.getPalmKR2();
         assertEquals(expResult, result, 0.0);
     }
 

@@ -284,10 +284,10 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel93 = new javax.swing.JLabel();
         jLabel94 = new javax.swing.JLabel();
         jLabel95 = new javax.swing.JLabel();
-        FluorophoreParentPanel = new javax.swing.JPanel();
+        fluorophoreParentPanel = new javax.swing.JPanel();
         fluorophoreCardPanel = new javax.swing.JPanel();
         simpleFluorophoreCard = new javax.swing.JScrollPane();
-        SimpleFluorophorePanel = new javax.swing.JPanel();
+        simpleFluorophorePanel = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
@@ -303,6 +303,32 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
+        palmFluorophoreCard = new javax.swing.JScrollPane();
+        palmFluorophorePanel = new javax.swing.JPanel();
+        jLabel100 = new javax.swing.JLabel();
+        jLabel101 = new javax.swing.JLabel();
+        palmSignal = new javax.swing.JTextField();
+        palmWavelength = new javax.swing.JTextField();
+        jLabel102 = new javax.swing.JLabel();
+        jLabel103 = new javax.swing.JLabel();
+        jLabel104 = new javax.swing.JLabel();
+        jLabel105 = new javax.swing.JLabel();
+        jLabel106 = new javax.swing.JLabel();
+        jLabel107 = new javax.swing.JLabel();
+        jLabel108 = new javax.swing.JLabel();
+        jLabel109 = new javax.swing.JLabel();
+        palmKA = new javax.swing.JTextField();
+        palmKB = new javax.swing.JTextField();
+        palmKD1 = new javax.swing.JTextField();
+        palmKR1 = new javax.swing.JTextField();
+        palmKD2 = new javax.swing.JTextField();
+        palmKR2 = new javax.swing.JTextField();
+        jLabel110 = new javax.swing.JLabel();
+        jLabel111 = new javax.swing.JLabel();
+        jLabel112 = new javax.swing.JLabel();
+        jLabel113 = new javax.swing.JLabel();
+        jLabel114 = new javax.swing.JLabel();
+        jLabel115 = new javax.swing.JLabel();
         fluorophoreComboBox = new javax.swing.JComboBox<>();
         fluorophoreSeparator = new javax.swing.JSeparator();
 
@@ -1555,7 +1581,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap())
         );
 
-        FluorophoreParentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fluorophores"));
+        fluorophoreParentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fluorophores"));
 
         fluorophoreCardPanel.setBorder(null);
         fluorophoreCardPanel.setLayout(new java.awt.CardLayout());
@@ -1563,7 +1589,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         simpleFluorophoreCard.setBorder(null);
         simpleFluorophoreCard.setName("Simple"); // NOI18N
 
-        SimpleFluorophorePanel.setBorder(null);
+        simpleFluorophorePanel.setBorder(null);
 
         jLabel33.setText("Signal");
 
@@ -1605,27 +1631,27 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         jLabel42.setText("frames");
 
-        javax.swing.GroupLayout SimpleFluorophorePanelLayout = new javax.swing.GroupLayout(SimpleFluorophorePanel);
-        SimpleFluorophorePanel.setLayout(SimpleFluorophorePanelLayout);
-        SimpleFluorophorePanelLayout.setHorizontalGroup(
-            SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SimpleFluorophorePanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout simpleFluorophorePanelLayout = new javax.swing.GroupLayout(simpleFluorophorePanel);
+        simpleFluorophorePanel.setLayout(simpleFluorophorePanelLayout);
+        simpleFluorophorePanelLayout.setHorizontalGroup(
+            simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(simpleFluorophorePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33)
                     .addComponent(jLabel34)
                     .addComponent(jLabel35)
                     .addComponent(jLabel36)
                     .addComponent(jLabel37))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fluorophoreWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fluorophoreTOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fluorophoreTOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fluorophoreTBl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fluorophoreSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel38)
                     .addComponent(jLabel39)
                     .addComponent(jLabel40)
@@ -1634,66 +1660,223 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        SimpleFluorophorePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {fluorophoreSignal, fluorophoreTBl, fluorophoreTOff, fluorophoreTOn, fluorophoreWavelength});
+        simpleFluorophorePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {fluorophoreSignal, fluorophoreTBl, fluorophoreTOff, fluorophoreTOn, fluorophoreWavelength});
 
-        SimpleFluorophorePanelLayout.setVerticalGroup(
-            SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SimpleFluorophorePanelLayout.createSequentialGroup()
+        simpleFluorophorePanelLayout.setVerticalGroup(
+            simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(simpleFluorophorePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(fluorophoreSignal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel38))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel34)
                     .addComponent(fluorophoreWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel39))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
                     .addComponent(fluorophoreTOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel40))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
                     .addComponent(fluorophoreTOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel41))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SimpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(simpleFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel37)
                     .addComponent(fluorophoreTBl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel42))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        simpleFluorophoreCard.setViewportView(SimpleFluorophorePanel);
-        SimpleFluorophorePanel.getAccessibleContext().setAccessibleParent(FluorophoreParentPanel);
+        simpleFluorophoreCard.setViewportView(simpleFluorophorePanel);
+        simpleFluorophorePanel.getAccessibleContext().setAccessibleParent(fluorophoreParentPanel);
 
         fluorophoreCardPanel.add(simpleFluorophoreCard, "Simple");
 
-        fluorophoreComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Simple" }));
+        palmFluorophoreCard.setBorder(null);
+        palmFluorophoreCard.setName("PALM"); // NOI18N
+
+        palmFluorophorePanel.setBorder(null);
+
+        jLabel100.setText("Signal");
+
+        jLabel101.setText("Wavelength");
+
+        palmSignal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmSignal.setText("500");
+
+        palmWavelength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmWavelength.setText("0.58");
+
+        jLabel102.setText("photons/frame");
+
+        jLabel103.setText("µm");
+
+        jLabel104.setText("Activation rate");
+
+        jLabel105.setText("Bleaching rate");
+
+        jLabel106.setText("Off rate 1");
+
+        jLabel107.setText("Return rate 1");
+
+        jLabel108.setText("Off rate 2");
+
+        jLabel109.setText("Return rate 2");
+
+        palmKA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmKA.setText("0.01");
+
+        palmKB.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmKB.setText("0.01");
+
+        palmKD1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmKD1.setText("0.065");
+
+        palmKR1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmKR1.setText("0.004");
+
+        palmKD2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmKD2.setText("0.013");
+        palmKD2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                palmKD2ActionPerformed(evt);
+            }
+        });
+
+        palmKR2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        palmKR2.setText("0.157");
+
+        jLabel110.setText("1/frame");
+
+        jLabel111.setText("1/frame");
+
+        jLabel112.setText("1/frame");
+
+        jLabel113.setText("1/frame");
+
+        jLabel114.setText("1/frame");
+
+        jLabel115.setText("1/frame");
+        jLabel115.setToolTipText("");
+
+        javax.swing.GroupLayout palmFluorophorePanelLayout = new javax.swing.GroupLayout(palmFluorophorePanel);
+        palmFluorophorePanel.setLayout(palmFluorophorePanelLayout);
+        palmFluorophorePanelLayout.setHorizontalGroup(
+            palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(palmFluorophorePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel100)
+                    .addComponent(jLabel105)
+                    .addComponent(jLabel106)
+                    .addComponent(jLabel107)
+                    .addComponent(jLabel108)
+                    .addComponent(jLabel109)
+                    .addComponent(jLabel101)
+                    .addComponent(jLabel104))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(palmKA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmKB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmKD1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmKR1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmKD2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmKR2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palmSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel102)
+                    .addComponent(jLabel111)
+                    .addComponent(jLabel112)
+                    .addComponent(jLabel113)
+                    .addComponent(jLabel114)
+                    .addComponent(jLabel115)
+                    .addComponent(jLabel103)
+                    .addComponent(jLabel110))
+                .addContainerGap(59, Short.MAX_VALUE))
+        );
+
+        palmFluorophorePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {palmKA, palmKB, palmKD1, palmKD2, palmKR1, palmKR2, palmSignal, palmWavelength});
+
+        palmFluorophorePanelLayout.setVerticalGroup(
+            palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(palmFluorophorePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel100)
+                    .addComponent(palmSignal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel102))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel101)
+                    .addComponent(palmWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel103))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel104)
+                    .addComponent(palmKA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel110))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel105)
+                    .addComponent(palmKB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel111))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel106)
+                    .addComponent(palmKD1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel112))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel107)
+                    .addComponent(palmKR1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel113))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel108)
+                    .addComponent(palmKD2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel114))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(palmFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel109)
+                    .addComponent(palmKR2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel115))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        palmFluorophoreCard.setViewportView(palmFluorophorePanel);
+
+        fluorophoreCardPanel.add(palmFluorophoreCard, "PALM");
+
+        fluorophoreComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Simple", "PALM" }));
         fluorophoreComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fluorophoreComboBoxItemStateChanged(evt);
             }
         });
 
-        javax.swing.GroupLayout FluorophoreParentPanelLayout = new javax.swing.GroupLayout(FluorophoreParentPanel);
-        FluorophoreParentPanel.setLayout(FluorophoreParentPanelLayout);
-        FluorophoreParentPanelLayout.setHorizontalGroup(
-            FluorophoreParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FluorophoreParentPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout fluorophoreParentPanelLayout = new javax.swing.GroupLayout(fluorophoreParentPanel);
+        fluorophoreParentPanel.setLayout(fluorophoreParentPanelLayout);
+        fluorophoreParentPanelLayout.setHorizontalGroup(
+            fluorophoreParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fluorophoreParentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(FluorophoreParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(fluorophoreParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fluorophoreSeparator, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fluorophoreComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fluorophoreCardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE))
+                    .addComponent(fluorophoreCardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        FluorophoreParentPanelLayout.setVerticalGroup(
-            FluorophoreParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FluorophoreParentPanelLayout.createSequentialGroup()
+        fluorophoreParentPanelLayout.setVerticalGroup(
+            fluorophoreParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fluorophoreParentPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fluorophoreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1718,7 +1901,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(FluorophoreParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fluorophoreParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -1750,7 +1933,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(FluorophoreParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fluorophoreParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1847,11 +2030,20 @@ public class InitializeSimulation extends java.awt.Dialog {
 
             model.setFluorophoreCurrentSelection(String.valueOf(fluorophoreComboBox.getSelectedItem()));
             model.setFluorophoreSimpleText(simpleFluorophoreCard.getName());
+            model.setFluorophorePalmText(palmFluorophoreCard.getName());
             model.setFluorophoreSignal(Double.parseDouble(fluorophoreSignal.getText()));
             model.setFluorophoreWavelength(Double.parseDouble(fluorophoreWavelength.getText()));
             model.setFluorophoreTOn(Double.parseDouble(fluorophoreTOn.getText()));
             model.setFluorophoreTOff(Double.parseDouble(fluorophoreTOff.getText()));
             model.setFluorophoreTBl(Double.parseDouble(fluorophoreTBl.getText()));
+            model.setPalmWavelength(Double.parseDouble(palmWavelength.getText()));
+            model.setPalmSignal(Double.parseDouble(palmSignal.getText()));
+            model.setPalmKA(Double.parseDouble(palmKA.getText()));
+            model.setPalmKB(Double.parseDouble(palmKB.getText()));
+            model.setPalmKD1(Double.parseDouble(palmKD1.getText()));
+            model.setPalmKR1(Double.parseDouble(palmKR1.getText()));
+            model.setPalmKD2(Double.parseDouble(palmKD2.getText()));
+            model.setPalmKR2(Double.parseDouble(palmKR2.getText()));
 
             model.setLaserCurrentPower(Double.parseDouble(laserInitPower.getText()));
             model.setLaserMinPower(Double.parseDouble(laserMinPower.getText()));
@@ -1943,6 +2135,14 @@ public class InitializeSimulation extends java.awt.Dialog {
         fluorophoreTOn.setText(String.valueOf(model.getFluorophoreTOn()));
         fluorophoreTOff.setText(String.valueOf(model.getFluorophoreTOff()));
         fluorophoreTBl.setText(String.valueOf(model.getFluorophoreTBl()));
+        palmSignal.setText(String.valueOf(model.getPalmSignal()));
+        palmWavelength.setText(String.valueOf(model.getPalmWavelength()));
+        palmKA.setText(String.valueOf(model.getPalmKA()));
+        palmKB.setText(String.valueOf(model.getPalmKB()));
+        palmKD1.setText(String.valueOf(model.getPalmKD1()));
+        palmKR1.setText(String.valueOf(model.getPalmKR1()));
+        palmKD2.setText(String.valueOf(model.getPalmKD2()));
+        palmKR2.setText(String.valueOf(model.getPalmKR2()));
         
         laserInitPower.setText(String.valueOf(model.getLaserCurrentPower()));
         laserMinPower.setText(String.valueOf(model.getLaserMinPower()));
@@ -2181,10 +2381,12 @@ public class InitializeSimulation extends java.awt.Dialog {
         updateControllerSetupPanel();
     }//GEN-LAST:event_controllerComboBoxItemStateChanged
 
+    private void palmKD2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_palmKD2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_palmKD2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel FluorophoreParentPanel;
-    private javax.swing.JPanel SimpleFluorophorePanel;
     private javax.swing.JComboBox analyzerComboBox;
     private javax.swing.JPanel analyzer_panel;
     private javax.swing.ButtonGroup backgroundButtons;
@@ -2224,6 +2426,7 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField fiducialsSignal;
     private javax.swing.JPanel fluorophoreCardPanel;
     private javax.swing.JComboBox<String> fluorophoreComboBox;
+    private javax.swing.JPanel fluorophoreParentPanel;
     private javax.swing.JSeparator fluorophoreSeparator;
     private javax.swing.JTextField fluorophoreSignal;
     private javax.swing.JTextField fluorophoreTBl;
@@ -2250,7 +2453,23 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JButton initializeSimulation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel100;
+    private javax.swing.JLabel jLabel101;
+    private javax.swing.JLabel jLabel102;
+    private javax.swing.JLabel jLabel103;
+    private javax.swing.JLabel jLabel104;
+    private javax.swing.JLabel jLabel105;
+    private javax.swing.JLabel jLabel106;
+    private javax.swing.JLabel jLabel107;
+    private javax.swing.JLabel jLabel108;
+    private javax.swing.JLabel jLabel109;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel110;
+    private javax.swing.JLabel jLabel111;
+    private javax.swing.JLabel jLabel112;
+    private javax.swing.JLabel jLabel113;
+    private javax.swing.JLabel jLabel114;
+    private javax.swing.JLabel jLabel115;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -2363,6 +2582,16 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JTextField objectiveMag;
     private javax.swing.JTextField objectiveNa;
     private javax.swing.JButton openButton;
+    private javax.swing.JScrollPane palmFluorophoreCard;
+    private javax.swing.JPanel palmFluorophorePanel;
+    private javax.swing.JTextField palmKA;
+    private javax.swing.JTextField palmKB;
+    private javax.swing.JTextField palmKD1;
+    private javax.swing.JTextField palmKD2;
+    private javax.swing.JTextField palmKR1;
+    private javax.swing.JTextField palmKR2;
+    private javax.swing.JTextField palmSignal;
+    private javax.swing.JTextField palmWavelength;
     private java.awt.Panel panel6;
     private javax.swing.JPanel psfCardPanel;
     private javax.swing.JComboBox<String> psfComboBox;
@@ -2375,6 +2604,7 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JPanel psfParentPanel;
     private javax.swing.JButton saveButton;
     private javax.swing.JScrollPane simpleFluorophoreCard;
+    private javax.swing.JPanel simpleFluorophorePanel;
     private javax.swing.JTextField stageZ;
     // End of variables declaration//GEN-END:variables
 

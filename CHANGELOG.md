@@ -12,6 +12,8 @@ Contains [ALICA v0.2.5]
   frame numbers.
 - It is now possible to generate random background patterns using
   `GenerateRandomBackground`.
+- Emitter positions and state transitions may now be saved from the
+  GUI.
 
 ### Changed
 - A status report on PSF calculation is now output to the console for
@@ -31,7 +33,12 @@ Contains [ALICA v0.2.5]
   frame in GUI mode has been fixed. The latency came from updating the
   original status plots, which have been changed in this version.
 - Loggers now properly check for filename collisions to prevent
-  overwriting previously saved data.
+overwriting previously saved data.
+
+### Removed
+- The button that allowed saving the simulation outputs in the GUI has
+  been removed because it didn't work. This functionality may be
+  reimplemented in the future if there is interest.
 
 ## [v0.5.1]
 

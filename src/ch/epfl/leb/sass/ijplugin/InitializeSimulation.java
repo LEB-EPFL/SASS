@@ -22,6 +22,8 @@ package ch.epfl.leb.sass.ijplugin;
 
 import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
 import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
+import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ch.epfl.leb.alica.analyzers.AnalyzerFactory;
 import ch.epfl.leb.alica.analyzers.AnalyzerSetupPanel;
 import ch.epfl.leb.alica.controllers.ControllerFactory;
@@ -2388,6 +2390,12 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         updateModel();
 
+        // Enable the loggers.
+        StateLogger.getInstance().reset();
+        StateLogger.getInstance().setPerformLogging(true);
+        PositionLogger.getInstance().reset();
+        PositionLogger.getInstance().setPerformLogging(true);
+        
         // Now that we have setup all the components, we assemble the
         // microscope and the simulator.
         Microscope microscope = model.build();

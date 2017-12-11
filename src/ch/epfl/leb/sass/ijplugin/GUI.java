@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.IOException;
 
 /**
  * Main FIJI plugin frame.
@@ -85,11 +86,13 @@ public class GUI extends PlugInFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        label1 = new java.awt.Label();
-        setpointEntry = new java.awt.TextField();
-        startSimButton = new java.awt.Button();
-        stopSimButton = new java.awt.Button();
-        saveCsvButton = new java.awt.Button();
+        setpointEntry = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        savePositions = new javax.swing.JButton();
+        saveTransitions = new javax.swing.JButton();
+        startSimButton = new javax.swing.JButton();
+        stopSimButton = new javax.swing.JToggleButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setMinimumSize(new java.awt.Dimension(260, 180));
         setTitle("STORMsim");
@@ -99,28 +102,36 @@ public class GUI extends PlugInFrame {
             }
         });
 
-        label1.setText("Setpoint:");
+        setpointEntry.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        setpointEntry.setText("1");
 
-        setpointEntry.setText("100");
+        jLabel1.setText("Controller setpoint");
 
-        startSimButton.setLabel("Start");
-        startSimButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                startSimButtonMouseClicked(evt);
+        savePositions.setText("Save positions...");
+        savePositions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savePositionsActionPerformed(evt);
             }
         });
 
-        stopSimButton.setLabel("Stop");
-        stopSimButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                stopSimButtonMouseClicked(evt);
+        saveTransitions.setText("Save transitions...");
+        saveTransitions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveTransitionsActionPerformed(evt);
             }
         });
 
-        saveCsvButton.setLabel("Save CSV");
-        saveCsvButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                saveCsvButtonMouseClicked(evt);
+        startSimButton.setText("Start");
+        startSimButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startSimButtonActionPerformed(evt);
+            }
+        });
+
+        stopSimButton.setText("Stop");
+        stopSimButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopSimButtonActionPerformed(evt);
             }
         });
 
@@ -129,40 +140,50 @@ public class GUI extends PlugInFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(setpointEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(saveCsvButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                .addComponent(savePositions, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(saveTransitions))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(setpointEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {startSimButton, stopSimButton});
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {savePositions, saveTransitions});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(setpointEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(setpointEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startSimButton)
+                    .addComponent(stopSimButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveCsvButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(savePositions)
+                    .addComponent(saveTransitions))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -176,21 +197,50 @@ public class GUI extends PlugInFrame {
         //System.exit(0);
     }//GEN-LAST:event_exitForm
 
-    private void stopSimButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopSimButtonMouseClicked
-        try {
-            app.stopSimulating();
-        } catch (RuntimeException ex) {
-            IJ.showMessage("Error in simulation stop.", ex.getMessage());
-            startSimButton.setEnabled(true);
+    private void savePositionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePositionsActionPerformed
+        JFileChooser fc = new JFileChooser();
+        int returnVal;
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        //set a default filename 
+        fc.setSelectedFile(new File("emitter_positions.csv"));
+        //Set an extension filter
+        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
+        returnVal = fc.showSaveDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        
-        startSimButton.setEnabled(true);
-        stopSimButton.setEnabled(false);
-        setpointEntry.setEnabled(true);
-    }//GEN-LAST:event_stopSimButtonMouseClicked
+        File positionsCSVFile = fc.getSelectedFile();
+        String filename = positionsCSVFile.getAbsolutePath();
+        try {
+            app.getPositionLogger().setFilename(filename);
+            app.getPositionLogger().saveLogFile();
+        } catch (IOException ex) {
+            IJ.error("Could not save file: " + filename);
+        }
+    }//GEN-LAST:event_savePositionsActionPerformed
 
-    private void startSimButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startSimButtonMouseClicked
+    private void saveTransitionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTransitionsActionPerformed
+JFileChooser fc = new JFileChooser();
+        int returnVal;
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        //set a default filename 
+        fc.setSelectedFile(new File("state_transitions.csv"));
+        //Set an extension filter
+        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
+        returnVal = fc.showSaveDialog(null);
+        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File stateCSVFile = fc.getSelectedFile();
+        String filename = stateCSVFile.getAbsolutePath();
+        try {
+            app.getStateLogger().setFilename(filename);
+            app.getStateLogger().saveLogFile();
+        } catch (IOException ex) {
+            IJ.error("Could not save file: " + filename);
+        }    }//GEN-LAST:event_saveTransitionsActionPerformed
+
+    private void startSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSimButtonActionPerformed
         try {
             app.setSetpoint(Double.parseDouble(setpointEntry.getText()));
             app.startSimulating();
@@ -202,31 +252,31 @@ public class GUI extends PlugInFrame {
         startSimButton.setEnabled(false);
         stopSimButton.setEnabled(true);
         setpointEntry.setEnabled(false);
-    }//GEN-LAST:event_startSimButtonMouseClicked
+    }//GEN-LAST:event_startSimButtonActionPerformed
 
-    private void saveCsvButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveCsvButtonMouseClicked
-        JFileChooser fc = new JFileChooser();
-        int returnVal;
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        //set a default filename 
-        fc.setSelectedFile(new File("tester_output.csv"));
-        //Set an extension filter
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
-        returnVal = fc.showSaveDialog(null);
-        if  (returnVal != JFileChooser.APPROVE_OPTION) {
+    private void stopSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSimButtonActionPerformed
+        try {
+            app.stopSimulating();
+        } catch (RuntimeException ex) {
+            IJ.showMessage("Error in simulation stop.", ex.getMessage());
+            startSimButton.setEnabled(true);
             return;
         }
-        File csv_output = fc.getSelectedFile();
-        app.saveToCsv(csv_output);
-    }//GEN-LAST:event_saveCsvButtonMouseClicked
+        
+        startSimButton.setEnabled(true);
+        stopSimButton.setEnabled(false);
+        setpointEntry.setEnabled(true);
+    }//GEN-LAST:event_stopSimButtonActionPerformed
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Label label1;
-    private java.awt.Button saveCsvButton;
-    private java.awt.TextField setpointEntry;
-    private java.awt.Button startSimButton;
-    private java.awt.Button stopSimButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton savePositions;
+    private javax.swing.JButton saveTransitions;
+    private javax.swing.JTextField setpointEntry;
+    private javax.swing.JButton startSimButton;
+    private javax.swing.JToggleButton stopSimButton;
     // End of variables declaration//GEN-END:variables
 }

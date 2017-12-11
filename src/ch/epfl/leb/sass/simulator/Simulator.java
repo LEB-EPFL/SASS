@@ -24,6 +24,8 @@ import ch.epfl.leb.alica.Controller;
 import ch.epfl.leb.sass.simulator.generators.realtime.STORMsim;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
+import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
@@ -37,6 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
+import ij.IJ;
 
 /**
  * Carries out the actual simulation.
@@ -77,6 +80,16 @@ public class Simulator {
      * Records of values of output of analyzer, controller and generator.
      */
     protected HashMap<Integer,JSONObject> history;
+    
+    /**
+     * Logs the state transitions of the molecules.
+     */
+    protected StateLogger stateLogger = StateLogger.getInstance();
+    
+    /**
+     * Logs the ground truth positions of the molecules.
+     */
+    protected PositionLogger positionLogger = PositionLogger.getInstance();
     
     /**
      * Initializes all analyzers, the generator and controller.
@@ -201,7 +214,6 @@ public class Simulator {
         
         writer.close();
         
-        
     }
     
     /**
@@ -226,5 +238,19 @@ public class Simulator {
      */
     public int getImageCount() {
         return image_count;
+    }
+    
+    /**
+     * @return The state transition logger.
+     */
+    public StateLogger getStateLogger() {
+        return stateLogger;
+    }
+    
+    /**
+     * @return The emitter position logger.
+     */
+    public PositionLogger getPositionLogger() {
+        return positionLogger;
     }
 }

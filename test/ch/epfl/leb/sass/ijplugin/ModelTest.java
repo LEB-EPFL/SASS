@@ -185,7 +185,59 @@ public class ModelTest {
         double result = instance.getObjectiveMag();
         assertEquals(expResult, result, 0.0);
     }
-
+    
+    /**
+     * Test of getFluorophoreCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetFluorophoreCurrentSelection() {
+        System.out.println("getFluorophoreCurrentSelection");
+        Model instance = new Model();
+        String expResult = "Simple";
+        instance.setFluorophoreCurrentSelection(expResult);
+        String result = instance.getFluorophoreCurrentSelection();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getFluorophoreSimpleText method, of class Model.
+     */
+    @Test
+    public void testGetFluorophoreSimpleText() {
+        System.out.println("getFluorophoreSimpleText");
+        Model instance = new Model();
+        String expResult = "Simple";
+        instance.setFluorophoreSimpleText(expResult);
+        String result = instance.getFluorophoreSimpleText();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getFluorophorePalmText method, of class Model.
+     */
+    @Test
+    public void testGetFluorophorePalmText() {
+        System.out.println("getFluorophorePalmText");
+        Model instance = new Model();
+        String expResult = "PALM";
+        instance.setFluorophorePalmText(expResult);
+        String result = instance.getFluorophorePalmText();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getFluorophoreStormText method, of class Model.
+     */
+    @Test
+    public void testGetFluorophoreStormText() {
+        System.out.println("getFluorophoreStormText");
+        Model instance = new Model();
+        String expResult = "STORM";
+        instance.setFluorophoreStormText(expResult);
+        String result = instance.getFluorophoreStormText();
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of getFluorophoreSignal method, of class Model.
      */
@@ -248,6 +300,182 @@ public class ModelTest {
         double expResult = 1000;
         instance.setFluorophoreTBl(expResult);
         double result = instance.getFluorophoreTBl();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmWavelength method, of class Model.
+     */
+    @Test
+    public void testGetPalmWavelength() {
+        System.out.println("getPalmWavelength");
+        Model instance = new Model();
+        double expResult = 0.58;
+        instance.setPalmWavelength(expResult);
+        double result = instance.getPalmWavelength();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmSignal method, of class Model.
+     */
+    @Test public void testGetPalmSignal() {
+        System.out.println("getPalmSignal");
+        Model instance = new Model();
+        double expResult = 1250;
+        instance.setPalmSignal(expResult);
+        double result = instance.getPalmSignal();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKA method, of class Model.
+     */
+    @Test public void testGetPalmKA() {
+        System.out.println("getPalmKA");
+        Model instance = new Model();
+        double expResult = 10;
+        instance.setPalmKA(expResult);
+        double result = instance.getPalmKA();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKB method, of class Model.
+     */
+    @Test public void testGetPalmKB() {
+        System.out.println("getPalmKB");
+        Model instance = new Model();
+        double expResult = 5;
+        instance.setPalmKB(expResult);
+        double result = instance.getPalmKB();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKD1 method, of class Model.
+     */
+    @Test public void testGetPalmKD1() {
+        System.out.println("getPalmKD1");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKD1(expResult);
+        double result = instance.getPalmKD1();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKR1 method, of class Model.
+     */
+    @Test public void testGetPalmKR1() {
+        System.out.println("getPalmKR1");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKR1(expResult);
+        double result = instance.getPalmKR1();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKD2 method, of class Model.
+     */
+    @Test public void testGetPalmKD2() {
+        System.out.println("getPalmKD2");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKD2(expResult);
+        double result = instance.getPalmKD2();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getPalmKR2 method, of class Model.
+     */
+    @Test
+    public void testGetPalmKR2() {
+        System.out.println("getPalmKR2");
+        Model instance = new Model();
+        double expResult = 0.1;
+        instance.setPalmKR2(expResult);
+        double result = instance.getPalmKR2();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKBl method, class Model.
+     */
+    @Test
+    public void testGetStormKBl() {
+        System.out.println("getStormKBl");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKBl(expResult);
+        double result = instance.getStormKBl();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKTriplet method, class Model.
+     */
+    @Test
+    public void testGetStormKTriplet() {
+        System.out.println("getStormKTriplet");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKTriplet(expResult);
+        double result = instance.getStormKTriplet();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKTripletRecovery method, class Model.
+     */
+    @Test
+    public void testGetStormKTripletRecovery() {
+        System.out.println("getStormKTripletRecovery");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKTripletRecovery(expResult);
+        double result = instance.getStormKTripletRecovery();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKDark method, class Model.
+     */
+    @Test
+    public void testGetStormKDark() {
+        System.out.println("getStormKDark");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKDark(expResult);
+        double result = instance.getStormKDark();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKDarkRecovery method, class Model.
+     */
+    @Test
+    public void testGetStormKDarkRecovery() {
+        System.out.println("getStormKDarkRecovery");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKDarkRecovery(expResult);
+        double result = instance.getStormKDarkRecovery();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+     /**
+     * Test of getStormKDarkRecoveryConstant method, class Model.
+     */
+    @Test
+    public void testGetStormKDarkRecoveryConstant() {
+        System.out.println("getStormKDarkRecoveryConstant");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKDarkRecoveryConstant(expResult);
+        double result = instance.getStormKDarkRecoveryConstant();
         assertEquals(expResult, result, 0.0);
     }
 
@@ -873,6 +1101,32 @@ public class ModelTest {
         int expResult = 15;
         instance.setPsfGibsonLanniMaxRadius(expResult);
         int result = instance.getPsfGibsonLanniMaxRadius();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getAnalyzerCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetAnalyzerCurrentSelection() {
+        System.out.println("getAnalyzerCurrentSelection");
+        Model instance = new Model();
+        String expResult = "SpotCounter";
+        instance.setAnalyzerCurrentSelection(expResult);
+        String result = instance.getAnalyzerCurrentSelection();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getControllerCurrentSelection method, of class Model.
+     */
+    @Test
+    public void testGetControllerCurrentSelection() {
+        System.out.println("getControllerCurrentSelection");
+        Model instance = new Model();
+        String expResult = "PI";
+        instance.setControllerCurrentSelection(expResult);
+        String result = instance.getControllerCurrentSelection();
         assertEquals(expResult, result);
     }
 }

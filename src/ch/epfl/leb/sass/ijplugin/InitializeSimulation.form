@@ -42,24 +42,27 @@
                   <Component id="jPanel2" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jPanel4" max="32767" attributes="0"/>
-                  <Component id="jPanel6" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel5" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel6" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="fluorophoreParentPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel8" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jPanel7" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel7" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="panel6" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="43" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
@@ -76,37 +79,37 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="fluorophoreParentPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jPanel6" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="psfParentPanel" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jPanel7" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jPanel6" max="32767" attributes="0"/>
+                          <Component id="jPanel9" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="panel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="psfParentPanel" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -130,7 +133,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="cb_analyzer_setup" min="-2" pref="93" max="-2" attributes="0"/>
+                  <Component id="analyzerComboBox" min="-2" pref="93" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
@@ -146,7 +149,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cb_analyzer_setup" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="analyzerComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="analyzer_panel" max="-2" attributes="0"/>
@@ -161,14 +164,14 @@
             <Property name="text" type="java.lang.String" value="Analyzer:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cb_analyzer_setup">
+        <Component class="javax.swing.JComboBox" name="analyzerComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="cb_analyzer_setupPopupMenuWillBecomeInvisible"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="analyzerComboBoxItemStateChanged"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="analyzer_panel">
@@ -215,7 +218,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="cb_controller_setup" min="-2" pref="97" max="-2" attributes="0"/>
+                                  <Component id="controllerComboBox" min="-2" pref="97" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -242,7 +245,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cb_controller_setup" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="controllerComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -267,14 +270,14 @@
             <Property name="text" type="java.lang.String" value="Controller:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cb_controller_setup">
+        <Component class="javax.swing.JComboBox" name="controllerComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="cb_controller_setupPopupMenuWillBecomeInvisible"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="controllerComboBoxItemStateChanged"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="controller_panel">
@@ -310,7 +313,7 @@
         <Component class="javax.swing.JTextField" name="e_controller_tickrate">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="11"/>
-            <Property name="text" type="java.lang.String" value="40"/>
+            <Property name="text" type="java.lang.String" value="10"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
@@ -675,176 +678,11 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel4">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Fluorophores"/>
-          </Border>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel33" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel34" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel35" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel36" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel37" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="fluorophoreWavelength" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreTOn" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreTOff" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreTBl" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreSignal" linkSize="7" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel38" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel39" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel40" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel41" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel42" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreSignal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel38" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreWavelength" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel39" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel35" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreTOn" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel40" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel36" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreTOff" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel41" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fluorophoreTBl" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel42" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel33">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Signal"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel34">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Wavelength"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel35">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="tOn"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel36">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="tOff"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel37">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="tBleached"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fluorophoreSignal">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="1500"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fluorophoreWavelength">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="0.68"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fluorophoreTOn">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="3"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fluorophoreTOff">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="100"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fluorophoreTOffActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fluorophoreTBl">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="5000"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel38">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="photons / frame"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel39">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&#xb5;m"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel40">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="frames"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel41">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="frames"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel42">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="frames"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Container class="javax.swing.JPanel" name="jPanel5">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Laser"/>
+            <TitledBorder title="Activation Laser"/>
           </Border>
         </Property>
       </Properties>
@@ -1132,7 +970,7 @@
                       <Component id="emitters3DMaxZ" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel99" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="15" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -1404,7 +1242,7 @@
                       </Group>
                       <Component id="backgroundTifButton" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="37" pref="132" max="32767" attributes="0"/>
+                  <EmptySpace min="37" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -1698,7 +1536,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="psfGaussian2DLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="304" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1736,7 +1574,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="psfGaussian3DLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="304" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2268,6 +2106,766 @@
             </Container>
           </SubComponents>
         </Container>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="fluorophoreParentPanel">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Fluorophores"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="fluorophoreSeparator" alignment="1" max="32767" attributes="0"/>
+                      <Component id="fluorophoreComboBox" alignment="1" max="32767" attributes="0"/>
+                      <Component id="fluorophoreCardPanel" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="fluorophoreComboBox" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="fluorophoreSeparator" min="-2" pref="10" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="fluorophoreCardPanel" min="-2" pref="126" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="fluorophoreCardPanel">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="simpleFluorophoreCard">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="Simple" noResource="true"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+                  <CardConstraints cardName="Simple"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="simpleFluorophorePanel">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="null"/>
+                    </Property>
+                  </Properties>
+                  <AccessibilityProperties>
+                    <Property name="AccessibleContext.accessibleParent" type="javax.accessibility.Accessible" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="fluorophoreParentPanel"/>
+                    </Property>
+                  </AccessibilityProperties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel33" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel34" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel35" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel36" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel37" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="fluorophoreWavelength" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreTOn" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreTOff" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreTBl" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreSignal" linkSize="7" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel38" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel39" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel40" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel41" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel42" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreSignal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel38" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreWavelength" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel39" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel35" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreTOn" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel40" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel36" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreTOff" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel41" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fluorophoreTBl" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel42" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="jLabel33">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Signal"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel34">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Wavelength"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel35">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="tOn"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel36">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="tOff"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel37">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="tBleached"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="fluorophoreSignal">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="1500"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="fluorophoreWavelength">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.68"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="fluorophoreTOn">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="3"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="fluorophoreTOff">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="100"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fluorophoreTOffActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="fluorophoreTBl">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="5000"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel38">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="photons / frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel39">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#xb5;m"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel40">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="frames"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel41">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="frames"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel42">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="frames"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JScrollPane" name="palmFluorophoreCard">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="PALM" noResource="true"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+                  <CardConstraints cardName="PALM"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="palmFluorophorePanel">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="null"/>
+                    </Property>
+                  </Properties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel100" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel105" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel106" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel107" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel108" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel109" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel101" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel104" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="palmKA" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmWavelength" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKB" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKD1" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKR1" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKD2" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKR2" linkSize="16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmSignal" linkSize="16" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel102" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel111" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel112" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel113" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel114" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel115" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel103" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel110" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel100" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmSignal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel102" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel101" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmWavelength" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel103" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel104" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKA" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel110" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel105" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKB" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel111" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel106" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKD1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel112" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel107" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKR1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel113" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel108" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKD2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel114" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel109" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="palmKR2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel115" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="jLabel100">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Signal"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel101">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Wavelength"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmSignal">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="500"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmWavelength">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.58"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel102">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="photons/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel103">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#xb5;m"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel104">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Activation rate"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel105">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Bleaching rate"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel106">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Off rate 1"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel107">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Return rate 1"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel108">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Off rate 2"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel109">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Return rate 2"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmKA">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.01"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmKB">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.01"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmKD1">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.065"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmKR1">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.004"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmKD2">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.013"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="palmKD2ActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="palmKR2">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.157"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel110">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel111">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel112">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel113">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel114">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel115">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                        <Property name="toolTipText" type="java.lang.String" value=""/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JScrollPane" name="stormFluorophoreCard">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="STORM" noResource="true"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+                  <CardConstraints cardName="STORM"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="stormFluorophorePanel">
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel118" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel119" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel120" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel121" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel122" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel123" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel116" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel117" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="stormSignal" linkSize="17" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
+                                  <Component id="stormWavelength" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKBl" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKTriplet" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKTripletRecovery" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKDark" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKDarkRecovery" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKDarkRecoveryConstant" linkSize="17" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel126" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel127" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel128" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel129" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel130" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel131" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel125" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel124" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel116" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormSignal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel124" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel117" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormWavelength" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel125" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel118" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKBl" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel126" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel119" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKTriplet" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel127" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel120" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKTripletRecovery" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel128" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel121" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKDark" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel129" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel122" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKDarkRecovery" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel130" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel123" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stormKDarkRecoveryConstant" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel131" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="jLabel116">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Signal"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel117">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Wavelength"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel118">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Bleaching rate"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel119">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Triplet rate"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel120">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Triplet recovery rate"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel121">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Dark rate"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel122">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Dark recovery"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel123">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Dark recovery constant"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormSignal">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="2500"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormWavelength">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.68"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormKBl">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.0001"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormKTriplet">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.1"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormKTripletRecovery">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.01"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormKDark">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="10"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormKDarkRecovery">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.01"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="stormKDarkRecoveryConstant">
+                      <Properties>
+                        <Property name="horizontalAlignment" type="int" value="4"/>
+                        <Property name="text" type="java.lang.String" value="0.01"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel124">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="photons/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel125">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#xb5;m"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel126">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel127">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel128">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel129">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel130">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel131">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="1/frame"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JComboBox" name="fluorophoreComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="3">
+                <StringItem index="0" value="Simple"/>
+                <StringItem index="1" value="PALM"/>
+                <StringItem index="2" value="STORM"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="fluorophoreComboBoxItemStateChanged"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="fluorophoreSeparator">
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

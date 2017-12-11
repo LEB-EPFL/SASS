@@ -22,7 +22,7 @@ import ch.epfl.leb.sass.simulator.generators.realtime.components.Camera;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Laser;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Objective;
 import ch.epfl.leb.sass.simulator.generators.realtime.components.Stage;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.SimpleDynamics;
+import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.psfs.*;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.GenerateFiducialsRandom2D;
@@ -58,11 +58,31 @@ public class Model implements Serializable {
     private double objectiveNa;
     private double objectiveMag;
     
+    private String fluorophoreCurrentSelection;
+    private String fluorophoreSimpleText;
+    private String fluorophorePalmText;
+    private String fluorophoreStormText;
     private double fluorophoreSignal;
     private double fluorophoreWavelength;
     private double fluorophoreTOn;
     private double fluorophoreTOff;
     private double fluorophoreTBl;
+    private double palmSignal;
+    private double palmWavelength;
+    private double palmKA;
+    private double palmKB;
+    private double palmKD1;
+    private double palmKR1;
+    private double palmKD2;
+    private double palmKR2;
+    private double stormSignal;
+    private double stormWavelength;
+    private double stormKBl;
+    private double stormKTriplet;
+    private double stormKTripletRecovery;
+    private double stormKDark;
+    private double stormKDarkRecovery;
+    private double stormKDarkRecoveryConstant;
     
     private double laserMinPower;
     private double laserMaxPower;
@@ -119,6 +139,9 @@ public class Model implements Serializable {
     private int psfGibsonLanniMaxRadius;
     private String psfGibsonLanniText;
     
+    private String analyzerCurrentSelection;
+    private String controllerCurrentSelection;
+    
     // Getters
     //--------------------------------------------------------------------------
     public int getCameraNX() { return cameraNX; }
@@ -137,11 +160,35 @@ public class Model implements Serializable {
     public double getObjectiveNa() { return objectiveNa; }
     public double getObjectiveMag() { return objectiveMag; }
     
+    public String getFluorophoreCurrentSelection() {
+        return fluorophoreCurrentSelection;
+    }
+    public String getFluorophoreSimpleText() { return fluorophoreSimpleText; }
+    public String getFluorophorePalmText() { return fluorophorePalmText; }
+    public String getFluorophoreStormText() { return fluorophoreStormText; }
     public double getFluorophoreSignal() { return fluorophoreSignal; }
     public double getFluorophoreWavelength() { return fluorophoreWavelength; }
     public double getFluorophoreTOn() { return fluorophoreTOn; }
     public double getFluorophoreTOff() { return fluorophoreTOff; }
     public double getFluorophoreTBl() { return fluorophoreTBl; }
+    public double getPalmSignal() { return palmSignal; }
+    public double getPalmWavelength() { return palmWavelength; }
+    public double getPalmKA() { return palmKA; }
+    public double getPalmKB() { return palmKB; }
+    public double getPalmKD1() { return palmKD1; }
+    public double getPalmKR1() { return palmKR1; }
+    public double getPalmKD2() { return palmKD2; }
+    public double getPalmKR2() { return palmKR2; }
+    public double getStormSignal() { return stormSignal; }
+    public double getStormWavelength() { return stormWavelength; }
+    public double getStormKBl() { return stormKBl; }
+    public double getStormKTriplet() { return stormKTriplet; }
+    public double getStormKTripletRecovery() { return stormKTripletRecovery; }
+    public double getStormKDark() { return stormKDark; }
+    public double getStormKDarkRecovery() { return stormKDarkRecovery; }
+    public double getStormKDarkRecoveryConstant() {
+        return stormKDarkRecoveryConstant;
+    }
     
     public double getLaserMinPower() { return laserMinPower; }
     public double getLaserMaxPower() { return laserMaxPower; }
@@ -218,6 +265,13 @@ public class Model implements Serializable {
         return psfGibsonLanniText;
     }
     
+    public String getAnalyzerCurrentSelection() {
+        return analyzerCurrentSelection;
+    }
+    public String getControllerCurrentSelection() {
+        return controllerCurrentSelection;
+    }
+    
     // Setters
     //--------------------------------------------------------------------------
     public void setCameraNX(int nX) { cameraNX = nX; }
@@ -246,6 +300,18 @@ public class Model implements Serializable {
     public void setObjectiveNa(double na) { objectiveNa = na; }
     public void setObjectiveMag(double mag) { objectiveMag = mag; }
     
+    public void setFluorophoreCurrentSelection(String text) {
+        fluorophoreCurrentSelection = text;
+    }
+    public void setFluorophoreSimpleText(String text) {
+        fluorophoreSimpleText = text;
+    }
+    public void setFluorophorePalmText(String text) {
+        fluorophorePalmText = text;
+    }
+    public void setFluorophoreStormText(String text) {
+        fluorophoreStormText = text;
+    }
     public void setFluorophoreSignal(double signal) {
         fluorophoreSignal = signal;
     }
@@ -255,6 +321,32 @@ public class Model implements Serializable {
     public void setFluorophoreTOn(double tOn) { fluorophoreTOn = tOn; }
     public void setFluorophoreTOff(double tOff) { fluorophoreTOff = tOff; }
     public void setFluorophoreTBl(double tBl) { fluorophoreTBl = tBl; }
+    public void setPalmSignal(double signal) { palmSignal = signal; }
+    public void setPalmWavelength(double wavelength) {
+        palmWavelength = wavelength;
+    }
+    public void setPalmKA(double kA) { palmKA = kA; }
+    public void setPalmKB(double kB) { palmKB = kB; }
+    public void setPalmKD1(double kD1) { palmKD1 = kD1; }
+    public void setPalmKR1(double kR1) { palmKR1 = kR1; }
+    public void setPalmKD2(double kD2) { palmKD2 = kD2; }
+    public void setPalmKR2(double kR2) { palmKR2 = kR2; }
+    public void setStormSignal(double signal) { stormSignal = signal; }
+    public void setStormWavelength(double wavelength) {
+        stormWavelength = wavelength;
+    }
+    public void setStormKBl(double kBl) { stormKBl = kBl; }
+    public void setStormKTriplet(double kTriplet) { stormKTriplet = kTriplet; }
+    public void setStormKTripletRecovery(double kTripletRecovery) {
+        stormKTripletRecovery = kTripletRecovery;
+    }
+    public void setStormKDark(double kDark) { stormKDark = kDark; }
+    public void setStormKDarkRecovery(double kDarkRecovery) {
+        stormKDarkRecovery = kDarkRecovery;
+    }
+    public void setStormKDarkRecoveryConstant(double kDarkRecoveryConstant) {
+        stormKDarkRecoveryConstant = kDarkRecoveryConstant;
+    }
     
     public void setLaserMinPower(double minPower) { laserMinPower = minPower; }
     public void setLaserMaxPower(double maxPower) { laserMaxPower = maxPower; }
@@ -376,6 +468,13 @@ public class Model implements Serializable {
         psfGibsonLanniText = text;
     }
     
+    public void setAnalyzerCurrentSelection(String text) {
+        analyzerCurrentSelection = text;
+    }
+    public void setControllerCurrentSelection(String text) {
+        controllerCurrentSelection = text;
+    }
+    
     /**
      * Builds a microscope from the model parameters.
      * @return A new microscope built from the model parameters.
@@ -384,7 +483,7 @@ public class Model implements Serializable {
         Camera.Builder cameraBuilder = new Camera.Builder();
         Objective.Builder objectiveBuilder = new Objective.Builder();
         Stage.Builder stageBuilder = new Stage.Builder();
-        SimpleDynamics.Builder fluorPropBuilder = new SimpleDynamics.Builder();
+        FluorophoreDynamicsBuilder fluorPropBuilder = null;
         Laser.Builder laserBuilder = new Laser.Builder();
         PSFBuilder psfBuilder = null;
         FluorophoreCommandBuilder fluorPosBuilder = null;
@@ -409,11 +508,44 @@ public class Model implements Serializable {
         stageBuilder.y(0);
         stageBuilder.z(stageZ);
 
-        fluorPropBuilder.signal(fluorophoreSignal);
-        fluorPropBuilder.wavelength(fluorophoreWavelength);
-        fluorPropBuilder.tOn(fluorophoreTOn);
-        fluorPropBuilder.tOff(fluorophoreTOff);
-        fluorPropBuilder.tBl(fluorophoreTBl);
+        if (fluorophoreCurrentSelection.equals(fluorophoreSimpleText)) {
+            try {
+                SimpleDynamics.Builder tempFluorPropBuilder = new SimpleDynamics.Builder();
+                tempFluorPropBuilder.signal(fluorophoreSignal);
+                tempFluorPropBuilder.wavelength(fluorophoreWavelength);
+                tempFluorPropBuilder.tOn(fluorophoreTOn);
+                tempFluorPropBuilder.tOff(fluorophoreTOff);
+                tempFluorPropBuilder.tBl(fluorophoreTBl);
+                fluorPropBuilder = tempFluorPropBuilder;
+            } catch (Exception ex) {
+                IJ.showMessage("Error in Simple fluorophore properties parsing.");
+            }
+        } else if (fluorophoreCurrentSelection.equals(fluorophorePalmText)) {
+            try {
+                PalmDynamics.Builder tempFluorPropBuilder = new PalmDynamics.Builder();
+                tempFluorPropBuilder.signal(palmSignal);
+                tempFluorPropBuilder.wavelength(palmWavelength);
+                tempFluorPropBuilder.kA(palmKA).kB(palmKB).kD1(palmKD1).kR1(palmKR1)
+                                    .kD2(palmKD2).kR2(palmKR2);
+                fluorPropBuilder = tempFluorPropBuilder;
+            } catch (Exception ex) {
+                IJ.showMessage("Error in PALM fluorophore properties parsing.");
+            }
+        } else if (fluorophoreCurrentSelection.equals(fluorophoreStormText)) {
+            try {
+                StormDynamics.Builder tempFluorPropBuilder = new StormDynamics.Builder();
+                tempFluorPropBuilder.signal(stormSignal);
+                tempFluorPropBuilder.wavelength(stormWavelength);
+                tempFluorPropBuilder.kBl(stormKBl).kTriplet(stormKTriplet)
+                                    .kTripletRecovery(stormKTripletRecovery)
+                                    .kDark(stormKDark)
+                                    .kDarkRecovery(stormKDarkRecovery)
+                                    .kDarkRecoveryConstant(stormKDarkRecoveryConstant);
+                fluorPropBuilder = tempFluorPropBuilder;
+            } catch (Exception ex) {
+                IJ.showMessage("Error in STORM fluorophore properties parsing.");
+            }
+        }
 
         fidBuilder.numFiducials(fiducialsNumber); // Set to zero if you don't want fiducials
         fidBuilder.brightness(fiducialsSignal);

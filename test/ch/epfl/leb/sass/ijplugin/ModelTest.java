@@ -226,6 +226,19 @@ public class ModelTest {
     }
     
     /**
+     * Test of getFluorophoreStormText method, of class Model.
+     */
+    @Test
+    public void testGetFluorophoreStormText() {
+        System.out.println("getFluorophoreStormText");
+        Model instance = new Model();
+        String expResult = "STORM";
+        instance.setFluorophoreStormText(expResult);
+        String result = instance.getFluorophoreStormText();
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of getFluorophoreSignal method, of class Model.
      */
     @Test
@@ -378,12 +391,91 @@ public class ModelTest {
     /**
      * Test of getPalmKR2 method, of class Model.
      */
-    @Test public void testGetPalmKR2() {
+    @Test
+    public void testGetPalmKR2() {
         System.out.println("getPalmKR2");
         Model instance = new Model();
         double expResult = 0.1;
         instance.setPalmKR2(expResult);
         double result = instance.getPalmKR2();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKBl method, class Model.
+     */
+    @Test
+    public void testGetStormKBl() {
+        System.out.println("getStormKBl");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKBl(expResult);
+        double result = instance.getStormKBl();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKTriplet method, class Model.
+     */
+    @Test
+    public void testGetStormKTriplet() {
+        System.out.println("getStormKTriplet");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKTriplet(expResult);
+        double result = instance.getStormKTriplet();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKTripletRecovery method, class Model.
+     */
+    @Test
+    public void testGetStormKTripletRecovery() {
+        System.out.println("getStormKTripletRecovery");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKTripletRecovery(expResult);
+        double result = instance.getStormKTripletRecovery();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKDark method, class Model.
+     */
+    @Test
+    public void testGetStormKDark() {
+        System.out.println("getStormKDark");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKDark(expResult);
+        double result = instance.getStormKDark();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getStormKDarkRecovery method, class Model.
+     */
+    @Test
+    public void testGetStormKDarkRecovery() {
+        System.out.println("getStormKDarkRecovery");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKDarkRecovery(expResult);
+        double result = instance.getStormKDarkRecovery();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+     /**
+     * Test of getStormKDarkRecoveryConstant method, class Model.
+     */
+    @Test
+    public void testGetStormKDarkRecoveryConstant() {
+        System.out.println("getStormKDarkRecoveryConstant");
+        Model instance = new Model();
+        double expResult = 0.001;
+        instance.setStormKDarkRecoveryConstant(expResult);
+        double result = instance.getStormKDarkRecoveryConstant();
         assertEquals(expResult, result, 0.0);
     }
 

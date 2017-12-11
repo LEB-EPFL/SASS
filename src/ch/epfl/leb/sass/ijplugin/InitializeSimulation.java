@@ -329,6 +329,32 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel113 = new javax.swing.JLabel();
         jLabel114 = new javax.swing.JLabel();
         jLabel115 = new javax.swing.JLabel();
+        stormFluorophoreCard = new javax.swing.JScrollPane();
+        stormFluorophorePanel = new javax.swing.JPanel();
+        jLabel116 = new javax.swing.JLabel();
+        jLabel117 = new javax.swing.JLabel();
+        jLabel118 = new javax.swing.JLabel();
+        jLabel119 = new javax.swing.JLabel();
+        jLabel120 = new javax.swing.JLabel();
+        jLabel121 = new javax.swing.JLabel();
+        jLabel122 = new javax.swing.JLabel();
+        jLabel123 = new javax.swing.JLabel();
+        stormSignal = new javax.swing.JTextField();
+        stormWavelength = new javax.swing.JTextField();
+        stormKBl = new javax.swing.JTextField();
+        stormKTriplet = new javax.swing.JTextField();
+        stormKTripletRecovery = new javax.swing.JTextField();
+        stormKDark = new javax.swing.JTextField();
+        stormKDarkRecovery = new javax.swing.JTextField();
+        stormKDarkRecoveryConstant = new javax.swing.JTextField();
+        jLabel124 = new javax.swing.JLabel();
+        jLabel125 = new javax.swing.JLabel();
+        jLabel126 = new javax.swing.JLabel();
+        jLabel127 = new javax.swing.JLabel();
+        jLabel128 = new javax.swing.JLabel();
+        jLabel129 = new javax.swing.JLabel();
+        jLabel130 = new javax.swing.JLabel();
+        jLabel131 = new javax.swing.JLabel();
         fluorophoreComboBox = new javax.swing.JComboBox<>();
         fluorophoreSeparator = new javax.swing.JSeparator();
 
@@ -414,7 +440,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         jLabel3.setText("Tick rate [frames]:");
 
         e_controller_tickrate.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        e_controller_tickrate.setText("40");
+        e_controller_tickrate.setText("10");
 
         jLabel4.setText("Max output:");
 
@@ -681,7 +707,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Laser"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Activation Laser"));
 
         jLabel27.setText("Minimum power");
 
@@ -1212,7 +1238,7 @@ public class InitializeSimulation extends java.awt.Dialog {
             .addGroup(psfGaussian2DCardLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(psfGaussian2DLabel)
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         psfCardPanel.add(psfGaussian2DCard, "Gaussian 2D");
@@ -1237,7 +1263,7 @@ public class InitializeSimulation extends java.awt.Dialog {
             .addGroup(psfGaussian3DCardLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(psfGaussian3DLabel)
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         psfCardPanel.add(psfGaussian3DCard, "Gaussian 3D");
@@ -1800,7 +1826,7 @@ public class InitializeSimulation extends java.awt.Dialog {
                     .addComponent(jLabel115)
                     .addComponent(jLabel103)
                     .addComponent(jLabel110))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         palmFluorophorePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {palmKA, palmKB, palmKD1, palmKD2, palmKR1, palmKR2, palmSignal, palmWavelength});
@@ -1855,7 +1881,157 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         fluorophoreCardPanel.add(palmFluorophoreCard, "PALM");
 
-        fluorophoreComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Simple", "PALM" }));
+        stormFluorophoreCard.setBorder(null);
+        stormFluorophoreCard.setName("STORM"); // NOI18N
+
+        jLabel116.setText("Signal");
+
+        jLabel117.setText("Wavelength");
+
+        jLabel118.setText("Bleaching rate");
+
+        jLabel119.setText("Triplet rate");
+
+        jLabel120.setText("Triplet recovery rate");
+
+        jLabel121.setText("Dark rate");
+
+        jLabel122.setText("Dark recovery");
+
+        jLabel123.setText("Dark recovery constant");
+
+        stormSignal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormSignal.setText("2500");
+
+        stormWavelength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormWavelength.setText("0.68");
+
+        stormKBl.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormKBl.setText("0.0001");
+
+        stormKTriplet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormKTriplet.setText("0.1");
+
+        stormKTripletRecovery.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormKTripletRecovery.setText("0.01");
+
+        stormKDark.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormKDark.setText("10");
+
+        stormKDarkRecovery.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormKDarkRecovery.setText("0.01");
+
+        stormKDarkRecoveryConstant.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        stormKDarkRecoveryConstant.setText("0.01");
+
+        jLabel124.setText("photons/frame");
+
+        jLabel125.setText("µm");
+
+        jLabel126.setText("1/frame");
+
+        jLabel127.setText("1/frame");
+
+        jLabel128.setText("1/frame");
+
+        jLabel129.setText("1/frame");
+
+        jLabel130.setText("1/frame");
+
+        jLabel131.setText("1/frame");
+
+        javax.swing.GroupLayout stormFluorophorePanelLayout = new javax.swing.GroupLayout(stormFluorophorePanel);
+        stormFluorophorePanel.setLayout(stormFluorophorePanelLayout);
+        stormFluorophorePanelLayout.setHorizontalGroup(
+            stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(stormFluorophorePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel118)
+                    .addComponent(jLabel119)
+                    .addComponent(jLabel120)
+                    .addComponent(jLabel121)
+                    .addComponent(jLabel122)
+                    .addComponent(jLabel123)
+                    .addComponent(jLabel116)
+                    .addComponent(jLabel117))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stormSignal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormKBl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormKTriplet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormKTripletRecovery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormKDark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormKDarkRecovery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stormKDarkRecoveryConstant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel126)
+                    .addComponent(jLabel127)
+                    .addComponent(jLabel128)
+                    .addComponent(jLabel129)
+                    .addComponent(jLabel130)
+                    .addComponent(jLabel131)
+                    .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel125)
+                        .addComponent(jLabel124, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        stormFluorophorePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {stormKBl, stormKDark, stormKDarkRecovery, stormKDarkRecoveryConstant, stormKTriplet, stormKTripletRecovery, stormSignal, stormWavelength});
+
+        stormFluorophorePanelLayout.setVerticalGroup(
+            stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(stormFluorophorePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel116)
+                    .addComponent(stormSignal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel124))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel117)
+                    .addComponent(stormWavelength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel125))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel118)
+                    .addComponent(stormKBl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel126))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel119)
+                    .addComponent(stormKTriplet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel127))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel120)
+                    .addComponent(stormKTripletRecovery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel128))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel121)
+                    .addComponent(stormKDark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel129))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel122)
+                    .addComponent(stormKDarkRecovery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel130))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(stormFluorophorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel123)
+                    .addComponent(stormKDarkRecoveryConstant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel131))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        stormFluorophoreCard.setViewportView(stormFluorophorePanel);
+
+        fluorophoreCardPanel.add(stormFluorophoreCard, "STORM");
+
+        fluorophoreComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Simple", "PALM", "STORM" }));
         fluorophoreComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fluorophoreComboBoxItemStateChanged(evt);
@@ -2031,6 +2207,7 @@ public class InitializeSimulation extends java.awt.Dialog {
             model.setFluorophoreCurrentSelection(String.valueOf(fluorophoreComboBox.getSelectedItem()));
             model.setFluorophoreSimpleText(simpleFluorophoreCard.getName());
             model.setFluorophorePalmText(palmFluorophoreCard.getName());
+            model.setFluorophoreStormText(stormFluorophoreCard.getName());
             model.setFluorophoreSignal(Double.parseDouble(fluorophoreSignal.getText()));
             model.setFluorophoreWavelength(Double.parseDouble(fluorophoreWavelength.getText()));
             model.setFluorophoreTOn(Double.parseDouble(fluorophoreTOn.getText()));
@@ -2044,6 +2221,14 @@ public class InitializeSimulation extends java.awt.Dialog {
             model.setPalmKR1(Double.parseDouble(palmKR1.getText()));
             model.setPalmKD2(Double.parseDouble(palmKD2.getText()));
             model.setPalmKR2(Double.parseDouble(palmKR2.getText()));
+            model.setStormSignal(Double.parseDouble(stormSignal.getText()));
+            model.setStormWavelength(Double.parseDouble(stormWavelength.getText()));
+            model.setStormKBl(Double.parseDouble(stormKBl.getText()));
+            model.setStormKTriplet(Double.parseDouble(stormKTriplet.getText()));
+            model.setStormKTripletRecovery(Double.parseDouble(stormKTripletRecovery.getText()));
+            model.setStormKDark(Double.parseDouble(stormKDark.getText()));
+            model.setStormKDarkRecovery(Double.parseDouble(stormKDarkRecovery.getText()));
+            model.setStormKDarkRecoveryConstant(Double.parseDouble(stormKDarkRecoveryConstant.getText()));
 
             model.setLaserCurrentPower(Double.parseDouble(laserInitPower.getText()));
             model.setLaserMinPower(Double.parseDouble(laserMinPower.getText()));
@@ -2143,6 +2328,14 @@ public class InitializeSimulation extends java.awt.Dialog {
         palmKR1.setText(String.valueOf(model.getPalmKR1()));
         palmKD2.setText(String.valueOf(model.getPalmKD2()));
         palmKR2.setText(String.valueOf(model.getPalmKR2()));
+        stormSignal.setText(String.valueOf(model.getStormSignal()));
+        stormWavelength.setText(String.valueOf(model.getStormWavelength()));
+        stormKBl.setText(String.valueOf(model.getStormKBl()));
+        stormKTriplet.setText(String.valueOf(model.getStormKTriplet()));
+        stormKTripletRecovery.setText(String.valueOf(model.getStormKTripletRecovery()));
+        stormKDark.setText(String.valueOf(model.getStormKDark()));
+        stormKDarkRecovery.setText(String.valueOf(model.getStormKDarkRecovery()));
+        stormKDarkRecoveryConstant.setText(String.valueOf(model.getStormKDarkRecoveryConstant()));
         
         laserInitPower.setText(String.valueOf(model.getLaserCurrentPower()));
         laserMinPower.setText(String.valueOf(model.getLaserMinPower()));
@@ -2470,8 +2663,24 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JLabel jLabel113;
     private javax.swing.JLabel jLabel114;
     private javax.swing.JLabel jLabel115;
+    private javax.swing.JLabel jLabel116;
+    private javax.swing.JLabel jLabel117;
+    private javax.swing.JLabel jLabel118;
+    private javax.swing.JLabel jLabel119;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel120;
+    private javax.swing.JLabel jLabel121;
+    private javax.swing.JLabel jLabel122;
+    private javax.swing.JLabel jLabel123;
+    private javax.swing.JLabel jLabel124;
+    private javax.swing.JLabel jLabel125;
+    private javax.swing.JLabel jLabel126;
+    private javax.swing.JLabel jLabel127;
+    private javax.swing.JLabel jLabel128;
+    private javax.swing.JLabel jLabel129;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel130;
+    private javax.swing.JLabel jLabel131;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -2606,6 +2815,16 @@ public class InitializeSimulation extends java.awt.Dialog {
     private javax.swing.JScrollPane simpleFluorophoreCard;
     private javax.swing.JPanel simpleFluorophorePanel;
     private javax.swing.JTextField stageZ;
+    private javax.swing.JScrollPane stormFluorophoreCard;
+    private javax.swing.JPanel stormFluorophorePanel;
+    private javax.swing.JTextField stormKBl;
+    private javax.swing.JTextField stormKDark;
+    private javax.swing.JTextField stormKDarkRecovery;
+    private javax.swing.JTextField stormKDarkRecoveryConstant;
+    private javax.swing.JTextField stormKTriplet;
+    private javax.swing.JTextField stormKTripletRecovery;
+    private javax.swing.JTextField stormSignal;
+    private javax.swing.JTextField stormWavelength;
     // End of variables declaration//GEN-END:variables
 
 }

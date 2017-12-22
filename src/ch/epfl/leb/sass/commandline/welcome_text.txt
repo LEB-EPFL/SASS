@@ -1,6 +1,6 @@
 Welcome to SASS BeanShell console.
 
-SASS (c) Laboratory of Experimental Biophysics EPFL 2017
+SASS (c) Laboratory of Experimental Biophysics EPFL 2017-2018
 
 Notable commands:
    source("path\\to\\file.bsh") - execute script from file

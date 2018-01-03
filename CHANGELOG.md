@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Changed
+ - Bulky `ALICA_dev.jar` was replaced by `ALICA_for_SASS_v0_2_5.jar`
+
 ## [v0.6.0]
 Contains [ALICA v0.2.5]		
 

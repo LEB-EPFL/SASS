@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+Contains [ALICA v0.2.5]
+
+### Added
+- A convenience method named `getFrameInfo()` was added to FrameLogger
+  (called `FrameInfo`) that returns a single data structure containing
+  the per-frame-information about each emitter.
+
 ## [v0.6.0]
 Contains [ALICA v0.2.5]		
 

@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -47,6 +48,7 @@ public class FrameLoggerTest {
     @Before
     public void setUp () {
         logger = FrameLogger.getInstance();
+        logger.reset();
     }
 
     /**
@@ -61,11 +63,11 @@ public class FrameLoggerTest {
         double y = 2.5;
         double z = 0.7;
         double brightness = 0.8;
-        double time_on = 0.8;
+        double timeOn = 0.8;
         logger.setPerformLogging(true);
 
         // Method call to test is here.
-        logger.logFrame(frame, id, x, y, z, brightness, time_on);
+        logger.logFrame(frame, id, x, y, z, brightness, timeOn);
 
         int actualFrame = logger.getFrame().get(0);
         int actualId = logger.getId().get(0);
@@ -81,7 +83,54 @@ public class FrameLoggerTest {
         assertEquals(y, actualY, 0.001);
         assertEquals(z, actualZ, 0.001);
         assertEquals(brightness, actualBrightness, 0.001);
-        assertEquals(time_on, actualTimeOn, 0.001);
+        assertEquals(timeOn, actualTimeOn, 0.001);
+    }
+    
+    /**
+     * Test of getFrameInfo method, of class FrameLogger.
+     */
+    @Test
+    public void testGetFrameInfo() {
+        System.out.println("getCurrentFrameInfo");
+        logger.setPerformLogging(true);
+        logger.setLogCurrentFrameOnly(true);
+        
+        int frame = 1;
+        int id = 1;
+        double x = 2.3;
+        double y = 2.5;
+        double z = 0.7;
+        double brightness = 0.8;
+        double timeOn = 0.8;
+        
+        logger.logFrame(frame, id, x, y, z, brightness, timeOn);
+        // PICK UP HERE
+        List<FrameInfo> info = logger.getFrameInfo();
+        
+        assertEquals(1, info.size());
+        assertEquals(frame, info.get(0).frame);
+        assertEquals(id, info.get(0).id);
+        assertEquals(x, info.get(0).x, 0.0);
+        assertEquals(y, info.get(0).y, 0.0);
+        assertEquals(z, info.get(0).z, 0.0);
+        assertEquals(brightness, info.get(0).brightness, 0.0);
+        assertEquals(timeOn, info.get(0).timeOn, 0.0);
+        
+        // Should make the current frame equal to 2, not 1, so that the size of
+        // the returned array is now equal to the number of times that logFrame
+        // is called with the new frame number.
+        int newFrame = 2;
+        logger.logFrame(newFrame, id, x, y, z, brightness, timeOn);
+        
+        double newX = 3.4;
+        logger.logFrame(newFrame, id, newX, y, z, brightness, timeOn);
+        info = logger.getFrameInfo();
+        
+        assertEquals(logger.getFrameInfo().size(), 2);
+        assertEquals(info.get(0).frame, newFrame);
+        assertEquals(info.get(0).x, x, 0.0);
+        assertEquals(info.get(1).frame, newFrame);
+        assertEquals(info.get(1).x, newX, 0.0);
     }
 
     /**

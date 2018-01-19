@@ -43,7 +43,7 @@ public class SimEngine extends AbstractGenerator {
     private ArrayList<Double> emitterHistory;
             
     /**
-     * Initialize the generator, either from GUI dialog or use default params.
+     * Initialize the generator.
      * @param microscope
      */
     public SimEngine(Microscope microscope) {

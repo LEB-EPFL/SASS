@@ -202,6 +202,7 @@ public class FrameLogger extends AbstractLogger{
         this.z = new ArrayList();
         this.brightness = new ArrayList();
         this.timeOn = new ArrayList();
+        this.logCurrentFrameOnly = false;
     }
     
     /**
@@ -224,5 +225,6 @@ public class FrameLogger extends AbstractLogger{
      */
     public boolean getLogCurrentFrameOnly() {
         return this.logCurrentFrameOnly;
+	
     }
 }

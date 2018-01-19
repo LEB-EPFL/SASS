@@ -9,6 +9,10 @@ Contains [ALICA v0.2.5]
   (called `FrameInfo`) that returns a single data structure containing
   the per-frame-information about each emitter.
 
+### Changed
+- Bulky `ALICA_dev.jar` was replaced by `ALICA_for_SASS_v0_2_5.jar` which 
+  reduced SASS jar size to 8MB.
+  
 ## [v0.6.0]
 Contains [ALICA v0.2.5]		
 

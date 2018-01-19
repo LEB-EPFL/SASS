@@ -3,7 +3,7 @@
 <project name="SASS" default="default" basedir=".">
     <description>Builds, tests, and runs the project SASS.</description>
     <import file="nbproject/build-impl.xml"/>
-    <property name="store.jar.name" value="SASS_0.6.0.jar"/>
+    <property name="store.jar.name" value="SASS_0.6.1.jar"/>
     <property name="store.dir" value="store"/>
     <property name="store.jar" value="${store.dir}/${store.jar.name}"/>
     <target name="-post-jar">

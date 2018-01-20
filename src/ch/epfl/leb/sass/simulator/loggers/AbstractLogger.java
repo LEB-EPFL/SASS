@@ -18,6 +18,8 @@
 package ch.epfl.leb.sass.simulator.loggers;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.FileSystems;
 import java.io.IOException;
 
 /**
@@ -80,7 +82,13 @@ public abstract class AbstractLogger {
             if (2 == tokens.length)
                 baseName += "." + tokens[1];
             
-            baseName = logFile.getParent() + File.separator + baseName;
+            String parent = logFile.getParent();
+            if (parent == null) {
+                // Get current working directory in case no path was supplied
+                Path path = FileSystems.getDefault().getPath(".");
+                parent = path.toString();
+            }
+            baseName = parent + File.separator + baseName;
             logFile = new File(baseName);
             fileId++;
         }

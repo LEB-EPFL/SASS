@@ -24,6 +24,8 @@ import ch.epfl.leb.alica.Controller;
 import ch.epfl.leb.sass.simulator.generators.realtime.STORMsim;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
+import ch.epfl.leb.sass.simulator.loggers.StateLogger;
+import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
@@ -37,6 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
+import ij.IJ;
 
 /**
  * Carries out the actual simulation.
@@ -44,6 +47,14 @@ import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
  */
 public class Simulator {
 
+    /**
+     * The time duration of each frame.
+     * 
+     * This is here only for compatibility with ALICA's analyzers, which require
+     * a time argument.
+     */
+    protected final long TIMEPERFRAME = 10;
+    
     /**
      * Analyzer which analyzes generated images
      */
@@ -69,6 +80,16 @@ public class Simulator {
      * Records of values of output of analyzer, controller and generator.
      */
     protected HashMap<Integer,JSONObject> history;
+    
+    /**
+     * Logs the state transitions of the molecules.
+     */
+    protected StateLogger stateLogger = StateLogger.getInstance();
+    
+    /**
+     * Logs the ground truth positions of the molecules.
+     */
+    protected PositionLogger positionLogger = PositionLogger.getInstance();
     
     /**
      * Initializes all analyzers, the generator and controller.
@@ -111,14 +132,18 @@ public class Simulator {
             throw new IllegalArgumentException("Wrong simulation parameters!");
         }
         
+        double pixelSize = generator.getObjectSpacePixelSize();
         ImageProcessor ip;
         for (image_count = 1; image_count <= no_of_images; image_count++) {
             JSONObject history_entry = new JSONObject();
             
             ip = generator.getNextImage();
-            analyzer.processImage(ip.getPixelsCopy(),ip.getWidth(), ip.getHeight(), 
-                    generator.getPixelSizeUm()*generator.getPixelSizeUm()*ip.getWidth()*ip.getHeight(), 
-                    10);
+            analyzer.processImage(
+                    ip.getPixelsCopy(),
+                    ip.getWidth(),
+                    ip.getHeight(), 
+                    pixelSize, 
+                    TIMEPERFRAME);
             //System.out.println(image_count);
             if (image_count % controller_refresh_rate == 0) {
                 double analyzer_batch_output = analyzer.getBatchOutput();
@@ -189,7 +214,6 @@ public class Simulator {
         
         writer.close();
         
-        
     }
     
     /**
@@ -214,5 +238,19 @@ public class Simulator {
      */
     public int getImageCount() {
         return image_count;
+    }
+    
+    /**
+     * @return The state transition logger.
+     */
+    public StateLogger getStateLogger() {
+        return stateLogger;
+    }
+    
+    /**
+     * @return The emitter position logger.
+     */
+    public PositionLogger getPositionLogger() {
+        return positionLogger;
     }
 }

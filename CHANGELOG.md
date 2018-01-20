@@ -1,7 +1,79 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v0.6.1]
+Contains [ALICA v0.2.5]
+
+### Added
+- A convenience method named `getFrameInfo()` was added to FrameLogger
+  (called `FrameInfo`) that returns a single data structure containing
+  the per-frame-information about each emitter.
+
+### Changed
+- Bulky `ALICA_dev.jar` was replaced by `ALICA_for_SASS_v0_2_5.jar`
+  which reduced SASS jar size to 8MB.
+  
+## [v0.6.0]
+Contains [ALICA v0.2.5]		
+
+### Added
+- You can now save and load simulation settings from the GUI.
+- There is now a `FrameLogger` for recording the frames that a
+  fluorophore is on. This produces larger log files than the
+  StateLogger, but does not require post-processing to extract the
+  frame numbers.
+- It is now possible to generate random background patterns using
+  `GenerateRandomBackground`.
+- Emitter positions and state transitions may now be saved from the
+  GUI.
+
+### Changed
+- A status report on PSF calculation is now output to the console for
+  every 5000 calculations.
+- Each simulation output is now displayed in its own plot for easier
+  tracking of the simulation parameters over time.
+
+### Fixed
+- Fixed a cropping issue with the self-tuning PI controller dialog on
+  Linux.
+- The `GibsonLanniPSF` cache is now erased everytime a new builder is
+  created for this PSF type. This prevents caching calculations done
+  for previous simulations.
+- The Save... button in the Initialize Simulation window is now
+  properly displayed as a Save dialog.
+- The latency bug that caused a pause during every tenth simulation
+  frame in GUI mode has been fixed. The latency came from updating the
+  original status plots, which have been changed in this version.
+- Loggers now properly check for filename collisions to prevent
+overwriting previously saved data.
+
+### Removed
+- The button that allowed saving the simulation outputs in the GUI has
+  been removed because it didn't work. This functionality may be
+  reimplemented in the future if there is interest.
+
+## [v0.5.1]
+
+### Changed
+- The `GibsonLanniPSF` now caches computation results to avoid
+  repetitive calculations.
+- The `GibsonLanniPSF.Builder` now has a `solver()` method for setting
+  the solver for the Bessel function coefficients. It accepts either
+  "svd" or "qrd" as arguments. (SVD stands for singular value
+  decomposition and QRD stands for QR decomposition.)
+- The `GibsonLanniPSF.Builder` also now has a `resPSFAxial()` method
+  for determining the spacing between axial planes of the
+  computational grid.
+- The `GibsonLanniPSF.Builder` also now has a `maxRadius()` method for
+  setting an upper limit on the size of the area that the PSF is drawn
+  onto. Reducing it can significantly speed up simulation times.
+
+### Fixed
+- PSF instances are not, in fact, immutable because their fields are
+  not `final`.
+
+## [v0.5.0]
+Contains [ALICA v0.2.1]	
 
 ### Added
 - There is now a `GibsonLanniPSF` for modeling realistic 3D PSF's and
@@ -11,9 +83,32 @@ All notable changes to this project will be documented in this file.
   various times during the simulation, rather than all at once. This
   addition is necessary to account for axial stage positions that
   might change during the simulation.
+- Added a `Stage` component to represent the state of the microscope
+  stage.
+- Added functionality through the `BackgroundCommand` to build custom
+  backgrounds for the simulations.
+- Added a `Microscope`class to replace `Device`. This class integrates
+  the various new and refactored components.
+- Added a set of Dynamics classes to separate fluorophore dynamical
+  systems from their creation logic.
 
 ### Changed
+- Major API changes were made in this version. The purpose was to
+  assign properties to components in a way that better matched a real
+  microscope (e.g. a camera should not have a wavelength). The change
+  to a builder based API is intended to make the scripting easier.
 - PSF instances are now immutable.
+- Optics-based logic was moved from the camera to a new `Objective`
+  class, whereas the original camera logic was moved to a new `Camera`
+  class in the components package.
+- The `Laser` has been moved to the components package.
+- Fluorophore generation is no longer setup by the user but executed
+  by the microscope.
+- Obstructors are now setup by the microscope as well. `GoldBeads` are
+  now created by a `ObstructorCommand` object.
+- `FluorophoreProperties` now has a wavelength property. The
+  wavelength property was removed from the camera.
+  
     
 ## [v0.4.0]
 Contains [ALICA v0.2.1]
@@ -129,6 +224,7 @@ Contains [ALICA v0.0.2]
 - default.nix was added to more easily port the development
   environment across machines.
 
+[ALICA v0.2.4]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.4
 [ALICA v0.2.1]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.1
 [ALICA v0.0.2]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.0.2
 [ALICA v0.1.0]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.1.0
@@ -140,3 +236,7 @@ Contains [ALICA v0.0.2]
 [v0.2.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.2.1
 [v0.3.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.3.0
 [v0.4.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.4.0
+[v0.5.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.5.0
+[v0.5.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.5.1
+[v0.6.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.0
+[v0.6.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.1

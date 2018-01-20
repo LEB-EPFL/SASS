@@ -64,6 +64,11 @@ public final class Gaussian3D implements PSF {
     private double eZ = 0;
     
     /**
+     * The axial displacement of the sample stage.
+     */
+    private double stageDisplacement = 0;
+    
+    /**
      * The builder for constructing Gaussian2D instances.
      */
     public static class Builder implements PSFBuilder {
@@ -71,6 +76,7 @@ public final class Gaussian3D implements PSF {
         // Properties of the 3D Gaussian PSF model
         private double FWHM;
         private double numericalAperture;
+        private double stageDisplacement;
         private double eX;
         private double eY;
         private double eZ;
@@ -88,6 +94,24 @@ public final class Gaussian3D implements PSF {
         public Builder eZ(double eZ) {this.eZ = eZ; return this;}
         
         @Override
+        public Builder stageDisplacement(double stageDisplacement) {
+            this.stageDisplacement = stageDisplacement;
+            return this;
+        }
+        
+        @Override
+        public Builder wavelength(double wavelength) {
+            // This PSF does not directly use the wavelength.
+            return this;
+        }
+        
+        @Override
+        public Builder resLateral(double resLateral) {
+            // This PSF does not directly use the object space pixel size.
+            return this;
+        }
+        
+        @Override
         public Gaussian3D build() {
             return new Gaussian3D(this);
         }
@@ -103,6 +127,7 @@ public final class Gaussian3D implements PSF {
     private Gaussian3D(Builder builder) {
         this.FWHM = builder.FWHM;
         this.numericalAperture = builder.numericalAperture;
+        this.stageDisplacement = builder.stageDisplacement;
         this.eX = builder.eX;
         this.eY = builder.eY;
         this.eZ = builder.eZ;
@@ -120,7 +145,12 @@ public final class Gaussian3D implements PSF {
             throws MathException {
         final double sigma_0 = this.FWHM / 2.3548;
         final double zR = 2 * sigma_0 / this.numericalAperture; // Rayleigh range
-        double sigma = sigma_0 * sqrt(1 + (this.eZ / zR) * (this.eZ / zR));
+        
+        // Add the offset from the stage's position to the emitter's z-values
+        double z;
+        z = this.eZ + this.stageDisplacement;
+        
+        double sigma = sigma_0 * sqrt(1 + (z/ zR) * (z / zR));
         double denom = sqrt(2.0)*sigma;
         return 0.25 *(Erf.erf((pixelX - this.eX + 0.5)/denom) - 
                       Erf.erf((pixelX - this.eX - 0.5)/denom)) *

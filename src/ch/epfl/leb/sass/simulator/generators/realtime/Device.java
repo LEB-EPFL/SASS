@@ -36,7 +36,9 @@ import cern.jet.random.engine.MersenneTwister;
  * Encapsulator class which contains all device objects (camera, laser...)
  * @author Marcel Stefko
  * @author Kyle M. Douglass
+ * @deprecated  Use Microscope instead.
  */
+@Deprecated
 public class Device {
     private final Camera camera;
     private final FluorophoreProperties fluo;

@@ -29,13 +29,34 @@ import ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder;
 /**
  *
  * @author stefko
+ * @deprecated Use the StormStateSystem instead.
  */
+@Deprecated
 public class dStormProperties extends FluorophoreProperties {
+    
+    /**
+     * Fluorophore start in the emitting state.
+     */
+    private final int startingState = 0; 
     
     private final double[][][] Mk;
     
     private final StateSystem state_system;
     
+    /**
+     * 
+     * @param signal
+     * @param background
+     * @param k_bl
+     * @param k_triplet
+     * @param k_triplet_recovery
+     * @param k_dark
+     * @param k_dark_recovery
+     * @param k_dark_recovery_constant
+     * @deprecated Use {@link #dStormProperties(double, double, double, double, double, double, double, double, double) }
+     *             instead.
+     */
+    @Deprecated
     public dStormProperties(double signal, double background, double k_bl, 
             double k_triplet, double k_triplet_recovery, double k_dark, 
             double k_dark_recovery, double k_dark_recovery_constant) {
@@ -79,8 +100,60 @@ public class dStormProperties extends FluorophoreProperties {
         };
         
         state_system = new StateSystem(4, Mk);
-        }
+    }
 
+    public dStormProperties(
+            double signal,
+            double wavelength,
+            double background,
+            double k_bl, 
+            double k_triplet,
+            double k_triplet_recovery,
+            double k_dark, 
+            double k_dark_recovery,
+            double k_dark_recovery_constant) {
+        super(signal, background, wavelength);
+        
+        if (k_bl<0.0 || k_triplet<=0.0 || k_triplet_recovery<0.0 ||
+            k_dark<0.0 || k_dark_recovery<0.0 || k_dark_recovery_constant<0.0) {
+            throw new IllegalArgumentException("Rates must be positive.");
+        }
+        
+        // 4 available states
+        Mk = new double[][][] {
+            // state 0: active
+            {
+                { 0.0 }, // active
+                { k_triplet }, // triplet
+                { 0.0 }, // reduced
+                { 0.0, k_bl }, // bleached
+            },
+            // state 1: triplet
+            {
+                { k_triplet_recovery }, // active
+                { 0.0 }, // triplet
+                { k_dark }, // reduced
+                { 0.0 }, // bleached
+            },
+            // state 2: reduced
+            {
+                { k_dark_recovery_constant, k_dark_recovery}, // active
+                { 0.0 }, // triplet
+                { 0.0 }, // reduced
+                { 0.0 }, // bleached
+            },
+            // state 4: bleached
+            {
+                { 0.0 }, // active
+                { 0.0 }, // triplet
+                { 0.0 }, // reduced
+                { 0.0 }, // bleached
+            }
+        };
+        
+        state_system = new StateSystem(4, Mk);
+        }
+    
     @Override
     public Fluorophore createFluorophore(Camera camera, double x, double y) {
         return new Fluorophore(camera, signal, state_system, 2, x, y);
@@ -97,7 +170,6 @@ public class dStormProperties extends FluorophoreProperties {
             double x,
             double y,
             double z) {
-        int startingState = 0; // Fluorophore start in the emitting state
         return new Fluorophore(
                 psfBuilder, signal, state_system, startingState, x, y, z);
     }

@@ -222,12 +222,17 @@ public class STORMsim extends AbstractGenerator {
      * @return length of one pixel side in micrometers
      */
     @Override
-    public double getPixelSizeUm() {
+    public double getObjectSpacePixelSize() {
         return device.getPixelSizeUm();
     }
 
     @Override
-    public double getFOVSizeUm2() {
+    public double getFOVSize() {
         return device.getFOVsize_um();
+    }
+    
+    @Override
+    public String getShortTrueSignalDescription() {
+        return "";
     }
 }

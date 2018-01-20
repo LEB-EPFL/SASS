@@ -76,6 +76,15 @@ public class SimpleSimulator {
     }
     
     /**
+     * Returns the activation laser power.
+     * 
+     * @return The value of the activation laser power.
+     */
+    public double getControlSignal() {
+        return engine.getControlSignal();
+    }
+    
+    /**
      * Returns the info from the frame's currently active emitters.
      * 
      * @return info The emitter information from the current frame.

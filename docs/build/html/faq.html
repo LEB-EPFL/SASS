@@ -1,20 +1,17 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Frequently Asked Questions &#8212; SASS 0.2.1 documentation</title>
-    
+    <title>Frequently Asked Questions &#8212; SASS 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.1',
+        VERSION:     '0.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,12 +21,12 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Scripting Interface" href="scripting.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -39,7 +36,7 @@
         <li class="right" >
           <a href="scripting.html" title="Scripting Interface"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -52,6 +49,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#running-simulations">Running Simulations</a><ul>
+<li><a class="reference internal" href="#how-is-the-coordinate-system-in-sass-defined">How is the coordinate system in SASS defined?</a></li>
 <li><a class="reference internal" href="#how-are-custom-fluorophore-position-lists-formatted">How are custom fluorophore position lists formatted?</a></li>
 </ul>
 </li>
@@ -98,7 +96,8 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#running-simulations" id="id4">Running Simulations</a><ul>
-<li><a class="reference internal" href="#how-are-custom-fluorophore-position-lists-formatted" id="id5">How are custom fluorophore position lists formatted?</a></li>
+<li><a class="reference internal" href="#how-is-the-coordinate-system-in-sass-defined" id="id5">How is the coordinate system in SASS defined?</a></li>
+<li><a class="reference internal" href="#how-are-custom-fluorophore-position-lists-formatted" id="id6">How are custom fluorophore position lists formatted?</a></li>
 </ul>
 </li>
 </ul>
@@ -115,14 +114,21 @@
 </div>
 <div class="section" id="running-simulations">
 <h2><a class="toc-backref" href="#id4">Running Simulations</a><a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-is-the-coordinate-system-in-sass-defined">
+<h3><a class="toc-backref" href="#id5">How is the coordinate system in SASS defined?</a><a class="headerlink" href="#how-is-the-coordinate-system-in-sass-defined" title="Permalink to this headline">¶</a></h3>
+<p>Coordinates in SASS are typically in units of pixels unless otherwise
+noted in the documentation. <strong>Please note that the origin of the
+Cartesian coordinate system lies at the center of a pixel, not at a
+corner.</strong></p>
+</div>
 <div class="section" id="how-are-custom-fluorophore-position-lists-formatted">
-<h3><a class="toc-backref" href="#id5">How are custom fluorophore position lists formatted?</a><a class="headerlink" href="#how-are-custom-fluorophore-position-lists-formatted" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id6">How are custom fluorophore position lists formatted?</a><a class="headerlink" href="#how-are-custom-fluorophore-position-lists-formatted" title="Permalink to this headline">¶</a></h3>
 <p>Customized fluorophore positions are imported into SASS from an
 externally-generated file that you create yourself. This file should
 contain two columns of comma-separated numerical values (for example,
 a .csv file). Each row represents the position of one fluorophore; the
-first column represents the fluorophore&#8217;s x-position, while the second
-column represents the fluorophore&#8217;s y-position. The file should
+first column represents the fluorophore’s x-position, while the second
+column represents the fluorophore’s y-position. The file should
 contain no header or comments.</p>
 <p><strong>Example</strong></p>
 <p>The column labels <strong>should not</strong> be included in the file; they are
@@ -147,8 +153,8 @@ illustrated here only to indicate which columns correspond to x and y.</p>
 <tr class="row-even"><td>2.4360</td>
 <td>1.2887</td>
 </tr>
-<tr class="row-odd"><td>...</td>
-<td>...</td>
+<tr class="row-odd"><td>…</td>
+<td>…</td>
 </tr>
 </tbody>
 </table>
@@ -156,6 +162,7 @@ illustrated here only to indicate which columns correspond to x and y.</p>
 left-hand corner of the generated image stacks. This means, for
 example, that a fluorophore at position (16, 16) will be in the center
 of a 32x32 pixel image.</p>
+<p>The coordinate system is identical to that used by <a class="reference external" href="http://zitmen.github.io/thunderstorm/">ThunderSTORM</a>.</p>
 </div>
 </div>
 </div>
@@ -175,12 +182,12 @@ of a 32x32 pixel image.</p>
         <li class="right" >
           <a href="scripting.html" title="Scripting Interface"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 1970, The Laboratory of Experimental Biophysics, EPFL, Lausanne, Switzerland.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

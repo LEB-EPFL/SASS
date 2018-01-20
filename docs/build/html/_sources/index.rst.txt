@@ -11,6 +11,7 @@ SASS
 .. toctree::
    :maxdepth: 1
 
+   quickstart
    models
    scripting
    faq

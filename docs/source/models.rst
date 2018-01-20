@@ -1,6 +1,164 @@
 Simulation Models
 =================
 
+Fluorescence dynamics
+---------------------
+
+The fluorescence dynamics in SASS are modeled as `memoryless state
+systems`_. Such systems are comprised of two or more states that a
+fluorophore may occupy at any given time. During the course of an
+experiment, the fluorophore may randomly transition from its current
+state :math:`m` to a new state :math:`n`, and the probability with
+which this transition occurs is determined partly by the so-called
+rate constant :math:`k_{mn}`.
+
+Memorylessness means that the probability to transition to any
+accessible state does not depend on the time that the fluorophore has
+already spent in its current state. This assumption is well-founded:
+it is unlikely that a fluorescent molecule possesses some mechanism to
+keep track of time. Under the assumption of memorylessness, the length
+of the time interval :math:`t` that is spent by a fluorophore in its
+current state :math:`S_m` before making a transition to state
+:math:`S_n` is given by an exponential probability density function
+
+.. math::
+
+   p_{mn} \left( t \right) = k_{mn} e^{ -k_{mn} t }
+
+When multiple states are accessible from :math:`S_m`, then it may be
+shown that the probability that the fluorophore will have transitioned
+to the specific state :math:`S_n` is
+
+.. math::
+
+   P \left( S_n, t = \infty | S_m, t = 0 \right) = \frac{ k_{mn} }{ K
+   }
+
+where :math:`K \equiv \sum_n k_{mn}`. Thus, the rate constants
+determine the relative probabilities of the transitions to different
+states.
+
+.. _`memoryless state systems`: https://en.wikipedia.org/wiki/Memorylessness
+
+Algorithm for state system simulations
+++++++++++++++++++++++++++++++++++++++
+
+The algorithm for simulating the state transitions proceeds as
+follows:
+
+1. The fluorescent molecule is assigned a pre-defined starting state
+   :math:`S_m`.
+2. Next, a random transition time from the molecule’s current state is
+   drawn for each accessible state :math:`n` from an exponential
+   distribution, :math:`\forall n : t_{mn} \sim \text{Exp} \left(
+   \tau_{mn} \right)` where :math:`\tau_{mn} \equiv 1 / k_{mn}` is the
+   average of the distribution.
+3. The smallest value from this set of transition times is computed
+   and stored as the molecule’s transition time :math:`T \equiv
+   \text{Min} \left( { t_{mn} }\right)`. The corresponding molecular
+   state :math:`S_n` is stored for use in the next step.
+4. The simulation time is advanced one time step. If, during this
+   time, a total amount of time has elapsed that is greater than the
+   previously calculated transition time :math:`T`, then the molecule
+   is transitioned into its next state. The new next state and its
+   transition time are generated and stored in the manner just
+   described.
+5. This process is repeated as the simulation continues until a
+   pre-determined number of time steps have occurred or it is stopped
+   by the user.
+
+Non-stationary state transitions
+++++++++++++++++++++++++++++++++
+
+In PALM/STORM type experiments, one or more rate constants depend on
+the light irradiance (power per area) of one or more light
+sources. Indeed, adjusting the power during an acquisition is a common
+way to optimize the quality of datasets derived from such experiments
+because it offers a direct way to tune the density of fluorophores in
+a light-emitting state.
+
+When the laser irradiance varies with time, so too do the rate
+constants and, therefore, the relative numbers of the fluorophores
+found in each state. Fortunately, the memorylessness property makes it
+easy to adapt the above algorithm to account for a changing
+irradiance. At each time step of the simulation, a check is performed
+to see whether the laser irradiance has changed. If it has, new rate
+constants are computed and a new transition time and state are derived
+from the algorithm described above.
+
+State system representations
+++++++++++++++++++++++++++++
+
+As an example of how state systems are represented in SASS, consider
+the simplified three-state fluorophore model pictured below.
+
+.. image:: ../_images/rate_diagram.png
+   :scale: 50%
+   :align: center
+   :alt: Rate diagram for a three-state system.
+
+In this simple model, the fluorophore may be in a fluorescence
+emitting (ON) state, a non-emitting (OFF) state, and an irreversibly
+bleached state from which it may never recover. (This model is perhaps
+too simplistic as it does not account for the typically numerous
+non-emitting states that real fluorophores possess. It does, however,
+capture the essential behavior in a SMLM experiment.)
+
+The transition rate from OFF to ON is a constant, :math:`k_{ON}`, as
+is the rate :math:`k_{b}` from the OFF to the BLEACHED state. The ON
+to OFF rate :math:`k_{OFF}` is a function of the irradiance and may be
+expanded as
+
+.. math::
+
+   k_{OFF} \left( I \right) = k_{OFF,0} + k_{OFF,1} I + k_{OFF,2} I^2 + \cdots
+
+Let's assume that :math:`k_{OFF}` is at most linear with the
+irradiance. Then, the full dynamics of the fluorophore may be
+specified by a :math:`3 \times 3 \times 2` matrix :math:`M`
+
+.. math::
+   \begin{align*}
+     M_{:,:,1} &= 
+       \left[
+       \begin{array}
+         0        & k_{OFF,0} & 0   \\
+         k_{ON,0} & 0         & k_{b,0} \\
+         0        & 0         & 0
+       \end{array}
+       \right] \\
+     M_{:,:,2} &= 
+       \left[
+       \begin{array}
+         0        & k_{OFF,1} & 0   \\
+         0        & 0         & 0   \\
+         0        & 0         & 0
+       \end{array}
+       \right]
+   \end{align*}
+
+(Note that some browsers may not render the first elements of the
+above matrices. Both elements are 0.)
+
+The rows of each matrix represent the state being *transitioned from*
+(ON, OFF, and BLEACHED states respectively), while the columns
+represent the state that is *transitioned to* (in the same order). For
+example, the first row of :math:`M_{:,:,1}` indicates that
+:math:`k_{OFF,0}` is the zero-order term for the rate coefficient
+polynomial expansion in :math:`I` from the ON state to the OFF
+state. Here, row number one corresponds to the ON state and column
+number 2 corresponds to the OFF state. The corresponding element in
+the second matrix :math:`M_{:,:,2}` is :math:`k_{OFF,1}` and indicates
+that the rate coefficient is linearly proportional to the
+irradiance. If there were a third matrix :math:`M_{:,:,3}` with a
+:math:`k_{OFF,2}` element, then this would indicate a second-order
+polynomial term for the dependence of :math:`k` on :math:`I`. Zeros
+for all the remaining elements in :math:`M_{:,:,2}` indicate that no
+other rates depend on the irradiance.
+
+Any fluorophore state system may be implemented in SASS by specifying
+the matrix :math:`M`.
+
 Shot noise and sensor noise
 ---------------------------
 
@@ -122,5 +280,3 @@ ADU. The quantization noise is a uniform distribution with variance
 :math:`\sigma_q^2 = \frac{1}{12} \, ADU^2`. It is automatically
 accounted for in the code by converting from double to integer data
 types.
-
-

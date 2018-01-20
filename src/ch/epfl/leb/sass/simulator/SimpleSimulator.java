@@ -36,7 +36,7 @@ public class SimpleSimulator {
     private int currFrame;
     
     /**
-     * Initializes the RPC server and connects it to the simulation engine.
+     * Initializes the SimpleSimulator and connects it to the simulation engine.
      * 
      * @param engine The engine that runs the simulation.
      */

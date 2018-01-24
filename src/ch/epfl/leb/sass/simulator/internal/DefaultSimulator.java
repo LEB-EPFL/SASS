@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.simulator.internal;
 
 
-import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
+import ch.epfl.leb.sass.models.Microscope;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.util.ArrayList;

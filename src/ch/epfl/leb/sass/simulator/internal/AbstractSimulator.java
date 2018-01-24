@@ -25,7 +25,6 @@ import ij.io.FileSaver;
 import java.io.File;
 import java.util.HashMap;
 import ch.epfl.leb.sass.simulator.Simulator;
-import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  *

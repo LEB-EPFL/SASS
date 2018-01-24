@@ -17,7 +17,8 @@
  */
 package ch.epfl.leb.sass.simulator.loggers;
 
-import ch.epfl.leb.sass.simulator.loggers.FrameLogger;
+import ch.epfl.leb.sass.loggers.FrameInfo;
+import ch.epfl.leb.sass.loggers.FrameLogger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

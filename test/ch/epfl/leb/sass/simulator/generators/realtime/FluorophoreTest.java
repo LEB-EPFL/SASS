@@ -23,9 +23,9 @@ import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.*;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
-import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
-import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
+import ch.epfl.leb.sass.models.fluorophores.StateSystem;
+import ch.epfl.leb.sass.models.Fluorophore;
+import ch.epfl.leb.sass.models.legacy.Camera;
 
 /**
  *

@@ -17,7 +17,7 @@
  */
 package ch.epfl.leb.sass.simulator.loggers;
 
-import ch.epfl.leb.sass.simulator.loggers.StateLogger;
+import ch.epfl.leb.sass.loggers.StateLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;

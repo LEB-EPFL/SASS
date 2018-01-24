@@ -17,8 +17,8 @@
  */
 package ch.epfl.leb.sass.simulator.internal;
 
-import ch.epfl.leb.sass.simulator.loggers.FrameLogger;
-import ch.epfl.leb.sass.simulator.loggers.FrameInfo;
+import ch.epfl.leb.sass.loggers.FrameLogger;
+import ch.epfl.leb.sass.loggers.FrameInfo;
 import ij.process.ImageProcessor;
 import java.util.List;
 import java.util.logging.Logger;

@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.ijplugin;
 
 import ch.epfl.leb.sass.simulator.internal.ImageJSimulator;
-import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
 import ij.ImagePlus;

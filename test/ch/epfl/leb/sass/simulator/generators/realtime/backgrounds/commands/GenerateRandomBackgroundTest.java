@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands;
 
+import ch.epfl.leb.sass.models.backgrounds.commands.GenerateRandomBackground;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

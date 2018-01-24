@@ -17,6 +17,8 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
+import ch.epfl.leb.sass.models.Pixel;
+import ch.epfl.leb.sass.models.Emitter;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import org.junit.Test;

@@ -21,9 +21,9 @@ package ch.epfl.leb.sass.ijplugin;
 
 
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulator;
-import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
-import ch.epfl.leb.sass.simulator.loggers.StateLogger;
-import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
+import ch.epfl.leb.sass.models.Microscope;
+import ch.epfl.leb.sass.loggers.StateLogger;
+import ch.epfl.leb.sass.loggers.PositionLogger;
 import ch.epfl.leb.alica.analyzers.AnalyzerFactory;
 import ch.epfl.leb.alica.analyzers.AnalyzerSetupPanel;
 import ch.epfl.leb.alica.controllers.ControllerFactory;

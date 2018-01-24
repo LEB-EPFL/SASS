@@ -19,7 +19,7 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.STORMsim;
+import ch.epfl.leb.sass.models.legacy.STORMsim;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.frame.PlugInFrame;

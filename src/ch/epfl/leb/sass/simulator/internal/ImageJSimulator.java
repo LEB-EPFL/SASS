@@ -21,11 +21,11 @@ package ch.epfl.leb.sass.simulator.internal;
 
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
-import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
-import ch.epfl.leb.sass.simulator.loggers.StateLogger;
-import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
+import ch.epfl.leb.sass.loggers.StateLogger;
+import ch.epfl.leb.sass.loggers.PositionLogger;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
@@ -38,7 +38,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
+import ch.epfl.leb.sass.models.RNG;
 import ij.IJ;
 import ch.epfl.leb.sass.simulator.Simulator;
 

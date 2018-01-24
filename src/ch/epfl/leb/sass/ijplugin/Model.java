@@ -18,29 +18,13 @@
 package ch.epfl.leb.sass.ijplugin;
 
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.psfs.internal.GibsonLanniPSF;
-import ch.epfl.leb.sass.models.psfs.internal.Gaussian3D;
-import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.SimpleDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamicsBuilder;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.PalmDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.StormDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresRandom2D;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresRandom3D;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid3D;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommandBuilder;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresFromCSV;
-import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateRandomBackground;
+import ch.epfl.leb.sass.models.psfs.internal.*;
+import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.*;
+import ch.epfl.leb.sass.models.fluorophores.internal.commands.*;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
-import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateBackgroundFromFile;
-import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
+import ch.epfl.leb.sass.models.backgrounds.internal.commands.*;
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.components.Laser;
-import ch.epfl.leb.sass.models.components.Objective;
-import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.components.*;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
 import ij.IJ;
 import java.io.File;
@@ -50,7 +34,6 @@ import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
-
 
 /**
  * Model for the InitializeSimulation window.

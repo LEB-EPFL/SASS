@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime;
+package ch.epfl.leb.sass.models.legacy;
 
 import ch.epfl.leb.sass.models.legacy.Camera;
 import ch.epfl.leb.sass.models.legacy.FluorophoreProperties;

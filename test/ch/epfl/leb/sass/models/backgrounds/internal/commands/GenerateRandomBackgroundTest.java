@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands;
+package ch.epfl.leb.sass.models.backgrounds.internal.commands;
 
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateRandomBackground;
 import org.junit.Test;

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime;
+package ch.epfl.leb.sass.models.emitters;
 
 import ch.epfl.leb.sass.models.emitters.internal.Pixel;
 import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
@@ -28,9 +28,9 @@ import static org.junit.Assert.*;
  *
  * @author douglass
  */
-public class EmitterTest {
+public class AbstractEmitterTest {
     
-    public EmitterTest() {
+    public AbstractEmitterTest() {
     }
 
     /**

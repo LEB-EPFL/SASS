@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime.components;
+package ch.epfl.leb.sass.models.components;
 
 import ch.epfl.leb.sass.models.components.Stage;
 import org.junit.Test;

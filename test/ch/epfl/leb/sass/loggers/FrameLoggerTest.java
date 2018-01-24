@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.loggers;
+package ch.epfl.leb.sass.loggers;
 
 import ch.epfl.leb.sass.loggers.FrameInfo;
 import ch.epfl.leb.sass.loggers.FrameLogger;

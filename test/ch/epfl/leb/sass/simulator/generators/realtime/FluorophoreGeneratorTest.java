@@ -18,13 +18,13 @@
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
 import ch.epfl.leb.sass.models.legacy.Camera;
-import ch.epfl.leb.sass.models.FluorophoreProperties;
-import ch.epfl.leb.sass.models.Fluorophore;
-import ch.epfl.leb.sass.models.FluorophoreGenerator;
+import ch.epfl.leb.sass.models.legacy.FluorophoreProperties;
+import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.models.legacy.FluorophoreGenerator;
 import java.util.ArrayList;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian3D;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.fluorophores.SimpleProperties;
+import ch.epfl.leb.sass.models.legacy.SimpleProperties;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -65,7 +65,7 @@ public class FluorophoreGeneratorTest {
         double zLow  = 4;
         double zHigh = 10;
         
-        ArrayList<Fluorophore> fluors = new ArrayList();
+        ArrayList<DefaultFluorophore> fluors = new ArrayList();
         fluors = this.fluorGen.generateFluorophoresGrid3D(
                 spacing,
                 zLow,

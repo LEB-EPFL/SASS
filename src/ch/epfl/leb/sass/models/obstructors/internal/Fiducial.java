@@ -20,11 +20,11 @@
 package ch.epfl.leb.sass.models.obstructors.internal;
 
 import ch.epfl.leb.sass.models.legacy.Camera;
-import ch.epfl.leb.sass.models.Emitter;
+import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 
-public class Fiducial extends Emitter implements Obstructor {
+public class Fiducial extends AbstractEmitter implements Obstructor {
     private final double brightness;
     
     /**

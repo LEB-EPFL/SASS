@@ -21,13 +21,10 @@ package ch.epfl.leb.sass.models.legacy;
 
 
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
-import ch.epfl.leb.sass.models.Fluorophore;
-import ch.epfl.leb.sass.models.FluorophoreGenerator;
-import ch.epfl.leb.sass.models.RNG;
-import ch.epfl.leb.sass.models.fluorophores.SimpleProperties;
+import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.simulator.internal.AbstractSimulator;
 import ch.epfl.leb.sass.models.obstructors.internal.ConstantBackground;
-import ch.epfl.leb.sass.models.obstructors.internal.GoldBeads;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -95,7 +92,7 @@ public class STORMsim extends AbstractSimulator {
         
         // Returned ImageProcess instance is not captured. This was easier than
         // outright avoiding any image creation that happens inside
-        // simulateFrame() because the Fluorophore state transitions are handled
+        // simulateFrame() because the DefaultFluorophore state transitions are handled
         // inside a long chain of method calls. -kmd
         device.simulateFrame();
     }
@@ -189,7 +186,7 @@ public class STORMsim extends AbstractSimulator {
                           gd.getNextNumber()); //min_power)
         
         
-        ArrayList<Fluorophore> emitters;
+        ArrayList<DefaultFluorophore> emitters;
         int emitter_no = (int) gd.getNextNumber();
         if (emitter_no == 0) {
             try {

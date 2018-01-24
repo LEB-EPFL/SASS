@@ -21,7 +21,7 @@ import static java.lang.Math.sqrt;
 import java.util.ArrayList;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.special.Erf;
-import ch.epfl.leb.sass.models.Pixel;
+import ch.epfl.leb.sass.models.emitters.internal.Pixel;
 import ch.epfl.leb.sass.models.psfs.PSF;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import java.util.logging.Level;

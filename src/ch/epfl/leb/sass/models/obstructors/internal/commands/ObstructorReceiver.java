@@ -22,7 +22,7 @@ import ch.epfl.leb.sass.models.obstructors.internal.Fiducial;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.components.Stage;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.RNG;
+import ch.epfl.leb.sass.utils.RNG;
 import java.util.ArrayList;
 import java.util.Random;
 

@@ -17,13 +17,15 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
-import ch.epfl.leb.sass.models.fluorophores.dynamics.FluorophoreDynamicsBuilder;
-import ch.epfl.leb.sass.models.fluorophores.dynamics.FluorophoreDynamics;
-import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
-import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
+import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamicsBuilder;
+import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
+import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommandBuilder;
+import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Objective;
@@ -31,8 +33,8 @@ import ch.epfl.leb.sass.models.components.Stage;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommandBuilder;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
-import ch.epfl.leb.sass.models.backgrounds.commands.BackgroundCommandBuilder;
-import ch.epfl.leb.sass.models.backgrounds.commands.BackgroundCommand;
+import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
+import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
 import ij.process.FloatProcessor;
 import ij.process.ShortProcessor;
 import java.util.Arrays;
@@ -51,7 +53,7 @@ public class Microscope {
     private final Objective objective;
     private final Stage stage;
     private final FluorophoreDynamics fluorDynamics;
-    private final List<Fluorophore> fluorophores;
+    private final List<DefaultFluorophore> fluorophores;
     private List<Obstructor> obstructors;
     private final BackgroundCommand background;
     
@@ -120,8 +122,8 @@ public class Microscope {
         this.background = backgroundBuilder.build();
         
         // Determine the lifetimes for each fluorophore's current state
-        for (Fluorophore f: fluorophores) {
-            f.recalculate_lifetimes(laser.getPower());
+        for (DefaultFluorophore f: fluorophores) {
+            f.recalculateLifetimes(laser.getPower());
         }
     }
     
@@ -160,8 +162,8 @@ public class Microscope {
      */
     public void setLaserPower(double laserPower) {
         laser.setPower(laserPower);
-        for (Fluorophore e: fluorophores) {
-            e.recalculate_lifetimes(laser.getPower());
+        for (DefaultFluorophore e: fluorophores) {
+            e.recalculateLifetimes(laser.getPower());
         }
     }
     
@@ -179,7 +181,7 @@ public class Microscope {
      */
     public double getOnEmitterCount() {
         int count = 0;
-        for (Fluorophore e: fluorophores) {
+        for (DefaultFluorophore e: fluorophores) {
             if (e.isOn()) {
                 count++;
             }
@@ -209,7 +211,7 @@ public class Microscope {
         // Add fluorophores
         // The applyTo method also handles fluorophore state changes by calling
         // the simulateBrightness() method of an emitter.
-        for (Fluorophore f: fluorophores) {
+        for (DefaultFluorophore f: fluorophores) {
             f.applyTo(pixels);
         }
         

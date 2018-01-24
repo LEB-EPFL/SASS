@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.models.obstructors.internal;
 
 import ch.epfl.leb.sass.models.legacy.Camera;
-import ch.epfl.leb.sass.models.Emitter;
+import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 
 /**
@@ -28,7 +28,7 @@ import ch.epfl.leb.sass.models.psfs.PSFBuilder;
  * @deprecated Use Fiducial instead.
  */
 @Deprecated
-public class GoldBead extends Emitter {
+public class GoldBead extends AbstractEmitter {
     private final double brightness;
     
     /**

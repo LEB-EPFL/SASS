@@ -17,8 +17,8 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime;
 
-import ch.epfl.leb.sass.models.Pixel;
-import ch.epfl.leb.sass.models.Emitter;
+import ch.epfl.leb.sass.models.emitters.internal.Pixel;
+import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class EmitterTest {
         
         double radius = 1.0;
         ArrayList<Pixel> pixels;
-        pixels = Emitter.getPixelsWithinRadius(point, radius);
+        pixels = AbstractEmitter.getPixelsWithinRadius(point, radius);
         assertEquals(5, pixels.size());
         
         // Verify that the positions in the pixel array match the ground truth
@@ -66,7 +66,7 @@ public class EmitterTest {
         
         // Verify that the method works with an even radius
         radius = 2.0;
-        pixels = Emitter.getPixelsWithinRadius(point, radius);
+        pixels = AbstractEmitter.getPixelsWithinRadius(point, radius);
         assertEquals(13, pixels.size());
         
         
@@ -85,7 +85,7 @@ public class EmitterTest {
         
         double radius = 0.95;
         ArrayList<Pixel> pixels;
-        pixels = Emitter.getPixelsWithinRadius(point, radius);
+        pixels = AbstractEmitter.getPixelsWithinRadius(point, radius);
         assertEquals(1, pixels.size());
         assertEquals(1, pixels.get(0).x);
         assertEquals(2, pixels.get(0).y);

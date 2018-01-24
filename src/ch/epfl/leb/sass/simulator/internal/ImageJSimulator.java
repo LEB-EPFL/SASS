@@ -38,7 +38,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ch.epfl.leb.sass.models.RNG;
+import ch.epfl.leb.sass.utils.RNG;
 import ij.IJ;
 import ch.epfl.leb.sass.simulator.Simulator;
 

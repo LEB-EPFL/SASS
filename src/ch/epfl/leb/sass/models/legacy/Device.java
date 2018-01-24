@@ -20,8 +20,6 @@
 package ch.epfl.leb.sass.models.legacy;
 
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
-import ch.epfl.leb.sass.models.fluorophores.SimpleProperties;
-import ch.epfl.leb.sass.models.obstructors.internal.GoldBeads;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import ij.process.FloatProcessor;
@@ -32,10 +30,8 @@ import java.util.Arrays;
 import java.util.Random;
 import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
-import ch.epfl.leb.sass.models.Fluorophore;
-import ch.epfl.leb.sass.models.FluorophoreGenerator;
-import ch.epfl.leb.sass.models.FluorophoreProperties;
-import ch.epfl.leb.sass.models.RNG;
+import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.utils.RNG;
 
 /**
  * Encapsulator class which contains all device objects (camera, laser...)
@@ -47,7 +43,7 @@ import ch.epfl.leb.sass.models.RNG;
 public class Device {
     private final Camera camera;
     private final FluorophoreProperties fluo;
-    private final ArrayList<Fluorophore> fluorophores;
+    private final ArrayList<DefaultFluorophore> fluorophores;
     private final Laser laser;
     
     private final ArrayList<Obstructor> obstructors;
@@ -92,8 +88,8 @@ public class Device {
         
         obstructors = new ArrayList<Obstructor>();
         
-        for (Fluorophore e: fluorophores) {
-            e.recalculate_lifetimes(laser.getPower());
+        for (DefaultFluorophore e: fluorophores) {
+            e.recalculateLifetimes(laser.getPower());
         }
     }
     
@@ -105,7 +101,7 @@ public class Device {
      * @param emitters list of fluorophores
      * @param obstructors list of obstructors
      */
-    public Device(Camera cam, FluorophoreProperties fluo, Laser laser, ArrayList<Fluorophore>emitters,
+    public Device(Camera cam, FluorophoreProperties fluo, Laser laser, ArrayList<DefaultFluorophore>emitters,
             ArrayList<Obstructor> obstructors) {
         camera = cam;
         this.fluo = fluo;
@@ -117,8 +113,8 @@ public class Device {
         else
             this.obstructors = new ArrayList<Obstructor>();
         
-        for (Fluorophore e: emitters) {
-            e.recalculate_lifetimes(laser.getPower());
+        for (DefaultFluorophore e: emitters) {
+            e.recalculateLifetimes(laser.getPower());
         }
     }
     
@@ -154,8 +150,8 @@ public class Device {
      */
     public void setLaserPower(double laser_power) {
         laser.setPower(laser_power);
-        for (Fluorophore e: fluorophores) {
-            e.recalculate_lifetimes(laser.getPower());
+        for (DefaultFluorophore e: fluorophores) {
+            e.recalculateLifetimes(laser.getPower());
         }
     }
     
@@ -173,7 +169,7 @@ public class Device {
      */
     public double getOnEmitterCount() {
         int count = 0;
-        for (Fluorophore e: fluorophores) {
+        for (DefaultFluorophore e: fluorophores) {
             if (e.isOn()) {
                 count++;
             }
@@ -202,7 +198,7 @@ public class Device {
         // Add emitters
         // The applyTo method also handles fluorophore state changes by calling
         // the simulateBrightness() method of an emitter.
-        for (Fluorophore f: fluorophores) {
+        for (DefaultFluorophore f: fluorophores) {
             f.applyTo(pixels);
         }
         

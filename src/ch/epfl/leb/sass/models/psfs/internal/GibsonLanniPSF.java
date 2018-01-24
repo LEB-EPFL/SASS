@@ -17,7 +17,7 @@
  */
 package ch.epfl.leb.sass.models.psfs.internal;
 
-import ch.epfl.leb.sass.models.Pixel;
+import ch.epfl.leb.sass.models.emitters.internal.Pixel;
 import ch.epfl.leb.sass.models.psfs.PSF;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;

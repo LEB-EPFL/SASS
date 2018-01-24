@@ -19,7 +19,7 @@ package ch.epfl.leb.sass.models.psfs;
 
 import java.util.ArrayList;
 import org.apache.commons.math.MathException;
-import ch.epfl.leb.sass.models.Pixel;
+import ch.epfl.leb.sass.models.emitters.internal.Pixel;
 
 /**
  * Interface that defines the behavior of a microscope point spread function.

@@ -19,7 +19,7 @@ package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
 import ch.epfl.leb.sass.models.psfs.PSF;
 import ch.epfl.leb.sass.models.psfs.internal.GibsonLanniPSF;
-import ch.epfl.leb.sass.models.Pixel;
+import ch.epfl.leb.sass.models.emitters.internal.Pixel;
 import java.awt.geom.Point2D;
 import org.junit.Test;
 import org.junit.Before;

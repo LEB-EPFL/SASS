@@ -17,17 +17,18 @@
  */
 package ch.epfl.leb.sass.server;
 
-import ch.epfl.leb.sass.simulator.SimpleSimulator;
-import ch.epfl.leb.sass.simulator.loggers.FrameInfo;
+import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
+import ch.epfl.leb.sass.loggers.FrameInfo;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.io.FileSaver;
 
+import com.google.gson.Gson;
+
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.reflect.Field;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.*;
  */
 public class RemoteSimulationServiceHandlerTest {
     
-    private SimpleSimulator mockSimulator;
+    private RPCSimulator mockSimulator;
     private RemoteSimulationServiceHandler handler;
     
     // NOTE: The string argument to createImage() MUST match that used in the
@@ -48,7 +49,7 @@ public class RemoteSimulationServiceHandlerTest {
     );
     
     public RemoteSimulationServiceHandlerTest() {
-        this.mockSimulator = mock(SimpleSimulator.class);
+        this.mockSimulator = mock(RPCSimulator.class);
         this.handler = new RemoteSimulationServiceHandler(mockSimulator);
     }
 
@@ -90,28 +91,18 @@ public class RemoteSimulationServiceHandlerTest {
     @Test
     public void testGetSimulationState() {
         System.out.println("getSimulationState");
-        
-        EmitterState state = new EmitterState(1, 2, 0.1, 0.1, 0.1, 0.5, 2500);
-        List<EmitterState> expResult = new ArrayList<>();
-        expResult.add(state);
+        RemoteSimulationServiceHandler instance = this.handler;
+        String expResult = "[{\"frame\":1,\"id\":2,\"x\":0.1,\"y\":0.1,\"z\":0.1,\"brightness\":0.5,\"timeOn\":2500.0}]";
         
         // Instructs the wrapped simulator to return the expected FrameInfo.
+        Gson gson = new Gson();
         List<FrameInfo> info = new ArrayList<>();
         info.add(new FrameInfo(1, 2, 0.1, 0.1, 0.1, 0.5, 2500));
-        when(this.mockSimulator.getEmitterStatus()).thenReturn(info);
-        
-        RemoteSimulationServiceHandler instance = this.handler;
+        when(this.mockSimulator.getSimulationState()).thenReturn(gson.toJson(info));
 
-        List<EmitterState> result = instance.getSimulationState();
+        String result = instance.getSimulationState();
         
         // This should probably be changed to a loop over fields...
-        assertEquals(expResult.get(0).frameNumber, result.get(0).frameNumber);
-        assertEquals(expResult.get(0).fluorophoreID, result.get(0).fluorophoreID);
-        assertEquals(expResult.get(0).x, result.get(0).x, 0);
-        assertEquals(expResult.get(0).y, result.get(0).y, 0);
-        assertEquals(expResult.get(0).z, result.get(0).z, 0);
-        assertEquals(expResult.get(0).brightness, result.get(0).brightness, 0);
-        assertEquals(expResult.get(0).timeOn, result.get(0).timeOn, 0);
+        assertEquals(expResult, result);
     }
-    
 }

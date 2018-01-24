@@ -18,8 +18,7 @@
 package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.ijplugin.Model;
-import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
-import ch.epfl.leb.sass.simulator.SimpleSimulator;
+import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
@@ -45,7 +44,7 @@ public class RPCServer {
             Model model;
             model = Model.read(new FileInputStream("/home/douglass/Desktop/simulation.sass"));
             
-            SimpleSimulator simulator = new SimpleSimulator( new SimEngine(model.build()));
+            RPCSimulator simulator = new RPCSimulator( model.build() );
             
             handler = new RemoteSimulationServiceHandler(simulator);
             processor = new RemoteSimulationService.Processor(handler);

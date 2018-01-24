@@ -20,11 +20,10 @@ package ch.epfl.leb.sass.simulator.internal;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.loggers.FrameLogger;
 import ch.epfl.leb.sass.loggers.FrameInfo;
-import ij.process.ImageProcessor;
+
+import com.google.gson.Gson;
+
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  * A simulator that is specialized for control by remote procedure calls (RPCs).
@@ -34,28 +33,31 @@ import ch.epfl.leb.sass.simulator.Simulator;
 public class RPCSimulator extends DefaultSimulator {
     
     private final FrameLogger frameLogger = FrameLogger.getInstance();
-    private int currFrame;
     
     /**
      * Initializes the SimpleSimulator and connects it to the simulation engine.
      * 
-     * @param engine The engine that runs the simulation.
+     * @param microscope The engine that runs the simulation.
      */
     public RPCSimulator(Microscope microscope) {
         super(microscope);
-        this.currFrame = 0;
         frameLogger.reset();
         frameLogger.setPerformLogging(true);
         frameLogger.setLogCurrentFrameOnly(true);
     }
     
     /**
-     * Returns the info from the frame's currently active emitters.
+     * Returns the simulation's current state as a JSON-encoded string.
      * 
-     * @return info The emitter information from the current frame.
+     * @return JSON string containing information about the simulation state.
      */
-    public List<FrameInfo> getEmitterStatus() {        
-        return frameLogger.getFrameInfo();
+    @Override
+    public String getSimulationState() {
+        List<FrameInfo> allInfo = this.frameLogger.getFrameInfo();
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(allInfo);
+        return json;
     }
     
 }

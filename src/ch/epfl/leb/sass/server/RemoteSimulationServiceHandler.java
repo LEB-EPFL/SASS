@@ -17,15 +17,13 @@
  */
 package ch.epfl.leb.sass.server;
 
-import ch.epfl.leb.sass.simulator.SimpleSimulator;
-import ch.epfl.leb.sass.simulator.loggers.FrameInfo;
+import ch.epfl.leb.sass.simulator.Simulator;
 
 import ij.ImagePlus;
 import ij.io.FileSaver;
 
 import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.ArrayList;
+
 
 /**
  * Implements the remote simulation service functions.
@@ -37,14 +35,14 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     /**
      * Reference to the simulator that will be controlled through the server.
      */
-    private SimpleSimulator simulator;
+    private Simulator simulator;
     
     /**
      * The title of the image returned by the RPC server.
      */
     public static final String TITLE = "Current image";
     
-    public RemoteSimulationServiceHandler(SimpleSimulator simulator) {
+    public RemoteSimulationServiceHandler(Simulator simulator) {
         this.simulator = simulator;
     }
     
@@ -81,6 +79,7 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     
     /**
      * Sets the activation laser power in the simulation.
+     * 
      * @param power The power of the laser.
      */
     @Override
@@ -91,23 +90,10 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     /**
      * Collects information about the simulation's current state and returns it.
      * 
-     * @return Information about each active emitter.
+     * @return JSON string containing the current state of the simulation.
      */
     @Override
-    public List<EmitterState> getSimulationState() {
-        List<FrameInfo> allInfo = this.simulator.getEmitterStatus();
-        
-        List<EmitterState> states = new ArrayList<>();
-        for (FrameInfo info : allInfo) {
-            EmitterState state = new EmitterState(
-                    info.frame, info.id, info.x, info.y, info.z,
-                    info.brightness, info.timeOn
-            );
-            
-            states.add(state);
-        }
-        
-        return states;
-        
+    public String getSimulationState() {
+        return this.simulator.getSimulationState();
     }
 }

@@ -39,8 +39,8 @@ public class DefaultSimulator extends AbstractSimulator {
      * output returns spots per 10 um x 10 um = 100 um^2 area.
      */
     private final double SCALEFACTOR = 100;
+       
     private Microscope microscope;
-
     private ArrayList<Double> emitterHistory;
             
     /**
@@ -130,4 +130,5 @@ public class DefaultSimulator extends AbstractSimulator {
         String descr = "counts/" + String.valueOf((int) SCALEFACTOR) + " µm^2";
         return descr;
     }
+    
 }

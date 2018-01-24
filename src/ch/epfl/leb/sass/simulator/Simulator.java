@@ -31,6 +31,18 @@ import java.util.HashMap;
  * @author Kyle M. Douglass
  */
 public interface Simulator {
+    
+    /**
+     * Returns the number of images simulated.
+     * 
+     * Because the simulation can advance without generating an image, this
+     * value will be less than or equal to the number of simulation time steps.
+     * Use {@link #incrementTimeStep()} to advance the simulation one time step
+     * without generating an image.
+     * 
+     * @return The number of images that have been simulated.
+     */
+    public int getImageCount();
 
     /**
      * Generates a new image and adds it to the internal stack.
@@ -105,4 +117,15 @@ public interface Simulator {
      * @return A short description of the truth signal, typically its units.
      */
     public String getShortTrueSignalDescription();
+    
+    /**
+     * Retrieves the current state of the simulation.
+     * 
+     * This returns the simulation's current state, which includes all relevant
+     * properties. These may include, for example, the fluorescence state of
+     * every fluorophore.
+     * 
+     * @return JSON string encoding the simulation state.
+     */
+    public String getSimulationState();
 }

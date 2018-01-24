@@ -239,6 +239,7 @@ public class ImageJSimulator extends DefaultSimulator {
      * Returns the number of generated images since simulation start.
      * @return number of generated images
      */
+    @Override
     public int getImageCount() {
         return image_count;
     }

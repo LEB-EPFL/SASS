@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Added
+- An RPC server was created that allows for remote control of the
+  simulation over the network.
+
 ### Changed
 - The package layout was restructured and simplified to make it easier
   for newcomers to understand and to better consolidate components

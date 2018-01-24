@@ -20,19 +20,6 @@
 namespace java ch.epfl.leb.sass.server
 namespace py remotesim
 
-/**
- * Contains information about the simulation's current frame.
- */
-struct EmitterState {
-  1: i32 frameNumber,
-  2: i32 fluorophoreID,
-  3: double x,
-  4: double y,
-  5: double z,
-  6: double brightness,
-  7: double timeOn
-}
-
 service RemoteSimulationService {
 
   /**
@@ -51,8 +38,9 @@ service RemoteSimulationService {
   void setActivationLaserPower(1: double power),
 
   /**
-   * Returns information about the current state of each emitter.
+   * Returns information about the current state of each emitter in
+   * a JSON string.
    */
-  list<EmitterState> getSimulationState()
+  string getSimulationState()
        
 }

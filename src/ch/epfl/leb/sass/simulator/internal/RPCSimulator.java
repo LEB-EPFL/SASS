@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.simulator.internal;
 
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.loggers.FrameLogger;
 import ch.epfl.leb.sass.loggers.FrameInfo;
 import ij.process.ImageProcessor;
@@ -30,9 +31,8 @@ import ch.epfl.leb.sass.simulator.Simulator;
  * 
  * @author Kyle M. Douglass
  */
-public class RPCSimulator {
+public class RPCSimulator extends DefaultSimulator {
     
-    private final Simulator engine;
     private final FrameLogger frameLogger = FrameLogger.getInstance();
     private int currFrame;
     
@@ -41,48 +41,12 @@ public class RPCSimulator {
      * 
      * @param engine The engine that runs the simulation.
      */
-    public RPCSimulator(Simulator engine) {
+    public RPCSimulator(Microscope microscope) {
+        super(microscope);
         this.currFrame = 0;
-        this.engine = engine;
         frameLogger.reset();
         frameLogger.setPerformLogging(true);
         frameLogger.setLogCurrentFrameOnly(true);
-    }
-    
-    /**
-     * Advances the simulation one time step.
-     * 
-     * @return The next image generated from the simulation.
-     */
-    public ImageProcessor getNextImage() {
-        ImageProcessor img = null;
-        try {
-            this.currFrame++;
-            img = engine.getNextImage();
-        } catch (Exception ex) {
-            Logger.getLogger(RPCSimulator.class.getName())
-                  .log(Level.SEVERE, null, ex);
-        }
-        
-        return img;
-    }
-    
-    /**
-     * Sets the activation laser power.
-     * 
-     * @param power The new value for the activation laser power.
-     */
-    public void setControlSignal(double power) {
-        engine.setControlSignal(power);
-    }
-    
-    /**
-     * Returns the activation laser power.
-     * 
-     * @return The value of the activation laser power.
-     */
-    public double getControlSignal() {
-        return engine.getControlSignal();
     }
     
     /**

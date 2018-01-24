@@ -19,20 +19,20 @@
  */
 package ch.epfl.leb.sass.simulator.generators.tiff;
 
-import ch.epfl.leb.sass.simulator.ImageGenerator;
-import ch.epfl.leb.sass.simulator.generators.AbstractGenerator;
+import ch.epfl.leb.sass.simulator.internal.AbstractSimulator;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.FileSaver;
 import ij.process.ImageProcessor;
 import java.io.File;
 import java.util.HashMap;
+import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  * Generates images from a .tiff stack image file.
  * @author Marcel Stefko
  */
-public class TiffGenerator extends AbstractGenerator {
+public class TiffGenerator extends AbstractSimulator {
     private int count;
     
     /**

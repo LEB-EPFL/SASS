@@ -17,20 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators;
+package ch.epfl.leb.sass.simulator.internal;
 
-import ch.epfl.leb.sass.simulator.ImageGenerator;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.FileSaver;
 import java.io.File;
 import java.util.HashMap;
+import ch.epfl.leb.sass.simulator.Simulator;
+import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  *
  * @author Marcel Stefko
  */
-public abstract class AbstractGenerator implements ImageGenerator {
+public abstract class AbstractSimulator implements Simulator {
 
     /**
      * Map of custom parameters for the generator.
@@ -45,7 +46,7 @@ public abstract class AbstractGenerator implements ImageGenerator {
     /**
      * Initializes the empty parameters map.
      */
-    public AbstractGenerator() {
+    public AbstractSimulator() {
         parameters = new HashMap<String,Double>();        
     }
     

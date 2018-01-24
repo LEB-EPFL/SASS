@@ -21,7 +21,7 @@ package ch.epfl.leb.sass.simulator.generators.realtime;
 
 
 import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
-import ch.epfl.leb.sass.simulator.generators.AbstractGenerator;
+import ch.epfl.leb.sass.simulator.internal.AbstractSimulator;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.ConstantBackground;
 import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 import ij.IJ;
@@ -38,10 +38,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Implementation of the ImageGenerator interface with methods required by AbstractGenerator.
+ * Implementation of the ImageGenerator interface with methods required by AbstractSimulator.
  * @author Marcel Stefko
  */
-public class STORMsim extends AbstractGenerator {
+public class STORMsim extends AbstractSimulator {
     private Device device;
 
     private ArrayList<Double> emitter_history;

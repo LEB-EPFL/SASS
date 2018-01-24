@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Changed
+- The package layout was restructured and simplified to make it easier
+  for newcomers to understand and to better consolidate components
+  that were added after the original layout was devised.
+- The `ImageGenerator` interface was renamed to `Simulator`, while the
+  original `Simulator` class was renamed to `ImageJSimulator` and
+  moved down one directory to the `internal` package.
+- The `SimEngine` class was renamed to `DefaultSimulator` and moved to
+  ch.epfl.leb.sass.simulator.internal.
+
 ## [v0.6.1]
 Contains [ALICA v0.2.5]
 
@@ -224,6 +236,7 @@ Contains [ALICA v0.0.2]
 - default.nix was added to more easily port the development
   environment across machines.
 
+[ALICA v0.2.5]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.5
 [ALICA v0.2.4]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.4
 [ALICA v0.2.1]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.2.1
 [ALICA v0.0.2]: https://github.com/LEB-EPFL/ALICA/releases/tag/v0.0.2

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator;
+package ch.epfl.leb.sass.ijplugin;
 
 import java.text.DecimalFormat;
 import java.awt.BorderLayout;

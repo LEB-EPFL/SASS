@@ -17,20 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime;
+package ch.epfl.leb.sass.simulator.internal;
 
 
-import ch.epfl.leb.sass.simulator.generators.AbstractGenerator;
+import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Implementation of the ImageGenerator interface with methods required by AbstractGenerator.
+ * The basic simulation engine from which others may be derived.
+ * 
  * @author Marcel Stefko
  */
-public class SimEngine extends AbstractGenerator {
+public class DefaultSimulator extends AbstractSimulator {
     /**
      * Scaling factor for the density.
      * 
@@ -46,7 +47,7 @@ public class SimEngine extends AbstractGenerator {
      * Initialize the generator.
      * @param microscope
      */
-    public SimEngine(Microscope microscope) {
+    public DefaultSimulator(Microscope microscope) {
         super();
         this.microscope = microscope;
         

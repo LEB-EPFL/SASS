@@ -19,9 +19,8 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
-import ch.epfl.leb.sass.simulator.Simulator;
-import ch.epfl.leb.sass.simulator.ImageGenerator;
-import ch.epfl.leb.sass.simulator.SimulatorStatusFrame;
+import ch.epfl.leb.sass.simulator.internal.ImageJSimulator;
+import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
 import ij.ImagePlus;
@@ -29,12 +28,13 @@ import ij.process.ImageProcessor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  * Backend for the FIJI plugin GUI
  * @author Marcel Stefko
  */
-public class App extends Simulator {
+public class App extends ImageJSimulator {
     private final ImagePlus imp;
     private final SimulatorStatusFrame statusFrame;
     private final int controller_tickrate;
@@ -48,58 +48,29 @@ public class App extends Simulator {
     private final ArrayList<Double> analyzerOutput = new ArrayList<Double>();
     private final ArrayList<Double> controllerSetpoint = new ArrayList<Double>();
     
-    
     /**
-     * Initialize simulation, generate 2 images for correct 
-     * stack display, then display the stack
-     * and plot of controller state.
+     * Assemble the App from custom components.
+     * 
+     * @param microscope The microscope to be simulated.
+     * @param analyzer An analyzer for processing images from the microscope.
+     * @param controller A controller that adjusts the state of the microscope.
      */
-    public App() {
-        super();
-        generator.getNextImage();
-        generator.getNextImage();
-        imp = new ImagePlus("Sim window", generator.getStack());
-        imp.show();
-        
-        // The units of the manual controller setpoint are the same as the
-        // as the laser, not the analyzer output like the other controllers.
-        String setpointLabel = "";
-        if ("Manual".equals(controller.getName())) {
-            setpointLabel = "mW";
-        } else {
-            setpointLabel = analyzer.getShortReturnDescription();
-        }
-        statusFrame = new SimulatorStatusFrame(
-                generator.getShortTrueSignalDescription(),
-                analyzer.getShortReturnDescription(),
-                setpointLabel,
-                "mW"
-        );
-        controller_tickrate = 20;
-        interaction_window = new InteractionWindow(analyzer, controller);
-    }
-    
-    /**
-     * Assemble App from its components
-     * @param analyzer
-     * @param generator
-     * @param controller
-     */
-    public App(Analyzer analyzer,
-            ImageGenerator generator,
-            Controller controller,
-            int controller_tickrate
+    public App(
+        Microscope microscope,
+        Analyzer analyzer,
+        Controller controller,
+        int controller_tickrate
     ) {
-        super(analyzer, generator, controller);
+        super(microscope, analyzer, controller);
         if (controller_tickrate<1) {
             throw new IllegalArgumentException("Wrong controller tickrate!");
         }
         controller.setSetpoint(0.0);
         this.controller_tickrate = controller_tickrate;
-        generator.getNextImage();
-        generator.getNextImage();
+        this.getNextImage();
+        this.getNextImage();
         interaction_window = new InteractionWindow(analyzer, controller);
-        imp = new ImagePlus("Sim window", generator.getStack());
+        imp = new ImagePlus("Simulation Window", this.getStack());
         imp.show();
         
         // The units of the manual controller setpoint are the same as the
@@ -111,7 +82,7 @@ public class App extends Simulator {
             setpointLabel = analyzer.getShortReturnDescription();
         }
         statusFrame = new SimulatorStatusFrame(
-                generator.getShortTrueSignalDescription(),
+                this.getShortTrueSignalDescription(),
                 analyzer.getShortReturnDescription(),
                 setpointLabel,
                 "mW"
@@ -122,7 +93,7 @@ public class App extends Simulator {
      * Start continuously generating new images until stopped.
      */
     public void startSimulating() {
-        worker = new Worker(this, generator, controller, analyzer, imp);
+        worker = new Worker(this, controller, analyzer, imp);
         worker.start();
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -184,14 +155,12 @@ public class App extends Simulator {
 class Worker extends Thread {
     public boolean stop;
     private final App app;
-    private final ImageGenerator generator;
     private final Controller controller;
     private final Analyzer analyzer;
     private final ImagePlus imp;
     
-    public Worker(App app, ImageGenerator generator, Controller controller, Analyzer active_analyzer, ImagePlus imp) {
+    public Worker(App app, Controller controller, Analyzer active_analyzer, ImagePlus imp) {
         this.app = app;
-        this.generator = generator;
         this.controller = controller;
         this.analyzer = active_analyzer;
         this.imp = imp;
@@ -204,14 +173,14 @@ class Worker extends Thread {
         SimulatorStatusFrame statusFrame = app.getStatusFrame();
         while (!stop) {
             app.incrementCounter();
-            ip = generator.getNextImage();
+            ip = app.getNextImage();
             long time_start, time_end;
             time_start = System.nanoTime();
             analyzer.processImage(
                     ip.getPixelsCopy(),
                     ip.getWidth(),
                     ip.getHeight(),
-                    generator.getObjectSpacePixelSize(),
+                    app.getObjectSpacePixelSize(),
                     time_start
             );
             time_end = System.nanoTime();
@@ -221,12 +190,12 @@ class Worker extends Thread {
                 //System.out.println(image_count);
                 controller.nextValue(analyzer.getBatchOutput());
             }
-            generator.setControlSignal(controller.getCurrentOutput());
+            app.setControlSignal(controller.getCurrentOutput());
             
             app.getAnalyzerOutput().add(analyzer.getIntermittentOutput());
             app.getControllerOutput().add(controller.getCurrentOutput());
             app.getControllerSetpoint().add(controller.getSetpoint());
-            app.getGeneratorTrueSignal().add(generator.getTrueSignal(app.getImageCount()));
+            app.getGeneratorTrueSignal().add(app.getTrueSignal(app.getImageCount()));
             
             
             imp.setSlice(imp.getNSlices());

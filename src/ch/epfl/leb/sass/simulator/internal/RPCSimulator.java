@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator;
+package ch.epfl.leb.sass.simulator.internal;
 
 import ch.epfl.leb.sass.simulator.loggers.FrameLogger;
 import ch.epfl.leb.sass.simulator.loggers.FrameInfo;
@@ -23,15 +23,16 @@ import ij.process.ImageProcessor;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
- * A simple simulator without ALICA analyzers or controllers.
+ * A simulator that is specialized for control by remote procedure calls (RPCs).
  * 
  * @author Kyle M. Douglass
  */
-public class SimpleSimulator {
+public class RPCSimulator {
     
-    private final ImageGenerator engine;
+    private final Simulator engine;
     private final FrameLogger frameLogger = FrameLogger.getInstance();
     private int currFrame;
     
@@ -40,7 +41,7 @@ public class SimpleSimulator {
      * 
      * @param engine The engine that runs the simulation.
      */
-    public SimpleSimulator(ImageGenerator engine) {
+    public RPCSimulator(Simulator engine) {
         this.currFrame = 0;
         this.engine = engine;
         frameLogger.reset();
@@ -59,7 +60,7 @@ public class SimpleSimulator {
             this.currFrame++;
             img = engine.getNextImage();
         } catch (Exception ex) {
-            Logger.getLogger(SimpleSimulator.class.getName())
+            Logger.getLogger(RPCSimulator.class.getName())
                   .log(Level.SEVERE, null, ex);
         }
         

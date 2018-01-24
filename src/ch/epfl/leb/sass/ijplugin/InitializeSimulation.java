@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.ijplugin;
 
 
-import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulator;
 import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
 import ch.epfl.leb.sass.simulator.loggers.StateLogger;
 import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
@@ -2397,11 +2397,8 @@ public class InitializeSimulation extends java.awt.Dialog {
         PositionLogger.getInstance().setPerformLogging(true);
         
         // Now that we have setup all the components, we assemble the
-        // microscope and the simulator.
+        // microscope.
         Microscope microscope = model.build();
-
-        // The simulation engine
-        SimEngine generator = new SimEngine(microscope);
 
         double max_controller_output;
         int controller_tickrate;
@@ -2419,8 +2416,13 @@ public class InitializeSimulation extends java.awt.Dialog {
         }
         controller_factory.setMaxControllerOutput(max_controller_output);
         
-        
-        App app = new App(analyzer_factory.build(), generator, controller_factory.build(), controller_tickrate);
+        // The simulation engine        
+        App app = new App(
+                microscope,
+                analyzer_factory.build(),
+                controller_factory.build(),
+                controller_tickrate
+        );
         main.setApp(app);
         this.dispose();
     }//GEN-LAST:event_initializeSimulationActionPerformed

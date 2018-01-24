@@ -17,7 +17,7 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
+import ch.epfl.leb.sass.models.Microscope;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

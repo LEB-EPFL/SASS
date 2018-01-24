@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne.
  *
  * This script demonstrates how to populate the field with a 3D
@@ -8,17 +8,16 @@
  *
  */
 
-import ch.epfl.leb.sass.simulator.generators.realtime.SimEngine;
-import ch.epfl.leb.sass.simulator.generators.realtime.Microscope;
-import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
-import ch.epfl.leb.sass.simulator.generators.realtime.FluorophoreProperties;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.FluorophoreDynamics;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.dynamics.PalmDynamics;
-import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.commands.GenerateFiducialsRandom2D;
-import ch.epfl.leb.sass.simulator.generators.realtime.backgrounds.commands.GenerateUniformBackground;
-import ch.epfl.leb.sass.simulator.generators.realtime.components.*;
-import ch.epfl.leb.sass.simulator.generators.realtime.psfs.Gaussian3D;
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.commands.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulator;
+import ch.epfl.leb.sass.models.Microscope;
+import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
+import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.PalmDynamics;
+import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
+import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
+import ch.epfl.leb.sass.models.components.*;
+import ch.epfl.leb.sass.models.psfs.internal.Gaussian3D;
+import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.utils.RNG;
 
 // The seed determines the outputs of the random number generator.
 RNG.setSeed(42);
@@ -114,7 +113,7 @@ Microscope microscope = new Microscope(
     backgroundBuilder);
 
 // The simulation engine
-SimEngine generator = new SimEngine(microscope);
+DefaultSimulator generator = new DefaultSimulator(microscope);
 
 // set laser power
 generator.setControlSignal(0.03);

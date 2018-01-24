@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.components;
 
+import ch.epfl.leb.sass.models.components.Laser;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;

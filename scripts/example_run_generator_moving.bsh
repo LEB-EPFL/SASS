@@ -1,9 +1,15 @@
 /**
- * This is a run without real-time laser control, good for simulating STORM data for use
- * by other programs.
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne.
+ *
+ * Simulates moving fluorophores as in single particle tracking
+ * experiments.
+ *
  */
 
-import ch.epfl.leb.sass.simulator.generators.realtime.*; // I am sorry
+import ch.epfl.leb.sass.models.legacy.*;
+import ch.epfl.leb.sass.models.obstructors.Obstructor;
+import ch.epfl.leb.sass.utils.RNG;
 
 import java.util.ArrayList;
 import java.awt.geom.Point2D;
@@ -26,7 +32,6 @@ Camera camera = new Camera(100, //res_x
                     100); //magnification)
 
 // fluorophores: all properties in units per frame
-import ch.epfl.leb.sass.simulator.generators.realtime.fluorophores.SimpleProperties;
 SimpleProperties fluo = new SimpleProperties(2500, // signal
                     50, // background
                     java.lang.Double.POSITIVE_INFINITY, //Ton
@@ -57,7 +62,6 @@ emitters.add( fluo.createMovingFluorophore(camera,50.0,50.0,trajectory));
 // ArrayList emitters = FluorophoreGenerator.parseMovingFluorophoresFromCsv(null, camera, fluo);
 
 // add a gold bead to the field of view at random location
-import ch.epfl.leb.sass.simulator.generators.realtime.obstructors.GoldBeads;
 ArrayList obstructors = new ArrayList();
 Obstructor beads = new GoldBeads(1, camera, 3000);
 obstructors.add(beads);

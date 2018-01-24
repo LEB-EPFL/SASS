@@ -1,20 +1,17 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Scripting Interface &#8212; SASS 0.2.1 documentation</title>
-    
+    <title>Scripting Interface &#8212; SASS 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.1',
+        VERSION:     '0.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,13 +21,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Frequently Asked Questions" href="faq.html" />
     <link rel="prev" title="Simulation Models" href="models.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -43,7 +40,7 @@
         <li class="right" >
           <a href="models.html" title="Simulation Models"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -52,7 +49,10 @@
   <ul>
 <li><a class="reference internal" href="#">Scripting Interface</a><ul>
 <li><a class="reference internal" href="#the-sass-command-prompt">The SASS Command Prompt</a></li>
-<li><a class="reference internal" href="#running-beanshell-scripts">Running Beanshell Scripts</a></li>
+<li><a class="reference internal" href="#running-beanshell-scripts">Running Beanshell Scripts</a><ul>
+<li><a class="reference internal" href="#from-the-shell-command-line">From the shell/command line</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#example-scripts">Example Scripts</a></li>
 </ul>
 </li>
@@ -119,15 +119,27 @@ simulation:</p>
 </pre></div>
 </div>
 <p>Please be sure to change the path argument above to one for your
-specific machine, which includes changing <cite>/</cite> to <cite>\\</cite> if you are
+specific machine, which includes changing <cite>/</cite> to <cite>\</cite> if you are
 using Windows.</p>
+<div class="section" id="from-the-shell-command-line">
+<h3>From the shell/command line<a class="headerlink" href="#from-the-shell-command-line" title="Permalink to this headline">¶</a></h3>
+<p>To better facilitate batch processing and complex workflows, we made
+it possible to run a Beanshell script directly from the command line
+by invoking the SASS .jar directly through the Java Virtual Machine:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">SASS</span><span class="o">/</span><span class="n">SASS</span><span class="o">.</span><span class="n">jar</span> <span class="o">-</span><span class="n">s</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">example_run_generator</span><span class="o">.</span><span class="n">bsh</span>
+</pre></div>
+</div>
+<p>As you can see, you only need to pass the path to the .jar file on
+your machine and a <strong>-s</strong> argument followed by the path to the
+Beanshell script.</p>
+</div>
 </div>
 <div class="section" id="example-scripts">
 <h2>Example Scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h2>
 <p>Example scripts for performing 2D and 3D simulations with PALM and
-STORM models may be found <a class="reference external" href="https://github.com/MStefko/SASS/tree/master/scripts">in the examples folder</a> in the SASS
+STORM models may be found <a class="reference external" href="https://github.com/LEB-EPFL/SASS/tree/master/scripts">in the examples folder</a> in the SASS
 parent directory.</p>
-<p><a class="reference external" href="https://github.com/MStefko/SASS/tree/master/scripts">https://github.com/MStefko/SASS/tree/master/scripts</a></p>
+<p><a class="reference external" href="https://github.com/LEB-EPFL/SASS/tree/master/scripts">https://github.com/LEB-EPFL/SASS/tree/master/scripts</a></p>
 </div>
 </div>
 
@@ -149,12 +161,12 @@ parent directory.</p>
         <li class="right" >
           <a href="models.html" title="Simulation Models"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.2.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">SASS 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 1970, The Laboratory of Experimental Biophysics, EPFL, Lausanne, Switzerland.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

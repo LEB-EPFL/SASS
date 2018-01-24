@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.components;
 
+import ch.epfl.leb.sass.models.components.Camera;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

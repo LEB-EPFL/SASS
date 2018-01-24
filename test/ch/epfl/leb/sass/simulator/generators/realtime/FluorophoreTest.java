@@ -23,9 +23,9 @@ import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.*;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.StateSystem;
-import ch.epfl.leb.sass.simulator.generators.realtime.Fluorophore;
-import ch.epfl.leb.sass.simulator.generators.realtime.Camera;
+import ch.epfl.leb.sass.models.fluorophores.internal.StateSystem;
+import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.models.legacy.Camera;
 
 /**
  *
@@ -49,7 +49,7 @@ public class FluorophoreTest {
      */
     @Test
     public void testFluorophoreIdAssignment() {
-        Fluorophore testFluor= new Fluorophore(
+        DefaultFluorophore testFluor= new DefaultFluorophore(
             dummyCamera,
             1000,
             dummyStateSystem,
@@ -59,8 +59,8 @@ public class FluorophoreTest {
         );
         assertEquals(1, testFluor.getId());
         
-        // Create a new Fluorophore and test whether its id is incremented
-        Fluorophore testFluorNext = new Fluorophore(
+        // Create a new DefaultFluorophore and test whether its id is incremented
+        DefaultFluorophore testFluorNext = new DefaultFluorophore(
             dummyCamera,
             1000,
             dummyStateSystem,

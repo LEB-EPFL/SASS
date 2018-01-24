@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.generators.realtime;
+package ch.epfl.leb.sass.models.fluorophores.internal;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -31,11 +31,11 @@ import ch.epfl.leb.sass.models.legacy.Camera;
  *
  * @author Kyle M. Douglass
  */
-public class FluorophoreTest {
+public class DefaultFluorophoreTest {
     private Camera dummyCamera = null;
     private StateSystem dummyStateSystem = null;
     
-    public FluorophoreTest() {
+    public DefaultFluorophoreTest() {
     } 
     
     @Before

@@ -20,7 +20,6 @@ package ch.epfl.leb.sass.models.emitters.internal;
 import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.legacy.Camera;
 import cern.jet.random.Poisson;
-import cern.jet.random.engine.MersenneTwister;
 import java.awt.geom.Point2D;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.ceil;
@@ -116,9 +115,7 @@ public abstract class AbstractEmitter extends Point2D.Double  {
      * @param camera camera properties (needed for PSF calculation)
      * @param x x-position in image [pixels, with sub-pixel precision]
      * @param y y-position in image [pixels, with sub-pixel precision]
-     * @deprecated Camera instances are being decoupled from Emitter. Use the
-     *             {@link #Emitter(double, double, double, ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder) }
-     *             instead.
+     * @deprecated Camera instances are being decoupled from Emitter.
      */
     @Deprecated
     public AbstractEmitter(Camera camera, double x, double y) {

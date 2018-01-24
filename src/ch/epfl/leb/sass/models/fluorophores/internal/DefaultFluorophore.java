@@ -65,8 +65,7 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
      * @param start_state Initial state number
      * @param x x-position in pixels
      * @param y y-position in pixels
-     * @deprecated Use {@link #Fluorophore(ch.epfl.leb.sass.simulator.generators.realtime.psfs.PSFBuilder, double, ch.epfl.leb.sass.simulator.generators.realtime.StateSystem, int, double, double, double) }
-     *             instead.
+     * @deprecated 
      */
     @Deprecated
     public DefaultFluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y) {

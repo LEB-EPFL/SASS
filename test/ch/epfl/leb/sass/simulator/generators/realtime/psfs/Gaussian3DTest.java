@@ -17,7 +17,10 @@
  */
 package ch.epfl.leb.sass.simulator.generators.realtime.psfs;
 
-import ch.epfl.leb.sass.simulator.generators.realtime.Pixel;
+import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.psfs.PSF;
+import ch.epfl.leb.sass.models.psfs.internal.Gaussian3D;
+import ch.epfl.leb.sass.models.emitters.internal.Pixel;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import org.junit.Test;

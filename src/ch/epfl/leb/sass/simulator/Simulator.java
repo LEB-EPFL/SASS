@@ -19,238 +19,90 @@
  */
 package ch.epfl.leb.sass.simulator;
 
-import ch.epfl.leb.alica.Analyzer;
-import ch.epfl.leb.alica.Controller;
-import ch.epfl.leb.sass.simulator.generators.realtime.STORMsim;
-import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
-import ch.epfl.leb.alica.controllers.manual.ManualController;
-import ch.epfl.leb.sass.simulator.loggers.StateLogger;
-import ch.epfl.leb.sass.simulator.loggers.PositionLogger;
 import ij.ImageStack;
 import ij.process.ImageProcessor;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import org.json.JSONException;
-import org.json.JSONObject;
-import ch.epfl.leb.sass.simulator.generators.realtime.RNG;
-import ij.IJ;
 
 /**
- * Carries out the actual simulation.
+ * The interface that defines everything that a Simulator should do.
+ * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
-public class Simulator {
+public interface Simulator {
 
     /**
-     * The time duration of each frame.
+     * Generates a new image and adds it to the internal stack.
+     * @return newly generated image
+     */
+    public ImageProcessor getNextImage();
+    
+    /**
+     * Increments the simulation by one time step without creating an image.
+     */
+    public void incrementTimeStep();
+    
+    /**
+     * Sets control signal of the generator (e.g. laser power). This should be
+     * used by the controller.
+     * @param value new value of the control signal
+     */
+    public void setControlSignal(double value);
+    
+    /**
+     * Returns currently set control signal of the generator (e.g. laser power 
+     * settings).
+     * @return control signal value
+     */
+    public double getControlSignal();
+    
+    /**
+     * Returns the actual value of signal (if applicable) for given image.
+     * @param image_no 1-based image number in history
+     * @return value of signal (e.g. no. of active emitters)
+     */
+    public double getTrueSignal(int image_no);
+    
+    /**
+     * Sets custom parameters of the generator.
+     * @param map map of custom parameters
+     */
+    public void setCustomParameters(HashMap<String,Double> map);
+    
+    /**
+     * Returns custom parameters of the generator.
+     * @return map of custom parameters
+     */
+    public HashMap<String,Double> getCustomParameters();
+
+    /**
+     * Saves .tif stack to selected file.
+     * @param selectedFile file to save to
+     */
+    public void saveStack(File selectedFile);
+    
+    /**
+     * Returns internal stack with all generated images.
+     * @return internal stack
+     */
+    public ImageStack getStack();
+    
+    /**
+     *
+     * @return length of one pixel side in micrometers
+     */
+    public double getObjectSpacePixelSize();
+    
+    /**
      * 
-     * This is here only for compatibility with ALICA's analyzers, which require
-     * a time argument.
+     * @return FOV size in square micrometers
      */
-    protected final long TIMEPERFRAME = 10;
+    public double getFOVSize();
     
     /**
-     * Analyzer which analyzes generated images
+     * 
+     * @return A short description of the truth signal, typically its units.
      */
-    protected final Analyzer analyzer;
-
-    /**
-     * Generator which is the source of images to be analyzed.
-     */
-    protected final ImageGenerator generator;
-
-    /**
-     * Takes the output of a single analyzer, processes it, and outputs a
-     * signal to the generator, for feedback loop control.
-     */
-    protected final Controller controller;
-
-    /**
-     * Number of already-generated images.
-     */
-    protected int image_count;
-
-    /**
-     * Records of values of output of analyzer, controller and generator.
-     */
-    protected HashMap<Integer,JSONObject> history;
-    
-    /**
-     * Logs the state transitions of the molecules.
-     */
-    protected StateLogger stateLogger = StateLogger.getInstance();
-    
-    /**
-     * Logs the ground truth positions of the molecules.
-     */
-    protected PositionLogger positionLogger = PositionLogger.getInstance();
-    
-    /**
-     * Initializes all analyzers, the generator and controller.
-     */
-    public Simulator() {
-        this.history = new HashMap<Integer,JSONObject>();
-        // Real time generator
-        generator = new STORMsim(null);
-        analyzer = new SpotCounter(100, 5, true);
-        // Set up controller
-        //controller = new SimpleController();
-        controller = new ManualController(30, 1);
-        controller.setSetpoint(1.0);
-    }
-    
-    /**
-     * Initialize simulator from components
-     * @param analyzer
-     * @param generator
-     * @param controller
-     */
-    public Simulator(Analyzer analyzer,
-            ImageGenerator generator, Controller controller) {
-        this.history = new HashMap<Integer,JSONObject>();
-        this.analyzer = analyzer;
-        this.generator = generator;
-        this.controller = controller;
-    }
-    
-    /**
-     * An example simulation
-     * @param no_of_images
-     * @param controller_refresh_rate
-     * @param csv_save_path
-     * @param tiff_save_path
-     * @return
-     */
-    public ImageStack execute(int no_of_images, int controller_refresh_rate, String csv_save_path, String tiff_save_path) {
-        if (no_of_images < 1 || controller_refresh_rate < 1) {
-            throw new IllegalArgumentException("Wrong simulation parameters!");
-        }
-        
-        double pixelSize = generator.getObjectSpacePixelSize();
-        ImageProcessor ip;
-        for (image_count = 1; image_count <= no_of_images; image_count++) {
-            JSONObject history_entry = new JSONObject();
-            
-            ip = generator.getNextImage();
-            analyzer.processImage(
-                    ip.getPixelsCopy(),
-                    ip.getWidth(),
-                    ip.getHeight(), 
-                    pixelSize, 
-                    TIMEPERFRAME);
-            //System.out.println(image_count);
-            if (image_count % controller_refresh_rate == 0) {
-                double analyzer_batch_output = analyzer.getBatchOutput();
-                controller.nextValue(analyzer_batch_output);
-                generator.setControlSignal(controller.getCurrentOutput());
-            }
-            try {
-                history_entry.put("true-signal",generator.getTrueSignal(image_count));
-                history_entry.put("analyzer-output", analyzer.getIntermittentOutput());
-                history_entry.put("controller-output", controller.getCurrentOutput());
-                history_entry.put("controller-setpoint", controller.getSetpoint());
-            } catch (JSONException ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error in storing JSON values.", ex);
-            }
-            
-            history.put(image_count, history_entry);
-        }
-        image_count -= 1; // to accurately represent image count
-        
-        if (csv_save_path != null) {
-            File csv_file = new File(csv_save_path);
-            saveToCsv(csv_file);
-        }
-        
-        if (tiff_save_path != null) {
-            File tiff_file = new File(tiff_save_path);
-            generator.saveStack(tiff_file);
-        }
-        
-        return generator.getStack();
-    
-    }
-    /**
-     * Saves the data for generator, analyzer and controller for each frame into a .csv file
-     * @param file destination csv file
-     */
-    public void saveToCsv(File file) {// Open the file for writing
-        PrintWriter writer;
-        try {
-            writer = new PrintWriter(file.getAbsolutePath());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-            return;
-        }
-        
-        HashMap<String, Double> output_map;
-        // Print header: Column description
-        writer.println("#Columns:");
-        String column_names = "frame-id,true-signal,analyzer-output,controller-output,controller-setpoint";
-        writer.println(column_names);
-        
-        // Print data - one line for each frame
-        for (int i=1; i<=image_count; i++) {
-            JSONObject e = history.get(i);
-            String s;
-            try {
-                s = String.format("%d,%8.4e,%8.4e,%8.4e,%8.4e",
-                        i,e.get("true-signal"),e.get("analyzer-output"),e.get("controller-output"),e.get("controller-setpoint"));
-            } catch (JSONException ex) {
-                s = String.format("%d",i);
-                Logger.getLogger(Simulator.class.getName()).log(Level.FINER, null, ex);
-            } catch (NullPointerException ex) {
-                s = String.format("%d",i);
-                Logger.getLogger(Simulator.class.getName()).log(Level.FINER, null, ex);
-            }
-            writer.println(s);
-        }
-        
-        writer.close();
-        
-    }
-    
-    /**
-     * Save current ImageStack to TIFF file
-     * @param tiff_file file to save to
-     */
-    public void saveStack(File tiff_file) {
-        generator.saveStack(tiff_file);
-    }
-    
-    /**
-     * Increments image counter in case an image was generated outside of
-     * this class.
-     */
-    public void incrementCounter() {
-        image_count++;
-    }
-    
-    /**
-     * Returns the number of generated images since simulation start.
-     * @return number of generated images
-     */
-    public int getImageCount() {
-        return image_count;
-    }
-    
-    /**
-     * @return The state transition logger.
-     */
-    public StateLogger getStateLogger() {
-        return stateLogger;
-    }
-    
-    /**
-     * @return The emitter position logger.
-     */
-    public PositionLogger getPositionLogger() {
-        return positionLogger;
-    }
+    public String getShortTrueSignalDescription();
 }

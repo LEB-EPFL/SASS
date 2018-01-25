@@ -19,6 +19,7 @@ package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.ijplugin.Model;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
+import ch.epfl.leb.sass.models.Microscope;
 
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
@@ -52,6 +53,25 @@ public class RPCServer {
     public RPCServer(Model model, int port) {
         try { 
             RPCSimulator simulator = new RPCSimulator( model.build() );
+            handler = new RemoteSimulationServiceHandler(simulator);
+            processor = new RemoteSimulationService.Processor(handler);
+
+            TServerTransport serverTransport = new TServerSocket(port);
+            server = new TSimpleServer(new Args(serverTransport).processor(processor));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    /**
+     * Creates a new RPCServer and initializes--but does not start--it.
+     * 
+     * @param microscope An instance of a microscope to simulate.
+     * @param port The port number for server communications.
+     */
+    public RPCServer(Microscope microscope, int port) {
+        try { 
+            RPCSimulator simulator = new RPCSimulator( microscope );
             handler = new RemoteSimulationServiceHandler(simulator);
             processor = new RemoteSimulationService.Processor(handler);
 

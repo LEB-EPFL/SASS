@@ -14,6 +14,7 @@ SASS
    quickstart
    models
    scripting
+   server
    faq
    _javasphinx/packages
 

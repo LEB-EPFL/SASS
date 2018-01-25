@@ -106,7 +106,9 @@ int port = 9090;
 // Initialize the server, but do not start it yet
 RPCServer server = new RPCServer(microscope, port);
 
-// Launch the server on a separate thread
+// Launch the server on a separate thread for testing only. Remove
+// the following lines to keep the server running after the script is
+// finished.
 Runnable serverRunnable = new Runnable() {
     public void run() {
 	server.serve();
@@ -114,11 +116,11 @@ Runnable serverRunnable = new Runnable() {
 };
 new Thread(serverRunnable).start();
 System.out.println("Server started!");
-
-// Remove the following lines to leave the server running
 Thread.sleep(5000);
 server.stop();
 
+// If you want the server to run indefinitely, simply run the command
+// server.serve() without any threading.
 
 
 

@@ -105,7 +105,6 @@ public class FrameLoggerTest {
         double timeOn = 0.8;
         
         logger.logFrame(frame, id, x, y, z, brightness, timeOn);
-        // PICK UP HERE
         List<FrameInfo> info = logger.getFrameInfo();
         
         assertEquals(1, info.size());

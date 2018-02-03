@@ -1,8 +1,8 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}Copyright (C) 2017 Laboratory of Experimental Biophysics
-${licensePrefix}Ecole Polytechnique Federale de Lausanne
+${licensePrefix}Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
+${licensePrefix}Ecole Polytechnique Fédérale de Lausanne
 ${licensePrefix}
 ${licensePrefix}This program is free software: you can redistribute it and/or modify
 ${licensePrefix}it under the terms of the GNU General Public License as published by

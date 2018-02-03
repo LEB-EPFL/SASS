@@ -19,8 +19,14 @@
  */
 package ch.epfl.leb.sass.commandline;
 
+import ch.epfl.leb.sass.ijplugin.Model;
+import ch.epfl.leb.sass.server.RPCServer;
+
 import bsh.EvalError;
 import bsh.Interpreter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,14 +52,21 @@ public final class CommandLineInterface {
     private static final URL urlToWelcomeText = CommandLineInterface.class.getResource("/ch/epfl/leb/sass/commandline/welcome_text.txt");
     
     /**
+     * The port number used for RPC server communications.
+     */
+    private static int port = 9090;
+    
+    /**
      *
      * @return all understood options for ALICA execution
      */
     public static Options constructOptions() {
         final Options options = new Options();
-        options.addOption("i", "interpreter", false, "run BeanShell interpreter inside current terminal window");
-        options.addOption("s", "script", true, "execute BeanShell script (can be combined with -i)");
-        options.addOption("h", "help", false, "show this help");
+        options.addOption("i", "interpreter", false, "Runs the BeanShell interpreter inside the current terminal window.");
+        options.addOption("s", "script", true, "Executes a BeanShell script. (Can be combined with -i.)");
+        options.addOption("r", "rpc_server", true, "Launches the RPC server with the simulation model in the file specified by the given argument.");
+        options.addOption("p", "port", true, "The port number for RPC server communications. This requires an argument for --rpc_server.");
+        options.addOption("h", "help", false, "Shows this help menu.");
         return options;
     }
     
@@ -110,6 +123,45 @@ public final class CommandLineInterface {
                 Logger.getLogger(BeanShellConsole.class.getName()).log(Level.SEVERE, "EvalError while executing shell script.", ex);
                 System.exit(1);
             }
+            
+        // Launches the RPC server with the model contained in the file whose
+        // filename was passed by argument.
+        } else if (line.hasOption("rpc_server")) {
+            
+            Model model = new Model();
+            File file = new File(line.getOptionValue("rpc_server"));
+            try {
+                FileInputStream stream = new FileInputStream(file);
+                model = Model.read(stream);
+            } catch (FileNotFoundException ex) {
+                System.out.println("Error: " + file.getName() + " not found.");
+                System.exit(1);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            
+            // Check whether a port number was specified.
+            if (line.hasOption("port")) {
+                try {
+                    port = Integer.valueOf(line.getOptionValue("port"));
+                    System.out.println("Using port: " + String.valueOf(port));
+                } catch (java.lang.NumberFormatException ex) {
+                    System.out.println("Error: the port number argument is not a number.");
+                    System.exit(1);
+                }
+            } else {
+                System.out.println("No port number provided. Using default port: " + String.valueOf(port));
+            }
+            
+            RPCServer server = new RPCServer(model, port);
+            
+            System.out.println("Starting RPC server...");
+            server.serve();
+            
+        } else if (line.hasOption("port") & !line.hasOption("rpc_server")) {
+            System.out.println("Error: Port number provided without requesting the RPC server. Exiting...");
+            System.exit(1);
+            
         // if System.console() returns null, it means we were launched by
         // double-clicking the .jar, so launch own BeanShellConsole
         // if System.console() returns null, it means we were launched by

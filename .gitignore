@@ -4,5 +4,9 @@
 /src/lib/javadocs
 /ext_packages/
 /store/
+
 # emacs temp files
 *~
+
+# thrift
+/thrift/gen-*

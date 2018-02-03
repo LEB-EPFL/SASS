@@ -14,6 +14,7 @@ SASS
    quickstart
    models
    scripting
+   server
    faq
    _javasphinx/packages
 
@@ -29,8 +30,9 @@ Acknowledgements
 Authors
 -------
 
-- `Marcel Stefko <https://github.com/MStefko>`_
+- `Marcel Štefko <https://github.com/MStefko>`_
 - `Kyle M. Douglass <https://kmdouglass.github.io>`_
+- `Baptiste Ottino <https://github.com/bottino>`_
 
 See Also
 ========

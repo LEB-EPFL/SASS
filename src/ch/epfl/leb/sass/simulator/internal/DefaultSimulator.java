@@ -19,10 +19,9 @@
  */
 package ch.epfl.leb.sass.simulator.internal;
 
-
 import ch.epfl.leb.sass.models.Microscope;
-import ij.ImageStack;
-import ij.process.ImageProcessor;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,7 +51,7 @@ public class DefaultSimulator extends AbstractSimulator {
         this.microscope = microscope;
         
         int[] res = this.microscope.getResolution();
-        stack = new ImageStack(res[0],res[1]);
+        stack = new DefaultImageS(res[0], res[1]);
 
         emitterHistory = new ArrayList<Double>();
         emitterHistory.add(0.0);
@@ -65,13 +64,14 @@ public class DefaultSimulator extends AbstractSimulator {
     }
 
     @Override
-    public ImageProcessor getNextImage() {
+    public ImageS getNextImage() {
         // we calculate emitter count first so it corresponds with the beginning
         // of the frame rather than end of the frame
         emitterHistory.add(microscope.getOnEmitterCount());
-        ImageProcessor ip = microscope.simulateFrame();
-        stack.addSlice(ip);
-        return ip;
+        ImageS pixels = microscope.simulateFrame();
+        stack.concatenate(pixels);
+        
+        return pixels;
     }
     
     /**

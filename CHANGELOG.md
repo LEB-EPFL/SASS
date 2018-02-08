@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - An RPC server was created that allows for remote control of the
   simulation over the network.
+- A new image abstraction layer called **ImageS** that separates image
+  data logic and display from the SASS core code.
 
 ### Changed
 - The package layout was restructured and simplified to make it easier

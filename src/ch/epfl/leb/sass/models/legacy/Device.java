@@ -20,6 +20,8 @@
 package ch.epfl.leb.sass.models.legacy;
 
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import ij.process.FloatProcessor;
@@ -184,7 +186,7 @@ public class Device {
      * and afterwards noise is added.
      * @return simulated frame
      */
-    public ShortProcessor simulateFrame() {
+    public ImageS simulateFrame() {
         float[][] pixels = new float[camera.res_x][camera.res_y];
         for (int row = 0; row < pixels.length; row++)
             Arrays.fill(pixels[row], 0.0f);
@@ -213,9 +215,8 @@ public class Device {
             }
         }
         
-        // Convert to short array
-        FloatProcessor fp = new FloatProcessor(pixels);
-        return fp.convertToShortProcessor(false);
+        // Convert to image
+        return new DefaultImageS(pixels);
     }
     
     /**

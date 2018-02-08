@@ -23,19 +23,17 @@ import ch.epfl.leb.sass.simulator.internal.ImageJSimulator;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
-import ij.ImagePlus;
-import ij.process.ImageProcessor;
+import ch.epfl.leb.sass.utils.images.ImageS;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  * Backend for the FIJI plugin GUI
  * @author Marcel Stefko
  */
 public class App extends ImageJSimulator {
-    private final ImagePlus imp;
+    private final ImageS imp;
     private final SimulatorStatusFrame statusFrame;
     private final int controller_tickrate;
     private Worker worker;
@@ -70,8 +68,8 @@ public class App extends ImageJSimulator {
         this.getNextImage();
         this.getNextImage();
         interaction_window = new InteractionWindow(analyzer, controller);
-        imp = new ImagePlus("Simulation Window", this.getStack());
-        imp.show();
+        imp = this.getStack();
+        imp.view();
         
         // The units of the manual controller setpoint are the same as the
         // as the laser, not the analyzer output like the other controllers.
@@ -157,9 +155,9 @@ class Worker extends Thread {
     private final App app;
     private final Controller controller;
     private final Analyzer analyzer;
-    private final ImagePlus imp;
+    private final ImageS imp;
     
-    public Worker(App app, Controller controller, Analyzer active_analyzer, ImagePlus imp) {
+    public Worker(App app, Controller controller, Analyzer active_analyzer, ImageS imp) {
         this.app = app;
         this.controller = controller;
         this.analyzer = active_analyzer;
@@ -169,17 +167,20 @@ class Worker extends Thread {
     
     @Override
     public void run() {
-        ImageProcessor ip;
         SimulatorStatusFrame statusFrame = app.getStatusFrame();
         while (!stop) {
             app.incrementCounter();
-            ip = app.getNextImage();
+            
+            // TODO: Remove the explicit type in the future when cameras models
+            // with different bit depths are implemented!
+            ImageS<Short> is = app.getNextImage();
+            
             long time_start, time_end;
             time_start = System.nanoTime();
             analyzer.processImage(
-                    ip.getPixelsCopy(),
-                    ip.getWidth(),
-                    ip.getHeight(),
+                    is.getPixelDataPrimitive(0),
+                    is.getWidth(),
+                    is.getHeight(),
                     app.getObjectSpacePixelSize(),
                     time_start
             );
@@ -198,8 +199,8 @@ class Worker extends Thread {
             app.getGeneratorTrueSignal().add(app.getTrueSignal(app.getImageCount()));
             
             
-            imp.setSlice(imp.getNSlices());
-            imp.updateAndRepaintWindow();
+            imp.setSlice(imp.getSize() - 1);
+            imp.updateView();
             try {
                 sleep(20);
             } catch (InterruptedException ex) {

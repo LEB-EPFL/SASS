@@ -19,6 +19,8 @@ package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.loggers.FrameInfo;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -42,11 +44,7 @@ public class RemoteSimulationServiceHandlerTest {
     private RPCSimulator mockSimulator;
     private RemoteSimulationServiceHandler handler;
     
-    // NOTE: The string argument to createImage() MUST match that used in the
-    // class implementation.
-    private ImagePlus imp = IJ.createImage(
-            RemoteSimulationServiceHandler.TITLE, 1, 1, 1, 16
-    );
+    private ImageS<Short> is = new DefaultImageS( new int[1][1] );
     
     public RemoteSimulationServiceHandlerTest() {
         this.mockSimulator = mock(RPCSimulator.class);
@@ -62,10 +60,10 @@ public class RemoteSimulationServiceHandlerTest {
                 // Instructs the wrapped simulator to return the ImageJ test image.
 
         // Instructs the wrapped simulator to return the ImageJ test image.
-        when(this.mockSimulator.getNextImage()).thenReturn(imp.getProcessor());
+        when(this.mockSimulator.getNextImage()).thenReturn(is);
         ByteBuffer bufferedImage = this.handler.getNextImage();
         
-        byte[] expResult = (new FileSaver(this.imp)).serialize();
+        byte[] expResult = is.serializeToArray();
         byte[] result = new byte[bufferedImage.remaining()];
         bufferedImage.get(result);
         

@@ -25,13 +25,9 @@ import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
 import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.simulator.internal.AbstractSimulator;
 import ch.epfl.leb.sass.models.obstructors.internal.ConstantBackground;
-import ij.IJ;
-import ij.ImagePlus;
-import ij.ImageStack;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import ij.gui.GenericDialog;
-import ij.io.FileSaver;
-import ij.process.ImageProcessor;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +58,7 @@ public class STORMsim extends AbstractSimulator {
             this.device = device;
         }
         int[] res = this.device.getResolution();
-        stack = new ImageStack(res[0],res[1]);
+        stack = new DefaultImageS(res[0], res[1]);
 
         emitter_history = new ArrayList<Double>();
         emitter_history.add(0.0);
@@ -74,13 +70,14 @@ public class STORMsim extends AbstractSimulator {
     }
 
     @Override
-    public ImageProcessor getNextImage() {
+    public ImageS getNextImage() {
         // we calculate emitter count first so it corresponds with the beginning
         // of the frame rather than end of the frame
         emitter_history.add(device.getOnEmitterCount());
-        ImageProcessor ip = device.simulateFrame();
-        stack.addSlice(ip);
-        return ip;
+        ImageS is = device.simulateFrame();
+              
+        stack.concatenate(is);
+        return is;
     }
     
     /**

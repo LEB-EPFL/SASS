@@ -18,9 +18,7 @@
 package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.simulator.Simulator;
-
-import ij.ImagePlus;
-import ij.io.FileSaver;
+import ch.epfl.leb.sass.utils.images.ImageS;
 
 import java.nio.ByteBuffer;
 
@@ -37,11 +35,6 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
      */
     private Simulator simulator;
     
-    /**
-     * The title of the image returned by the RPC server.
-     */
-    public static final String TITLE = "Current image";
-    
     public RemoteSimulationServiceHandler(Simulator simulator) {
         this.simulator = simulator;
     }
@@ -54,16 +47,9 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
      */
     @Override
     public ByteBuffer getNextImage() {
-        
-        // Advance the simulation one time step and retrieve the image.
-        ImagePlus imp;
-        imp = new ImagePlus(this.TITLE, simulator.getNextImage());
-        
-        // Serialize the image to a byte array.
-        FileSaver saver = new FileSaver(imp);
-        byte[] pixels = saver.serialize();
-        
-        return ByteBuffer.wrap(pixels);
+        // Advance the simulation one time step and retrieve the image.   
+        ImageS is = simulator.getNextImage();
+        return is.serializeToBuffer();
 
     }
     

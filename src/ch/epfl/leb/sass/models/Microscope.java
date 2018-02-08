@@ -17,6 +17,8 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
 import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
@@ -35,12 +37,9 @@ import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommandBu
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
-import ij.process.FloatProcessor;
-import ij.process.ShortProcessor;
 import java.util.Arrays;
 import java.util.List;
 import cern.jet.random.Poisson;
-import ij.IJ;
 
 /**
  * Integrates all the components into one microscope.
@@ -197,7 +196,7 @@ public class Microscope {
      * 
      * @return simulated frame
      */
-    public ShortProcessor simulateFrame() {
+    public ImageS simulateFrame() {
         float[][] pixels = new float[this.camera.getNX()][this.camera.getNY()];
         for (int row = 0; row < pixels.length; row++)
             Arrays.fill(pixels[row], 0.0f);
@@ -226,9 +225,8 @@ public class Microscope {
             }
         }
         
-        // Convert to short array
-        FloatProcessor fp = new FloatProcessor(pixels);
-        return fp.convertToShortProcessor(false);
+        // Convert to image
+        return new DefaultImageS(pixels);
     }
     
     /**

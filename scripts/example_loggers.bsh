@@ -122,13 +122,13 @@ for (i=0;i<10000;i++) {
 }
 
 // Save the stack
-generator.saveStack(new File("generated_stack.tif"));
+//generator.saveStack(new File("generated_stack.tif"));
 
 // Save the fluorophore positions.
-positionLogger.setFilename("fluorophore_positions.csv");
-positionLogger.saveLogFile();
+//positionLogger.setFilename("fluorophore_positions.csv");
+//positionLogger.saveLogFile();
 
 // Save the state transitions
-stateLogger.setFilename("state_transitions.csv");
-stateLogger.saveLogFile();
+//stateLogger.setFilename("state_transitions.csv");
+//stateLogger.saveLogFile();
 

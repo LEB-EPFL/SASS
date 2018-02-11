@@ -19,12 +19,10 @@
  */
 package ch.epfl.leb.sass.simulator.internal;
 
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.io.FileSaver;
 import java.io.File;
 import java.util.HashMap;
 import ch.epfl.leb.sass.simulator.Simulator;
+import ch.epfl.leb.sass.utils.images.ImageS;
 
 /**
  *
@@ -40,7 +38,7 @@ public abstract class AbstractSimulator implements Simulator {
     /**
      * Stack to which the generated images are appended.
      */
-    protected ImageStack stack;    
+    protected ImageS stack;    
     
     /**
      * Initializes the empty parameters map.
@@ -51,13 +49,11 @@ public abstract class AbstractSimulator implements Simulator {
     
     @Override
     public void saveStack(File file) {
-        ImagePlus imp = new ImagePlus("stack", stack);
-        FileSaver fs = new FileSaver(imp);
-        fs.saveAsTiffStack(file.getAbsolutePath());
+        stack.saveAsTiffStack(file);
     }
     
     @Override
-    public ImageStack getStack() {
+    public ImageS getStack() {
         return stack;
     }
     

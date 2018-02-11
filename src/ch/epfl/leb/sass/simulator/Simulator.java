@@ -19,8 +19,8 @@
  */
 package ch.epfl.leb.sass.simulator;
 
-import ij.ImageStack;
-import ij.process.ImageProcessor;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import java.io.File;
 import java.util.HashMap;
 
@@ -48,7 +48,7 @@ public interface Simulator {
      * Generates a new image and adds it to the internal stack.
      * @return newly generated image
      */
-    public ImageProcessor getNextImage();
+    public ImageS getNextImage() throws ImageShapeException;
     
     /**
      * Increments the simulation by one time step without creating an image.
@@ -96,9 +96,10 @@ public interface Simulator {
     
     /**
      * Returns internal stack with all generated images.
+     * 
      * @return internal stack
      */
-    public ImageStack getStack();
+    public ImageS getStack();
     
     /**
      *

@@ -23,19 +23,19 @@ import ch.epfl.leb.sass.simulator.internal.ImageJSimulator;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
-import ij.ImagePlus;
-import ij.process.ImageProcessor;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
+import ij.IJ;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  * Backend for the FIJI plugin GUI
  * @author Marcel Stefko
  */
 public class App extends ImageJSimulator {
-    private final ImagePlus imp;
+    private final ImageS imp;
     private final SimulatorStatusFrame statusFrame;
     private final int controller_tickrate;
     private Worker worker;
@@ -60,7 +60,7 @@ public class App extends ImageJSimulator {
         Analyzer analyzer,
         Controller controller,
         int controller_tickrate
-    ) {
+    ) throws ImageShapeException {
         super(microscope, analyzer, controller);
         if (controller_tickrate<1) {
             throw new IllegalArgumentException("Wrong controller tickrate!");
@@ -70,8 +70,8 @@ public class App extends ImageJSimulator {
         this.getNextImage();
         this.getNextImage();
         interaction_window = new InteractionWindow(analyzer, controller);
-        imp = new ImagePlus("Simulation Window", this.getStack());
-        imp.show();
+        imp = this.getStack();
+        imp.view();
         
         // The units of the manual controller setpoint are the same as the
         // as the laser, not the analyzer output like the other controllers.
@@ -157,9 +157,9 @@ class Worker extends Thread {
     private final App app;
     private final Controller controller;
     private final Analyzer analyzer;
-    private final ImagePlus imp;
+    private final ImageS imp;
     
-    public Worker(App app, Controller controller, Analyzer active_analyzer, ImagePlus imp) {
+    public Worker(App app, Controller controller, Analyzer active_analyzer, ImageS imp) {
         this.app = app;
         this.controller = controller;
         this.analyzer = active_analyzer;
@@ -169,37 +169,51 @@ class Worker extends Thread {
     
     @Override
     public void run() {
-        ImageProcessor ip;
         SimulatorStatusFrame statusFrame = app.getStatusFrame();
         while (!stop) {
             app.incrementCounter();
-            ip = app.getNextImage();
-            long time_start, time_end;
-            time_start = System.nanoTime();
-            analyzer.processImage(
-                    ip.getPixelsCopy(),
-                    ip.getWidth(),
-                    ip.getHeight(),
-                    app.getObjectSpacePixelSize(),
-                    time_start
-            );
-            time_end = System.nanoTime();
-            System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
+            
+            try {
+                ImageS is = app.getNextImage();
+                    
+                long time_start, time_end;
+                time_start = System.nanoTime();
+                analyzer.processImage(
+                        is.getPixelData(0),
+                        is.getWidth(),
+                        is.getHeight(),
+                        app.getObjectSpacePixelSize(),
+                        time_start
+                );
+                time_end = System.nanoTime();
+                System.out.format(
+                        "%s: Image analyzed in %d microseconds.\n",
+                        analyzer.getName(),
+                        (time_end - time_start)/1000
+                );
 
-            if (app.getImageCount() % app.getControllerTickrate() == 0) {
-                //System.out.println(image_count);
-                controller.nextValue(analyzer.getBatchOutput());
+                if (app.getImageCount() % app.getControllerTickrate() == 0) {
+                    //System.out.println(image_count);
+                    controller.nextValue(analyzer.getBatchOutput());
+                }
+                app.setControlSignal(controller.getCurrentOutput());
+
+                app.getAnalyzerOutput().add(analyzer.getIntermittentOutput());
+                app.getControllerOutput().add(controller.getCurrentOutput());
+                app.getControllerSetpoint().add(controller.getSetpoint());
+                app.getGeneratorTrueSignal().add(app.getTrueSignal(app.getImageCount()));
+            
+             } catch (ImageShapeException ex) {
+                IJ.showMessage(
+                        "Critical error: simulated images don't match the " + 
+                        "shape of the existing dataset"
+                );
+                ex.printStackTrace();
+                stop = true;
             }
-            app.setControlSignal(controller.getCurrentOutput());
             
-            app.getAnalyzerOutput().add(analyzer.getIntermittentOutput());
-            app.getControllerOutput().add(controller.getCurrentOutput());
-            app.getControllerSetpoint().add(controller.getSetpoint());
-            app.getGeneratorTrueSignal().add(app.getTrueSignal(app.getImageCount()));
-            
-            
-            imp.setSlice(imp.getNSlices());
-            imp.updateAndRepaintWindow();
+            imp.setSlice(imp.getSize() - 1);
+            imp.updateView();
             try {
                 sleep(20);
             } catch (InterruptedException ex) {

@@ -26,21 +26,16 @@ import ch.epfl.leb.alica.analyzers.spotcounter.SpotCounter;
 import ch.epfl.leb.alica.controllers.manual.ManualController;
 import ch.epfl.leb.sass.loggers.StateLogger;
 import ch.epfl.leb.sass.loggers.PositionLogger;
-import ij.ImageStack;
-import ij.process.ImageProcessor;
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ch.epfl.leb.sass.utils.RNG;
-import ij.IJ;
-import ch.epfl.leb.sass.simulator.Simulator;
 
 /**
  * The default simulator that is run as, for example, the ImageJ plugin.
@@ -130,19 +125,24 @@ public class ImageJSimulator extends DefaultSimulator {
      * @param tiff_save_path
      * @return
      */
-    public ImageStack execute(int no_of_images, int controller_refresh_rate, String csv_save_path, String tiff_save_path) {
+    public ImageS execute(
+            int no_of_images,
+            int controller_refresh_rate,
+            String csv_save_path,
+            String tiff_save_path
+    ) throws ImageShapeException {
         if (no_of_images < 1 || controller_refresh_rate < 1) {
             throw new IllegalArgumentException("Wrong simulation parameters!");
         }
         
         double pixelSize = this.getObjectSpacePixelSize();
-        ImageProcessor ip;
+        ImageS ip;
         for (image_count = 1; image_count <= no_of_images; image_count++) {
             JSONObject history_entry = new JSONObject();
             
             ip = this.getNextImage();
             analyzer.processImage(
-                    ip.getPixelsCopy(),
+                    ip.getPixelData(0),
                     ip.getWidth(),
                     ip.getHeight(), 
                     pixelSize, 

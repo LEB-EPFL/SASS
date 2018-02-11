@@ -27,6 +27,7 @@ import ch.epfl.leb.sass.loggers.PositionLogger;
 import ch.epfl.leb.alica.analyzers.AnalyzerFactory;
 import ch.epfl.leb.alica.analyzers.AnalyzerSetupPanel;
 import ch.epfl.leb.alica.controllers.ControllerFactory;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ij.IJ;
 import java.awt.GridLayout;
 import java.io.File;
@@ -2416,15 +2417,22 @@ public class InitializeSimulation extends java.awt.Dialog {
         }
         controller_factory.setMaxControllerOutput(max_controller_output);
         
-        // The simulation engine        
-        App app = new App(
-                microscope,
-                analyzer_factory.build(),
-                controller_factory.build(),
-                controller_tickrate
-        );
-        main.setApp(app);
-        this.dispose();
+        try {
+            // The simulation engine        
+            App app = new App(
+                    microscope,
+                    analyzer_factory.build(),
+                    controller_factory.build(),
+                    controller_tickrate
+            );
+            main.setApp(app);
+            this.dispose();
+        } catch (ImageShapeException ex) {
+            IJ.showMessage(
+                    "Shape error encountered when generating the ImageS " +
+                    "dataset."
+            );
+        }
     }//GEN-LAST:event_initializeSimulationActionPerformed
     /**
      * Opens a SASS settings file and updates the GUI accordingly.

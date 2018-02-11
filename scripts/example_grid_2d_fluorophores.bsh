@@ -17,6 +17,7 @@ import ch.epfl.leb.sass.models.components.*;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
 import ch.epfl.leb.sass.utils.RNG;
+import ch.epfl.leb.sass.utils.images.ImageS;
 
 // The seed determines the outputs of the random number generator.
 RNG.setSeed(42);
@@ -114,9 +115,4 @@ for (i=0;i<10000;i++) {
 
 // save and show; uncomment these lines to save and display stack
 //generator.saveStack(new File("generated_stack.tif"));
-//import ij.ImagePlus;
-//ImagePlus ip = new ImagePlus("Simulation output", generator.getStack());
-//ip.show();
-//ip.updateAndRepaintWindow();
 
-//System.exit(0); // uncomment if you want termination immediately

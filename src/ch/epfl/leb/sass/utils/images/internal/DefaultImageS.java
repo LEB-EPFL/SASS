@@ -229,6 +229,10 @@ public class DefaultImageS implements ImageS {
      */
     @Override
     public void updateView() {
+        if (imp == null) {
+            // The ImagePlus was not created in the constructor.
+            imp = new ImagePlus(title, images);
+        }
         imp.updateAndRepaintWindow();
     }
     

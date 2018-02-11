@@ -20,11 +20,8 @@ package ch.epfl.leb.sass.server;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.loggers.FrameInfo;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
-
-import ij.IJ;
-import ij.ImagePlus;
-import ij.io.FileSaver;
 
 import com.google.gson.Gson;
 
@@ -44,7 +41,7 @@ public class RemoteSimulationServiceHandlerTest {
     private RPCSimulator mockSimulator;
     private RemoteSimulationServiceHandler handler;
     
-    private ImageS<Short> is = new DefaultImageS( new int[1][1] );
+    private ImageS is = new DefaultImageS( new int[1][1] );
     
     public RemoteSimulationServiceHandlerTest() {
         this.mockSimulator = mock(RPCSimulator.class);
@@ -55,9 +52,8 @@ public class RemoteSimulationServiceHandlerTest {
      * Test of getNextImage method, of class RemoteSimulationServiceHandler.
      */
     @Test
-    public void testGetNextImage() {
+    public void testGetNextImage() throws ImageShapeException, ImageGenerationException {
         System.out.println("getNextImage");
-                // Instructs the wrapped simulator to return the ImageJ test image.
 
         // Instructs the wrapped simulator to return the ImageJ test image.
         when(this.mockSimulator.getNextImage()).thenReturn(is);

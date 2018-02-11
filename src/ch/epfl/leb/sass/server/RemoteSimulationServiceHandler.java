@@ -19,6 +19,8 @@ package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
 import java.nio.ByteBuffer;
 
@@ -44,13 +46,18 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
      * 
      * @return A buffer containing the TIFF-encoded byte string of the
      *        simulator's next image.
+     * @throws ch.epfl.leb.sass.server.ImageGenerationException
      */
     @Override
-    public ByteBuffer getNextImage() {
-        // Advance the simulation one time step and retrieve the image.   
-        ImageS is = simulator.getNextImage();
-        return is.serializeToBuffer();
-
+    public ByteBuffer getNextImage() throws ImageGenerationException {
+        // Advance the simulation one time step and retrieve the image.  
+        try {
+            ImageS is = simulator.getNextImage();
+            return is.serializeToBuffer();
+        } catch (ImageShapeException ex) {
+            ex.printStackTrace();
+            throw new ImageGenerationException();
+        }
     }
     
     /**

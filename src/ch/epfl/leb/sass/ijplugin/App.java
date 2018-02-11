@@ -24,6 +24,8 @@ import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.alica.Analyzer;
 import ch.epfl.leb.alica.Controller;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
+import ij.IJ;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +60,7 @@ public class App extends ImageJSimulator {
         Analyzer analyzer,
         Controller controller,
         int controller_tickrate
-    ) {
+    ) throws ImageShapeException {
         super(microscope, analyzer, controller);
         if (controller_tickrate<1) {
             throw new IllegalArgumentException("Wrong controller tickrate!");
@@ -171,33 +173,44 @@ class Worker extends Thread {
         while (!stop) {
             app.incrementCounter();
             
-            // TODO: Remove the explicit type in the future when cameras models
-            // with different bit depths are implemented!
-            ImageS<Short> is = app.getNextImage();
-            
-            long time_start, time_end;
-            time_start = System.nanoTime();
-            analyzer.processImage(
-                    is.getPixelDataPrimitive(0),
-                    is.getWidth(),
-                    is.getHeight(),
-                    app.getObjectSpacePixelSize(),
-                    time_start
-            );
-            time_end = System.nanoTime();
-            System.out.format("%s: Image analyzed in %d microseconds.\n", analyzer.getName(), (time_end - time_start)/1000);
+            try {
+                ImageS is = app.getNextImage();
+                    
+                long time_start, time_end;
+                time_start = System.nanoTime();
+                analyzer.processImage(
+                        is.getPixelData(0),
+                        is.getWidth(),
+                        is.getHeight(),
+                        app.getObjectSpacePixelSize(),
+                        time_start
+                );
+                time_end = System.nanoTime();
+                System.out.format(
+                        "%s: Image analyzed in %d microseconds.\n",
+                        analyzer.getName(),
+                        (time_end - time_start)/1000
+                );
 
-            if (app.getImageCount() % app.getControllerTickrate() == 0) {
-                //System.out.println(image_count);
-                controller.nextValue(analyzer.getBatchOutput());
+                if (app.getImageCount() % app.getControllerTickrate() == 0) {
+                    //System.out.println(image_count);
+                    controller.nextValue(analyzer.getBatchOutput());
+                }
+                app.setControlSignal(controller.getCurrentOutput());
+
+                app.getAnalyzerOutput().add(analyzer.getIntermittentOutput());
+                app.getControllerOutput().add(controller.getCurrentOutput());
+                app.getControllerSetpoint().add(controller.getSetpoint());
+                app.getGeneratorTrueSignal().add(app.getTrueSignal(app.getImageCount()));
+            
+             } catch (ImageShapeException ex) {
+                IJ.showMessage(
+                        "Critical error: simulated images don't match the " + 
+                        "shape of the existing dataset"
+                );
+                ex.printStackTrace();
+                stop = true;
             }
-            app.setControlSignal(controller.getCurrentOutput());
-            
-            app.getAnalyzerOutput().add(analyzer.getIntermittentOutput());
-            app.getControllerOutput().add(controller.getCurrentOutput());
-            app.getControllerSetpoint().add(controller.getSetpoint());
-            app.getGeneratorTrueSignal().add(app.getTrueSignal(app.getImageCount()));
-            
             
             imp.setSlice(imp.getSize() - 1);
             imp.updateView();

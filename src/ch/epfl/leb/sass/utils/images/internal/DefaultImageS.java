@@ -24,6 +24,7 @@ import ij.io.FileSaver;
 import java.io.File;
 import java.nio.ByteBuffer;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
 /**
  * The default implementation of the ImageS interface.
@@ -34,11 +35,12 @@ import ch.epfl.leb.sass.utils.images.ImageS;
  * 
  * @author Kyle M. Douglass
  */
-public class DefaultImageS implements ImageS<Short> {
+public class DefaultImageS implements ImageS {
     
     private ImagePlus imp;
     private ImageStack images;
     private String title = "SASS Image Dataset";
+    private final int BITDEPTH = 16;
     
     /**
      * Creates a new and empty DefaultImageS.
@@ -81,6 +83,9 @@ public class DefaultImageS implements ImageS<Short> {
     
     @Override
     public int getBitDepth() {
+        if (images.getSize() == 0) {
+            return BITDEPTH;
+        }
         return images.getBitDepth();
     }
 
@@ -111,7 +116,11 @@ public class DefaultImageS implements ImageS<Short> {
      */
     @Override
     public byte[] serializeToArray() {
-        ImagePlus imp = new ImagePlus(title, images);
+        if (imp == null) {
+            // The ImagePlus was not created in the constructor.
+            imp = new ImagePlus(title, images);
+        }
+        
         FileSaver fs = new FileSaver(imp);
         return fs.serialize();
     }
@@ -127,23 +136,50 @@ public class DefaultImageS implements ImageS<Short> {
     }
 
     /**
-     * Converts a 2D array of ints to 16-bit ints and adds it to the dataset.
+     * Adds a 2D array of shorts to the dataset.
      * 
-     * @param image A 2D array of ints indexed by xy.
+     * @param image A 2D array of shorts.
      */
     @Override
-    public void addImage(int[][] image) {
-        images.addSlice(( new FloatProcessor(image) ).convertToShortProcessor(false));
+    public void addImage(short[][] image) throws ImageShapeException {
+        checkSize(image.length, image[0].length);
         
+        short[] flattened = new short[image.length * image[0].length];
+        int s = 0;
+        
+        // Note that ImageJ1 flattens arrays according to column-row order, i.e.
+        // the slowest changing variable is the column, not the row!
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[0].length; j++) {
+                flattened[s] = image[j][i];
+                s++;
+            }
+        }
+        
+        images.addSlice("", flattened);
     }
     
     /**
-     * Converts a 2D array of floats to 16-bit ints and adds it to the dataset.
+     * Converts a 2D array of ints to 16-bit shorts and adds it to the dataset.
      * 
-     * @param image A 2D array of floats indexed by xy.
+     * @param image A 2D array of ints indexed by xy.
+     * @throws ch.epfl.leb.sass.utils.images.ImageShapeException
      */
     @Override
-    public void addImage(float[][] image) {
+    public void addImage(int[][] image) throws ImageShapeException {
+        checkSize(image.length, image[0].length);
+        images.addSlice(( new FloatProcessor(image) ).convertToShortProcessor(false)); 
+    }
+    
+    /**
+     * Converts a 2D array of floats to 16-bit shorts and adds it to the dataset.
+     * 
+     * @param image A 2D array of floats indexed by xy.
+     * @throws ch.epfl.leb.sass.utils.images.ImageShapeException
+     */
+    @Override
+    public void addImage(float[][] image) throws ImageShapeException {
+        checkSize(image.length, image[0].length);
         images.addSlice(( new FloatProcessor(image) ).convertToShortProcessor(false));
     }
     
@@ -153,17 +189,12 @@ public class DefaultImageS implements ImageS<Short> {
      * @param dataset The images to add to the dataset.
      */
     @Override
-    public void concatenate(ImageS<Short> dataset) {
-        short[] prim = new short[dataset.getWidth() * dataset.getHeight()];
+    public void concatenate(ImageS dataset) throws ImageShapeException {
+        checkSize(dataset.getWidth(), dataset.getHeight());
         
-        // ImageJ1 *requires* a short array and Java 8 streams do not support
-        // Short.
         for (int i = 0; i < dataset.getSize(); i++) {
-            Short[] pixels = dataset.getPixelData(i);
-            for (int j = 0; j < pixels.length; j++) {
-                prim[j] = (short)pixels[j];
-            }
-            images.addSlice("", prim);
+            short[] pixels = dataset.getPixelData(i);
+            images.addSlice("", pixels);
         }
     }
     
@@ -174,29 +205,9 @@ public class DefaultImageS implements ImageS<Short> {
      * @return The pixel data at the provided index.
      */
     @Override
-    public Short[] getPixelData(int index) {
-        // ImageJ1 is 1-indexed and follows xy order, where x changes quickest.
-        short[] temp = (short[])images.getPixels(index + 1);
-        Short[] pixels = new Short[temp.length];
-        for (int i = 0; i < temp.length; i++) {
-            pixels[i] = new Short(temp[i]);
-        }
-        
-        return pixels;
-        //return Arrays.stream(temp).boxed().toArray(Short[]::new);
-    }
-    
-    /**
-     * Returns the pixel data at the given index as a 1D array of primitives.
-     * 
-     * @param index The index of the corresponding slice.
-     * @return The pixel data at the provided index as a primitive data type.
-     */
-    @Override
-    public Object getPixelDataPrimitive(int index) {
+    public short[] getPixelData(int index) {
         // ImageJ1 is 1-indexed and follows xy order, where x changes quickest.
         return (short[])images.getPixels(index + 1);
-        
     }
     
     /**
@@ -216,8 +227,25 @@ public class DefaultImageS implements ImageS<Short> {
      * Updates the dataset viewer to show the currently active slice.
      * 
      */
+    @Override
     public void updateView() {
         imp.updateAndRepaintWindow();
+    }
+    
+    /**
+     * Gets the active slice of the dataset (0-indexed).
+     * 
+     * This is the image that will be displayed in the viewer.
+     * 
+     * @return The index of the active slice.
+     */
+    @Override
+    public int getSlice() {
+        if (imp == null) {
+            // The ImagePlus was not created in the constructor.
+            imp = new ImagePlus(title, images);
+        }
+        return imp.getSlice();
     }
     
     /**
@@ -227,7 +255,12 @@ public class DefaultImageS implements ImageS<Short> {
      * 
      * @param index The index of the slice to activate.
      */
+    @Override
     public void setSlice(int index) {
+        if (imp == null) {
+            // The ImagePlus was not created in the constructor.
+            imp = new ImagePlus(title, images);
+        }
         imp.setSlice(index);
     }
     
@@ -236,7 +269,12 @@ public class DefaultImageS implements ImageS<Short> {
      * 
      */
     @Override
-    public void saveAsTiffStack(File file) {
+    public void saveAsTiffStack(File file) throws IllegalArgumentException {
+        if (imp == null) {
+            // The ImagePlus was not created in the constructor.
+            imp = new ImagePlus(title, images);
+        }
+        
         FileSaver fs = new FileSaver(imp);
         fs.saveAsTiffStack(file.getAbsolutePath());
     }
@@ -271,6 +309,21 @@ public class DefaultImageS implements ImageS<Short> {
     @Override
     public int getSize() {
         return images.getSize();
+    }
+    
+    /**
+     * Verify that the size of the array matches the size of the dataset.
+     * 
+     * @param width The width of the input array.
+     * @param height The height of the input array.
+     */
+    private void checkSize(int width, int height) throws ImageShapeException {
+        if ( (width != this.getWidth()) || (height != this.getHeight()) ) {
+            throw new ImageShapeException(
+                    "Error: trying to add two ImageS datasets with different" +
+                    " widths and/or heights."
+            );
+        }
     }
     
 }

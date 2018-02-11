@@ -26,6 +26,7 @@ import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.simulator.internal.AbstractSimulator;
 import ch.epfl.leb.sass.models.obstructors.internal.ConstantBackground;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import ij.gui.GenericDialog;
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class STORMsim extends AbstractSimulator {
     }
 
     @Override
-    public ImageS getNextImage() {
+    public ImageS getNextImage() throws ImageShapeException {
         // we calculate emitter count first so it corresponds with the beginning
         // of the frame rather than end of the frame
         emitter_history.add(device.getOnEmitterCount());

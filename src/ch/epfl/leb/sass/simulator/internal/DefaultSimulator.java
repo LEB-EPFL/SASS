@@ -21,6 +21,7 @@ package ch.epfl.leb.sass.simulator.internal;
 
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class DefaultSimulator extends AbstractSimulator {
     }
 
     @Override
-    public ImageS getNextImage() {
+    public ImageS getNextImage() throws ImageShapeException {
         // we calculate emitter count first so it corresponds with the beginning
         // of the frame rather than end of the frame
         emitterHistory.add(microscope.getOnEmitterCount());

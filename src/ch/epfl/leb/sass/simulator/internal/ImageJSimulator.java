@@ -27,6 +27,7 @@ import ch.epfl.leb.alica.controllers.manual.ManualController;
 import ch.epfl.leb.sass.loggers.StateLogger;
 import ch.epfl.leb.sass.loggers.PositionLogger;
 import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -124,7 +125,12 @@ public class ImageJSimulator extends DefaultSimulator {
      * @param tiff_save_path
      * @return
      */
-    public ImageS execute(int no_of_images, int controller_refresh_rate, String csv_save_path, String tiff_save_path) {
+    public ImageS execute(
+            int no_of_images,
+            int controller_refresh_rate,
+            String csv_save_path,
+            String tiff_save_path
+    ) throws ImageShapeException {
         if (no_of_images < 1 || controller_refresh_rate < 1) {
             throw new IllegalArgumentException("Wrong simulation parameters!");
         }
@@ -136,7 +142,7 @@ public class ImageJSimulator extends DefaultSimulator {
             
             ip = this.getNextImage();
             analyzer.processImage(
-                    ip.getPixelDataPrimitive(0),
+                    ip.getPixelData(0),
                     ip.getWidth(),
                     ip.getHeight(), 
                     pixelSize, 

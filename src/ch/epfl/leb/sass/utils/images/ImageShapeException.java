@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Fédérale de Lausanne
  * 
@@ -14,36 +14,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
+package ch.epfl.leb.sass.utils.images;
 
-namespace java ch.epfl.leb.sass.server
-namespace py remotesim
+/**
+ * Raised when trying to add data to ImageS datasets of the wrong XY shape.
+ * 
+ * @author Kyle M. Douglass
+ */
+public class ImageShapeException extends Exception {
+    
+    public ImageShapeException(){
+        super();
+    }
 
-exception ImageGenerationException {
-}
-
-service RemoteSimulationService {
-
-  /**
-   * Returns the simulation server's current status.
-   */
-  string getServerStatus(),
-
-  /**
-   * Increments the simulation by one time step and returns an image.
-   */
-  binary getNextImage() throws(1: ImageGenerationException ex),
-
-  /**
-   * Changes the simulation'ss fluorescence activation laser power.
-   */
-  void setActivationLaserPower(1: double power),
-
-  /**
-   * Returns information about the current state of each emitter in
-   * a JSON string.
-   */
-  string getSimulationState()
-       
+    public ImageShapeException(String message){
+        super(message);
+    }
+    
 }

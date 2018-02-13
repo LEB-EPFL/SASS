@@ -25,8 +25,6 @@ firewall, are beyond the scope of this documentation.
 
 The RPC service was created using `Apache Thrift`_.
 
-.. _`Apache Thrift`: https://thrift.apache.org/
-
 Starting the server
 -------------------
 

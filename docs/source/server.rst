@@ -25,13 +25,60 @@ firewall, are beyond the scope of this documentation.
 
 The RPC service was created using `Apache Thrift`_.
 
-_`Apache Thrift`: https://thrift.apache.org/
+.. _`Apache Thrift`: https://thrift.apache.org/
 
 Starting the server
 -------------------
 
-There are two ways to start the server: via a Beanshell script and via
-the ImageJ GUI.
+There are three ways to start the server: via the command line, inside
+the ImageJ GUI, and via a Beanshell script.
+
+Command line
+++++++++++++
+
+Enter the following command in a console window to start the server
+from the command line ::
+
+  java -jar PATH_TO_SASS_JAR -r CONFIGURATION_FILE
+
+The above command requires two arguments. **PATH_TO_SASS_JAR** is the
+path and name of the SASS .jar file, which can be downloaded from the
+`releases`_ page of the GitHub repository. **CONFIGURATION_FILE** is a
+file that specifies the simulation configuration. This file can be
+created created and saved from inside the SASS ImageJ GUI.
+
+The command will start the server on the default port, which was 9090
+at the time of this writing. If instead you wish to specify the port
+number, use ::
+
+  java -jar PATH_TO_SASS_JAR -p PORT -r CONFIGURATION_FILE
+
+.. _`releases`: https://github.com/LEB-EPFL/SASS/releases
+
+ImageJ
+++++++
+
+1. Open the server configuration dialog from the menu bar by clicking
+   **Plugins > SASS > Server**.
+2. Enter the port number you wish to use for communications with the
+   server. Usually the default (9090) is fine.
+3. Next, you will need a configuration file that defines your
+   simulation parameters. This should be a *.sass* file containing the
+   simulation details. You can create one by navigating to **Plugins >
+   SASS > Simulator**, adjusting the simulation parameters as desired,
+   then clicking the **Save...** button.
+4. Once you have a configuration file, click the **Select
+   configuration...** button, navigate to your file, and open it.
+5. The **Start** button should now be enabled. Click it and the
+   simulation will initialize. (This may take a few seconds depending
+   on the size of your simulation.)
+6. When the server has started, you should see the **Server running**
+   message in the status field.
+7. To stop the server, either click the **Stop** button or exit the
+   server control window.
+
+If you are using Fiji, then you can see status updates from the server
+by navigating to **Window >> Console** on the menu bar.
 
 Beanshell script
 ++++++++++++++++
@@ -52,32 +99,7 @@ This code will initialize the server to listen on port 9090 and launch
 it. If you run the script from the command line, then you can kill the
 server by typing **Ctrl-C**.
 
-_`scripts`: https://github.com/kmdouglass/SASS/tree/master/scripts
-
-ImageJ
-++++++
-
-1. Open the server configuration dialog from the menu bar by clicking
-**Plugins > SASS > Server**.
-2. Enter the port number you wish to use for communications with the
-   server. Usually the default (9090) is fine.
-3. Next, you will need a configuration file that defines your
-   simulation parameters. This should be a *.sass* file containing the
-   simulation details. You can create one by navigating to **Plugins >
-   SASS > Simulator**, adjusting the simulation parameters as desired,
-   then clicking the **Save...** button.
-4. Once you have a configuration file, click the **Select
-   configuration...** button, navigate to your file, and open it.
-5. The **Start** button should now be enabled. Click it and the
-   simulation will initialize. (This may take a few seconds depending
-   on the size of your simulation.)
-6. When the server has started, you should see the **Server running**
-   message in the status field.
-7. To stop the server, either click the **Stop** button or exit the
-   server control window.
-
-If you are using Fiji, then you can see status updates from the server
-by navigating to **Window >> Console** on the menu bar.
+.. _`scripts`: https://github.com/kmdouglass/SASS/tree/master/scripts
 
 Server communications
 ---------------------
@@ -164,7 +186,9 @@ rudimentary Python client to control a SASS simulation.
 4. Install the Thrift bindings for Python, preferably inside a virtual
    environment. `pip install thrift`
 4. Enter the folder **gen-py** (or move it to a convenient directory).
-5. Create a file named client.py and add the following code ::
+5. Create an emtpy file named client.py.
+
+Inside the client.py file, you will need to add the following code ::
 
   from thrift import Thrift
   from thrift.transport import TSocket
@@ -207,7 +231,7 @@ tif-encoded byte strings.** You therefore will need the libtiff
 library in your target language to decode them. In Python, this can be
 provided by `pillow`_.
 
-_`Apache Thrift`: https://thrift.apache.org/
-_`Get Apache Thrift`: https://thrift.apache.org/download
-_`RPCServer.thrift`: https://github.com/LEB-EPFL/SASS/blob/master/thrift/RPCServer.thrift
-_`pillow`: https://github.com/python-pillow/Pillow
+.. _`Apache Thrift`: https://thrift.apache.org/
+.. _`Get Apache Thrift`: https://thrift.apache.org/download
+.. _`RPCServer.thrift`: https://github.com/LEB-EPFL/SASS/blob/master/thrift/RPCServer.thrift
+.. _`pillow`: https://github.com/python-pillow/Pillow

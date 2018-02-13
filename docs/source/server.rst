@@ -168,7 +168,7 @@ A Python client
 
 The general problem of setting up a client to interact with the
 simulation is not so much a SASS problem but is rather more within the
-scope of working with _`Apache Thrift`. There are many excellent
+scope of working with `Apache Thrift`_. There are many excellent
 tutorials on their website on how to do this in a number of different
 languages.
 

@@ -1,7 +1,8 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [v0.7.0]
+Contains [ALICA v0.2.5]
 
 ### Added
 - An RPC server was created that allows for remote control of the
@@ -259,3 +260,4 @@ Contains [ALICA v0.0.2]
 [v0.5.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.5.1
 [v0.6.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.0
 [v0.6.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.1
+[v0.7.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.7.0

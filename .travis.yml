@@ -3,14 +3,6 @@ language: java
 jdk:
   - oraclejdk8
   - openjdk8
-
-before_install:
-  - sudo apt-get install ant-optional
-
 script:
-  - ant test
-  - mkdir -p dist/lib
-  # The line below is needed for the Travis build specifically
-  - cp -r src/lib/*.jar dist/lib
-  - ant -f build-travis.xml
-  - ./scripts/tests/test_scripts.sh scripts ./store/SASS*.jar
+  - mvn test -B
+  - ./scripts/tests/test_scripts.sh scripts ./target/SASS*.jar

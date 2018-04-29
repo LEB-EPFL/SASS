@@ -1,0 +1,74 @@
+/*
+ * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package ch.epfl.leb.sass.models.fluorophores.internal;
+
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.*;
+
+import static org.mockito.Mockito.*;
+
+import ch.epfl.leb.sass.models.fluorophores.internal.StateSystem;
+import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.models.legacy.Camera;
+
+/**
+ *
+ * @author Kyle M. Douglass
+ */
+public class DefaultFluorophoreTest {
+    private Camera dummyCamera = null;
+    private StateSystem dummyStateSystem = null;
+    
+    public DefaultFluorophoreTest() {
+    } 
+    
+    @Before
+    public void setUp() {
+        dummyCamera = mock(Camera.class);
+        dummyStateSystem = mock(StateSystem.class);
+    }
+    
+    /**
+     * Test that fluorophores are assigned their proper IDs in successive order.
+     */
+    @Test
+    public void testFluorophoreIdAssignment() {
+        DefaultFluorophore testFluor= new DefaultFluorophore(
+            dummyCamera,
+            1000,
+            dummyStateSystem,
+            -1,
+            0,
+            0
+        );
+        int currID = testFluor.getId();
+        
+        // Create a new DefaultFluorophore and test whether its id is incremented
+        DefaultFluorophore testFluorNext = new DefaultFluorophore(
+            dummyCamera,
+            1000,
+            dummyStateSystem,
+            -1,
+            0,
+            0
+        );
+        assertEquals(++currID, testFluorNext.getId());
+    }
+}
+

@@ -4,9 +4,15 @@
 /src/lib/javadocs
 /ext_packages/
 /store/
+dependency-reduced-pom.xml
+nbactions.xml
 
 # emacs temp files
 *~
 
 # thrift
 /thrift/gen-*
+
+# Maven
+/target
+

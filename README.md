@@ -21,16 +21,27 @@ will be removed by this release.
 
 ## Installation
 
-Download the latest .jar from [releases].
+1. Download the latest .jar from [releases].
+2. Download the latest .jar from
+   [ALICA_ACPack](https://github.com/LEB-EPFL/ALICA_ACPack).
+3. If using SASS as a ImageJ/Fiji plugin, place the SASS jar in
+   `<IMAGEJ_ROOT>/plugins` and the ALICA_ACPack jar in
+   `<IMAGEJ_ROOT>/jars`. Otherwise, place both jars in the same
+   folder.
 
 ### As standalone application
- - Executing the .jar file by double-clicking launches a BeanShell console. Example scripts can be found in `/scripts/` folder.
- - Running SASS from command line: `java -jar <SASS-jar-name> --help` brings up available options, such as executing a script, or an interactive session within the terminal.
+ - Executing the .jar file by double-clicking on it launches a
+   BeanShell console. Example scripts can be found in `/scripts/`
+   folder.
+ - Running SASS from command line: `java -jar <SASS-jar-name> --help`
+   brings up available options, such as executing a script, or an
+   interactive session within the terminal.
  
 ### As FIJI plugin
-Placing the .jar file in `FIJI/plugins/` folder (file MUST have an underscore in the name, e.g. `SASS_v0.6.1.jar`) enables FIJI integration:
- - `Plugins -> SASS -> Simulation` launches an interactive simulator (not all options are available through the GUI).
- - `Plugins -> SASS -> Command Prompt` launches BeanShell console. Generated images can be analyzed immediately with FIJI.
+ - `Plugins -> SASS -> Simulation` launches an interactive simulator
+   (not all options are available through the GUI).
+ - `Plugins -> SASS -> Command Prompt` launches BeanShell
+   console. Generated images can be analyzed immediately with FIJI.
 
 ## Where to find help
 
@@ -51,5 +62,6 @@ In addition, SASS relies on these projects to provide core
 functionality.
  - [Apache Thrift](https://thrift.apache.org/)
  - [ImageJ](https://imagej.net/Welcome)
+ - [Fiji](https://fiji.sc/)
 
 [Releases]: https://github.com/LEB-EPFL/SASS/releases

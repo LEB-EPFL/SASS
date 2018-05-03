@@ -28,6 +28,9 @@ will be removed by this release.
    `<IMAGEJ_ROOT>/plugins` and the ALICA_ACPack jar in
    `<IMAGEJ_ROOT>/jars`. Otherwise, place both jars in the same
    folder.
+   
+**If you are using v0.7.0 and below, you do not need to download and
+install the ALICA_ACPack.jar**.
 
 ### As standalone application
  - Executing the .jar file by double-clicking on it launches a

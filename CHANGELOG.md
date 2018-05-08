@@ -1,10 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v0.8.0]
 
 ### Changed
 - Ported the build system to Maven.
+- Integrated the project into the Fiji/ImageJ ecosystem.
 
 ## [v0.7.0]
 Contains [ALICA v0.2.5]
@@ -266,4 +267,4 @@ Contains [ALICA v0.0.2]
 [v0.6.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.0
 [v0.6.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.1
 [v0.7.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.7.0
-[Unreleased]: https://github.com/LEB-EPFL/SASS/compare/v0.7.0...HEAD
+[v0.8.0]: https://github.com/LEB-EPFL/SASS/releases/tab/0.8.0

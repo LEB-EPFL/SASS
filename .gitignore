@@ -14,5 +14,5 @@ nbactions.xml
 /thrift/gen-*
 
 # Maven
-/target
+/target*
 

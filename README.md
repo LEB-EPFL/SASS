@@ -13,7 +13,7 @@ http://sass.readthedocs.io/en/latest/
 
 ## Usage
 
-## API Notice ##
+## API notice ##
 
 The API for SASS is still under development and may change until major
 version 1.0.0. Any methods or classes that are marked as deprecated
@@ -23,16 +23,17 @@ will be removed by this release.
 
 1. Download the latest .jar from [releases].
 2. Download the latest .jar from
-   [ALICA_ACPack](https://github.com/LEB-EPFL/ALICA_ACPack).
+   [ALICA_ACPack](https://github.com/LEB-EPFL/ALICA_ACPack/releases).
 3. If using SASS as a ImageJ/Fiji plugin, place the SASS jar in
    `<IMAGEJ_ROOT>/plugins` and the ALICA_ACPack jar in
    `<IMAGEJ_ROOT>/jars`. Otherwise, place both jars in the same
-   folder.
-   
-**If you are using v0.7.0 and below, you do not need to download and
-install the ALICA_ACPack.jar**.
+   folder of your choosing.
 
-### As standalone application
+**Note:** The SASS .jar file that is found in the releases is an
+uber-jar, i.e. it contains all the dependencies that are necessary to
+run.
+
+### As a standalone application
  - Executing the .jar file by double-clicking on it launches a
    BeanShell console. Example scripts can be found in `/scripts/`
    folder.
@@ -40,11 +41,13 @@ install the ALICA_ACPack.jar**.
    brings up available options, such as executing a script, or an
    interactive session within the terminal.
  
-### As FIJI plugin
+### As Fiji plugin
+ - If launching Fiji from the command line, launch it from within the
+   Fiji directory so that the ALICA_ACPack.jar is properly found.
  - `Plugins -> SASS -> Simulation` launches an interactive simulator
    (not all options are available through the GUI).
  - `Plugins -> SASS -> Command Prompt` launches BeanShell
-   console. Generated images can be analyzed immediately with FIJI.
+   console. Generated images can be analyzed immediately with Fiji.
 
 ## Where to find help
 

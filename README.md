@@ -56,15 +56,21 @@ install the ALICA_ACPack.jar**.
 ## Acknowledgements
 
 SASS uses adapted code and algorithms from the following projects:
- - [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault and Tomas Lukes (GPL)
- - [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko (GPL)
- - [MicroscPSF-ImageJ](https://github.com/hijizhou/MicroscPSF-ImageJ) by Jizhou Li (MIT)
- - [OpenSimplexNoise](https://gist.github.com/KdotJPG/b1270127455a94ac5d19) by Kurt Spencer (Unlicense/Public Domain)
+- [SOFItool](https://github.com/lob-epfl/sofitool) by Arik Girsault
+  and Tomas Lukes (GPL)
+- [ALICA](https://github.com/MStefko/ALICA) by Marcel Stefko (GPL)
+- [MicroscPSF-ImageJ](https://github.com/hijizhou/MicroscPSF-ImageJ)
+  by Jizhou Li (MIT)
+- [OpenSimplexNoise](https://gist.github.com/KdotJPG/b1270127455a94ac5d19)
+  by Kurt Spencer (Unlicense/Public Domain)
  
 In addition, SASS relies on these projects to provide core
 functionality.
- - [Apache Thrift](https://thrift.apache.org/)
- - [ImageJ](https://imagej.net/Welcome)
- - [Fiji](https://fiji.sc/)
+- [Apache Thrift](https://thrift.apache.org/)
+- [ImageJ](https://imagej.net/Welcome)
+- [Fiji](https://fiji.sc/)
+
+...and the many, many people behind *all* the software that we rely
+on.
 
 [Releases]: https://github.com/LEB-EPFL/SASS/releases

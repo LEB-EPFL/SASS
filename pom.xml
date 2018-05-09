@@ -11,7 +11,7 @@
     
     <groupId>ch.epfl.leb</groupId>
     <artifactId>SASS_</artifactId>
-    <version>0.8.0-SNAPSHOT</version>
+    <version>0.8.0</version>
     <packaging>jar</packaging>
     
     <name>SASS</name>
@@ -69,8 +69,8 @@
     
     <mailingLists>
 	<mailingList>
-            <name>ImageJ Forum</name>
-            <archive>http://forum.imagej.net/</archive>
+            <name>Gitter</name>
+            <archive>https://gitter.im/leb_epfl/SASS</archive>
 	</mailingList>
     </mailingLists>
 
@@ -105,6 +105,9 @@
         <commons-math2.version>2.2</commons-math2.version>
         <thrift.version>0.11.0</thrift.version>
         <json.version>20160810</json.version>
+	<alica_interfaces.version>0.0.1</alica_interfaces.version>
+	<alica_acpack.version>0.0.0</alica_acpack.version>
+	<slf4j-api.version>1.7.25</slf4j-api.version>
     </properties>
 
     <repositories>
@@ -119,15 +122,14 @@
 	<dependency>
 	    <groupId>com.github.LEB-EPFL</groupId>
 	    <artifactId>ALICA_interfaces</artifactId>
-	    <version>0.0.0</version>
-            <scope>provided</scope>
+	    <version>${alica_interfaces.version}</version>
 	</dependency>
         
         <!-- ALICA Suite dependency -->
         <dependency>
 	    <groupId>com.github.LEB-EPFL</groupId>
 	    <artifactId>ALICA_ACPack</artifactId>
-	    <version>0.0.0</version>
+	    <version>${alica_acpack.version}</version>
             <scope>runtime</scope>
 	</dependency>      
         
@@ -182,6 +184,12 @@
             <artifactId>libthrift</artifactId>
             <version>${thrift.version}</version>
         </dependency>
+
+	<dependency>
+  	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	    <version>${slf4j-api.version}</version>
+	</dependency>
         
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
@@ -211,28 +219,147 @@
 	</dependency>
     </dependencies>
 
-    <build>
-    <plugins>
-      <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>ch.epfl.leb.sass.commandline.CommandLineInterface</mainClass>
-                </transformer>
-              </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
+    <profiles>
+      <!-- Builds an Uber jar that contains run-time dependencies.
+           (except for ALICA_ACPack*.jar). -->
+      <profile>
+	<id>build-uber-jar</id>
+	<activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <build>
+	  <directory>target-uber/</directory>
+	  <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-shade-plugin</artifactId>
+              <version>3.1.0</version>
+              <executions>
+                <execution>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                    <transformers>
+                      <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>ch.epfl.leb.sass.commandline.CommandLineInterface</mainClass>
+                      </transformer>
+                    </transformers>
+		    <artifactSet>
+		      <includes>
+			<include>com.github.LEB-EPFL:ALICA_interfaces</include>
+			<include>net.imagej:ij</include>
+			<include>org.beanshell:bsh</include>
+			<include>org.apache.commons:commons-math3</include>
+			<include>commons-cli:commons-cli</include>
+			<include>org.jfree:jfreechart</include>
+			<include>colt:colt</include>
+			<include>org.apache.commons:commons-math</include>
+			<include>org.apache.thrift:libthrift</include>
+			<include>org.slf4j:slf4j-api</include>
+			<include>com.google.code.gson:gson</include>
+			<include>org.json:json</include>
+  		      </includes>
+  		    </artifactSet>
+                  </configuration>
+                </execution>
+              </executions>
             </plugin>
-    </plugins>
-    </build>
+
+	    <!-- Download ALICA_ACPack and put it in output directory. -->    
+	    <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <version>3.1.0</version>
+              <executions>
+		<execution>
+                  <id>copy</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>copy</goal>
+                  </goals>
+		</execution>
+              </executions>
+              <configuration>
+		<artifactItems>
+                  <artifactItem>
+                    <groupId>com.github.LEB-EPFL</groupId>
+                    <artifactId>ALICA_ACPack</artifactId>
+                    <version>${alica_acpack.version}</version>
+                    <type>jar</type>
+                    <overWrite>false</overWrite>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <destFileName>ALICA_ACPack-${alica_acpack.version}.jar</destFileName>
+                  </artifactItem>
+		</artifactItems>
+              </configuration>
+	    </plugin>
+	  </plugins>
+	</build>
+      </profile>
+
+      <!-- Builds the jar for Fiji plugins. -->
+      <profile>
+	<id>build-fiji</id>
+        <build>
+	  <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-shade-plugin</artifactId>
+              <version>3.1.0</version>
+              <executions>
+                <execution>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                    <transformers>
+                      <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>ch.epfl.leb.sass.commandline.CommandLineInterface</mainClass>
+                      </transformer>
+                    </transformers>
+		    <artifactSet>
+		      <includes>
+			<include>com.github.LEB-EPFL:ALICA_interfaces</include>
+  		      </includes>
+  		    </artifactSet>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+
+	    <!-- Download ALICA_ACPack and put it in output directory. -->    
+	    <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <version>3.1.0</version>
+              <executions>
+		<execution>
+                  <id>copy</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>copy</goal>
+                  </goals>
+		</execution>
+              </executions>
+              <configuration>
+		<artifactItems>
+                  <artifactItem>
+                    <groupId>com.github.LEB-EPFL</groupId>
+                    <artifactId>ALICA_ACPack</artifactId>
+                    <version>${alica_acpack.version}</version>
+                    <type>jar</type>
+                    <overWrite>false</overWrite>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <destFileName>ALICA_ACPack-${alica_acpack.version}.jar</destFileName>
+                  </artifactItem>
+		</artifactItems>
+              </configuration>
+	    </plugin>
+	  </plugins>
+	</build>
+      </profile>
+    </profiles>
 </project>

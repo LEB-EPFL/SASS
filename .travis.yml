@@ -1,8 +1,22 @@
-# Travis CI build and test script
 language: java
 jdk:
-  - oraclejdk8
-  - openjdk8
+- oraclejdk8
+- openjdk8
+install: true
 script:
-  - mvn test -B
-  - ./scripts/tests/test_scripts.sh scripts ./target/SASS*.jar
+- mvn test -B
+- mvn install -Pbuild-uber-jar -DskipTests=true -Dmaven.javadoc.skip=true -B -V &&
+  ./scripts/tests/test_scripts.sh scripts target-uber/SASS*.jar &&
+  rm target-uber/SASS_-*-sources.jar &&
+  rm target-uber/SASS_-*-tests.jar
+- mvn install -Pbuild-fiji -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: E4njmUV5k5uWgWOyZAl+16jCm5kGapTvjVhQXtbKu9i6FThOtRDMMH9MOECw1qq9TeA7ZvYArQpeT1mUI4bD/L8BbLAvUsko/Qv6Ig6Ec5Hp9ZH1jcIZt9IG8CO3YiE6Jyy0X/aI397SO/8wexj5859j7exaAKO4Q+PBnG0PbK1QYyoQXq1QXvQdResAK8ABTqZqvz87XPhDwEGGyr3ekPlk/DK0DtfBPeIXlNlj2EV6m3udxWVDukIDHOmIT37X2ZrFxag9T+/s6JFudtjefMyPZwpLqhaLBQ/D7GsjQnyunErv/x2KZ5Pl4X5lUK7bsABdiyvlOcnM3pH2oWFbfDQtfriP3/wPTxw0vtZF90tT7hWaYVTX/3ujD8JKQO9u7TdTEgVjYpQ7rzIZgLAiJio7xtMCeBE32dGo5kiDYqFZrp4zd4/uJTeN1yHZLdCjrWw9/jobsbQpmW2SgnuAb79eCNOcb+7ZOY7b0dw14ENv/2V1PIPgUZOGRlBi0dTTzSP5qnodkYPxwoE1J6tZatMClfRsQm83irbsdQlRuD2FZzI28K1OxSDY2EZvK0ZVkPOuc9o9ll4LLgxsMCJtUw5YXxsyQ8U9CiUVxqWlHOyC1hHtHtV8CagYbolypWqlkum9VbpzMC8WPWajt/53NkPUg/bzYXDgr9Q625ToHiI=
+  file_glob: true
+  file: target-uber/SASS_-*.jar
+  on:
+    repo: LEB-EPFL/SASS
+    tags: true

@@ -46,7 +46,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class InitializeSimulation extends java.awt.Dialog {
 
-    Model model = new Model();
+    IJPluginModel model = new IJPluginModel();
     File emittersCsvFile = new File("");
     File backgroundTifFile = new File("");
     GUI main;
@@ -2454,7 +2454,7 @@ public class InitializeSimulation extends java.awt.Dialog {
         FileInputStream fileIn = null;
         try {
             fileIn = new FileInputStream(fc.getSelectedFile());
-            model = Model.read(fileIn);
+            model = IJPluginModel.read(fileIn);
             updateView();
         } catch (IOException ex) {
             ex.printStackTrace();

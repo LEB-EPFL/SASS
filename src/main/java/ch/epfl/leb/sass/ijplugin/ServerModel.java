@@ -39,7 +39,7 @@ public class ServerModel {
     /**
      * The simulation model for configuring and building the microscope.
      */
-    private Model simulationModel = null;
+    private IJPluginModel simulationModel = null;
     
     /**
      * The RPCServer instance.
@@ -55,7 +55,7 @@ public class ServerModel {
     //--------------------------------------------------------------------------
     public int getPort() { return port; }
     public String getConfigFile() { return configFile; }
-    public Model getSimulationModel() { return simulationModel; }
+    public IJPluginModel getSimulationModel() { return simulationModel; }
     public boolean getStartButtonEnabled() { return startButtonEnabled; }
     public boolean getStopButtonEnabled() { return stopButtonEnabled; }
     public boolean getPortTextEnabled() { return portTextEnabled; }
@@ -68,7 +68,7 @@ public class ServerModel {
     //--------------------------------------------------------------------------
     public void setPort(int port) { this.port = port; }
     public void setConfigFile(String filename) {this.configFile = filename; }
-    public void setSimulationModel(Model simulationModel) {
+    public void setSimulationModel(IJPluginModel simulationModel) {
         this.simulationModel = simulationModel;
     }
     public void setStartButtonEnabled(boolean enabled) {

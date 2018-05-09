@@ -36,11 +36,11 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 
 /**
- * Model for the InitializeSimulation window.
+ * IJPluginModel for the InitializeSimulation window.
  * 
  * @author Kyle M. Douglass
  */
-public class Model implements Serializable {
+public class IJPluginModel implements Serializable {
     
     private int cameraNX;
     private int cameraNY;
@@ -696,11 +696,11 @@ public class Model implements Serializable {
      * 
      * @param fileIn The input stream from the file.
      */
-    public static Model read(FileInputStream fileIn) {
-        Model model = null;
+    public static IJPluginModel read(FileInputStream fileIn) {
+        IJPluginModel model = null;
         try {
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            model = (Model) in.readObject();
+            model = (IJPluginModel) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException ex) {

@@ -19,7 +19,7 @@
  */
 package ch.epfl.leb.sass.commandline;
 
-import ch.epfl.leb.sass.ijplugin.Model;
+import ch.epfl.leb.sass.ijplugin.IJPluginModel;
 import ch.epfl.leb.sass.server.RPCServer;
 
 import bsh.EvalError;
@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;
@@ -128,11 +127,11 @@ public final class CommandLineInterface {
         // filename was passed by argument.
         } else if (line.hasOption("rpc_server")) {
             
-            Model model = new Model();
+            IJPluginModel model = new IJPluginModel();
             File file = new File(line.getOptionValue("rpc_server"));
             try {
                 FileInputStream stream = new FileInputStream(file);
-                model = Model.read(stream);
+                model = IJPluginModel.read(stream);
             } catch (FileNotFoundException ex) {
                 System.out.println("Error: " + file.getName() + " not found.");
                 System.exit(1);

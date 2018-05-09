@@ -17,7 +17,7 @@
  */
 package ch.epfl.leb.sass.server;
 
-import ch.epfl.leb.sass.ijplugin.Model;
+import ch.epfl.leb.sass.ijplugin.IJPluginModel;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.models.Microscope;
 
@@ -50,7 +50,7 @@ public class RPCServer {
      * @param model A model of a microscope to simulate.
      * @param port The port number for server communications.
      */
-    public RPCServer(Model model, int port) {
+    public RPCServer(IJPluginModel model, int port) {
         try { 
             RPCSimulator simulator = new RPCSimulator( model.build() );
             handler = new RemoteSimulationServiceHandler(simulator);
@@ -120,8 +120,8 @@ public class RPCServer {
         try {
             
             // Testing: Load a model from file and create a simulation engine
-            Model model;
-            model = Model.read(new FileInputStream("/home/douglass/ownCloud/workspace/simulation.sass"));
+            IJPluginModel model;
+            model = IJPluginModel.read(new FileInputStream("/home/douglass/ownCloud/workspace/simulation.sass"));
             
             RPCSimulator simulator = new RPCSimulator( model.build() );
             

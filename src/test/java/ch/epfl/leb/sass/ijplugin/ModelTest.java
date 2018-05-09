@@ -31,12 +31,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraNX method, of class Model.
+     * Test of getCameraNX method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraNX() {
         System.out.println("getCameraNX");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 32;
         instance.setCameraNX(expResult);
         int result = instance.getCameraNX();
@@ -44,12 +44,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraNY method, of class Model.
+     * Test of getCameraNY method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraNY() {
         System.out.println("getCameraNY");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 64;
         instance.setCameraNY(expResult);
         int result = instance.getCameraNY();
@@ -57,12 +57,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraReadoutNoise method, of class Model.
+     * Test of getCameraReadoutNoise method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraReadoutNoise() {
         System.out.println("getCameraReadoutNoise");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 2.5;
         instance.setCameraReadoutNoise(expResult);
         double result = instance.getCameraReadoutNoise();
@@ -70,12 +70,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraDarkCurrent method, of class Model.
+     * Test of getCameraDarkCurrent method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraDarkCurrent() {
         System.out.println("getCameraDarkCurrent");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.5;
         instance.setCameraDarkCurrent(expResult);
         double result = instance.getCameraDarkCurrent();
@@ -83,12 +83,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraQuantumEfficiency method, of class Model.
+     * Test of getCameraQuantumEfficiency method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraQuantumEfficiency() {
         System.out.println("getCameraQuantumEfficiency");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.8;
         instance.setCameraQuantumEfficiency(expResult);
         double result = instance.getCameraQuantumEfficiency();
@@ -96,12 +96,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraAduPerElectron method, of class Model.
+     * Test of getCameraAduPerElectron method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraAduPerElectron() {
         System.out.println("getCameraAduPerElectron");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 2.1;
         instance.setCameraAduPerElectron(expResult);
         double result = instance.getCameraAduPerElectron();
@@ -109,12 +109,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraEmGain method, of class Model.
+     * Test of getCameraEmGain method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraEmGain() {
         System.out.println("getCameraEmGain");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 300;
         instance.setCameraEmGain(expResult);
         int result = instance.getCameraEmGain();
@@ -122,12 +122,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraBaseline method, of class Model.
+     * Test of getCameraBaseline method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraBaseline() {
         System.out.println("getCameraBaseline");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 100;
         instance.setCameraBaseline(100);
         int result = instance.getCameraBaseline();
@@ -135,12 +135,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraPixelSize method, of class Model.
+     * Test of getCameraPixelSize method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraPixelSize() {
         System.out.println("getCameraPixelSize");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 16.0;
         instance.setCameraPixelSize(expResult);
         double result = instance.getCameraPixelSize();
@@ -148,12 +148,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getCameraThermalNoise method, of class Model.
+     * Test of getCameraThermalNoise method, of class IJPluginModel.
      */
     @Test
     public void testGetCameraThermalNoise() {
         System.out.println("getCameraThermalNoise");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.4;
         instance.setCameraThermalNoise(expResult);
         double result = instance.getCameraThermalNoise();
@@ -161,12 +161,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getObjectiveNa method, of class Model.
+     * Test of getObjectiveNa method, of class IJPluginModel.
      */
     @Test
     public void testGetObjectiveNa() {
         System.out.println("getObjectiveNa");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1.2;
         instance.setObjectiveNa(expResult);
         double result = instance.getObjectiveNa();
@@ -174,12 +174,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getObjectiveMag method, of class Model.
+     * Test of getObjectiveMag method, of class IJPluginModel.
      */
     @Test
     public void testGetObjectiveMag() {
         System.out.println("getObjectiveMag");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 63;
         instance.setObjectiveMag(expResult);
         double result = instance.getObjectiveMag();
@@ -187,12 +187,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getFluorophoreCurrentSelection method, of class Model.
+     * Test of getFluorophoreCurrentSelection method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreCurrentSelection() {
         System.out.println("getFluorophoreCurrentSelection");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Simple";
         instance.setFluorophoreCurrentSelection(expResult);
         String result = instance.getFluorophoreCurrentSelection();
@@ -200,12 +200,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getFluorophoreSimpleText method, of class Model.
+     * Test of getFluorophoreSimpleText method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreSimpleText() {
         System.out.println("getFluorophoreSimpleText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Simple";
         instance.setFluorophoreSimpleText(expResult);
         String result = instance.getFluorophoreSimpleText();
@@ -213,12 +213,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getFluorophorePalmText method, of class Model.
+     * Test of getFluorophorePalmText method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophorePalmText() {
         System.out.println("getFluorophorePalmText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "PALM";
         instance.setFluorophorePalmText(expResult);
         String result = instance.getFluorophorePalmText();
@@ -226,12 +226,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getFluorophoreStormText method, of class Model.
+     * Test of getFluorophoreStormText method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreStormText() {
         System.out.println("getFluorophoreStormText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "STORM";
         instance.setFluorophoreStormText(expResult);
         String result = instance.getFluorophoreStormText();
@@ -239,12 +239,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getFluorophoreSignal method, of class Model.
+     * Test of getFluorophoreSignal method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreSignal() {
         System.out.println("getFluorophoreSignal");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1500;
         instance.setFluorophoreSignal(expResult);
         double result = instance.getFluorophoreSignal();
@@ -252,12 +252,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getFluorophoreWavelength method, of class Model.
+     * Test of getFluorophoreWavelength method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreWavelength() {
         System.out.println("getFluorophoreWavelength");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.532;
         instance.setFluorophoreWavelength(expResult);
         double result = instance.getFluorophoreWavelength();
@@ -265,12 +265,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getFluorophoreTOn method, of class Model.
+     * Test of getFluorophoreTOn method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreTOn() {
         System.out.println("getFluorophoreTOn");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 3;
         instance.setFluorophoreTOn(expResult);
         double result = instance.getFluorophoreTOn();
@@ -278,12 +278,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getFluorophoreTOff method, of class Model.
+     * Test of getFluorophoreTOff method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreTOff() {
         System.out.println("getFluorophoreTOff");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 100;
         instance.setFluorophoreTOff(expResult);
         double result = instance.getFluorophoreTOff();
@@ -291,12 +291,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getFluorophoreTBl method, of class Model.
+     * Test of getFluorophoreTBl method, of class IJPluginModel.
      */
     @Test
     public void testGetFluorophoreTBl() {
         System.out.println("getFluorophoreTBl");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1000;
         instance.setFluorophoreTBl(expResult);
         double result = instance.getFluorophoreTBl();
@@ -304,12 +304,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmWavelength method, of class Model.
+     * Test of getPalmWavelength method, of class IJPluginModel.
      */
     @Test
     public void testGetPalmWavelength() {
         System.out.println("getPalmWavelength");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.58;
         instance.setPalmWavelength(expResult);
         double result = instance.getPalmWavelength();
@@ -317,11 +317,11 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmSignal method, of class Model.
+     * Test of getPalmSignal method, of class IJPluginModel.
      */
     @Test public void testGetPalmSignal() {
         System.out.println("getPalmSignal");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1250;
         instance.setPalmSignal(expResult);
         double result = instance.getPalmSignal();
@@ -329,11 +329,11 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmKA method, of class Model.
+     * Test of getPalmKA method, of class IJPluginModel.
      */
     @Test public void testGetPalmKA() {
         System.out.println("getPalmKA");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 10;
         instance.setPalmKA(expResult);
         double result = instance.getPalmKA();
@@ -341,11 +341,11 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmKB method, of class Model.
+     * Test of getPalmKB method, of class IJPluginModel.
      */
     @Test public void testGetPalmKB() {
         System.out.println("getPalmKB");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 5;
         instance.setPalmKB(expResult);
         double result = instance.getPalmKB();
@@ -353,11 +353,11 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmKD1 method, of class Model.
+     * Test of getPalmKD1 method, of class IJPluginModel.
      */
     @Test public void testGetPalmKD1() {
         System.out.println("getPalmKD1");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.1;
         instance.setPalmKD1(expResult);
         double result = instance.getPalmKD1();
@@ -365,11 +365,11 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmKR1 method, of class Model.
+     * Test of getPalmKR1 method, of class IJPluginModel.
      */
     @Test public void testGetPalmKR1() {
         System.out.println("getPalmKR1");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.1;
         instance.setPalmKR1(expResult);
         double result = instance.getPalmKR1();
@@ -377,11 +377,11 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmKD2 method, of class Model.
+     * Test of getPalmKD2 method, of class IJPluginModel.
      */
     @Test public void testGetPalmKD2() {
         System.out.println("getPalmKD2");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.1;
         instance.setPalmKD2(expResult);
         double result = instance.getPalmKD2();
@@ -389,12 +389,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPalmKR2 method, of class Model.
+     * Test of getPalmKR2 method, of class IJPluginModel.
      */
     @Test
     public void testGetPalmKR2() {
         System.out.println("getPalmKR2");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.1;
         instance.setPalmKR2(expResult);
         double result = instance.getPalmKR2();
@@ -402,12 +402,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getStormKBl method, class Model.
+     * Test of getStormKBl method, class IJPluginModel.
      */
     @Test
     public void testGetStormKBl() {
         System.out.println("getStormKBl");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.001;
         instance.setStormKBl(expResult);
         double result = instance.getStormKBl();
@@ -415,12 +415,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getStormKTriplet method, class Model.
+     * Test of getStormKTriplet method, class IJPluginModel.
      */
     @Test
     public void testGetStormKTriplet() {
         System.out.println("getStormKTriplet");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.001;
         instance.setStormKTriplet(expResult);
         double result = instance.getStormKTriplet();
@@ -428,12 +428,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getStormKTripletRecovery method, class Model.
+     * Test of getStormKTripletRecovery method, class IJPluginModel.
      */
     @Test
     public void testGetStormKTripletRecovery() {
         System.out.println("getStormKTripletRecovery");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.001;
         instance.setStormKTripletRecovery(expResult);
         double result = instance.getStormKTripletRecovery();
@@ -441,12 +441,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getStormKDark method, class Model.
+     * Test of getStormKDark method, class IJPluginModel.
      */
     @Test
     public void testGetStormKDark() {
         System.out.println("getStormKDark");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.001;
         instance.setStormKDark(expResult);
         double result = instance.getStormKDark();
@@ -454,12 +454,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getStormKDarkRecovery method, class Model.
+     * Test of getStormKDarkRecovery method, class IJPluginModel.
      */
     @Test
     public void testGetStormKDarkRecovery() {
         System.out.println("getStormKDarkRecovery");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.001;
         instance.setStormKDarkRecovery(expResult);
         double result = instance.getStormKDarkRecovery();
@@ -467,12 +467,12 @@ public class ModelTest {
     }
     
      /**
-     * Test of getStormKDarkRecoveryConstant method, class Model.
+     * Test of getStormKDarkRecoveryConstant method, class IJPluginModel.
      */
     @Test
     public void testGetStormKDarkRecoveryConstant() {
         System.out.println("getStormKDarkRecoveryConstant");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.001;
         instance.setStormKDarkRecoveryConstant(expResult);
         double result = instance.getStormKDarkRecoveryConstant();
@@ -480,12 +480,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getLaserMinPower method, of class Model.
+     * Test of getLaserMinPower method, of class IJPluginModel.
      */
     @Test
     public void testGetLaserMinPower() {
         System.out.println("getLaserMinPower");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.0;
         instance.setLaserMinPower(expResult);
         double result = instance.getLaserMinPower();
@@ -493,12 +493,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getLaserMaxPower method, of class Model.
+     * Test of getLaserMaxPower method, of class IJPluginModel.
      */
     @Test
     public void testGetLaserMaxPower() {
         System.out.println("getLaserMaxPower");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 150.0;
         instance.setLaserMaxPower(expResult);
         double result = instance.getLaserMaxPower();
@@ -506,12 +506,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getLaserCurrentPower method, of class Model.
+     * Test of getLaserCurrentPower method, of class IJPluginModel.
      */
     @Test
     public void testGetLaserCurrentPower() {
         System.out.println("getLaserCurrentPower");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 5.0;
         instance.setLaserCurrentPower(expResult);
         double result = instance.getLaserCurrentPower();
@@ -519,12 +519,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getStageX method, of class Model.
+     * Test of getStageX method, of class IJPluginModel.
      */
     @Test
     public void testGetStageX() {
         System.out.println("getStageX");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 5.0;
         instance.setStageX(expResult);
         double result = instance.getStageX();
@@ -532,12 +532,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getStageY method, of class Model.
+     * Test of getStageY method, of class IJPluginModel.
      */
     @Test
     public void testGetStageY() {
         System.out.println("getStageY");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 13.0;
         instance.setStageY(expResult);
         double result = instance.getStageY();
@@ -545,12 +545,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getStageZ method, of class Model.
+     * Test of getStageZ method, of class IJPluginModel.
      */
     @Test
     public void testGetStageZ() {
         System.out.println("getStageZ");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = -3.5;
         instance.setStageZ(expResult);
         double result = instance.getStageZ();
@@ -558,12 +558,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersCurrentSelection method, of class Model.
+     * Test of getEmittersCurrentSelection method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersCurrentSelection() {
         System.out.println("getEmittersCurrentSelection");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Random";
         instance.setEmittersCurrentSelection(expResult);
         String result = instance.getEmittersCurrentSelection();
@@ -571,12 +571,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersRandomNumber method, of class Model.
+     * Test of getEmittersRandomNumber method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersRandomNumber() {
         System.out.println("getEmittersRandomNumber");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 42;
         instance.setEmittersRandomNumber(expResult);
         int result = instance.getEmittersRandomNumber();
@@ -584,12 +584,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersGridSpacing method, of class Model.
+     * Test of getEmittersGridSpacing method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersGridSpacing() {
         System.out.println("getEmittersGridSpacing");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 5;
         instance.setEmittersGridSpacing(expResult);
         int result = instance.getEmittersGridSpacing();
@@ -597,12 +597,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersCsvFile method, of class Model.
+     * Test of getEmittersCsvFile method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersCsvFile() {
         System.out.println("getEmittersCsvFile");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "/file/path";
         instance.setEmittersCsvFile(expResult);
         String result = instance.getEmittersCsvFile();
@@ -610,12 +610,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersRandomButtonText method, of class Model.
+     * Test of getEmittersRandomButtonText method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersRandomButtonText() {
         System.out.println("getEmittersRandomButtonText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Grid";
         instance.setEmittersRandomButtonText(expResult);
         String result = instance.getEmittersRandomButtonText();
@@ -623,12 +623,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersGridButtonText method, of class Model.
+     * Test of getEmittersGridButtonText method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersGridButtonText() {
         System.out.println("getEmittersGridButtonText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Grid";
         instance.setEmittersGridButtonText(expResult);
         String result = instance.getEmittersGridButtonText();
@@ -636,12 +636,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getEmittersCsvFileButtonText method, of class Model.
+     * Test of getEmittersCsvFileButtonText method, of class IJPluginModel.
      */
     @Test
     public void testGetEmittersCsvFileButtonText() {
         System.out.println("getEmittersCsvFileButtonText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "From .csv file...";
         instance.setEmittersCsvFileButtonText(expResult);
         String result = instance.getEmittersCsvFileButtonText();
@@ -649,12 +649,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getEmitters3DCheckBoxEnabled method, of class Model.
+     * Test of getEmitters3DCheckBoxEnabled method, of class IJPluginModel.
      */
     @Test
     public void testGetEmitters3DCheckBoxEnabled() {
         System.out.println("getEmitters3DCheckBoxEnabled");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         boolean expResult = true;
         instance.setEmitters3DCheckBoxEnabled(expResult);
         boolean result = instance.getEmitters3DCheckBoxEnabled();
@@ -662,12 +662,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getEmitters3DMinZ method, of class Model.
+     * Test of getEmitters3DMinZ method, of class IJPluginModel.
      */
     @Test
     public void testGetEmitters3DMinZ() {
         System.out.println("getEmitters3DMinZ");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.0;
         instance.setEmitters3DMinZ(expResult);
         double result = instance.getEmitters3DMinZ();
@@ -675,12 +675,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getEmitters3DMaxZ method, of class Model.
+     * Test of getEmitters3DMaxZ method, of class IJPluginModel.
      */
     @Test
     public void testGetEmitters3DMaxZ() {
         System.out.println("getEmitters3DMaxZ");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 3.2;
         instance.setEmitters3DMaxZ(expResult);
         double result = instance.getEmitters3DMaxZ();
@@ -688,12 +688,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getFiducialsNumber method, of class Model.
+     * Test of getFiducialsNumber method, of class IJPluginModel.
      */
     @Test
     public void testGetFiducialsNumber() {
         System.out.println("getFiducialsNumber");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 37;
         instance.setFiducialsNumber(expResult);
         int result = instance.getFiducialsNumber();
@@ -701,12 +701,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getFiducialsSignal method, of class Model.
+     * Test of getFiducialsSignal method, of class IJPluginModel.
      */
     @Test
     public void testGetFiducialsSignal() {
         System.out.println("getFiducialsSignal");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 3000;
         instance.setFiducialsSignal(expResult);
         double result = instance.getFiducialsSignal();
@@ -714,12 +714,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getBackgroundCurrentSelection method, of class Model.
+     * Test of getBackgroundCurrentSelection method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundCurrentSelection() {
         System.out.println("getBackgroundCurrentSelection");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Uniform";
         instance.setBackgroundCurrentSelection(expResult);
         String result = instance.getBackgroundCurrentSelection();
@@ -727,12 +727,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getBackgroundUniformSignal method, of class Model.
+     * Test of getBackgroundUniformSignal method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundUniformSignal() {
         System.out.println("getBackgroundUniformSignal");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         float expResult = 2378;
         instance.setBackgroundUniformSignal(expResult);
         float result = instance.getBackgroundUniformSignal();
@@ -740,12 +740,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getBackgroundRandomFeatureSize method, of class Model.
+     * Test of getBackgroundRandomFeatureSize method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundRandomFeatureSize() {
         System.out.println("getBackgroundRandomFeatureSize");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 25;
         instance.setBackgroundRandomFeatureSize(expResult);
         double result = instance.getBackgroundRandomFeatureSize();
@@ -753,12 +753,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getBackgroundRandomMinValue method, of class Model.
+     * Test of getBackgroundRandomMinValue method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundRandomMinValue() {
         System.out.println("getBackgroundRandomMinValue");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         float expResult = 25;
         instance.setBackgroundRandomMinValue(expResult);
         double result = instance.getBackgroundRandomMinValue();
@@ -766,12 +766,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getBackgroundRandomMaxValue method, of class Model.
+     * Test of getBackgroundRandomMaxValue method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundRandomMaxValue() {
         System.out.println("getBackgroundRandomMaxValue");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         float expResult = 25;
         instance.setBackgroundRandomMaxValue(expResult);
         double result = instance.getBackgroundRandomMaxValue();
@@ -779,12 +779,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getBackgroundRandomFeatureSize method, of class Model.
+     * Test of getBackgroundRandomFeatureSize method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundRandomSeed() {
         System.out.println("getBackgroundRandomMaxValue");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 42;
         instance.setBackgroundRandomSeed(expResult);
         int result = instance.getBackgroundRandomSeed();
@@ -792,12 +792,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getBackgroundTifFile method, of class Model.
+     * Test of getBackgroundTifFile method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundTifFile() {
         System.out.println("getBackgroundTifFile");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "/path/to/file";
         instance.setBackgroundTifFile(expResult);
         String result = instance.getBackgroundTifFile();
@@ -805,12 +805,12 @@ public class ModelTest {
     }
 
     /**
-     * Test of getBackgroundUniformButtonText method, of class Model.
+     * Test of getBackgroundUniformButtonText method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundUniformButtonText() {
         System.out.println("getBackgroundUniformButtonText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Uniform";
         instance.setBackgroundUniformButtonText(expResult);
         String result = instance.getBackgroundUniformButtonText();
@@ -824,7 +824,7 @@ public class ModelTest {
     @Test
     public void testGetBackgroundRandomButtonText() {
         System.out.println("getBackgroundRandomButtonText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Random";
         instance.setBackgroundRandomButtonText(expResult);
         String result = instance.getBackgroundRandomButtonText();
@@ -832,12 +832,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getBackgroundTifFileButtonText method, of class Model.
+     * Test of getBackgroundTifFileButtonText method, of class IJPluginModel.
      */
     @Test
     public void testGetBackgroundTifFileButtonText() {
         System.out.println("getBackgroundTifFileButtonText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "From .tif file...";
         instance.setBackgroundTifFileButtonText(expResult);
         String result = instance.getBackgroundTifFileButtonText();
@@ -845,12 +845,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfCurrentSelection method, of class Model.
+     * Test of getPsfCurrentSelection method, of class IJPluginModel.
      */
     @Test
     public void testGetPsfCurrentSelection() {
         System.out.println("getPsfCurrentSelection");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Gaussian 2D";
         instance.setPsfCurrentSelection(expResult);
         String result = instance.getPsfCurrentSelection();
@@ -858,12 +858,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGaussian2dText method, of class Model.
+     * Test of getPsfGaussian2dText method, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGaussian2dText() {
         System.out.println("getPsfGaussian2dText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Gaussian 2D";
         instance.setPsfGaussian2dText(expResult);
         String result = instance.getPsfGaussian2dText();
@@ -871,12 +871,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGaussian3dText method, of class Model.
+     * Test of getPsfGaussian3dText method, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGaussian3dText() {
         System.out.println("getPsfGaussian3dText");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "Gaussian 3D";
         instance.setPsfGaussian3dText(expResult);
         String result = instance.getPsfGaussian3dText();
@@ -884,12 +884,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNumBasis, of class Model.
+     * Test of getPsfGibsonLanniNumBasis, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNumBasis() {
         System.out.println("getPsfGibsonLanniNumBasis");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 100;
         instance.setPsfGibsonLanniNumBasis(expResult);
         int result = instance.getPsfGibsonLanniNumBasis();
@@ -897,12 +897,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNumSamples, of class Model.
+     * Test of getPsfGibsonLanniNumSamples, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNumSamples() {
         System.out.println("getPsfGibsonLanniNumSamples");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 1000;
         instance.setPsfGibsonLanniNumSamples(expResult);
         int result = instance.getPsfGibsonLanniNumSamples();
@@ -910,12 +910,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniOversampling, of class Model.
+     * Test of getPsfGibsonLanniOversampling, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniOversampling() {
         System.out.println("getPsfGibsonLanniOversampling");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 2;
         instance.setPsfGibsonLanniOversampling(expResult);
         int result = instance.getPsfGibsonLanniOversampling();
@@ -923,12 +923,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniSizeX, of class Model.
+     * Test of getPsfGibsonLanniSizeX, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniSizeX() {
         System.out.println("getPsfGibsonLanniSizeX");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 32;
         instance.setPsfGibsonLanniSizeX(expResult);
         int result = instance.getPsfGibsonLanniSizeX();
@@ -936,12 +936,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniSizeY, of class Model.
+     * Test of getPsfGibsonLanniSizeY, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniSizeY() {
         System.out.println("getPsfGibsonLanniSizeY");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 32;
         instance.setPsfGibsonLanniSizeY(expResult);
         int result = instance.getPsfGibsonLanniSizeY();
@@ -949,12 +949,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNs, of class Model.
+     * Test of getPsfGibsonLanniNs, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNs() {
         System.out.println("getPsfGibsonLanniNs");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1.33;
         instance.setPsfGibsonLanniNs(expResult);
         double result = instance.getPsfGibsonLanniNs();
@@ -962,12 +962,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNg0, of class Model.
+     * Test of getPsfGibsonLanniNg0, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNg0() {
         System.out.println("getPsfGibsonLanniNg0");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1.5;
         instance.setPsfGibsonLanniNg0(expResult);
         double result = instance.getPsfGibsonLanniNg0();
@@ -975,12 +975,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNg, of class Model.
+     * Test of getPsfGibsonLanniNg, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNg() {
         System.out.println("getPsfGibsonLanniNg");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1.5;
         instance.setPsfGibsonLanniNg(expResult);
         double result = instance.getPsfGibsonLanniNg();
@@ -988,12 +988,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNi0, of class Model.
+     * Test of getPsfGibsonLanniNi0, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNi0() {
         System.out.println("getPsfGibsonLanniNi0");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1.5;
         instance.setPsfGibsonLanniNi0(expResult);
         double result = instance.getPsfGibsonLanniNi0();
@@ -1001,12 +1001,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniNi, of class Model.
+     * Test of getPsfGibsonLanniNi, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniNi() {
         System.out.println("getPsfGibsonLanniNi");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 1.5;
         instance.setPsfGibsonLanniNi(expResult);
         double result = instance.getPsfGibsonLanniNi();
@@ -1014,12 +1014,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniTi0, of class Model.
+     * Test of getPsfGibsonLanniTi0, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniTi0() {
         System.out.println("getPsfGibsonLanniTi0");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 150;
         instance.setPsfGibsonLanniTi0(expResult);
         double result = instance.getPsfGibsonLanniTi0();
@@ -1027,12 +1027,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniTg0, of class Model.
+     * Test of getPsfGibsonLanniTg0, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniTg0() {
         System.out.println("getPsfGibsonLanniTg0");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 170;
         instance.setPsfGibsonLanniTg0(expResult);
         double result = instance.getPsfGibsonLanniTg0();
@@ -1040,12 +1040,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniTg, of class Model.
+     * Test of getPsfGibsonLanniTg, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniTg() {
         System.out.println("getPsfGibsonLanniTg");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 170;
         instance.setPsfGibsonLanniTg(expResult);
         double result = instance.getPsfGibsonLanniTg();
@@ -1053,12 +1053,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniResPsf, of class Model.
+     * Test of getPsfGibsonLanniResPsf, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniResPsf() {
         System.out.println("getPsfGibsonLanniResPsf");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.0215;
         instance.setPsfGibsonLanniResPsf(expResult);
         double result = instance.getPsfGibsonLanniResPsf();
@@ -1066,12 +1066,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniResPsfAxial, of class Model.
+     * Test of getPsfGibsonLanniResPsfAxial, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniResPsfAxial() {
         System.out.println("getPsfGibsonLanniResPsfAxial");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         double expResult = 0.005;
         instance.setPsfGibsonLanniResPsfAxial(expResult);
         double result = instance.getPsfGibsonLanniResPsfAxial();
@@ -1079,12 +1079,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniSolver, of class Model.
+     * Test of getPsfGibsonLanniSolver, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniSolver() {
         System.out.println("getPsfGibsonLanniSolver");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "svd";
         instance.setPsfGibsonLanniSolver(expResult);
         String result = instance.getPsfGibsonLanniSolver();
@@ -1092,12 +1092,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getPsfGibsonLanniMaxRadius, of class Model.
+     * Test of getPsfGibsonLanniMaxRadius, of class IJPluginModel.
      */
     @Test
     public void testGetPsfGibsonLanniMaxRadius() {
         System.out.println("getPsfGibsonLanniMaxRadius");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         int expResult = 15;
         instance.setPsfGibsonLanniMaxRadius(expResult);
         int result = instance.getPsfGibsonLanniMaxRadius();
@@ -1105,12 +1105,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getAnalyzerCurrentSelection method, of class Model.
+     * Test of getAnalyzerCurrentSelection method, of class IJPluginModel.
      */
     @Test
     public void testGetAnalyzerCurrentSelection() {
         System.out.println("getAnalyzerCurrentSelection");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "SpotCounter";
         instance.setAnalyzerCurrentSelection(expResult);
         String result = instance.getAnalyzerCurrentSelection();
@@ -1118,12 +1118,12 @@ public class ModelTest {
     }
     
     /**
-     * Test of getControllerCurrentSelection method, of class Model.
+     * Test of getControllerCurrentSelection method, of class IJPluginModel.
      */
     @Test
     public void testGetControllerCurrentSelection() {
         System.out.println("getControllerCurrentSelection");
-        Model instance = new Model();
+        IJPluginModel instance = new IJPluginModel();
         String expResult = "PI";
         instance.setControllerCurrentSelection(expResult);
         String result = instance.getControllerCurrentSelection();

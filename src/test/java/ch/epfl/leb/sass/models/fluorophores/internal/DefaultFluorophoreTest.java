@@ -23,9 +23,17 @@ import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.*;
 
-import ch.epfl.leb.sass.models.fluorophores.internal.StateSystem;
-import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
+import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.psfs.PSF;
 import ch.epfl.leb.sass.models.legacy.Camera;
+
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -34,6 +42,8 @@ import ch.epfl.leb.sass.models.legacy.Camera;
 public class DefaultFluorophoreTest {
     private Camera dummyCamera = null;
     private StateSystem dummyStateSystem = null;
+    private PSFBuilder dummyPSFBuilder = null;
+    private PSF dummyPSF = null;
     
     public DefaultFluorophoreTest() {
     } 
@@ -42,6 +52,8 @@ public class DefaultFluorophoreTest {
     public void setUp() {
         dummyCamera = mock(Camera.class);
         dummyStateSystem = mock(StateSystem.class);
+        dummyPSFBuilder = mock(PSFBuilder.class);
+        dummyPSF = mock(PSF.class);
     }
     
     /**
@@ -69,6 +81,46 @@ public class DefaultFluorophoreTest {
             0
         );
         assertEquals(++currID, testFluorNext.getId());
+    }
+    
+    /**
+     * Test that the fluorophore serializes itself to JSON correctly.
+     */
+    @Test
+    public void testDefaultFluorophoreToJson() {
+        
+        double x = 1.5; double y = -2.5; double z = 3.0;
+        int startState = 0;
+        double signal = 1000;
+        when(dummyPSFBuilder.build()).thenReturn(dummyPSF);
+        when(dummyPSFBuilder.eX(x)).thenReturn(dummyPSFBuilder);
+        when(dummyPSFBuilder.eY(y)).thenReturn(dummyPSFBuilder);
+        when(dummyPSFBuilder.eZ(z)).thenReturn(dummyPSFBuilder);
+        when(dummyPSF.getRadius()).thenReturn(1.0);
+        when(dummyStateSystem.getNStates()).thenReturn(startState + 1);
+        Mockito.doNothing()
+               .when(dummyPSF)
+               .generateSignature(ArgumentMatchers.any(ArrayList.class));
+        
+        DefaultFluorophore testFluor = new DefaultFluorophore(
+            dummyPSFBuilder, signal, dummyStateSystem, startState, x, y, z
+        );
+        
+        String result = testFluor.toJson();
+        
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(result).getAsJsonObject();
+        
+        assertNotNull(json.get("id"));
+        assertTrue(String.valueOf(x).equals(json.get("x").getAsString()));
+        assertTrue(String.valueOf(y).equals(json.get("y").getAsString()));
+        assertTrue(String.valueOf(z).equals(json.get("z").getAsString()));
+        assertTrue(String.valueOf(signal).equals(json.get("photonsPerFrame")
+                                               .getAsString()));
+        assertTrue(String.valueOf(startState).equals(json.get("currentState")
+                                                   .getAsString()));
+        assertTrue("false".equals(json.get("bleached").getAsString()));
+        assertTrue("false".equals(json.get("emitting").getAsString()));
     }
 }
 

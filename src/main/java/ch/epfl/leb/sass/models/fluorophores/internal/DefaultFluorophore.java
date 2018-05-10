@@ -244,13 +244,34 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore, 
      * @return The properties of the fluorophore as a JSON string.
      */
     @Override
-    public String toJson() {
+    public JsonElement toJson() {
         Gson gson = new GsonBuilder()
                         .registerTypeAdapter(DefaultFluorophore.class,
                                              new DefaultFluorophoreSerializer())
                         .create();
-        return gson.toJson(this);
+        return gson.toJsonTree(this);
     }
+    
+    /**
+     * Return the x-position of the fluorophore.
+     * 
+     * @return The fluorophore's x-position.
+     */
+    public double getX() { return this.x; }
+    
+    /**
+     * Return the y-position of the fluorophore.
+     * 
+     * @return The fluorophore's y-position.
+     */
+    public double getY() { return this.y; }
+    
+    /**
+     * Return the z-position of the fluorophore.
+     * 
+     * @return The fluorophore's z-position.
+     */
+    public double getZ() { return this.z; }
 }
 
 class DefaultFluorophoreSerializer implements JsonSerializer<DefaultFluorophore> {

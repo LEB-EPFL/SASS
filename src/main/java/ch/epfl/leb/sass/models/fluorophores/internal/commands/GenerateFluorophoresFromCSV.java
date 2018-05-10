@@ -17,7 +17,7 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
-import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
@@ -118,7 +118,7 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
      * @return The list of Fluorophores.
      */
     @Override
-    public List<DefaultFluorophore> generateFluorophores() {
+    public List<Fluorophore> generateFluorophores() {
         try {
             return FluorophoreReceiver.generateFluorophoresFromCSV(
                     this.file,
@@ -132,14 +132,14 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
                         .log(Level.WARNING, null, ex);
             
             // No file found; return empty list of fluorophores.
-            return new ArrayList<DefaultFluorophore>();
+            return new ArrayList<Fluorophore>();
         } catch (IOException ex) {
             Logger.getLogger(
                         GenerateFluorophoresFromCSV.class.getName())
                         .log(Level.WARNING, null, ex);
             
             // Error reading file; return empty list of fluorophores.
-            return new ArrayList<DefaultFluorophore>();
+            return new ArrayList<Fluorophore>();
         }
     }
 }

@@ -17,7 +17,7 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
-import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
@@ -100,7 +100,7 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      * @return The list of fluorophores.
      */
     @Override
-    public List<DefaultFluorophore> generateFluorophores() {
+    public List<Fluorophore> generateFluorophores() {
         return FluorophoreReceiver.generateFluorophoresRandom2D(
                 this.numFluors, 
                 this.camera,

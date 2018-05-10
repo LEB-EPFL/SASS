@@ -17,8 +17,7 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
-import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
-import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import java.util.List;
 
 /**
@@ -28,6 +27,6 @@ import java.util.List;
  */
 public interface FluorophoreCommand {
     
-    public List<DefaultFluorophore> generateFluorophores();
+    public List<Fluorophore> generateFluorophores();
     
 }

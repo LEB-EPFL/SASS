@@ -32,6 +32,7 @@ import ch.epfl.leb.sass.models.legacy.Camera;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
@@ -106,7 +107,7 @@ public class DefaultFluorophoreTest {
             dummyPSFBuilder, signal, dummyStateSystem, startState, x, y, z
         );
         
-        String result = testFluor.toJson();
+        String result = testFluor.toJson().toString();
         
         JsonParser parser = new JsonParser();
         JsonObject json = parser.parse(result).getAsJsonObject();

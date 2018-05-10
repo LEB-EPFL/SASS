@@ -45,4 +45,32 @@ public interface Fluorophore {
      */
     public void recalculateLifetimes(double laserPower);
     
+    /**
+     * Renders the fluorophore onto an array of pixels.
+     * 
+     * @param pixels Image on which the fluorophore's signature will be drawn.
+     */
+    public void applyTo(float[][] pixels);
+    
+    /**
+     * Return the x-position of the fluorophore.
+     * 
+     * @return The fluorophore's x-position.
+     */
+    public double getX();
+    
+    /**
+     * Return the y-position of the fluorophore.
+     * 
+     * @return The fluorophore's y-position.
+     */
+    public double getY();
+    
+    /**
+     * Return the z-position of the fluorophore.
+     * 
+     * @return The fluorophore's z-position.
+     */
+    public double getZ();
+    
 }

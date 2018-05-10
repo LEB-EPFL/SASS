@@ -5,6 +5,8 @@
  */
 package ch.epfl.leb.sass.models;
 
+import com.google.gson.JsonElement;
+
 /**
  * Defines common methods possessed by all models employed by the microscope.
  * 
@@ -13,9 +15,9 @@ package ch.epfl.leb.sass.models;
 public interface Model {
     
     /**
-     * Outputs the model's properties as a JSON string.
+     * Outputs the model's properties as a JSON element.
      * 
-     * @return A JSON string describing the model's properties.
+     * @return A JSON tree describing the model's properties.
      */
-    public String toJson();
+    public JsonElement toJson();
 }

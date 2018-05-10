@@ -18,6 +18,7 @@
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
 import ch.epfl.leb.sass.utils.RNG;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.components.Camera;
@@ -27,7 +28,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.ArrayIndexOutOfBoundsException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JFileChooser;
@@ -55,17 +55,17 @@ public class FluorophoreReceiver {
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
-    public static ArrayList<DefaultFluorophore> generateFluorophoresRandom2D(
+    public static ArrayList<Fluorophore> generateFluorophoresRandom2D(
             int numFluors,
             Camera camera,
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics) {
         Random rnd = RNG.getUniformGenerator();
-        ArrayList<DefaultFluorophore> result = new ArrayList();
+        ArrayList<Fluorophore> result = new ArrayList();
         double x;
         double y;
         double z = 0;
-        DefaultFluorophore fluorophore;
+        Fluorophore fluorophore;
         for (int i=0; i < numFluors; i++) {
             x = camera.getNX() * rnd.nextDouble();
             y = camera.getNY() * rnd.nextDouble();
@@ -91,7 +91,7 @@ public class FluorophoreReceiver {
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
-    public static ArrayList<DefaultFluorophore> generateFluorophoresRandom3D(
+    public static ArrayList<Fluorophore> generateFluorophoresRandom3D(
             int numFluors,
             double zLow,
             double zHigh,
@@ -99,11 +99,11 @@ public class FluorophoreReceiver {
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics) {
         Random rnd = RNG.getUniformGenerator();
-        ArrayList<DefaultFluorophore> result = new ArrayList();
+        ArrayList<Fluorophore> result = new ArrayList();
         double x;
         double y;
         double z;
-        DefaultFluorophore fluorophore;
+        Fluorophore fluorophore;
         for (int i=0; i < numFluors; i++) {
             x = camera.getNX() * rnd.nextDouble();
             y = camera.getNY() * rnd.nextDouble();
@@ -128,7 +128,7 @@ public class FluorophoreReceiver {
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
-    public static ArrayList<DefaultFluorophore> generateFluorophoresGrid2D(
+    public static ArrayList<Fluorophore> generateFluorophoresGrid2D(
             int spacing,
             Camera camera,
             PSFBuilder psfBuilder,
@@ -136,8 +136,8 @@ public class FluorophoreReceiver {
         int limitX = camera.getNX();
         int limitY = camera.getNY();
         double z = 0.0;
-        ArrayList<DefaultFluorophore> result = new ArrayList();
-        DefaultFluorophore fluorophore;       
+        ArrayList<Fluorophore> result = new ArrayList();
+        Fluorophore fluorophore;       
         for (int i=spacing; i < limitX; i+=spacing) {
             for (int j=spacing; j < limitY; j+= spacing) {
                 fluorophore = new DefaultFluorophore(
@@ -163,7 +163,7 @@ public class FluorophoreReceiver {
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
      */
-    public static ArrayList<DefaultFluorophore> generateFluorophoresGrid3D(
+    public static ArrayList<Fluorophore> generateFluorophoresGrid3D(
             int spacing,
             double zLow,
             double zHigh,
@@ -176,8 +176,8 @@ public class FluorophoreReceiver {
         double zSpacing  = (zHigh - zLow) / (numFluors - 1);
         double z = zLow;
         
-        ArrayList<DefaultFluorophore> result = new ArrayList();
-        DefaultFluorophore fluorophore;
+        ArrayList<Fluorophore> result = new ArrayList();
+        Fluorophore fluorophore;
         for (int i = spacing; i < limitX; i += spacing) {
             for (int j = spacing; j < limitY; j += spacing) {
                 fluorophore = new DefaultFluorophore(
@@ -206,7 +206,7 @@ public class FluorophoreReceiver {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static ArrayList<DefaultFluorophore> generateFluorophoresFromCSV(
+    public static ArrayList<Fluorophore> generateFluorophoresFromCSV(
             File file,
             Camera camera,
             PSFBuilder psfBuilder,
@@ -219,12 +219,12 @@ public class FluorophoreReceiver {
         System.out.println("Building fluorophore PSF's...");
         
         // load all fluorophores
-        ArrayList<DefaultFluorophore> result = new ArrayList();
+        ArrayList<Fluorophore> result = new ArrayList();
         double x;
         double y;
         double z;
         int counter = 0;
-        DefaultFluorophore fluorophore;
+        Fluorophore fluorophore;
         BufferedReader br;
         String line;
         String splitBy = ",";
@@ -272,22 +272,22 @@ public class FluorophoreReceiver {
         // rescale positions to fit into frame        
         if (rescale) {
             System.out.println("Building rescaled PSF's....");
-            ArrayList<DefaultFluorophore> result_rescaled = new ArrayList<DefaultFluorophore>();
+            ArrayList<Fluorophore> result_rescaled = new ArrayList<Fluorophore>();
             double max_x_coord = 0.0;
-            for (DefaultFluorophore f: result) {
-                if (f.x>max_x_coord)
-                    max_x_coord = f.x;
+            for (Fluorophore f: result) {
+                if (f.getX() > max_x_coord)
+                    max_x_coord = f.getX();
             }
             double factor = camera.getNX()/max_x_coord;
-            for (DefaultFluorophore f: result) {
+            for (Fluorophore f: result) {
                 fluorophore = new DefaultFluorophore(
                     psfBuilder,
                     fluorDynamics.getSignal(),
                     fluorDynamics.getStateSystem(),
                     fluorDynamics.getStartingState(),
-                    f.x * factor,
-                    f.y * factor,
-                    f.z * factor);
+                    f.getX() * factor,
+                    f.getY() * factor,
+                    f.getZ() * factor);
                 result_rescaled.add(fluorophore);
             }
             
@@ -295,9 +295,9 @@ public class FluorophoreReceiver {
             return result_rescaled;
         // or crop fluorophores outside of frame
         } else {
-            ArrayList<DefaultFluorophore> result_cropped = new ArrayList<DefaultFluorophore>();
-            for (DefaultFluorophore f: result) {
-                if (f.x < camera.getNX() && f.y < camera.getNY()) {
+            ArrayList<Fluorophore> result_cropped = new ArrayList<Fluorophore>();
+            for (Fluorophore f: result) {
+                if (f.getX() < camera.getNX() && f.getY() < camera.getNY()) {
                     result_cropped.add(f);
                 }
             }

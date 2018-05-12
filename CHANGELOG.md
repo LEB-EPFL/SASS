@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Some Microscope components may now be serialized to JSON strings.
+- A `SimulationManager` object was added to handle communications with
+  multiple `Simulator` instances.
 
 ## [v0.8.0]
 

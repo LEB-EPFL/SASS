@@ -25,10 +25,21 @@ import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.utils.images.ImageS;
 
 /**
- *
+ * Fields and methods that all Simulators should possess.
+ * 
  * @author Marcel Stefko
  */
 public abstract class AbstractSimulator implements Simulator {
+    
+    /**
+     * Running total of the number of simulators that have been created.
+     */
+    protected static int simulatorIds = 0;
+    
+    /**
+     * A unique ID assigned to this simulator.
+     */
+    protected int id;
 
     /**
      * Map of custom parameters for the generator.
@@ -41,10 +52,22 @@ public abstract class AbstractSimulator implements Simulator {
     protected ImageS stack;    
     
     /**
-     * Initializes the empty parameters map.
+     * Initializes the simulator.
      */
     public AbstractSimulator() {
-        parameters = new HashMap<String,Double>();        
+        parameters = new HashMap<>();       
+        simulatorIds += 1;
+        this.id = simulatorIds;
+    }
+    
+    /**
+     * Returns the integer ID of the simulator instance.
+     * 
+     * @return A unique integer ID for this simulator.
+     */
+    @Override
+    public int getId() {
+        return id;
     }
     
     @Override

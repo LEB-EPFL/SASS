@@ -41,7 +41,7 @@ import java.util.Random;
  * A general fluorescent molecule which emits light.
  * @author Marcel Stefko
  */
-public class DefaultFluorophore extends AbstractEmitter implements Fluorophore, Model {
+public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
     
     /**
      * internal emitter clock for tracking total time elapsed

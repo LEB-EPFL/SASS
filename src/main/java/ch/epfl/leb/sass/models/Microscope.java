@@ -23,8 +23,8 @@ import cern.jet.random.Poisson;
 
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
-import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.utils.RNG;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamicsBuilder;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
@@ -43,7 +43,8 @@ import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 
 /**
  * Integrates all the components into one microscope.
@@ -64,6 +65,9 @@ public class Microscope {
     private final Poisson poisson = RNG.getPoissonGenerator();
     private final Gamma gamma = RNG.getGammaGenerator();
     private final Normal gaussian = RNG.getGaussianGenerator();
+    
+    // Member names for JSON serialization
+    private final String FLUOR_MEMBER_NAME="Fluorophores";
     
     /** 
      * Initializes the microscope for simulations.
@@ -190,6 +194,30 @@ public class Microscope {
             }
         }
         return count;
+    }
+    
+    /**
+     * Returns information about the sample fluorophores.
+     * 
+     * @return A JsonElement containing information about the fluorophores.
+     */
+    public JsonObject getFluorophoreInfo() {
+        JsonArray jsonArray = new JsonArray();
+        for (Fluorophore f: fluorophores) {
+            jsonArray.add(f.toJson());
+        }
+        
+        JsonObject json = new JsonObject();
+        json.add(FLUOR_MEMBER_NAME, jsonArray);
+        return json;
+    }
+    
+    /**
+     * Returns the JSON member name assigned to the Fluorophores.
+     * @return The JSON member name for the Fluorophore field.
+     */
+    public String getFluorophoreJsonName() {
+        return FLUOR_MEMBER_NAME;
     }
     
     /**

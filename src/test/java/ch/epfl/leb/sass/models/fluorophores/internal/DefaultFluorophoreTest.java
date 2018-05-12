@@ -32,7 +32,6 @@ import ch.epfl.leb.sass.models.legacy.Camera;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 

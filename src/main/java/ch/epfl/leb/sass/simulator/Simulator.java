@@ -33,6 +33,13 @@ import java.util.HashMap;
 public interface Simulator {
     
     /**
+     * Returns the unique ID assigned to this simulator.
+     * 
+     * @return The integer ID of this simulator.
+     */
+    public int getId();
+    
+    /**
      * Returns the number of images simulated.
      * 
      * Because the simulation can advance without generating an image, this

@@ -57,6 +57,24 @@ public class DefaultSimulationManagerTest {
         sims.put(1, dummySim1);
         sims.put(2, dummySim2);
     }
+    
+    /**
+     * Test of addSimulator method, of class DefaultSimulationManager.
+     */
+    @Test
+    public void testAddSimulator() {
+        System.out.println("addSimulator");
+        DefaultSimulationManager instance = new DefaultSimulationManager();
+        
+        when(dummySim1.getId()).thenReturn(42);
+        instance.addSimulator(dummySim1);
+        
+        List<Integer> expResult = new ArrayList<>();
+        expResult.add(42);
+        
+        List<Integer> result = instance.getIds();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of getIds method, of class DefaultSimulationManager.

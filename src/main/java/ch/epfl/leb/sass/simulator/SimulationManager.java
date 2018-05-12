@@ -27,6 +27,13 @@ import java.util.List;
 public interface SimulationManager {
     
     /**
+     * Adds a simulation to the manager.
+     * 
+     * @param The simulation to add to the manager.
+     */
+    public void addSimulator(Simulator simulator);
+    
+    /**
      * Returns a list of simulation IDs currently managed by this Manager.
      * 
      * A simulation manager is a Singleton; there is only one.

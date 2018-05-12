@@ -39,7 +39,7 @@ public class DefaultSimulationManager implements SimulationManager {
      * Default constructor.
      */
     public DefaultSimulationManager() {
-        
+        listOfSims = new ConcurrentHashMap<>();
     }
     
     /**
@@ -49,6 +49,15 @@ public class DefaultSimulationManager implements SimulationManager {
      */
     public DefaultSimulationManager(ConcurrentHashMap simulations) {
         listOfSims = simulations;
+    }
+    
+    /**
+     * Adds a simulation to the manager.
+     * 
+     * @param The simulation to add to the manager.
+     */
+    public void addSimulator(Simulator simulator) {
+        listOfSims.put(simulator.getId(), simulator);
     }
     
     /**

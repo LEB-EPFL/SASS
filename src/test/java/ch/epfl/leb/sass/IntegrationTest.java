@@ -1,5 +1,7 @@
+package ch.epfl.leb.sass;
+
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,18 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.commands;
-
-import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
-import java.util.List;
 
 /**
- * Executes a command for generating fluorophores.
+ * Category annotation for IntegrationTests.
  * 
  * @author Kyle M. Douglass
  */
-public interface FluorophoreCommand {
-    
-    public List<Fluorophore> generateFluorophores();
+public interface IntegrationTest {
     
 }

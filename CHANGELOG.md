@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Some Microscope components may now be serialized to JSON strings.
+
 ## [v0.8.0]
 
 ### Changed
@@ -268,3 +273,4 @@ Contains [ALICA v0.0.2]
 [v0.6.1]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.6.1
 [v0.7.0]: https://github.com/LEB-EPFL/SASS/releases/tag/v0.7.0
 [v0.8.0]: https://github.com/LEB-EPFL/SASS/releases/tab/0.8.0
+[Unreleased]: https://github.com/LEB-EPFL/SASS/compare/0.8.0...HEAD

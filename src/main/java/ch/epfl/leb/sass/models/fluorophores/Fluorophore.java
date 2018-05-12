@@ -17,12 +17,14 @@
  */
 package ch.epfl.leb.sass.models.fluorophores;
 
+import ch.epfl.leb.sass.models.Model;
+
 /**
  * A single fluorophore including its position and photophysical properties.
  * 
  * @author Kyle M. Douglass
  */
-public interface Fluorophore {
+public interface Fluorophore extends Model {
     
     /**
      * Has the fluorophore been bleached? If so, it can never return to a fluorescence-emitting state.
@@ -44,5 +46,33 @@ public interface Fluorophore {
      * @param laserPower The new power of the laser.
      */
     public void recalculateLifetimes(double laserPower);
+    
+    /**
+     * Renders the fluorophore onto an array of pixels.
+     * 
+     * @param pixels Image on which the fluorophore's signature will be drawn.
+     */
+    public void applyTo(float[][] pixels);
+    
+    /**
+     * Return the x-position of the fluorophore.
+     * 
+     * @return The fluorophore's x-position.
+     */
+    public double getX();
+    
+    /**
+     * Return the y-position of the fluorophore.
+     * 
+     * @return The fluorophore's y-position.
+     */
+    public double getY();
+    
+    /**
+     * Return the z-position of the fluorophore.
+     * 
+     * @return The fluorophore's z-position.
+     */
+    public double getZ();
     
 }

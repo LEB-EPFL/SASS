@@ -17,13 +17,15 @@
  */
 package ch.epfl.leb.sass.models;
 
-import ch.epfl.leb.sass.utils.images.ImageS;
-import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
-import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
-import ch.epfl.leb.sass.utils.RNG;
-import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
+import cern.jet.random.Poisson;
+
+import ch.epfl.leb.sass.utils.images.ImageS;
+import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
+import ch.epfl.leb.sass.utils.RNG;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamicsBuilder;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommandBuilder;
@@ -37,9 +39,12 @@ import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommandBu
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
+
 import java.util.Arrays;
 import java.util.List;
-import cern.jet.random.Poisson;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 
 /**
  * Integrates all the components into one microscope.
@@ -52,7 +57,7 @@ public class Microscope {
     private final Objective objective;
     private final Stage stage;
     private final FluorophoreDynamics fluorDynamics;
-    private final List<DefaultFluorophore> fluorophores;
+    private final List<Fluorophore> fluorophores;
     private List<Obstructor> obstructors;
     private final BackgroundCommand background;
     
@@ -60,6 +65,9 @@ public class Microscope {
     private final Poisson poisson = RNG.getPoissonGenerator();
     private final Gamma gamma = RNG.getGammaGenerator();
     private final Normal gaussian = RNG.getGaussianGenerator();
+    
+    // Member names for JSON serialization
+    private final String FLUOR_MEMBER_NAME="Fluorophores";
     
     /** 
      * Initializes the microscope for simulations.
@@ -69,7 +77,7 @@ public class Microscope {
      * @param objectiveBuilder
      * @param psfBuilder
      * @param stageBuilder
-     * @param positionBuilder Positions fluorophore's within the field of view.
+     * @param fluorBuilder Positions fluorophore's within the field of view.
      * @param fluorDynamicsBuilder
      * @param obstructorBuilder Creates the obstructors, e.g. fiducials.
      * @param backgroundBuilder Creates the background signal on the image.
@@ -80,7 +88,7 @@ public class Microscope {
             Objective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
             Stage.Builder stageBuilder,
-            FluorophoreCommandBuilder positionBuilder,
+            FluorophoreCommandBuilder fluorBuilder,
             FluorophoreDynamicsBuilder fluorDynamicsBuilder,
             ObstructorCommandBuilder obstructorBuilder,
             BackgroundCommandBuilder backgroundBuilder) {
@@ -105,10 +113,10 @@ public class Microscope {
                   .wavelength(wavelength)
                   .resLateral(camera.getPixelSize() / objective.getMag());
         // Create the set of fluorophores.
-        positionBuilder.camera(camera)
-                       .psfBuilder(psfBuilder)
-                       .fluorDynamics(fluorDynamics);
-        FluorophoreCommand fluorCommand = positionBuilder.build();
+        fluorBuilder.camera(camera)
+                    .psfBuilder(psfBuilder)
+                    .fluorDynamics(fluorDynamics);
+        FluorophoreCommand fluorCommand = fluorBuilder.build();
         this.fluorophores = fluorCommand.generateFluorophores();
         
         // Build the obstructors
@@ -121,7 +129,7 @@ public class Microscope {
         this.background = backgroundBuilder.build();
         
         // Determine the lifetimes for each fluorophore's current state
-        for (DefaultFluorophore f: fluorophores) {
+        for (Fluorophore f: fluorophores) {
             f.recalculateLifetimes(laser.getPower());
         }
     }
@@ -161,7 +169,7 @@ public class Microscope {
      */
     public void setLaserPower(double laserPower) {
         laser.setPower(laserPower);
-        for (DefaultFluorophore e: fluorophores) {
+        for (Fluorophore e: fluorophores) {
             e.recalculateLifetimes(laser.getPower());
         }
     }
@@ -180,7 +188,7 @@ public class Microscope {
      */
     public double getOnEmitterCount() {
         int count = 0;
-        for (DefaultFluorophore e: fluorophores) {
+        for (Fluorophore e: fluorophores) {
             if (e.isOn()) {
                 count++;
             }
@@ -189,12 +197,36 @@ public class Microscope {
     }
     
     /**
+     * Returns information about the sample fluorophores.
+     * 
+     * @return A JsonElement containing information about the fluorophores.
+     */
+    public JsonObject getFluorophoreInfo() {
+        JsonArray jsonArray = new JsonArray();
+        for (Fluorophore f: fluorophores) {
+            jsonArray.add(f.toJson());
+        }
+        
+        JsonObject json = new JsonObject();
+        json.add(FLUOR_MEMBER_NAME, jsonArray);
+        return json;
+    }
+    
+    /**
+     * Returns the JSON member name assigned to the Fluorophores.
+     * @return The JSON member name for the Fluorophore field.
+     */
+    public String getFluorophoreJsonName() {
+        return FLUOR_MEMBER_NAME;
+    }
+    
+    /**
      * Generates a new frame and moves the device state forward.
      * 
      * First the obstructors are drawn on the frame, then the fluorophores,
      * and finally noise.
      * 
-     * @return simulated frame
+     * @return A simulated image of the next camera frame.
      */
     public ImageS simulateFrame() {
         float[][] pixels = new float[this.camera.getNX()][this.camera.getNY()];
@@ -210,7 +242,7 @@ public class Microscope {
         // Add fluorophores
         // The applyTo method also handles fluorophore state changes by calling
         // the simulateBrightness() method of an emitter.
-        for (DefaultFluorophore f: fluorophores) {
+        for (Fluorophore f: fluorophores) {
             f.applyTo(pixels);
         }
         

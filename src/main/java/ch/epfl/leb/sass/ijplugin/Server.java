@@ -250,7 +250,7 @@ public class Server extends PlugInFrame {
         FileInputStream fileIn = null;
         try {
             fileIn = new FileInputStream(fc.getSelectedFile());
-            model.setSimulationModel(Model.read(fileIn));
+            model.setSimulationModel(IJPluginModel.read(fileIn));
             model.setConfigFile(fc.getSelectedFile().getName());
             model.setStartButtonEnabled(true);
             

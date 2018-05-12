@@ -22,9 +22,20 @@ package ch.epfl.leb.sass.models.fluorophores.internal;
 import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.legacy.Camera;
-import java.util.Random;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.Model;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
+import java.util.Random;
 
 /**
  * A general fluorescent molecule which emits light.
@@ -208,6 +219,74 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
             frameLogger.logFrame(frame, this.getId(), this.x, this.y, this.z, brightness, on_time);
         }
         return brightness;
+    }
+    
+    /**
+     * Returns the id of the fluorophore state system's current state.
+     * 
+     * @return The id of the current state of the fluorophore's state system.
+     */
+    public int getCurrentState() {
+        return current_state;
+    }
+    
+    /**
+     * Returns the fluorophore's number of photons per frame.
+     * 
+     * @return The number of photons per frame emitted by the fluorophore.
+     */
+    public double getSignal() {
+        return signal;
+    }
+    
+    /**
+     * Returns the fluorophore's properties as a JSON string.
+     * @return The properties of the fluorophore as a JSON string.
+     */
+    @Override
+    public JsonElement toJson() {
+        Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(DefaultFluorophore.class,
+                                             new DefaultFluorophoreSerializer())
+                        .create();
+        return gson.toJsonTree(this);
+    }
+    
+    /**
+     * Return the x-position of the fluorophore.
+     * 
+     * @return The fluorophore's x-position.
+     */
+    public double getX() { return this.x; }
+    
+    /**
+     * Return the y-position of the fluorophore.
+     * 
+     * @return The fluorophore's y-position.
+     */
+    public double getY() { return this.y; }
+    
+    /**
+     * Return the z-position of the fluorophore.
+     * 
+     * @return The fluorophore's z-position.
+     */
+    public double getZ() { return this.z; }
+}
+
+class DefaultFluorophoreSerializer implements JsonSerializer<DefaultFluorophore> {
+    @Override
+    public JsonElement serialize(DefaultFluorophore src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject result = new JsonObject();
+        result.add("id", new JsonPrimitive(src.getId()));
+        result.add("x", new JsonPrimitive(src.x));
+        result.add("y", new JsonPrimitive(src.y));
+        result.add("z", new JsonPrimitive(src.z));
+        result.add("currentState", new JsonPrimitive(src.getCurrentState()));
+        result.add("photonsPerFrame", new JsonPrimitive(src.getSignal()));
+        result.add("bleached", new JsonPrimitive(src.isBleached()));
+        result.add("emitting", new JsonPrimitive(src.isOn()));
+        return result;
     }
 }
 

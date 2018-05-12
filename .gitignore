@@ -6,6 +6,7 @@
 /store/
 dependency-reduced-pom.xml
 nbactions.xml
+/nbproject
 
 # emacs temp files
 *~

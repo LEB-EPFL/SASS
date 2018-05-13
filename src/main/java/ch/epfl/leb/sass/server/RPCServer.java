@@ -19,6 +19,7 @@ package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.ijplugin.IJPluginModel;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.models.Microscope;
 
 import org.apache.thrift.server.TServer;
@@ -53,7 +54,9 @@ public class RPCServer {
     public RPCServer(IJPluginModel model, int port) {
         try { 
             RPCSimulator simulator = new RPCSimulator( model.build() );
-            handler = new RemoteSimulationServiceHandler(simulator);
+            DefaultSimulationManager manager = new DefaultSimulationManager();
+            manager.addSimulator(simulator);
+            handler = new RemoteSimulationServiceHandler(manager);
             processor = new RemoteSimulationService.Processor(handler);
 
             TServerTransport serverTransport = new TServerSocket(port);
@@ -72,7 +75,9 @@ public class RPCServer {
     public RPCServer(Microscope microscope, int port) {
         try { 
             RPCSimulator simulator = new RPCSimulator( microscope );
-            handler = new RemoteSimulationServiceHandler(simulator);
+            DefaultSimulationManager manager = new DefaultSimulationManager();
+            manager.addSimulator(simulator);
+            handler = new RemoteSimulationServiceHandler(manager);
             processor = new RemoteSimulationService.Processor(handler);
 
             TServerTransport serverTransport = new TServerSocket(port);
@@ -124,8 +129,10 @@ public class RPCServer {
             model = IJPluginModel.read(new FileInputStream("/home/douglass/ownCloud/workspace/simulation.sass"));
             
             RPCSimulator simulator = new RPCSimulator( model.build() );
+            DefaultSimulationManager manager = new DefaultSimulationManager();
+            manager.addSimulator(simulator);
             
-            handler = new RemoteSimulationServiceHandler(simulator);
+            handler = new RemoteSimulationServiceHandler(manager);
             processor = new RemoteSimulationService.Processor(handler);
             
             Runnable simple = new Runnable() {

@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.server;
 
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.loggers.FrameInfo;
 import ch.epfl.leb.sass.utils.images.ImageS;
@@ -38,14 +39,20 @@ import static org.mockito.Mockito.*;
  */
 public class RemoteSimulationServiceHandlerTest {
     
+    private final int SIM_ID = 1;
     private RPCSimulator mockSimulator;
+    private DefaultSimulationManager mockManager;
     private RemoteSimulationServiceHandler handler;
     
     private ImageS is = new DefaultImageS( new int[1][1] );
     
     public RemoteSimulationServiceHandlerTest() {
         this.mockSimulator = mock(RPCSimulator.class);
-        this.handler = new RemoteSimulationServiceHandler(mockSimulator);
+        this.mockManager = mock(DefaultSimulationManager.class);
+        
+        when(this.mockSimulator.getId()).thenReturn(SIM_ID);
+        this.mockManager.addSimulator(mockSimulator);
+        this.handler = new RemoteSimulationServiceHandler(mockManager);
     }
 
     /**
@@ -57,7 +64,8 @@ public class RemoteSimulationServiceHandlerTest {
 
         // Instructs the wrapped simulator to return the ImageJ test image.
         when(this.mockSimulator.getNextImage()).thenReturn(is);
-        ByteBuffer bufferedImage = this.handler.getNextImage();
+        when(this.mockManager.getSimulator(SIM_ID)).thenReturn(mockSimulator);
+        ByteBuffer bufferedImage = this.handler.getNextImage(SIM_ID);
         
         byte[] expResult = is.serializeToArray();
         byte[] result = new byte[bufferedImage.remaining()];
@@ -92,9 +100,11 @@ public class RemoteSimulationServiceHandlerTest {
         Gson gson = new Gson();
         List<FrameInfo> info = new ArrayList<>();
         info.add(new FrameInfo(1, 2, 0.1, 0.1, 0.1, 0.5, 2500));
-        when(this.mockSimulator.getSimulationState()).thenReturn(gson.toJson(info));
+        when(this.mockSimulator.getSimulationState())
+                               .thenReturn(gson.toJson(info));
+        when(this.mockManager.getSimulator(SIM_ID)).thenReturn(mockSimulator);
 
-        String result = instance.getSimulationState();
+        String result = instance.getSimulationState(SIM_ID);
         
         // This should probably be changed to a loop over fields...
         assertEquals(expResult, result);

@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ch.epfl.leb.sass.server;
-
-import ch.epfl.leb.sass.simulator.Simulator;
+import ch.epfl.leb.sass.simulator.SimulationManager;
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
-import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
 import java.nio.ByteBuffer;
 
@@ -33,26 +32,39 @@ import java.nio.ByteBuffer;
 public class RemoteSimulationServiceHandler implements RemoteSimulationService.Iface {
     
     /**
-     * Reference to the simulator that will be controlled through the server.
+     * Reference to the server's SimulationManager.
      */
-    private Simulator simulator;
+    private SimulationManager manager;
     
-    public RemoteSimulationServiceHandler(Simulator simulator) {
-        this.simulator = simulator;
+    /**
+     * Initializes the remote handler.
+     */
+    public RemoteSimulationServiceHandler() {
+        manager = new DefaultSimulationManager();
+    }
+    
+    /**
+     * Initializes the remote handler with a pre-specified SimulationManager.
+     * 
+     * @param inputManager SimulationManager that handles multiple simulations.
+     */
+    public RemoteSimulationServiceHandler(SimulationManager inputManager) {
+        manager = inputManager;
     }
     
     /**
      * Advances the simulator by one time step and returns the image.
      * 
+     * @param id The simulation ID.
      * @return A buffer containing the TIFF-encoded byte string of the
      *        simulator's next image.
      * @throws ch.epfl.leb.sass.server.ImageGenerationException
      */
     @Override
-    public ByteBuffer getNextImage() throws ImageGenerationException {
+    public ByteBuffer getNextImage(int id) throws ImageGenerationException {
         // Advance the simulation one time step and retrieve the image.  
         try {
-            ImageS is = simulator.getNextImage();
+            ImageS is = manager.getSimulator(id).getNextImage();
             return is.serializeToBuffer();
         } catch (ImageShapeException ex) {
             ex.printStackTrace();
@@ -73,20 +85,22 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     /**
      * Sets the activation laser power in the simulation.
      * 
+     * @param id The simulation ID.
      * @param power The power of the laser.
      */
     @Override
-    public void setActivationLaserPower(double power) {
-        simulator.setControlSignal(power);
+    public void setActivationLaserPower(int id, double power) {
+        manager.getSimulator(id).setControlSignal(power);
     }
     
     /**
      * Collects information about the simulation's current state and returns it.
      * 
+     * @param id The simulation ID.
      * @return JSON string containing the current state of the simulation.
      */
     @Override
-    public String getSimulationState() {
-        return this.simulator.getSimulationState();
+    public String getSimulationState(int id) {
+        return manager.getSimulator(id).getSimulationState();
     }
 }

@@ -33,17 +33,17 @@ service RemoteSimulationService {
   /**
    * Increments the simulation by one time step and returns an image.
    */
-  binary getNextImage() throws(1: ImageGenerationException ex),
+  binary getNextImage(1: i32 id) throws(1: ImageGenerationException ex),
 
   /**
-   * Changes the simulation'ss fluorescence activation laser power.
+   * Changes the simulation's fluorescence activation laser power.
    */
-  void setActivationLaserPower(1: double power),
+  void setActivationLaserPower(1: i32 id, 2: double power),
 
   /**
    * Returns information about the current state of each emitter in
    * a JSON string.
    */
-  string getSimulationState()
+  string getSimulationState(1: i32 id)
        
 }

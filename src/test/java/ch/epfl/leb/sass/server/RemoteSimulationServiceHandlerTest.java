@@ -57,9 +57,14 @@ public class RemoteSimulationServiceHandlerTest {
 
     /**
      * Test of getNextImage method, of class RemoteSimulationServiceHandler.
+     * @throws ch.epfl.leb.sass.utils.images.ImageShapeException
+     * @throws ch.epfl.leb.sass.server.ImageGenerationException
+     * @throws ch.epfl.leb.sass.server.UnknownSimulationIdException
      */
     @Test
-    public void testGetNextImage() throws ImageShapeException, ImageGenerationException {
+    public void testGetNextImage() throws ImageShapeException,
+                                          ImageGenerationException,
+                                          UnknownSimulationIdException {
         System.out.println("getNextImage");
 
         // Instructs the wrapped simulator to return the ImageJ test image.

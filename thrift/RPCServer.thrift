@@ -20,10 +20,41 @@
 namespace java ch.epfl.leb.sass.server
 namespace py remotesim
 
-exception ImageGenerationException {
-}
+exception ImageGenerationException { }
+exception UnknownSimulationIdException { }
 
+/**
+ * RPC wrapper around the Simulator class.
+ */
 service RemoteSimulationService {
+
+  /**
+   * Returns the current value for the control signal.
+   */
+  double getControlSignal(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
+   * Returns the size of the field-of-view in object space units.
+   */
+  double getFovSize(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
+   * Returns the number of images that have been simulated.
+   */
+  i32 getImageCount(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
+   * Increments the simulation by one time step and returns an image.
+   */
+  binary getNextImage(1: i32 id) throws(1: ImageGenerationException ex,
+                                        2: UnknownSimulationIdException ex2),
+
+  /**
+   * Returns the object space pixel size.
+   *
+   * Units are the same as those of the camera's pixel size.
+   */
+  double getObjectSpacePixelSize(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
    * Returns the simulation server's current status.
@@ -31,19 +62,24 @@ service RemoteSimulationService {
   string getServerStatus(),
 
   /**
-   * Increments the simulation by one time step and returns an image.
+   * Returns a brief description of the ground truth signal.
    */
-  binary getNextImage(1: i32 id) throws(1: ImageGenerationException ex),
+  string getShortTrueSignalDescription(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
-   * Changes the simulation's fluorescence activation laser power.
+   * Returns a JSON string containing information about the current
+   * state of each emitter.
    */
-  void setActivationLaserPower(1: i32 id, 2: double power),
+  string getSimulationState(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
-   * Returns information about the current state of each emitter in
-   * a JSON string.
+   * Advances the simulation without creating a new image.
    */
-  string getSimulationState(1: i32 id)
+  void incrementTimeStep(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
+   * Changes the simulation's control signal.
+   */
+  void setControlSignal(1: i32 id, 2: double power) throws (1: UnknownSimulationIdException ex)
        
 }

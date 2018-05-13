@@ -21,6 +21,9 @@ package ch.epfl.leb.sass.simulator;
 
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
+
+import com.google.gson.JsonObject;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -31,6 +34,20 @@ import java.util.HashMap;
  * @author Kyle M. Douglass
  */
 public interface Simulator {
+    
+    /**
+     * Returns state information about the sample's fluorescence.
+     * 
+     * @return A JSON object containing information on the sample fluorescence.
+     */
+    public JsonObject getFluorescenceInfo();
+    
+    /**
+     * Returns the name of the JSON key for the fluorescence info.
+     * 
+     * @return The name of the key indicating the fluorescence information.
+     */
+    public String getFluorescenceJsonName();
     
     /**
      * Returns the unique ID assigned to this simulator.
@@ -109,18 +126,25 @@ public interface Simulator {
     public ImageS getStack();
     
     /**
-     *
-     * @return length of one pixel side in micrometers
+     * Returns the size of a pixel in object space units.
+     * 
+     * The units of this quantity are determined by those of the camera's
+     * pixels. The value is the magnitude of the camera's pixel size divided by
+     * the objective's magnification.
+     * 
+     * @return length of one pixel side in object space units.
      */
     public double getObjectSpacePixelSize();
     
     /**
+     * Returns the size of the field-of-view in object space units.
      * 
-     * @return FOV size in square micrometers
+     * @return size of current FOV in object space units.
      */
     public double getFOVSize();
     
     /**
+     * Returns a brief description of the ground truth signal.
      * 
      * @return A short description of the truth signal, typically its units.
      */

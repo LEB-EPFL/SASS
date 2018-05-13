@@ -145,8 +145,9 @@ public class Microscope {
     }
     
     /**
-     *
-     * @return size of current FOV in square micrometers
+     * Returns the size of the field-of-view in object space units.
+     * 
+     * @return size of current FOV in object space units.
      */
     public double getFovSize() {
         return (getObjectSpacePixelSize() * getObjectSpacePixelSize()) 
@@ -201,7 +202,7 @@ public class Microscope {
      * 
      * @return A JsonElement containing information about the fluorophores.
      */
-    public JsonObject getFluorophoreInfo() {
+    public JsonObject getFluorescenceInfo() {
         JsonArray jsonArray = new JsonArray();
         for (Fluorophore f: fluorophores) {
             jsonArray.add(f.toJson());
@@ -214,9 +215,10 @@ public class Microscope {
     
     /**
      * Returns the JSON member name assigned to the Fluorophores.
+     * 
      * @return The JSON member name for the Fluorophore field.
      */
-    public String getFluorophoreJsonName() {
+    public String getFluorescenceJsonName() {
         return FLUOR_MEMBER_NAME;
     }
     

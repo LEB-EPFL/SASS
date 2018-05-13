@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ch.epfl.leb.sass.server;
-
 import ch.epfl.leb.sass.simulator.Simulator;
+import ch.epfl.leb.sass.simulator.SimulationManager;
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
-import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
+
+import com.google.gson.Gson;
 
 import java.nio.ByteBuffer;
 
@@ -33,31 +35,154 @@ import java.nio.ByteBuffer;
 public class RemoteSimulationServiceHandler implements RemoteSimulationService.Iface {
     
     /**
-     * Reference to the simulator that will be controlled through the server.
+     * Reference to the server's SimulationManager.
      */
-    private Simulator simulator;
+    private SimulationManager manager;
     
-    public RemoteSimulationServiceHandler(Simulator simulator) {
-        this.simulator = simulator;
+    /**
+     * Initializes the remote handler.
+     */
+    public RemoteSimulationServiceHandler() {
+        manager = new DefaultSimulationManager();
+    }
+    
+    /**
+     * Initializes the remote handler with a pre-specified SimulationManager.
+     * 
+     * @param inputManager SimulationManager that handles multiple simulations.
+     */
+    public RemoteSimulationServiceHandler(SimulationManager inputManager) {
+        manager = inputManager;
+    }
+    
+    /**
+     * Returns the control signal for the current simulation.
+     * 
+     * @param id The simulation ID.
+     * @return The value of the simulation's current control signal.
+     * @throws ch.epfl.leb.sass.server.UnknownSimulationIdException
+     */
+    @Override
+    public double getControlSignal(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getControlSignal();
+    }
+    
+    /**
+     * Returns the state of the sample fluorescence as a JSON string.
+     * 
+     * @param id The simulation ID.
+     * @return The state of the sample fluorescence as a JSON string.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public String getFluorescenceInfo(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        Gson gson = new Gson();
+        return gson.toJson(sim.getFluorescenceInfo());
+    }
+    
+    /**
+     * Returns the name of the JSON key for the fluorescence info.
+     * 
+     * @return The name of the key indicating the fluorescence information.
+     */
+    @Override
+    public String getFluorescenceJsonName(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getFluorescenceJsonName();
+    }
+    
+    /**
+     * Returns the field-of-view size in object space units.
+     * 
+     * @param id The simulation ID.
+     * @return The size of the simulation's FOV.
+     * @throws ch.epfl.leb.sass.server.UnknownSimulationIdException
+     */
+    @Override
+    public double getFovSize(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getFOVSize();
+    }
+    
+    /**
+     * Returns the number of images already simulated.
+     * 
+     * @param id The simulation ID.
+     * @return The number of images already simulated.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public int getImageCount(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getImageCount();
     }
     
     /**
      * Advances the simulator by one time step and returns the image.
      * 
+     * @param id The simulation ID.
      * @return A buffer containing the TIFF-encoded byte string of the
      *        simulator's next image.
      * @throws ch.epfl.leb.sass.server.ImageGenerationException
      */
     @Override
-    public ByteBuffer getNextImage() throws ImageGenerationException {
+    public ByteBuffer getNextImage(int id)
+           throws ImageGenerationException, UnknownSimulationIdException {
+        
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
         // Advance the simulation one time step and retrieve the image.  
         try {
-            ImageS is = simulator.getNextImage();
+            ImageS is = sim.getNextImage();
             return is.serializeToBuffer();
         } catch (ImageShapeException ex) {
             ex.printStackTrace();
             throw new ImageGenerationException();
         }
+    }
+    
+    /**
+     * Returns the object space pixel size.
+     * 
+     * Units are the same as those of the camera pixel size.
+     * 
+     * @param id The simulation ID.
+     * @return The object space pixel size.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public double getObjectSpacePixelSize(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getObjectSpacePixelSize();
     }
     
     /**
@@ -71,22 +196,82 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
-     * Sets the activation laser power in the simulation.
+     * Returns a brief description of the ground-truth signal.
      * 
-     * @param power The power of the laser.
+     * @param id The simulation ID.
+     * @return A brief description of the ground truth signal.
+     * @throws UnknownSimulationIdException 
      */
     @Override
-    public void setActivationLaserPower(double power) {
-        simulator.setControlSignal(power);
+    public String getShortTrueSignalDescription(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getShortTrueSignalDescription();
     }
     
     /**
      * Collects information about the simulation's current state and returns it.
      * 
+     * @param id The simulation ID.
      * @return JSON string containing the current state of the simulation.
      */
     @Override
-    public String getSimulationState() {
-        return this.simulator.getSimulationState();
+    public String getSimulationState(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return manager.getSimulator(id).getSimulationState();
+    }
+    
+    /**
+     * Returns the ground-truth signal of the image at the given index.
+     * 
+     * @param id The simulation ID.
+     * @param imageNum The index of the image to get the true signal for.
+     * @return The ground truth signal.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public double getTrueSignal(int id, int imageNum) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getTrueSignal(imageNum);
+    }
+    
+    /**
+     * Advances the simulation without creating an image.
+     * 
+     * @param id The simulation ID.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public void incrementTimeStep(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        sim.incrementTimeStep();
+    }
+    
+    /**
+     * Sets the activation laser power in the simulation.
+     * 
+     * @param id The simulation ID.
+     * @param power The power of the laser.
+     * @throws UnknownSimulationIdException
+     */
+    @Override
+    public void setControlSignal(int id, double power)
+                throws UnknownSimulationIdException {
+        manager.getSimulator(id).setControlSignal(power);
     }
 }

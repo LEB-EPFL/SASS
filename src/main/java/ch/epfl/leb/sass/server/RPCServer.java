@@ -18,6 +18,7 @@
 package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.ijplugin.IJPluginModel;
+import ch.epfl.leb.sass.simulator.SimulationManager;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.models.Microscope;
@@ -77,6 +78,24 @@ public class RPCServer {
             RPCSimulator simulator = new RPCSimulator( microscope );
             DefaultSimulationManager manager = new DefaultSimulationManager();
             manager.addSimulator(simulator);
+            handler = new RemoteSimulationServiceHandler(manager);
+            processor = new RemoteSimulationService.Processor(handler);
+
+            TServerTransport serverTransport = new TServerSocket(port);
+            server = new TSimpleServer(new Args(serverTransport).processor(processor));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    /**
+     * Creates a new RPCServer and initializes--but does not start--it.
+     * 
+     * @param manager An instance of a simulation manager.
+     * @param port The port number for server communications.
+     */
+    public RPCServer(SimulationManager manager, int port) {
+        try { 
             handler = new RemoteSimulationServiceHandler(manager);
             processor = new RemoteSimulationService.Processor(handler);
 

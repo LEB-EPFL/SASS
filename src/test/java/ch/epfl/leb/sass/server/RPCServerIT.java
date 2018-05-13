@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Federale de Lausanne
+ * Ecole Polytechnique Fédérale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,41 +15,57 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models;
+package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.IntegrationTest;
-import ch.epfl.leb.sass.models.components.*;
-import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
+import ch.epfl.leb.sass.models.Microscope;
+import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
+import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.models.components.Objective;
+import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.PalmDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands
-                                                    .GenerateFluorophoresGrid2D;
-import ch.epfl.leb.sass.models.obstructors.internal.commands
-                                                   .GenerateFiducialsRandom2D;
-import ch.epfl.leb.sass.models.backgrounds.internal.commands
-                                                   .GenerateUniformBackground;
+import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
+import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.utils.RNG;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
+import ch.epfl.leb.sass.simulator.Simulator;
+import ch.epfl.leb.sass.simulator.SimulationManager;
+import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
+import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.experimental.categories.Category;
-import static org.junit.Assert.*;
-
 
 /**
- * Integration tests for the Microscope class.
+ * Integration tests for the RPCServer.
+ * 
  * @author Kyle M. Douglass
- * @see https://stackoverflow.com/questions/2606572/junit-splitting-integration-test-and-unit-tests
  */
 @Category(IntegrationTest.class)
-public class MicroscopeIT {
+public class RPCServerIT {
     
     /**
-     * The microscope instance to simulate.
+     * The number of simulations to run.
      */
-    private static Microscope microscope;
+    private final int NUM_SIMS = 2;
+    
+    /**
+     * The port for RPC server communications.
+     */
+    private final int PORT = 9090;
+    
+    /**
+     * The simulation manager that the server will interact with.
+     */
+    private SimulationManager manager;
+    
+    /**
+     * The ground truth simulation objects.
+     */
+    private Simulator[] sims = new Simulator[NUM_SIMS];
     
     /**
      * Flag indicating whether the microscope has been setup.
@@ -57,7 +73,7 @@ public class MicroscopeIT {
     private static boolean setupIsDone = false;
     
     /**
-     * Sets up a basic Microscope for an acquisition simulation.
+     * Sets up two different Microscopes for acquisition simulations.
      */
     @Before
     public void setUp() {
@@ -132,8 +148,8 @@ public class MicroscopeIT {
                 new GenerateUniformBackground.Builder();
         backgroundBuilder.backgroundSignal(10); // photons
 
-        // Assemble the microscope.
-        microscope = new Microscope(
+        // Assemble the microscope and the simulator.
+        Microscope microscope1 = new Microscope(
             cameraBuilder,
             laserBuilder,
             objectiveBuilder,
@@ -143,88 +159,59 @@ public class MicroscopeIT {
             fluorPropBuilder,
             fidBuilder,
             backgroundBuilder);
+        RPCSimulator sim0 = new RPCSimulator(microscope1);
+        sims[0] = sim0;
+        
+        // Change the number of pixels for the second microscopy
+        cameraBuilder.nX(64);
+        cameraBuilder.nY(64);
+        Microscope microscope2 = new Microscope(
+            cameraBuilder,
+            laserBuilder,
+            objectiveBuilder,
+            psfBuilder,
+            stageBuilder,
+            fluorPosBuilder,
+            fluorPropBuilder,
+            fidBuilder,
+            backgroundBuilder);
+        RPCSimulator sim1 = new RPCSimulator(microscope2);
+        sims[1] = sim1;
+        
+        // Add the simulations to the manager.
+        manager = new DefaultSimulationManager();
+        manager.addSimulator(sims[0]);
+        manager.addSimulator(sims[1]);
         
         setupIsDone = true;
     }
 
     /**
-     * Test of getResolution method, of class Microscope.
+     * Test of serve, stop, and isServing methods, of class RPCServer.
      */
     @Test
-    public void testGetResolution() {
-        System.out.println("getResolution");
-        int[] expResult = {32, 32};
-        int[] result = microscope.getResolution();
-        assertArrayEquals(expResult, result);
-    }
-
-    /**
-     * Test of getFovSize method, of class Microscope.
-     */
-    @Test
-    public void testGetFovSize() {
-        System.out.println("getFovSize");
-        double expResult = 6.45 * 6.45 * 32 * 32 / 60 / 60;
-        double result = microscope.getFovSize();
-        assertEquals(expResult, result, 0.0);
-    }
-
-    /**
-     * Test of getObjectSpacePixelSize method, of class Microscope.
-     */
-    @Test
-    public void testGetObjectSpacePixelSize() {
-        System.out.println("getObjectSpacePixelSize");
-        double expResult = 6.45 / 60;
-        double result = microscope.getObjectSpacePixelSize();
-        assertEquals(expResult, result, 0.0);
-    }
-
-    /**
-     * Test of setLaserPower and getLaserPower methods, of class Microscope.
-     */
-    @Test
-    public void testGetSetLaserPower() {
-        System.out.println("setLaserPower");
-        double laserPower = 0.42;
-        microscope.setLaserPower(laserPower);
-        assertEquals(0.42, microscope.getLaserPower(), 0.0);
-    }
-
-    /**
-     * Test of getOnEmitterCount method, of class Microscope.
-     */
-    @Test
-    public void testGetOnEmitterCount() {
-        System.out.println("getOnEmitterCount");
-        double result = microscope.getOnEmitterCount();
-        assert(result >= 0);
-    }
-
-    /**
-     * Test of getFluorescenceInfo method, of class Microscope.
-     */
-    @Test
-    public void testGetFluorophoreInfo() {
-        System.out.println("getFluorophoreInfo");
+    public void testServeStopIsServing() throws InterruptedException {
+        System.out.println("isServing");
+        RPCServer instance = new RPCServer(manager, PORT);
         
-        int expResult = 49; // Fluorophores are placed on a grid every 4 pixels.
-        JsonObject json = microscope.getFluorescenceInfo();
+        Runnable serverRunnable = new Runnable() {
+            public void run() {
+                instance.serve();
+            }
+        };
+        new Thread(serverRunnable).start();
+        Thread.sleep(1000); // Give the server time to start
+        System.out.println("Server started!");     
         
-        JsonArray fluorArray;
-        fluorArray = json.get(microscope.getFluorophoreJsonName())
-                         .getAsJsonArray();
+        boolean expResult = true;
+        boolean result = instance.isServing();
+        assertEquals(expResult, result);
         
-        assertEquals(expResult, fluorArray.size());
-    }
-
-    /**
-     * Test of simulateFrame method, of class Microscope.
-     */
-    @Test
-    public void testSimulateFrame() {
-        System.out.println("simulateFrame");
-        microscope.simulateFrame();
+        instance.stop();
+        Thread.sleep(1000); // Give the server time to stop
+        expResult = false;
+        result = instance.isServing();
+        assertEquals(expResult, result);
     }
     
 }

@@ -28,6 +28,7 @@ import ch.epfl.leb.sass.models.obstructors.internal.ConstantBackground;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
+import com.google.gson.JsonObject;
 import ij.gui.GenericDialog;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,6 +64,16 @@ public class STORMsim extends AbstractSimulator {
 
         emitter_history = new ArrayList<Double>();
         emitter_history.add(0.0);
+    }
+    
+    /**
+     * Returns information about the state of the sample fluorescence.
+     * 
+     * @return A JSON object containing information on the sample fluorescence.
+     */
+    @Override
+    public JsonObject getFluorescenceInfo() {
+        return null;
     }
     
     @Override

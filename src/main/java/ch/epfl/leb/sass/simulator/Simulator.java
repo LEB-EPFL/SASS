@@ -21,6 +21,9 @@ package ch.epfl.leb.sass.simulator;
 
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
+
+import com.google.gson.JsonObject;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -31,6 +34,13 @@ import java.util.HashMap;
  * @author Kyle M. Douglass
  */
 public interface Simulator {
+    
+    /**
+     * Returns state information about the sample's fluorescence.
+     * 
+     * @return A JSON object containing information on the sample fluorescence.
+     */
+    public JsonObject getFluorescenceInfo();
     
     /**
      * Returns the unique ID assigned to this simulator.

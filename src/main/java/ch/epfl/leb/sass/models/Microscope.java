@@ -202,7 +202,7 @@ public class Microscope {
      * 
      * @return A JsonElement containing information about the fluorophores.
      */
-    public JsonObject getFluorophoreInfo() {
+    public JsonObject getFluorescenceInfo() {
         JsonArray jsonArray = new JsonArray();
         for (Fluorophore f: fluorophores) {
             jsonArray.add(f.toJson());

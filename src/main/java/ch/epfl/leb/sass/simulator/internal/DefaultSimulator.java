@@ -23,6 +23,9 @@ import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
+
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,6 +59,15 @@ public class DefaultSimulator extends AbstractSimulator {
 
         emitterHistory = new ArrayList<Double>();
         emitterHistory.add(0.0);
+    }
+    
+    /**
+     * Returns information about the state of the sample fluorescence.
+     * 
+     * @return A JSON object containing information on the sample fluorescence.
+     */
+    public JsonObject getFluorescenceInfo() {
+        return this.microscope.getFluorescenceInfo();
     }
     
     @Override

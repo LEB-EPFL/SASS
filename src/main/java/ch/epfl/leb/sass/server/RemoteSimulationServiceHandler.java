@@ -22,6 +22,8 @@ import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
+import com.google.gson.Gson;
+
 import java.nio.ByteBuffer;
 
 
@@ -68,6 +70,23 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
         }
         
         return sim.getControlSignal();
+    }
+    
+    /**
+     * Returns the state of the sample fluorescence as a JSON string.
+     * @param id The simulation ID.
+     * @return The state of the sample fluorescence as a JSON string.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public String getFluorescenceInfo(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        Gson gson = new Gson();
+        return gson.toJson(sim.getFluorescenceInfo());
     }
     
     /**
@@ -191,6 +210,24 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
         }
         
         return manager.getSimulator(id).getSimulationState();
+    }
+    
+    /**
+     * Returns the ground-truth signal of the image at the given index.
+     * 
+     * @param id The simulation ID.
+     * @param imageNum The index of the image to get the true signal for.
+     * @return The ground truth signal.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public double getTrueSignal(int id, int imageNum) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getTrueSignal(imageNum);
     }
     
     /**

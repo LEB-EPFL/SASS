@@ -96,7 +96,7 @@ public class RemoteSimulationServiceHandlerTest {
      * Test of getSimulationState method, of class RemoteSimulationServiceHandler.
      */
     @Test
-    public void testGetSimulationState() {
+    public void testGetSimulationState() throws UnknownSimulationIdException {
         System.out.println("getSimulationState");
         RemoteSimulationServiceHandler instance = this.handler;
         String expResult = "[{\"frame\":1,\"id\":2,\"x\":0.1,\"y\":0.1,\"z\":0.1,\"brightness\":0.5,\"timeOn\":2500.0}]";

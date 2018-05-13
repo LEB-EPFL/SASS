@@ -34,6 +34,11 @@ service RemoteSimulationService {
   double getControlSignal(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
+   * Returns information about the state of the sample fluorescence.
+   */
+  string getFluorescenceInfo(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
    * Returns the size of the field-of-view in object space units.
    */
   double getFovSize(1: i32 id) throws (1: UnknownSimulationIdException ex),
@@ -71,6 +76,11 @@ service RemoteSimulationService {
    * state of each emitter.
    */
   string getSimulationState(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
+   * Returns the true simulation signal at the given image.
+   */
+  double getTrueSignal(1: i32 id, 2: i32 imageNum) throws (1: UnknownSimulationIdException ex),
 
   /**
    * Advances the simulation without creating a new image.

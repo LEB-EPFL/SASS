@@ -77,6 +77,11 @@ public class STORMsim extends AbstractSimulator {
     }
     
     @Override
+    public String getFluorescenceJsonName() {
+        return "";
+    }
+    
+    @Override
     public double getTrueSignal(int image_no) {
         return emitter_history.get(image_no) / device.getFOVsize_um() * 10000;
     }

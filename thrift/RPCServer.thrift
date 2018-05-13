@@ -39,6 +39,11 @@ service RemoteSimulationService {
   string getFluorescenceInfo(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
+   * Gets the name of the JSON key for the fluoresence information.
+   */
+  string getFluorescenceJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
    * Returns the size of the field-of-view in object space units.
    */
   double getFovSize(1: i32 id) throws (1: UnknownSimulationIdException ex),

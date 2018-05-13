@@ -70,6 +70,15 @@ public class DefaultSimulator extends AbstractSimulator {
         return this.microscope.getFluorescenceInfo();
     }
     
+    /**
+     * Returns the name of the JSON key for the fluorescence info.
+     * 
+     * @return The name of the key indicating the fluorescence information.
+     */
+    public String getFluorescenceJsonName() {
+        return this.microscope.getFluorescenceJsonName();
+    }
+    
     @Override
     public double getTrueSignal(int image_no) {
         return emitterHistory.get(image_no) /

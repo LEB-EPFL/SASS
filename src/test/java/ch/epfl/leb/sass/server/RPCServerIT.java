@@ -33,11 +33,21 @@ import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.SimulationManager;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
+import ch.epfl.leb.sass.client.RPCClient;
+import com.google.gson.JsonArray;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.experimental.categories.Category;
+
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import org.apache.thrift.TException;
 
 /**
  * Integration tests for the RPCServer.
@@ -47,10 +57,18 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class RPCServerIT {
     
+    private final static Logger LOGGER = Logger.getLogger(
+            RPCServerIT.class.getName());
+    
     /**
      * The number of simulations to run.
      */
     private final int NUM_SIMS = 2;
+    
+    /**
+     * The URL to the server.
+     */
+    private final String HOST_URL = "localhost";
     
     /**
      * The port for RPC server communications.
@@ -68,20 +86,20 @@ public class RPCServerIT {
     private Simulator[] sims = new Simulator[NUM_SIMS];
     
     /**
-     * Flag indicating whether the microscope has been setup.
+     * A RPCServer that will be used to test client/server communications.
      */
-    private static boolean setupIsDone = false;
+    RPCServer rpcServer;
+    
+    /**
+     * A RPCClient that will be used to test server communications.
+     */
+    RPCClient rpcClient;
     
     /**
      * Sets up two different Microscopes for acquisition simulations.
      */
     @Before
-    public void setUp() {
-        if (setupIsDone) {
-            // Skip setup if it has already run.
-            return;
-        }
-        
+    public void setUp() throws InterruptedException {        
         // The seed determines the outputs of the random number generator.
         RNG.setSeed(42);
         
@@ -178,40 +196,136 @@ public class RPCServerIT {
         RPCSimulator sim1 = new RPCSimulator(microscope2);
         sims[1] = sim1;
         
-        // Add the simulations to the manager.
+        // Adds the simulations to the manager.
         manager = new DefaultSimulationManager();
         manager.addSimulator(sims[0]);
         manager.addSimulator(sims[1]);
         
-        setupIsDone = true;
-    }
-
-    /**
-     * Test of serve, stop, and isServing methods, of class RPCServer.
-     */
-    @Test
-    public void testServeStopIsServing() throws InterruptedException {
-        System.out.println("isServing");
-        RPCServer instance = new RPCServer(manager, PORT);
+        // Starts the server.
+        rpcServer = new RPCServer(manager, PORT);
         
         Runnable serverRunnable = new Runnable() {
             public void run() {
-                instance.serve();
+                rpcServer.serve();
             }
         };
         new Thread(serverRunnable).start();
-        Thread.sleep(1000); // Give the server time to start
+        Thread.sleep(500); // Give the server time to start
         System.out.println("Server started!");     
         
-        boolean expResult = true;
-        boolean result = instance.isServing();
-        assertEquals(expResult, result);
+       // Creates the client.
+       rpcClient = new RPCClient(HOST_URL, PORT);
+       RemoteSimulationService.Client client = rpcClient.getClient();
+    }
+
+    /**
+     * Closes the server communications.
+     * @throws java.lang.InterruptedException
+     */
+    @After
+    public void tearDown() throws InterruptedException {
+        // Close the client connection.
+        try {
+            rpcClient.close();
+            Thread.sleep(500);
+        } catch (java.lang.NullPointerException ex) {
+            LOGGER.log(Level.INFO, "RPCClient connection failed to close. This "
+                                 + "is likely because a RPCClient instance was "
+                                 + "not created during this test.");
+        }
         
-        instance.stop();
-        Thread.sleep(1000); // Give the server time to stop
-        expResult = false;
-        result = instance.isServing();
-        assertEquals(expResult, result);
+        // Shutdown the server.
+        try {
+            rpcServer.stop();
+            Thread.sleep(500);
+        } catch (java.lang.NullPointerException ex) {
+            LOGGER.log(Level.INFO, "RPCServer failed to shutdown. This may be "
+                                 + "because no server was started in this "
+                                 + "test.");
+        }
     }
     
+    /**
+     * Test of isServing method, of class RPCServer.
+     */
+    @Test
+    public void testIsServing() throws InterruptedException {
+        System.out.println("isServing");   
+        
+        boolean expResult = true;
+        boolean result = rpcServer.isServing();
+        assertEquals(expResult, result);
+
+    }
+    
+    /**
+     * Test of getControlSignal method, of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetControlSignal() throws InterruptedException,
+                                              UnknownSimulationIdException,
+                                              TException {
+        System.out.println("testGetControlSignal");
+        
+       RemoteSimulationService.Client client = rpcClient.getClient();
+       
+       double expResult = sims[0].getControlSignal();
+       double result = client.getControlSignal(sims[0].getId());
+       assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getFluorescenceInfo and getFluorescenceJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetFluorescenceInfo() throws UnknownSimulationIdException,
+                                                 TException {
+        System.out.println("testGetFluorescenceInfo");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.getFluorescenceInfo(sims[0].getId());
+        String fluorName = client.getFluorescenceJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonArray fluorArray;
+        fluorArray = json.get(fluorName).getAsJsonArray();
+        int expResult = 49; // (num_pixels / grid_spacing - 1)^2
+        assertEquals(expResult, fluorArray.size());
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.getFluorescenceInfo(sims[1].getId());
+        fluorName = client.getFluorescenceJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        fluorArray = json.get(fluorName).getAsJsonArray();
+        
+        expResult = 225; // (num_pixels / grid_spacing - 1)^2
+        assertEquals(expResult, fluorArray.size());
+    }
+    
+    /**
+     * Test of setControlSignal method, of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testSetControlSignal() throws InterruptedException,
+                                              UnknownSimulationIdException,
+                                              TException {
+        System.out.println("testSetControlSignal");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+       
+        // Test sim[0]
+        double expResult = 1.42;
+        client.setControlSignal(sims[0].getId(), expResult);
+        double result = sims[0].getControlSignal();
+        assertEquals(expResult, result, 0.0);
+
+        // Test the other simulation
+        expResult = 0.0;
+        result = client.getControlSignal(sims[1].getId());
+        assertEquals(expResult, result, 0.0);
+       
+    }
 }

@@ -74,6 +74,7 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     
     /**
      * Returns the state of the sample fluorescence as a JSON string.
+     * 
      * @param id The simulation ID.
      * @return The state of the sample fluorescence as a JSON string.
      * @throws UnknownSimulationIdException 
@@ -87,6 +88,21 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
         
         Gson gson = new Gson();
         return gson.toJson(sim.getFluorescenceInfo());
+    }
+    
+    /**
+     * Returns the name of the JSON key for the fluorescence info.
+     * 
+     * @return The name of the key indicating the fluorescence information.
+     */
+    @Override
+    public String getFluorescenceJsonName(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getFluorescenceJsonName();
     }
     
     /**

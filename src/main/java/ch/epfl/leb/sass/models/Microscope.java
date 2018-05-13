@@ -218,7 +218,7 @@ public class Microscope {
      * 
      * @return The JSON member name for the Fluorophore field.
      */
-    public String getFluorophoreJsonName() {
+    public String getFluorescenceJsonName() {
         return FLUOR_MEMBER_NAME;
     }
     

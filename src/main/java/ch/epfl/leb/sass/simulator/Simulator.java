@@ -43,6 +43,13 @@ public interface Simulator {
     public JsonObject getFluorescenceInfo();
     
     /**
+     * Returns the name of the JSON key for the fluorescence info.
+     * 
+     * @return The name of the key indicating the fluorescence information.
+     */
+    public String getFluorescenceJsonName();
+    
+    /**
      * Returns the unique ID assigned to this simulator.
      * 
      * @return The integer ID of this simulator.

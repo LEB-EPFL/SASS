@@ -306,6 +306,154 @@ public class RPCServerIT {
     }
     
     /**
+     * Test of getFovSize method, of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetFovSize() throws UnknownSimulationIdException,
+                                                 TException {
+        System.out.println("testGetFovSize");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        // pixel size * num pixels / mag
+        double expResult = 6.45 * 6.45 * 32 * 32 / 60 / 60;
+        double result = client.getFovSize(sims[0].getId());
+        assertEquals(expResult, result, 0.0);
+        
+        // pixel size * num pixels / mag
+        expResult = 6.45 * 6.45 * 64 * 64 / 60 / 60; // pixel size * num pixels / mag
+        result = client.getFovSize(sims[1].getId());
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getNextImage and getImageCount methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetNextImageAndImageCount() throws UnknownSimulationIdException,
+                                                       TException {
+        System.out.println("testGetNextImageAndImageCount");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        int expResult = 0;
+        int result = client.getImageCount(sims[0].getId());
+        assertEquals(expResult, result);
+        
+        result = client.getImageCount(sims[1].getId());
+        assertEquals(expResult, result);
+        
+        // Generate an image in each simulation
+        client.getNextImage(sims[0].getId());
+        client.getNextImage(sims[1].getId());
+        
+        expResult = 1;
+        result = client.getImageCount(sims[0].getId());
+        assertEquals(expResult, result);
+        
+        result = client.getImageCount(sims[1].getId());
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getObjectSpacePixelSize method,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetObjectSpacePixelSize() throws UnknownSimulationIdException,
+                                                     TException {
+        System.out.println("testGetObjectSpacePixelSize");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        // pixel size / mag
+        double expResult = 6.45 / 60;
+        double result = client.getObjectSpacePixelSize(sims[0].getId());
+        assertEquals(expResult, result, 0.0);
+        
+        result = client.getObjectSpacePixelSize(sims[1].getId());
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of getGetServerStatus method,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetServerStatus() throws UnknownSimulationIdException,
+                                             TException {
+        System.out.println("testGetServerStatus");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        String expResult = "SASS RPC server is running.";
+        String result = client.getServerStatus();
+        
+        assert(expResult.equals(result));
+    }
+    
+    /**
+     * Test of getShortTrueSignalDescription and getTrueSignal methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testTrueSignal() throws UnknownSimulationIdException,
+                                                           TException {
+        System.out.println("testTrueSignal");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        String result = client.getShortTrueSignalDescription(sims[0].getId());
+        
+        // The result can vary, so just make sure that it's not empty.
+        assert(!result.equals(""));
+        
+        double result2 = client.getTrueSignal(sims[0].getId(), 0);
+        assert(result2 >= 0);
+        
+        result2 = client.getTrueSignal(sims[1].getId(), 0);
+        assert(result2 >= 0);
+    }
+    
+    /**
+     * Test of getGetSimulationState method,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testGetSimulationState() throws UnknownSimulationIdException,
+                                              TException {
+        System.out.println("testGetSimulationState");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        String result = client.getSimulationState(sims[0].getId());
+        // The state can vary, so just ensure that the string isn't empty
+        assert(!result.equals(""));
+        
+        result = client.getSimulationState(sims[1].getId());
+        // The state can vary, so just ensure that the string isn't empty
+        assert(!result.equals(""));
+    }
+    /**
+     * Test of incrementTimeStep method,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testIncrementTimeStep() throws UnknownSimulationIdException,
+                                               TException {
+        System.out.println("testIncrementTimeStep");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        
+        //Sim 0
+        String before = client.getSimulationState(sims[0].getId());
+        client.incrementTimeStep(sims[0].getId());
+        String after = client.getSimulationState(sims[0].getId());
+        assert(!after.equals(before));
+        
+        // Sim 1
+        before = client.getSimulationState(sims[1].getId());
+        client.incrementTimeStep(sims[1].getId());
+        after = client.getSimulationState(sims[1].getId());
+        assert(!after.equals(before));
+    }
+    
+    /**
      * Test of setControlSignal method, of class RemoteSimulationServiceHandler.
      */
     @Test

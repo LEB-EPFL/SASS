@@ -1,6 +1,7 @@
 # SMLM Acquisition Simulation Software
 
 - [![Build Status](https://travis-ci.org/LEB-EPFL/SASS.svg?branch=master)](https://travis-ci.org/LEB-EPFL/SASS)
+- [![Coverage Status](https://coveralls.io/repos/github/LEB-EPFL/SASS/badge.svg?branch=master)](https://coveralls.io/github/LEB-EPFL/SASS?branch=master)
 - [![Join the chat at https://gitter.im/leb_epfl/SASS](https://badges.gitter.im/leb_epfl/SASS.svg)](https://gitter.im/leb_epfl/SASS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Toolkit for simulating non-stationary fluorescence photodynamics and

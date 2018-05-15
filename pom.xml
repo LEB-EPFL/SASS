@@ -323,6 +323,16 @@
 		    </execution>
 		</executions>
 	    </plugin>
+
+	    <!-- Pushes the coverage report to Coveralls. -->
+	    <plugin>
+	        <groupId>org.eluder.coveralls</groupId>
+		<artifactId>coveralls-maven-plugin</artifactId>
+		<version>4.3.0</version>
+		<configuration>
+		    <timestampFormat>EpochMillis</timestampFormat>
+		</configuration>
+	    </plugin>
             
             <!-- Adds the ALICA_interfaces dependency to the final .jar. -->
             <plugin>

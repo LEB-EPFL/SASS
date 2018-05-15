@@ -4,8 +4,8 @@ jdk:
 - openjdk8
 install: true
 script:
-- mvn clean verify -B
-- mvn clean install -Pbuild-uber-jar -DskipTests=true -Dmaven.javadoc.skip=true -B -V &&
+- mvn clean verify jacoco:report coveralls:report
+- mvn clean install -Pbuild-uber-jar -B -V -DskipTests=true -Dmaven.javadoc.skip=true -B -V &&
   ./scripts/tests/test_scripts.sh scripts target-uber/SASS*.jar &&
   rm target-uber/SASS_-*-sources.jar &&
   rm target-uber/SASS_-*-tests.jar

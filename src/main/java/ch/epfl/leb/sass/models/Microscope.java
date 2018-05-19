@@ -40,8 +40,9 @@ import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
+import java.io.Serializable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
@@ -49,7 +50,7 @@ import com.google.gson.JsonArray;
 /**
  * Integrates all the components into one microscope.
  */
-public class Microscope {
+public class Microscope implements Serializable {
     
     // Assigned in the constructor
     private final Camera camera;
@@ -58,7 +59,7 @@ public class Microscope {
     private final Stage stage;
     private final FluorophoreDynamics fluorDynamics;
     private final List<Fluorophore> fluorophores;
-    private List<Obstructor> obstructors;
+    private final List<Obstructor> obstructors;
     private final BackgroundCommand background;
     
     // Random number generators
@@ -67,7 +68,7 @@ public class Microscope {
     private final Normal gaussian = RNG.getGaussianGenerator();
     
     // Member names for JSON serialization
-    private final String FLUOR_MEMBER_NAME="Fluorophores";
+    private final String FLUOR_MEMBER_NAME = "Fluorophores";
     
     /** 
      * Initializes the microscope for simulations.

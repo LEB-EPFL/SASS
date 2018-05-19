@@ -17,10 +17,12 @@
  */
 package ch.epfl.leb.sass.models.components;
 
+import java.io.Serializable;
+
 /**
  * Represents the parameters of the camera.
  */
-public final class Camera {
+public final class Camera implements Serializable {
 
     /**
      * readout noise of camera [RMS]

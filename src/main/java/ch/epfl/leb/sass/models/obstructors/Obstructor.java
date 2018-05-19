@@ -19,13 +19,14 @@
  */
 package ch.epfl.leb.sass.models.obstructors;
 
+import java.io.Serializable;
 
 /**
  * This object is a constant obstruction of the field of view (for example gold
  * bead, foreign object in field of view, dirt, etc.)
  * @author Marcel Stefko
  */
-public interface Obstructor {
+public interface Obstructor extends Serializable {
 
     /**
      * Draws the obstruction onto the given float array representing an image.

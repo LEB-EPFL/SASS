@@ -18,11 +18,12 @@
 package ch.epfl.leb.sass.models.fluorophores.internal.dynamics;
 
 import ch.epfl.leb.sass.models.fluorophores.internal.StateSystem;
+import java.io.Serializable;
 
 /**
  * A fluorophore state system.
  */
-public abstract class FluorophoreDynamics {
+public abstract class FluorophoreDynamics  implements Serializable {
     
     /**
      * The state system describing the fluorescence dynamics.

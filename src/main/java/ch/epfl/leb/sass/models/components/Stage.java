@@ -17,12 +17,14 @@
  */
 package ch.epfl.leb.sass.models.components;
 
+import java.io.Serializable;
+
 /**
  * The sample stage.
  *
  * @author Kyle M. Douglass
  */
-public class Stage {
+public class Stage  implements Serializable {
     /**
      * The stage x-position.
      */

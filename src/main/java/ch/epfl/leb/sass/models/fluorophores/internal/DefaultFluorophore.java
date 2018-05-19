@@ -24,7 +24,6 @@ import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.legacy.Camera;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
-import ch.epfl.leb.sass.models.Model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -116,7 +115,8 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
         this.signal = signal;
         this.current_state = start_state;
         if (start_state >= state_system.getNStates()) {
-            throw new IllegalArgumentException("Starting state no. is out of bounds.");
+            throw new IllegalArgumentException("Starting state no. is out of " +
+                                               "bounds.");
         }
         this.random = RNG.getUniformGenerator();
         

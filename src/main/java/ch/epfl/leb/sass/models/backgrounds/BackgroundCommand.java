@@ -17,11 +17,13 @@
  */
 package ch.epfl.leb.sass.models.backgrounds;
 
+import java.io.Serializable;
+
 /**
  * Commands for creating a background in an image.
  * @author Kyle M. Douglass
  */
-public interface BackgroundCommand {
+public interface BackgroundCommand extends Serializable {
     
     public float[][] generateBackground();
 

@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - The `RPCServer` now provides access to simulatons through a
   `SimulationManager` instance.
+- The API of the `RemoteSimulationService` has been expanded to allow
+  for full control over `Simulator` objects on the server.
 
 ## [v0.8.0]
 

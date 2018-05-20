@@ -19,13 +19,15 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal;
 
+import java.io.Serializable;
+
 /**
  * Class which describes a Markovian fluorophore state model. This class
  * provides transition rates and mean lifetimes for Markovian models based
  * on current laser illumination intensity.
  * @author stefko
  */
-public class StateSystem {
+public class StateSystem  implements Serializable {
     
     private final int N_states;
     

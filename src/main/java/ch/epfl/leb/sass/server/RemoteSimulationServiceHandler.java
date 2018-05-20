@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Fédérale de Lausanne
+ * Ecole Polytechnique Fédérale de Lausanne, Switzerland
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ch.epfl.leb.sass.server;
+
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.SimulationManager;
+import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.nio.ByteBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -33,6 +39,9 @@ import java.nio.ByteBuffer;
  * @author Kyle M. Douglass
  */
 public class RemoteSimulationServiceHandler implements RemoteSimulationService.Iface {
+    
+    private final static Logger LOGGER = 
+            Logger.getLogger(RemoteSimulationServiceHandler.class.getName());
     
     /**
      * Reference to the server's SimulationManager.
@@ -56,6 +65,50 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
+     * Creates a new simulation and returns its ID.
+     * 
+     * This creates a copy of one of the already created simulations in the
+     * SimulationManager. If you wish to create a simulation with all new
+     * parameters, then you will need to create a new SimulationManager.
+     * 
+     * @return The new simulation's ID.
+     */
+    @Override
+    public int createSimulation() {
+        Microscope microscope = manager.getMostRecentMicroscope();
+        if (microscope == null) {
+            String msg = "Cannot not create a new simulation without a " +
+                         "a previous one to use as a model.";
+            LOGGER.log(Level.WARNING, msg);
+            
+            throw new java.lang.NullPointerException();
+        }
+        
+        Simulator simulator = new RPCSimulator(microscope);
+        manager.addSimulator(simulator);
+        return simulator.getId();
+    }
+    
+    /**
+     * Deletes the simulation with the given ID.
+     * 
+     * @param id The ID of the simulation to delete.
+     */
+    @Override
+    public void deleteSimulation(int id) throws UnknownSimulationIdException {
+        List ids = manager.getIds();
+        
+        if (ids.contains(id)) {
+            manager.removeSimulator(id);
+        } else {
+            String msg = "Cannot delete simulation with ID " + 
+                          String.valueOf(id) + " because it does not exist.";
+            LOGGER.log(Level.WARNING, msg);
+            throw new UnknownSimulationIdException();
+        }
+    }
+    
+    /**
      * Returns the control signal for the current simulation.
      * 
      * @param id The simulation ID.
@@ -66,6 +119,9 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     public double getControlSignal(int id) throws UnknownSimulationIdException {
         Simulator sim = manager.getSimulator(id);
         if (sim == null) {
+            String msg = "Cannot get simulation with ID " + String.valueOf(id) +
+                         " because it does not exist.";
+            LOGGER.log(Level.WARNING, msg);
             throw new UnknownSimulationIdException();
         }
         

@@ -17,10 +17,12 @@
  */
 package ch.epfl.leb.sass.models.components;
 
+import java.io.Serializable;
+
 /**
  * A source of light for illuminating the sample.
  */
-public class Laser {
+public class Laser  implements Serializable {
     private double currentPower;
     private double maxPower;
     private double minPower;

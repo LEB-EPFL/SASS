@@ -19,7 +19,7 @@
  */
 package ch.epfl.leb.sass.models.legacy;
 
-
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
 import ch.epfl.leb.sass.utils.RNG;
@@ -84,6 +84,11 @@ public class STORMsim extends AbstractSimulator {
     @Override
     public double getTrueSignal(int image_no) {
         return emitter_history.get(image_no) / device.getFOVsize_um() * 10000;
+    }
+    
+    @Override
+    public Microscope getMicroscope() {
+        return null;
     }
 
     @Override

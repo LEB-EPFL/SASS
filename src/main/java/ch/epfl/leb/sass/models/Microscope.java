@@ -21,27 +21,28 @@ import cern.jet.random.Gamma;
 import cern.jet.random.Normal;
 import cern.jet.random.Poisson;
 
+import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
-import ch.epfl.leb.sass.utils.RNG;
-import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamicsBuilder;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
+import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
+import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
+import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommandBuilder;
+import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommandBuilder;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommand;
-import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.components.Laser;
-import ch.epfl.leb.sass.models.components.Objective;
-import ch.epfl.leb.sass.models.components.Stage;
-import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommandBuilder;
-import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
-import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
-import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
+import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamicsBuilder;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
+import java.io.Serializable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
@@ -49,7 +50,7 @@ import com.google.gson.JsonArray;
 /**
  * Integrates all the components into one microscope.
  */
-public class Microscope {
+public class Microscope implements Serializable {
     
     // Assigned in the constructor
     private final Camera camera;
@@ -58,7 +59,7 @@ public class Microscope {
     private final Stage stage;
     private final FluorophoreDynamics fluorDynamics;
     private final List<Fluorophore> fluorophores;
-    private List<Obstructor> obstructors;
+    private final List<Obstructor> obstructors;
     private final BackgroundCommand background;
     
     // Random number generators
@@ -67,7 +68,7 @@ public class Microscope {
     private final Normal gaussian = RNG.getGaussianGenerator();
     
     // Member names for JSON serialization
-    private final String FLUOR_MEMBER_NAME="Fluorophores";
+    private final String FLUOR_MEMBER_NAME = "Fluorophores";
     
     /** 
      * Initializes the microscope for simulations.

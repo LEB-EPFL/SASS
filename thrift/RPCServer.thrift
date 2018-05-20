@@ -29,6 +29,16 @@ exception UnknownSimulationIdException { }
 service RemoteSimulationService {
 
   /**
+   * Creates a new simulation. The ID of the simulation is returned.
+   */
+  i32 createSimulation(),
+
+  /**
+   * Deletes a simulation with the given ID.
+   */
+  void deleteSimulation(1: i32 id) throws (1: UnknownSimulationIdException ex),
+  
+  /**
    * Returns the current value for the control signal.
    */
   double getControlSignal(1: i32 id) throws (1: UnknownSimulationIdException ex),

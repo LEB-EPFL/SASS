@@ -18,13 +18,14 @@
 package ch.epfl.leb.sass.models.fluorophores;
 
 import ch.epfl.leb.sass.models.Model;
+import java.io.Serializable;
 
 /**
  * A single fluorophore including its position and photophysical properties.
  * 
  * @author Kyle M. Douglass
  */
-public interface Fluorophore extends Model {
+public interface Fluorophore extends Model, Serializable {
     
     /**
      * Has the fluorophore been bleached? If so, it can never return to a fluorescence-emitting state.

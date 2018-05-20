@@ -19,6 +19,7 @@
  */
 package ch.epfl.leb.sass.simulator;
 
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
@@ -36,6 +37,13 @@ import java.util.HashMap;
 public interface Simulator {
     
     /**
+     * Returns currently set control signal of the generator (e.g. laser power 
+     * settings).
+     * @return control signal value
+     */
+    public double getControlSignal();
+    
+    /**
      * Returns state information about the sample's fluorescence.
      * 
      * @return A JSON object containing information on the sample fluorescence.
@@ -48,6 +56,13 @@ public interface Simulator {
      * @return The name of the key indicating the fluorescence information.
      */
     public String getFluorescenceJsonName();
+    
+    /**
+     * Returns the size of the field-of-view in object space units.
+     * 
+     * @return size of current FOV in object space units.
+     */
+    public double getFOVSize();
     
     /**
      * Returns the unique ID assigned to this simulator.
@@ -67,63 +82,23 @@ public interface Simulator {
      * @return The number of images that have been simulated.
      */
     public int getImageCount();
+    
+    /**
+     * Returns a copy of the Microscope that is controlled by this simulation.
+     * 
+     * The copy that is returned is a deep copy of the
+     * {@link ch.epfl.leb.sass.models.Microscope Microscope} that the simulation
+     * was initialized with.
+     * 
+     * @return A copy of the Microscope object controlled by this simulation.
+     */
+    public Microscope getMicroscope();
 
     /**
      * Generates a new image and adds it to the internal stack.
      * @return newly generated image
      */
     public ImageS getNextImage() throws ImageShapeException;
-    
-    /**
-     * Increments the simulation by one time step without creating an image.
-     */
-    public void incrementTimeStep();
-    
-    /**
-     * Sets control signal of the generator (e.g. laser power). This should be
-     * used by the controller.
-     * @param value new value of the control signal
-     */
-    public void setControlSignal(double value);
-    
-    /**
-     * Returns currently set control signal of the generator (e.g. laser power 
-     * settings).
-     * @return control signal value
-     */
-    public double getControlSignal();
-    
-    /**
-     * Returns the actual value of signal (if applicable) for given image.
-     * @param image_no 1-based image number in history
-     * @return value of signal (e.g. no. of active emitters)
-     */
-    public double getTrueSignal(int image_no);
-    
-    /**
-     * Sets custom parameters of the generator.
-     * @param map map of custom parameters
-     */
-    public void setCustomParameters(HashMap<String,Double> map);
-    
-    /**
-     * Returns custom parameters of the generator.
-     * @return map of custom parameters
-     */
-    public HashMap<String,Double> getCustomParameters();
-
-    /**
-     * Saves .tif stack to selected file.
-     * @param selectedFile file to save to
-     */
-    public void saveStack(File selectedFile);
-    
-    /**
-     * Returns internal stack with all generated images.
-     * 
-     * @return internal stack
-     */
-    public ImageS getStack();
     
     /**
      * Returns the size of a pixel in object space units.
@@ -135,13 +110,6 @@ public interface Simulator {
      * @return length of one pixel side in object space units.
      */
     public double getObjectSpacePixelSize();
-    
-    /**
-     * Returns the size of the field-of-view in object space units.
-     * 
-     * @return size of current FOV in object space units.
-     */
-    public double getFOVSize();
     
     /**
      * Returns a brief description of the ground truth signal.
@@ -160,4 +128,48 @@ public interface Simulator {
      * @return JSON string encoding the simulation state.
      */
     public String getSimulationState();
+    
+    /**
+     * Returns internal stack with all generated images.
+     * 
+     * @return internal stack
+     */
+    public ImageS getStack();
+    
+    /**
+     * Returns the actual value of signal (if applicable) for given image.
+     * @param image_no 1-based image number in history
+     * @return value of signal (e.g. no. of active emitters)
+     */
+    public double getTrueSignal(int image_no);
+    
+    /**
+     * Increments the simulation by one time step without creating an image.
+     */
+    public void incrementTimeStep();
+    
+    /**
+     * Sets control signal of the generator (e.g. laser power). This should be
+     * used by the controller.
+     * @param value new value of the control signal
+     */
+    public void setControlSignal(double value);
+    
+    /**
+     * Sets custom parameters of the generator.
+     * @param map map of custom parameters
+     */
+    public void setCustomParameters(HashMap<String,Double> map);
+    
+    /**
+     * Returns custom parameters of the generator.
+     * @return map of custom parameters
+     */
+    public HashMap<String,Double> getCustomParameters();
+
+    /**
+     * Saves .tif stack to selected file.
+     * @param selectedFile file to save to
+     */
+    public void saveStack(File selectedFile);
 }

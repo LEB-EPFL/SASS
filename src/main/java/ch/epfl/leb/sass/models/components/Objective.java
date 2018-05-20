@@ -17,12 +17,14 @@
  */
 package ch.epfl.leb.sass.models.components;
 
+import java.io.Serializable;
+
 /**
  * Properties related to the microscope objective.
  * 
  * @author Kyle M. Douglass
  */
-public final class Objective {
+public final class Objective  implements Serializable {
     /**
      * Numerical aperture
      */

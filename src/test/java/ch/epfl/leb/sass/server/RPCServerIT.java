@@ -45,8 +45,10 @@ import org.junit.experimental.categories.Category;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+
 import org.apache.thrift.TException;
 
 /**
@@ -256,6 +258,43 @@ public class RPCServerIT {
         boolean result = rpcServer.isServing();
         assertEquals(expResult, result);
 
+    }
+    
+    /**
+     * Test of createSimulation and deleteSimulation methods, of class
+     * RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testCreateAndDeleteSimulation() throws TException {
+        System.out.println("testCreateSimulation");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        
+        int origNumSims;
+        origNumSims = manager.getIds().size();
+        
+        int newSimId;
+        newSimId = client.createSimulation();
+        
+        // There should now be one additional simulation in the manager..
+        assertEquals(origNumSims + 1, manager.getIds().size());
+        
+        // Increment the new simulation by one time step and verify that only
+        // the new simulation state has changed.
+        int newImageCount;
+        int oldImageCount;
+        client.getNextImage(newSimId);
+        oldImageCount = client.getImageCount(sims[0].getId());
+        newImageCount = client.getImageCount(newSimId);
+        assertEquals(0, oldImageCount);
+        assertEquals(1, newImageCount);
+        
+        // Delete the new simulation.
+        client.deleteSimulation(newSimId);
+        List<Integer> listOfSims = manager.getIds();
+        assertEquals(origNumSims, listOfSims.size());
+        assert(!listOfSims.contains(newSimId));
+        
     }
     
     /**

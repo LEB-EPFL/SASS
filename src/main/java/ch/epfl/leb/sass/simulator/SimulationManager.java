@@ -17,6 +17,8 @@
  */
 package ch.epfl.leb.sass.simulator;
 
+import ch.epfl.leb.sass.models.Microscope;
+
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public interface SimulationManager {
     /**
      * Adds a simulation to the manager.
      * 
-     * @param The simulation to add to the manager.
+     * @param simulator The simulation to add to the manager.
      */
     public void addSimulator(Simulator simulator);
     
@@ -41,6 +43,20 @@ public interface SimulationManager {
      * @return A list of simulation ID numbers.
      */
     public List<Integer> getIds();
+    
+    /**
+     * Returns the most recent microscope that was used to create a simulation.
+     * 
+     * This method serves as a sort of cache for remembering the most
+     * recently created {@link ch.epfl.leb.sass.models.Microscope Microscope}
+     * object. Its purpose is to allow for easy generation of new Simulators.
+     * 
+     * This method will return null if the SimulatorManager has never managed
+     * a simulation.
+     * 
+     * @return A copy of the Microscope object null.
+     */
+    public Microscope getMostRecentMicroscope();
     
     /**
      * Returns a reference to the simulator corresponding to the ID.

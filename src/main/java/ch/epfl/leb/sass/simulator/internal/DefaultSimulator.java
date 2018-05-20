@@ -61,6 +61,26 @@ public class DefaultSimulator extends AbstractSimulator {
         emitterHistory.add(0.0);
     }
     
+    @Override
+    public double getControlSignal() {
+        return microscope.getLaserPower();
+    }
+    
+    @Override
+    public HashMap<String, Double> getCustomParameters() {
+        parameters.put("real_laser_power", microscope.getLaserPower());
+        return parameters;
+    }
+    
+    /**
+     * 
+     * @return The size of the FOV in square object-space units.
+     */
+    @Override
+    public double getFOVSize() {
+        return microscope.getFovSize();
+    }
+    
     /**
      * Returns information about the state of the sample fluorescence.
      * 
@@ -79,12 +99,24 @@ public class DefaultSimulator extends AbstractSimulator {
         return this.microscope.getFluorescenceJsonName();
     }
     
+    /**
+     * Returns a copy of the Microscope that is controlled by this simulation.
+     * 
+     * The copy that is returned is a deep copy of the
+     * {@link ch.epfl.leb.sass.models.Microscope Microscope} that the simulation
+     * was initialized with.
+     * 
+     * @return A copy of the Microscope object controlled by this simulation.
+     */
     @Override
-    public double getTrueSignal(int image_no) {
-        return emitterHistory.get(image_no) /
-               microscope.getFovSize() * SCALEFACTOR;
+    public Microscope getMicroscope() {
+        return microscope;
     }
-
+    
+    /**
+     * Generates a new image and adds it to the internal stack.
+     * @return newly generated image
+     */
     @Override
     public ImageS getNextImage() throws ImageShapeException {
         // we calculate emitter count first so it corresponds with the beginning
@@ -97,6 +129,27 @@ public class DefaultSimulator extends AbstractSimulator {
     }
     
     /**
+     *
+     * @return Length of one pixel side in object-space units.
+     */
+    @Override
+    public double getObjectSpacePixelSize() {
+        return microscope.getObjectSpacePixelSize();
+    }
+    
+    @Override
+    public String getShortTrueSignalDescription() {
+        String descr = "counts/" + String.valueOf((int) SCALEFACTOR) + " µm^2";
+        return descr;
+    }
+    
+    @Override
+    public double getTrueSignal(int image_no) {
+        return emitterHistory.get(image_no) /
+               microscope.getFovSize() * SCALEFACTOR;
+    }
+    
+    /**
      * Advance the simulation by one time step (i.e. one frame).
      * 
      * Simulates a frame but does not create an image.
@@ -106,18 +159,7 @@ public class DefaultSimulator extends AbstractSimulator {
         emitterHistory.add(microscope.getOnEmitterCount());
         microscope.simulateFrame();
     }
-
-    @Override
-    public void setCustomParameters(HashMap<String, Double> map) {
-        parameters = map;
-    }
-
-    @Override
-    public HashMap<String, Double> getCustomParameters() {
-        parameters.put("real_laser_power", microscope.getLaserPower());
-        return parameters;
-    }
-
+    
     @Override
     public void setControlSignal(double value) {
         parameters.put("target_laser_power", value);
@@ -125,32 +167,7 @@ public class DefaultSimulator extends AbstractSimulator {
     }
 
     @Override
-    public double getControlSignal() {
-        return microscope.getLaserPower();
+    public void setCustomParameters(HashMap<String, Double> map) {
+        parameters = map;
     }
-
-    /**
-     *
-     * @return Length of one pixel side in object-space units.
-     */
-    @Override
-    public double getObjectSpacePixelSize() {
-        return microscope.getObjectSpacePixelSize();
-    }
-
-    /**
-     * 
-     * @return The size of the FOV in square object-space units.
-     */
-    @Override
-    public double getFOVSize() {
-        return microscope.getFovSize();
-    }
-    
-    @Override
-    public String getShortTrueSignalDescription() {
-        String descr = "counts/" + String.valueOf((int) SCALEFACTOR) + " µm^2";
-        return descr;
-    }
-    
 }

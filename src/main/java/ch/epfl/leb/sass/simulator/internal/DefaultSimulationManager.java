@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.simulator.internal;
 
+import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.SimulationManager;
 
@@ -34,6 +35,11 @@ public class DefaultSimulationManager implements SimulationManager {
      * The list of Simulators currently managed by the manager.
      */
     private ConcurrentHashMap<Integer, Simulator> listOfSims;
+    
+    /**
+     * The microscope from the most recently-added simulation.
+     */
+    private Microscope microscope;
  
     /**
      * Default constructor.
@@ -58,6 +64,7 @@ public class DefaultSimulationManager implements SimulationManager {
      */
     public void addSimulator(Simulator simulator) {
         listOfSims.put(simulator.getId(), simulator);
+        microscope = simulator.getMicroscope();
     }
     
     /**
@@ -70,6 +77,23 @@ public class DefaultSimulationManager implements SimulationManager {
         List<Integer> ids;
         ids = Collections.list(listOfSims.keys());
         return ids;
+    }
+    
+    /**
+     * Returns the most recent microscope that was used to create a simulation.
+     * 
+     * This method serves as a sort of cache for remembering the most
+     * recently created {@link ch.epfl.leb.sass.models.Microscope Microscope}
+     * object. Its purpose is to allow for easy generation of new Simulators.
+     * 
+     * This method will return null if the SimulatorManager has never managed
+     * a simulation.
+     * 
+     * @return A copy of the Microscope object or null.
+     */
+    @Override
+    public Microscope getMostRecentMicroscope() {
+        return microscope;
     }
     
     /**

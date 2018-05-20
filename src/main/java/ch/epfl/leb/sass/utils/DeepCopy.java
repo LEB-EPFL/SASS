@@ -38,7 +38,7 @@ public class DeepCopy {
     * 
     * @see <a href="https://www.journaldev.com/17129/java-deep-copy-object">https://www.journaldev.com/17129/java-deep-copy-object</a>
     */
-    private static Object deepCopy(Object object) {
+    public static Object deepCopy(Object object) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ObjectOutputStream outputStrm = 

@@ -17,6 +17,7 @@
 package ch.epfl.leb.sass.logging.internal;
 
 import ch.epfl.leb.sass.logging.Message;
+import ch.epfl.leb.sass.logging.MessageType;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,17 +36,27 @@ import java.lang.reflect.Type;
  */
 public class FluorophoreStateTransition implements Message {
     
-    public final int ID;
-    public final double TIME_ELAPSED;
     public final int CURRENT_STATE;
+    public final int ID;
     public final int NEXT_STATE;
+    public final double TIME_ELAPSED;
+    public final MessageType TYPE = MessageType.FLUOROPHORE;
+    
     
     public FluorophoreStateTransition(int id, double timeElapsed,
-                                             int currentState, int nextState) {
+                                      int currentState, int nextState) {
         ID = id;
         TIME_ELAPSED = timeElapsed;
         CURRENT_STATE = currentState;
         NEXT_STATE = nextState;
+    }
+    
+    /**
+     * An indentifier that indicates where this message originated from.
+     * @return The message type.
+     */
+    public MessageType getType() {
+        return TYPE;
     }
     
     /**
@@ -56,8 +67,9 @@ public class FluorophoreStateTransition implements Message {
     @Override
     public JsonElement toJson() {
         Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(FluorophoreStateTransition.class,
-                                             new FluorophoreStateTransitionSerializer())
+                        .registerTypeAdapter(
+                                FluorophoreStateTransition.class,
+                                new FluorophoreStateTransitionSerializer())
                         .create();
         return gson.toJsonTree(this);
     }
@@ -69,6 +81,7 @@ public class FluorophoreStateTransition implements Message {
                                      Type typeOfSrc,
                                      JsonSerializationContext context) {
             JsonObject result = new JsonObject();
+            result.add("type", new JsonPrimitive(src.getType().name()));
             result.add("id", new JsonPrimitive(src.ID));
             result.add("time elapsed", new JsonPrimitive(src.TIME_ELAPSED));
             result.add("current state", new JsonPrimitive(src.CURRENT_STATE));

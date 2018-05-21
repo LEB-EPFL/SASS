@@ -16,26 +16,13 @@
  */
 package ch.epfl.leb.sass.logging;
 
-import com.google.gson.JsonElement;
-
 /**
- * Defines methods that all logging messages should posses.
- * 
+ *
  * @author Kyle M. Douglass
  */
-public interface Message {
-    
+public enum MessageType {
     /**
-     * A unique identifier for the message type.
-     * @return The message type.
+     * The type of messages that are sent by individual fluorophores.
      */
-    public MessageType getType();
-    
-    /**
-     * The message as a JSON object.
-     * 
-     * @return A JsonElement represented as a message.
-     */
-    public JsonElement toJson();
-    
+    FLUOROPHORE
 }

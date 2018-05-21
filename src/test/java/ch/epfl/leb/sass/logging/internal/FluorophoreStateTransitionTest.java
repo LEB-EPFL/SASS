@@ -38,6 +38,7 @@ public class FluorophoreStateTransitionTest {
     public void testToJson() {
         System.out.println("toJson");
         
+        String type = "FLUOROPHORE";
         int id = 42;
         double timeElapsed = 32.5;
         int currentState = 2;
@@ -48,6 +49,7 @@ public class FluorophoreStateTransitionTest {
         
         JsonElement result = instance.toJson();
         
+        assertEquals(type, result.getAsJsonObject().get("type").getAsString());
         assertEquals(id, result.getAsJsonObject().get("id").getAsInt());
         assertEquals(timeElapsed,
                      result.getAsJsonObject().get("time elapsed").getAsDouble(),

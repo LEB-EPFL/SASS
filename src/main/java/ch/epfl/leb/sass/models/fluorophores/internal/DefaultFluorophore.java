@@ -1,8 +1,6 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Federale de Lausanne
- * 
- * Author: Marcel Stefko
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne, Switzerland
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +22,8 @@ import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.legacy.Camera;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.logging.Listener;
+import ch.epfl.leb.sass.logging.internal.FluorophoreStateTransition;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,12 +35,24 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 import java.util.Random;
+import java.util.ArrayList;
 
 /**
  * A general fluorescent molecule which emits light.
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
+    
+    /**
+     * The list of listeners that are tracking this object.
+     */
+    private ArrayList<Listener> listeners = new ArrayList();
+    
+    /**
+     * A flag indicating whether the state of this object has changed.
+     */
+    private boolean changed;
     
     /**
      * internal emitter clock for tracking total time elapsed
@@ -114,6 +126,7 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
         this.state_system = state_system;
         this.signal = signal;
         this.current_state = start_state;
+        this.changed = false;
         if (start_state >= state_system.getNStates()) {
             throw new IllegalArgumentException("Starting state no. is out of " +
                                                "bounds.");
@@ -122,8 +135,81 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
         
         // Log the fluorophore's position
         this.positionLogger.logPosition(this.getId(), x, y, z);
+
     }
 
+    /**
+     * Adds a new listener to the list of subscribed listeners.
+     */
+    @Override
+    public void addListener(Listener listener) {
+        listeners.add(listener);
+    }
+    
+    /**
+     * Deletes a listener from the list of subscribed listeners.
+     */
+    @Override
+    public void deleteListener(Listener listener) {
+        listeners.remove(listener);
+    }
+    
+    /**
+     * Returns the id of the fluorophore state system's current state.
+     * 
+     * @return The id of the current state of the fluorophore's state system.
+     */
+    public int getCurrentState() {
+        return current_state;
+    }
+    
+    /**
+     * Returns the fluorophore's number of photons per frame.
+     * 
+     * @return The number of photons per frame emitted by the fluorophore.
+     */
+    public double getSignal() {
+        return signal;
+    }
+    
+    /**
+     * Return the x-position of the fluorophore.
+     * 
+     * @return The fluorophore's x-position.
+     */
+    public double getX() { return this.x; }
+    
+    /**
+     * Return the y-position of the fluorophore.
+     * 
+     * @return The fluorophore's y-position.
+     */
+    public double getY() { return this.y; }
+    
+    /**
+     * Return the z-position of the fluorophore.
+     * 
+     * @return The fluorophore's z-position.
+     */
+    public double getZ() { return this.z; }
+
+    /**
+     * Informs if this emitter switched into the irreversible bleached state.
+     * @return boolean, true if emitter is bleached
+     */
+    public boolean isBleached() {
+        return state_system.isBleachedState(current_state);
+    }
+    
+    /**
+     * Returns the current state of the emitter (on or off), but does not
+     * inform if this emitter is also bleached!
+     * @return true-emitter is on, false-emitter is off
+     */
+    public boolean isOn() {
+        return state_system.isOnState(current_state);
+    }
+    
     /**
      * Sample an random number from an exponential distribution
      * @param mean mean of the distribution
@@ -135,22 +221,30 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
         else
             return Math.log(1 - random.nextDouble()) * (-mean);
     }
-
+    
     /**
-     * Returns the current state of the emitter (on or off), but does not
-     * inform if this emitter is also bleached!
-     * @return true-emitter is on, false-emitter is off
+     * Notifies all subscribed listeners to a change in the Observable's state.
+     * 
+     * This method should only be called if setChanged() has been called.
      */
-    public boolean isOn() {
-        return state_system.isOnState(current_state);
+    @Override
+    public void notifyListeners() {
+        notifyListeners(null);
     }
-
+    
     /**
-     * Informs if this emitter switched into the irreversible bleached state.
-     * @return boolean, true if emitter is bleached
+     * Notifies all subscribed listeners of a state change and pushes the data.
+     * 
+     * @param data The data object to push to the listeners.
      */
-    public boolean isBleached() {
-        return state_system.isBleachedState(current_state);
+    @Override
+    public void notifyListeners(Object data) {
+        if (changed) {
+            for (Listener l: listeners) {
+                l.update(data);
+            }
+            changed = false;
+        }
     }
     
     /**
@@ -160,6 +254,14 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
     @Override
     public void recalculateLifetimes(double laserPower) {
         this.state_system.recalculate_lifetimes(laserPower);
+    }
+    
+    /**
+     * Indicates that the state of this Observable has been changed.
+     */
+    @Override
+    public void setChanged() {
+        changed = true;
     }
 
     @Override
@@ -191,11 +293,21 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
                 remaining_time -= transition_time;
                 time_elapsed += transition_time;
                 
+                // DEPRECATED
                 stateLogger.logStateTransition(
                     this.getId(),
                     time_elapsed,
                     current_state,
                     next_state
+                );
+                
+                // Notify all listeners of this transition.
+                setChanged();
+                notifyListeners(new FluorophoreStateTransition(
+                                        this.getId(),
+                                        time_elapsed,
+                                        current_state,
+                                        next_state)
                 );
                 
                 current_state = next_state;
@@ -222,24 +334,6 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
     }
     
     /**
-     * Returns the id of the fluorophore state system's current state.
-     * 
-     * @return The id of the current state of the fluorophore's state system.
-     */
-    public int getCurrentState() {
-        return current_state;
-    }
-    
-    /**
-     * Returns the fluorophore's number of photons per frame.
-     * 
-     * @return The number of photons per frame emitted by the fluorophore.
-     */
-    public double getSignal() {
-        return signal;
-    }
-    
-    /**
      * Returns the fluorophore's properties as a JSON string.
      * @return The properties of the fluorophore as a JSON string.
      */
@@ -251,27 +345,6 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
                         .create();
         return gson.toJsonTree(this);
     }
-    
-    /**
-     * Return the x-position of the fluorophore.
-     * 
-     * @return The fluorophore's x-position.
-     */
-    public double getX() { return this.x; }
-    
-    /**
-     * Return the y-position of the fluorophore.
-     * 
-     * @return The fluorophore's y-position.
-     */
-    public double getY() { return this.y; }
-    
-    /**
-     * Return the z-position of the fluorophore.
-     * 
-     * @return The fluorophore's z-position.
-     */
-    public double getZ() { return this.z; }
 }
 
 class DefaultFluorophoreSerializer implements JsonSerializer<DefaultFluorophore> {

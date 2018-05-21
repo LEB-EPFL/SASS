@@ -314,19 +314,19 @@ public class RPCServerIT {
     }
     
     /**
-     * Test of getFluorescenceInfo and getFluorescenceJsonName methods,
+     * Test of toJsonFluorescence and getFluorescenceJsonName methods,
      * of class RemoteSimulationServiceHandler.
      */
     @Test
-    public void testGetFluorescenceInfo() throws UnknownSimulationIdException,
+    public void testToJsonFluorescence() throws UnknownSimulationIdException,
                                                  TException {
-        System.out.println("testGetFluorescenceInfo");
+        System.out.println("testToJsonFluorescence");
         
         RemoteSimulationService.Client client = rpcClient.getClient();
         JsonParser parser = new JsonParser();
         
         // Extract the fluorescence info from the first simulation.
-        String info = client.getFluorescenceInfo(sims[0].getId());
+        String info = client.toJsonFluorescence(sims[0].getId());
         String fluorName = client.getFluorescenceJsonName(sims[0].getId());
         JsonObject json = parser.parse(info).getAsJsonObject();
         JsonArray fluorArray;
@@ -335,7 +335,7 @@ public class RPCServerIT {
         assertEquals(expResult, fluorArray.size());
         
         // Extract the fluorescence info from the second simulation.
-        info = client.getFluorescenceInfo(sims[1].getId());
+        info = client.toJsonFluorescence(sims[1].getId());
         fluorName = client.getFluorescenceJsonName(sims[1].getId());
         json = parser.parse(info).getAsJsonObject();
         fluorArray = json.get(fluorName).getAsJsonArray();

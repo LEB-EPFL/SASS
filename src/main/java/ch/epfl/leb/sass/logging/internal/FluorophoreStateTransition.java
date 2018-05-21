@@ -82,7 +82,7 @@ public class FluorophoreStateTransition implements Message {
                                      JsonSerializationContext context) {
             JsonObject result = new JsonObject();
             result.add("type", new JsonPrimitive(src.getType().name()));
-            result.add("id", new JsonPrimitive(src.ID));
+            result.add("fluorophore id", new JsonPrimitive(src.ID));
             result.add("time elapsed", new JsonPrimitive(src.TIME_ELAPSED));
             result.add("current state", new JsonPrimitive(src.CURRENT_STATE));
             result.add("next state", new JsonPrimitive(src.NEXT_STATE));

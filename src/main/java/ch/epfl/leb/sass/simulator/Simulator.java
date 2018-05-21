@@ -44,13 +44,6 @@ public interface Simulator {
     public double getControlSignal();
     
     /**
-     * Returns state information about the sample's fluorescence.
-     * 
-     * @return A JSON object containing information on the sample fluorescence.
-     */
-    public JsonObject getFluorescenceInfo();
-    
-    /**
      * Returns the name of the JSON key for the fluorescence info.
      * 
      * @return The name of the key indicating the fluorescence information.
@@ -172,4 +165,11 @@ public interface Simulator {
      * @param selectedFile file to save to
      */
     public void saveStack(File selectedFile);
+    
+    /**
+     * Returns information about the sample's fluorophores as a JSON object.
+     * 
+     * @return A JSON object containing information on the sample fluorescence.
+     */
+    public JsonObject toJsonFluorescence();
 }

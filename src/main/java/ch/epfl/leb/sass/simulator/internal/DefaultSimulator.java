@@ -1,8 +1,6 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
- * 
- * Author(s): Marcel Stefko, Kyle M. Douglass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +17,9 @@
  */
 package ch.epfl.leb.sass.simulator.internal;
 
+import ch.epfl.leb.sass.utils.DeepCopy;
+import ch.epfl.leb.sass.logging.Message;
+import ch.epfl.leb.sass.logging.Listener;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
@@ -26,15 +27,23 @@ import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The basic simulation engine from which others may be derived.
  * 
  * @author Marcel Stefko
+ * @author Kyle M. Douglass
  */
 public class DefaultSimulator extends AbstractSimulator {
+    
+    public final static Logger LOGGER = 
+            Logger.getLogger(DefaultSimulator.class.getName());
+    
     /**
      * Scaling factor for the density.
      * 
@@ -57,7 +66,7 @@ public class DefaultSimulator extends AbstractSimulator {
         int[] res = this.microscope.getResolution();
         stack = new DefaultImageS(res[0], res[1]);
 
-        emitterHistory = new ArrayList<Double>();
+        emitterHistory = new ArrayList<>();
         emitterHistory.add(0.0);
     }
     
@@ -79,15 +88,6 @@ public class DefaultSimulator extends AbstractSimulator {
     @Override
     public double getFOVSize() {
         return microscope.getFovSize();
-    }
-    
-    /**
-     * Returns information about the state of the sample fluorescence.
-     * 
-     * @return A JSON object containing information on the sample fluorescence.
-     */
-    public JsonObject getFluorescenceInfo() {
-        return this.microscope.getFluorescenceInfo();
     }
     
     /**
@@ -169,5 +169,75 @@ public class DefaultSimulator extends AbstractSimulator {
     @Override
     public void setCustomParameters(HashMap<String, Double> map) {
         parameters = map;
+    }
+    
+    /**
+     * Returns information about the sample's fluorophores as a JSON object.
+     * 
+     * @return A JSON object containing information on the sample fluorescence.
+     */
+    @Override
+    public JsonObject toJsonFluorescence() {
+        return this.microscope.toJsonFluorescence();
+    }
+    
+    /**
+     * The StateListener listens for changes in the simulation's state.
+     * 
+     * These changes can occur at any time on a continuous interval between
+     * the simulation time steps.
+     */
+    class StateListener implements Listener {
+        
+        /**
+         * A cache containing the state transition messages.
+         */
+        ArrayList<Message> transitions = new ArrayList();
+        
+        /**
+         * This method is called by an Observable when its state has changed.
+         * 
+         * @param data The data object that is passed from the Observable.
+         */
+        @Override
+        public void update(Object data) {
+            if (data == null) {
+                // No data reported by the Observable.
+                return;
+            }
+            
+            try {
+                Message msg = (Message) data;
+                transitions.add(msg);
+            } catch (Exception ex) {
+                String err = "Could not coerce the Listener's message into a " +
+                             "known message type.";
+                LOGGER.log(Level.WARNING, err);
+                LOGGER.log(Level.WARNING, ex.getMessage());
+            }
+        }
+        
+        /**
+         * Dumps the contents of the cache to a JSON string.
+         * 
+         * Calling this method will irreversibly clear the cache. This method
+         * will return null if the cache is empty.
+         * 
+         * @return The contents of the cache as JSON string or null.
+         */
+        public List<Message> dumpMessageCache() {
+            if (transitions.isEmpty()) {
+                return null;
+            }
+            
+            // Copy the messages before clearing the cache.
+            ArrayList<Message> messages = new ArrayList<>();
+            for (Message msg: transitions) {
+                messages.add((Message) DeepCopy.deepCopy(msg));
+            }
+            
+            transitions.clear();
+            return messages;
+        }
     }
 }

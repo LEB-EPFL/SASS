@@ -50,7 +50,8 @@ public class FluorophoreStateTransitionTest {
         JsonElement result = instance.toJson();
         
         assertEquals(type, result.getAsJsonObject().get("type").getAsString());
-        assertEquals(id, result.getAsJsonObject().get("id").getAsInt());
+        assertEquals(id,
+                     result.getAsJsonObject().get("fluorophore id").getAsInt());
         assertEquals(timeElapsed,
                      result.getAsJsonObject().get("time elapsed").getAsDouble(),
                      0.0);

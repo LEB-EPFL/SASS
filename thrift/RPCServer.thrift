@@ -44,11 +44,6 @@ service RemoteSimulationService {
   double getControlSignal(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
-   * Returns information about the state of the sample fluorescence.
-   */
-  string getFluorescenceInfo(1: i32 id) throws (1: UnknownSimulationIdException ex),
-
-  /**
    * Gets the name of the JSON key for the fluoresence information.
    */
   string getFluorescenceJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
@@ -106,5 +101,11 @@ service RemoteSimulationService {
    * Changes the simulation's control signal.
    */
   void setControlSignal(1: i32 id, 2: double power) throws (1: UnknownSimulationIdException ex)
+
+  /**
+   * Returns information about the state of the sample fluorescence as
+   * a JSON string.
+   */
+  string toJsonFluorescence(1: i32 id) throws (1: UnknownSimulationIdException ex),
        
 }

@@ -18,12 +18,14 @@ package ch.epfl.leb.sass.logging;
 
 import com.google.gson.JsonElement;
 
+import java.io.Serializable;
+
 /**
  * Defines methods that all logging messages should posses.
  * 
  * @author Kyle M. Douglass
  */
-public interface Message {
+public interface Message extends Serializable {
     
     /**
      * A unique identifier for the message type.

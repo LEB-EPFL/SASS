@@ -72,7 +72,7 @@ public class STORMsim extends AbstractSimulator {
      * @return A JSON object containing information on the sample fluorescence.
      */
     @Override
-    public JsonObject getFluorescenceInfo() {
+    public JsonObject toJsonFluorescence() {
         return null;
     }
     

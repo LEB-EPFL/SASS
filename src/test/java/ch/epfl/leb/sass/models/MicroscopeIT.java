@@ -159,6 +159,17 @@ public class MicroscopeIT {
     }
 
     /**
+     * Test of getFluorophores method, of class Microscope.
+     */
+    @Test
+    public void testGetFluorophores() {
+        System.out.println("getFluorophores");
+        int expResult = 49;
+        int result = microscope.getFluorophores().size();
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of getFovSize method, of class Microscope.
      */
     @Test

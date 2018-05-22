@@ -199,6 +199,15 @@ public class Microscope implements Serializable {
     }
     
     /**
+     * Returns references to the fluorophores in the sample.
+     * 
+     * @return The sample's Fluorophore objects.
+     */
+    public List<Fluorophore> getFluorophores() {
+        return this.fluorophores;
+    }
+    
+    /**
      * Returns the size of the field-of-view in object space units.
      * 
      * @return size of current FOV in object space units.

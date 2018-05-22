@@ -34,7 +34,7 @@ public interface Message extends Serializable {
     public MessageType getType();
     
     /**
-     * The message as a JSON object.
+     * The message as a JSON element.
      * 
      * @return A JsonElement represented as a message.
      */

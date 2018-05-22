@@ -19,6 +19,7 @@
  */
 package ch.epfl.leb.sass.simulator;
 
+import ch.epfl.leb.sass.logging.Message;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
@@ -26,6 +27,7 @@ import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.util.List;
 import java.util.HashMap;
 
 /**
@@ -44,9 +46,10 @@ public interface Simulator {
     public double getControlSignal();
     
     /**
-     * Returns the name of the JSON key for the fluorescence info.
+     * Returns the name of the JSON key for the fluorescence state info.
      * 
      * @return The name of the key indicating the fluorescence information.
+     * @see #toJsonFluorescence()
      */
     public String getFluorescenceJsonName();
     
@@ -75,6 +78,19 @@ public interface Simulator {
      * @return The number of images that have been simulated.
      */
     public int getImageCount();
+    
+    /**
+     * Returns messages about changes in the simulation state.
+     * 
+     * Unlike {@link #getSimulationState() getSimulationState()}, which returns
+     * information about the *current* state of the simulation, this method
+     * returns the messages from individual components that contain information
+     * about changes in their state that have occurred since the last time this
+     * method was called.
+     * 
+     * @return A list containing the state change messages.
+     */
+    public List<Message> getMessages();
     
     /**
      * Returns a copy of the Microscope that is controlled by this simulation.
@@ -172,4 +188,17 @@ public interface Simulator {
      * @return A JSON object containing information on the sample fluorescence.
      */
     public JsonObject toJsonFluorescence();
+    
+    /**
+     * Returns messages about changes in the simulation state as a JSON object.
+     * 
+     * Unlike {@link #toJsonFluorescence() toJsonFluorescence()}, which returns
+     * information about the *current* state of just the fluorophores, this
+     * method returns the messages from individual simulation components that
+     * contain information about changes in their state that have occurred since
+     * the last time this method was called.
+     * 
+     * @return A JSON object containing the simulation messages.
+     */
+    public JsonObject toJsonMessages();
 }

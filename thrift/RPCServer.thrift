@@ -107,5 +107,11 @@ service RemoteSimulationService {
    * a JSON string.
    */
   string toJsonFluorescence(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
+   * Returns information about changes in the state of the simulation
+   * as a JSON string.
+   */
+  string toJsonMessages(1: i32 id) throws (1: UnknownSimulationIdException ex),
        
 }

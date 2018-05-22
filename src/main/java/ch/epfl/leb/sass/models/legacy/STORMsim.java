@@ -19,6 +19,7 @@
  */
 package ch.epfl.leb.sass.models.legacy;
 
+import ch.epfl.leb.sass.logging.Message;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
@@ -31,6 +32,7 @@ import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import com.google.gson.JsonObject;
 import ij.gui.GenericDialog;
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -66,6 +68,16 @@ public class STORMsim extends AbstractSimulator {
         emitter_history.add(0.0);
     }
     
+    
+    @Override
+    public JsonObject toJsonMessages() {
+        return null;
+    }
+    
+    @Override
+    public List<Message> getMessages() {
+        return null;
+    }
     /**
      * Returns information about the state of the sample fluorescence.
      * 

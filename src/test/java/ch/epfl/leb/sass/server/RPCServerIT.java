@@ -34,7 +34,7 @@ import ch.epfl.leb.sass.simulator.SimulationManager;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.client.RPCClient;
-import com.google.gson.JsonArray;
+import ch.epfl.leb.sass.logging.MessageType;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -42,10 +42,14 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.experimental.categories.Category;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 import java.util.List;
+import java.util.EnumSet;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -342,6 +346,44 @@ public class RPCServerIT {
         
         expResult = 225; // (num_pixels / grid_spacing - 1)^2
         assertEquals(expResult, fluorArray.size());
+    }
+    
+    /**
+     * Test of toJsonMessages method, of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonMessages() throws UnknownSimulationIdException,
+                                            TException {
+        System.out.println("testToJsonMessages");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Run the simulation for a few steps to generate some messages.
+        int simId = sims[0].getId();
+        for (int i = 0; i < 10; i++) {
+            client.incrementTimeStep(simId);
+        }
+        
+         // Extract the messages from the first simulation.
+        String info = client.toJsonMessages(simId);
+        System.out.println(info);
+        
+        // Ensure that all messages have a TYPE field that is registered in
+        // MessageType.
+        EnumSet<MessageType> set = EnumSet.allOf(MessageType.class);
+        List<String> typeStrings = new ArrayList<>();
+        for (MessageType type: set) {
+            typeStrings.add(type.name());
+        }
+        
+        String typeString;
+        JsonArray json = parser.parse(info).getAsJsonArray();
+        for (JsonElement e: json) {
+            typeString = e.getAsJsonObject().get("type").getAsString();
+            assert(typeStrings.contains(typeString));
+        }
+        
     }
     
     /**

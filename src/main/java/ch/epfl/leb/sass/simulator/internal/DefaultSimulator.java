@@ -21,10 +21,12 @@ import ch.epfl.leb.sass.utils.DeepCopy;
 import ch.epfl.leb.sass.logging.Message;
 import ch.epfl.leb.sass.logging.Listener;
 import ch.epfl.leb.sass.models.Microscope;
+import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -43,6 +45,11 @@ public class DefaultSimulator extends AbstractSimulator {
     
     public final static Logger LOGGER = 
             Logger.getLogger(DefaultSimulator.class.getName());
+    
+    /**
+     * The STATE_LISTENER records changes in the fluorophore's state.
+     */
+    private final DefaultSimulator.StateListener STATE_LISTENER;
     
     /**
      * Scaling factor for the density.
@@ -68,6 +75,14 @@ public class DefaultSimulator extends AbstractSimulator {
 
         emitterHistory = new ArrayList<>();
         emitterHistory.add(0.0);
+        
+        // Create the fluorescence state STATE_LISTENER and attach it to the sample.
+        STATE_LISTENER = this.new StateListener();
+        List<Fluorophore> fluorophores = this.microscope.getFluorophores();
+        for (Fluorophore f: fluorophores) {
+            f.addListener(STATE_LISTENER);
+        }
+        
     }
     
     @Override
@@ -97,6 +112,27 @@ public class DefaultSimulator extends AbstractSimulator {
      */
     public String getFluorescenceJsonName() {
         return this.microscope.getFluorescenceJsonName();
+    }
+    
+    /**
+     * Returns messages about changes in the simulation state.
+     * 
+     * Unlike {@link #getSimulationState() getSimulationState()}, which returns
+     * information about the *current* state of the simulation, this method
+     * returns the messages from individual components that contain information
+     * about changes in their state that have occurred since the last time this
+     * method was called.
+     * 
+     * @return A list containing the state change messages.
+     */
+    @Override
+    public List<Message> getMessages() {
+        List<Message> messages = this.STATE_LISTENER.dumpMessageCache();
+        if (messages == null) {
+            return new ArrayList<Message>();
+        } else {
+            return messages;
+        }
     }
     
     /**
@@ -179,6 +215,27 @@ public class DefaultSimulator extends AbstractSimulator {
     @Override
     public JsonObject toJsonFluorescence() {
         return this.microscope.toJsonFluorescence();
+    }
+    
+    /**
+     * Returns messages about past changes in the simulation state.
+     * 
+     * Unlike {@link #toJsonFluorescence() toJsonFluorescence()}, which returns
+     * information about the *current* state of just the fluorophores, this
+     * method returns the messages from individual simulation components that
+     * contain information about changes in their state that have occurred since
+     * the last time this method was called.
+     * 
+     * @return A JSON object containing the simulation messages.
+     */
+    @Override
+    public JsonObject toJsonMessages() {
+        JsonArray json = new JsonArray();
+        for (Message msg: this.getMessages()) {
+            json.add(msg.toJson().getAsJsonObject());
+        }
+        
+        return json.getAsJsonObject();
     }
     
     /**

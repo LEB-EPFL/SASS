@@ -26,9 +26,16 @@ import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
+import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.io.Writer;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -179,6 +186,18 @@ public class DefaultSimulator extends AbstractSimulator {
         return descr;
     }
     
+    /**
+     * Returns this instance's StateListener.
+     * 
+     * This method is primarily for testing purposes and is not exposed in the
+     * Simulator interface.
+     * 
+     * @return A reference to this instance's StateListener.
+     */
+    public DefaultSimulator.StateListener getStateListener() {
+        return STATE_LISTENER;
+    }
+    
     @Override
     public double getTrueSignal(int image_no) {
         return emitterHistory.get(image_no) /
@@ -194,6 +213,28 @@ public class DefaultSimulator extends AbstractSimulator {
     public void incrementTimeStep() {
         emitterHistory.add(microscope.getOnEmitterCount());
         microscope.simulateFrame();
+    }
+    
+    /**
+     * Saves the messages in the cache to a select file.
+     * 
+     * @param file The file to save to.
+     */
+    public void saveMessages(File file) {
+        JsonElement json = toJsonMessages();
+        try (Writer writer = new FileWriter(file)) {
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(json, writer);
+        } catch (IOException ex) {
+            String err = "Could not write simulation Messages to the file.";
+            LOGGER.log(Level.WARNING, err);
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            String err = "An unknown error occurred while saving messages to " +
+                         "the file.";
+            LOGGER.log(Level.WARNING, err);
+            ex.printStackTrace();
+        }
     }
     
     @Override
@@ -229,13 +270,14 @@ public class DefaultSimulator extends AbstractSimulator {
      * @return A JSON object containing the simulation messages.
      */
     @Override
-    public JsonObject toJsonMessages() {
+    public JsonElement toJsonMessages() {
         JsonArray json = new JsonArray();
         for (Message msg: this.getMessages()) {
             json.add(msg.toJson().getAsJsonObject());
         }
         
-        return json.getAsJsonObject();
+        Gson gson = new Gson();
+        return gson.fromJson(json, JsonArray.class);
     }
     
     /**

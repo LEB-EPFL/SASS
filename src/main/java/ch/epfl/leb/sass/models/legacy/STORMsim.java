@@ -31,6 +31,7 @@ import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import com.google.gson.JsonObject;
 import ij.gui.GenericDialog;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
@@ -68,6 +69,9 @@ public class STORMsim extends AbstractSimulator {
         emitter_history.add(0.0);
     }
     
+    @Override
+    public void saveMessages(File file) {
+    }
     
     @Override
     public JsonObject toJsonMessages() {

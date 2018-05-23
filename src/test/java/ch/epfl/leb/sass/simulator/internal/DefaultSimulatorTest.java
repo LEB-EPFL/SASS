@@ -22,13 +22,22 @@ import ch.epfl.leb.sass.logging.internal.FluorophoreStateTransition;
 import ch.epfl.leb.sass.models.Microscope;
 
 import org.junit.Test;
+import org.junit.Rule;
 import org.junit.Before;
+import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.*;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -42,6 +51,9 @@ public class DefaultSimulatorTest {
     private Message msg2;
     
     private Microscope dummyMicroscope;
+    
+    @Rule
+    public TemporaryFolder tempDir = new TemporaryFolder();
     
     public DefaultSimulatorTest() {
     }
@@ -63,6 +75,56 @@ public class DefaultSimulatorTest {
                                               nextState);
         
         dummyMicroscope = mock(Microscope.class);
+        
+    }
+    
+    
+    /**
+     * Test of saveMessages method, of class DefaultSimulator.
+     */
+    @Test
+    public void testSaveMessages() throws IOException {
+        System.out.println("testSaveMessages");
+        File logFile = tempDir.newFile("testLogFile.txt");
+
+        // Add test messages to the simulator.
+        int[] res = {32, 32};
+        when(dummyMicroscope.getResolution()).thenReturn(res);
+        DefaultSimulator sim = new DefaultSimulator(dummyMicroscope);
+        DefaultSimulator.StateListener listener = sim.getStateListener();
+        
+        listener.update(msg1);
+        listener.update(msg2);
+        
+        // Save the messages.
+        sim.saveMessages(logFile);
+        
+        // Open the messages and verify that they are correct.
+        try (FileInputStream stream = new FileInputStream(logFile)) {
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new InputStreamReader(stream));
+            JsonArray messages = gson.fromJson(reader, JsonArray.class);
+            
+            JsonObject json = messages.get(0).getAsJsonObject();
+            assertEquals(MessageType.FLUOROPHORE.name(),
+                         json.get("type").getAsString());
+            assertEquals(1, json.get("fluorophore id").getAsInt());
+            assertEquals(42.0, json.get("time elapsed").getAsDouble(), 0.0);
+            assertEquals(2, json.get("current state").getAsInt());
+            assertEquals(3, json.get("next state").getAsInt());
+
+            json = messages.get(1).getAsJsonObject();
+            assertEquals(MessageType.FLUOROPHORE.name(),
+                         json.get("type").getAsString());
+            assertEquals(2, json.get("fluorophore id").getAsInt());
+            assertEquals(43.0, json.get("time elapsed").getAsDouble(), 0.0);
+            assertEquals(4, json.get("current state").getAsInt());
+            assertEquals(5, json.get("next state").getAsInt());
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            fail("Could not open temporary file.");
+        };
     }
     
     /**

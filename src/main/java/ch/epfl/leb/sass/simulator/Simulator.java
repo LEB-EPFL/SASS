@@ -25,6 +25,7 @@ import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 import java.io.File;
 import java.util.List;
@@ -176,11 +177,19 @@ public interface Simulator {
      */
     public HashMap<String,Double> getCustomParameters();
 
+    
     /**
-     * Saves .tif stack to selected file.
-     * @param selectedFile file to save to
+     * Saves the messages in the cache to a select file.
+     * 
+     * @param file The file to save to.
      */
-    public void saveStack(File selectedFile);
+    public void saveMessages(File file);
+    
+    /**
+     * Saves the .tif image stack to a select file.
+     * @param file file to save to
+     */
+    public void saveStack(File file);
     
     /**
      * Returns information about the sample's fluorophores as a JSON object.
@@ -200,5 +209,5 @@ public interface Simulator {
      * 
      * @return A JSON object containing the simulation messages.
      */
-    public JsonObject toJsonMessages();
+    public JsonElement toJsonMessages();
 }

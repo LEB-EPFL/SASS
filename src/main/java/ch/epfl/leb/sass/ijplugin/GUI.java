@@ -72,8 +72,6 @@ public class GUI extends PlugInFrame {
         this.app = app;
     }
 
-
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,14 +101,17 @@ public class GUI extends PlugInFrame {
 
         jLabel1.setText("Controller setpoint");
 
-        savePositions.setText("Save positions...");
+        savePositions.setText("Save current state...");
+        savePositions.setToolTipText("Save the current property values of the simulation's components.");
+        savePositions.setActionCommand("Save simulation state...");
         savePositions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePositionsActionPerformed(evt);
             }
         });
 
-        saveTransitions.setText("Save transitions...");
+        saveTransitions.setText("Save messages...");
+        saveTransitions.setToolTipText("Save any messages from simulation components that have changed state since the last time this button was clicked. Saving the messages will clear the message cache.");
         saveTransitions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveTransitionsActionPerformed(evt);
@@ -118,6 +119,7 @@ public class GUI extends PlugInFrame {
         });
 
         startSimButton.setText("Start");
+        startSimButton.setToolTipText("Starts simulating images.");
         startSimButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startSimButtonActionPerformed(evt);
@@ -125,6 +127,7 @@ public class GUI extends PlugInFrame {
         });
 
         stopSimButton.setText("Stop");
+        stopSimButton.setToolTipText("Pauses the simulation.");
         stopSimButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopSimButtonActionPerformed(evt);
@@ -139,29 +142,26 @@ public class GUI extends PlugInFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(savePositions, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(saveTransitions))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(setpointEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(startSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(stopSimButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(setpointEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(savePositions, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveTransitions, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {startSimButton, stopSimButton});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {savePositions, saveTransitions});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,21 +198,16 @@ public class GUI extends PlugInFrame {
         int returnVal;
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         //set a default filename 
-        fc.setSelectedFile(new File("emitter_positions.csv"));
+        fc.setSelectedFile(new File("simulation_state.json"));
         //Set an extension filter
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
+        fc.setFileFilter(new FileNameExtensionFilter("JSON file","json"));
         returnVal = fc.showSaveDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        File positionsCSVFile = fc.getSelectedFile();
-        String filename = positionsCSVFile.getAbsolutePath();
-        try {
-            app.getPositionLogger().setFilename(filename);
-            app.getPositionLogger().saveLogFile();
-        } catch (IOException ex) {
-            IJ.error("Could not save file: " + filename);
-        }
+        File stateFile = fc.getSelectedFile();
+        String filename = stateFile.getAbsolutePath();
+        app.saveState(stateFile);
     }//GEN-LAST:event_savePositionsActionPerformed
 
     private void saveTransitionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTransitionsActionPerformed
@@ -220,21 +215,17 @@ JFileChooser fc = new JFileChooser();
         int returnVal;
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         //set a default filename 
-        fc.setSelectedFile(new File("state_transitions.csv"));
+        fc.setSelectedFile(new File("simulation_messages.json"));
         //Set an extension filter
-        fc.setFileFilter(new FileNameExtensionFilter("CSV file","csv"));
+        fc.setFileFilter(new FileNameExtensionFilter("JSON file","json"));
         returnVal = fc.showSaveDialog(null);
         if  (returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        File stateCSVFile = fc.getSelectedFile();
-        String filename = stateCSVFile.getAbsolutePath();
-        try {
-            app.getStateLogger().setFilename(filename);
-            app.getStateLogger().saveLogFile();
-        } catch (IOException ex) {
-            IJ.error("Could not save file: " + filename);
-        }    }//GEN-LAST:event_saveTransitionsActionPerformed
+        File messagesFile = fc.getSelectedFile();
+        String filename = messagesFile.getAbsolutePath();
+        app.saveMessages(messagesFile);     
+    }//GEN-LAST:event_saveTransitionsActionPerformed
 
     private void startSimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSimButtonActionPerformed
         try {

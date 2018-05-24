@@ -33,26 +33,25 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jSeparator1" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="savePositions" linkSize="4" min="-2" pref="106" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="saveTransitions" linkSize="4" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="startSimButton" linkSize="2" min="-2" pref="79" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="stopSimButton" linkSize="2" min="-2" pref="76" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="startSimButton" linkSize="2" min="-2" pref="79" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="stopSimButton" linkSize="2" min="-2" pref="76" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="setpointEntry" min="-2" pref="63" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="setpointEntry" min="-2" pref="63" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="savePositions" min="-2" pref="200" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="saveTransitions" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -99,7 +98,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="savePositions">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Save positions..."/>
+        <Property name="text" type="java.lang.String" value="Save current state..."/>
+        <Property name="toolTipText" type="java.lang.String" value="Save the current property values of the simulation&apos;s components."/>
+        <Property name="actionCommand" type="java.lang.String" value="Save simulation state..."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="savePositionsActionPerformed"/>
@@ -107,7 +108,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="saveTransitions">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Save transitions..."/>
+        <Property name="text" type="java.lang.String" value="Save messages..."/>
+        <Property name="toolTipText" type="java.lang.String" value="Save any messages from simulation components that have changed state since the last time this button was clicked. Saving the messages will clear the message cache."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveTransitionsActionPerformed"/>
@@ -116,6 +118,7 @@
     <Component class="javax.swing.JButton" name="startSimButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Start"/>
+        <Property name="toolTipText" type="java.lang.String" value="Starts simulating images."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startSimButtonActionPerformed"/>
@@ -124,6 +127,7 @@
     <Component class="javax.swing.JToggleButton" name="stopSimButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Stop"/>
+        <Property name="toolTipText" type="java.lang.String" value="Pauses the simulation."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopSimButtonActionPerformed"/>

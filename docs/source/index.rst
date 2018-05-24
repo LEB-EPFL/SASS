@@ -6,7 +6,7 @@
 SASS
 ====
 
- SMLM Acquisition Simulation Software
+ Super-resolution Acquisition Simulation Software
 
 .. toctree::
    :maxdepth: 1
@@ -21,7 +21,7 @@ SASS
 About
 =====
 
-SASS is an open-source `Fiji`_ plugin for simulating localization
+SASS is an open-source `Fiji`_ plugin for simulating super-resolution
 microscopy experiments and fluorophore photophysics.
 
 Acknowledgements

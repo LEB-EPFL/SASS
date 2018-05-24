@@ -23,6 +23,9 @@ All notable changes to this project will be documented in this file.
 - The `FluorophoreDynamics`-related classes were moved into their own,
   new `photophysics` package.
   
+### Fixed
+- Off-by-one error in the ImageJ plugin's live view window.
+  
 ### Removed
 - `getSimulationState()` method of interface `Simulator`
 - `StateLogger`, `PositionLogger`, and `FrameLogger` were

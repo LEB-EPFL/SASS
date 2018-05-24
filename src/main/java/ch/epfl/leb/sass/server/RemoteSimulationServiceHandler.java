@@ -133,7 +133,9 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     /**
      * Returns the name of the JSON key for the camera info.
      * 
+     * @param id The simulation ID.
      * @return The name of the key indicating the camera information.
+     * @throws UnknownSimulationIdException
      */
     @Override
     public String getCameraJsonName(int id) throws UnknownSimulationIdException {
@@ -148,7 +150,9 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     /**
      * Returns the name of the JSON key for the fluorescence info.
      * 
+     * @param id The simulation ID.
      * @return The name of the key indicating the fluorescence information.
+     * @throws UnknownSimulationIdException
      */
     @Override
     public String getFluorescenceJsonName(int id) throws UnknownSimulationIdException {
@@ -197,7 +201,9 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     /**
      * Returns the name of the JSON key for the laser info.
      * 
-     * @return The name of the key indicating the camera information.
+     * @param id The simulation ID.
+     * @return The name of the key indicating the laser information.
+     * @throws UnknownSimulationIdException
      */
     @Override
     public String getLaserJsonName(int id) throws UnknownSimulationIdException {
@@ -280,6 +286,23 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
         }
         
         return sim.getShortTrueSignalDescription();
+    }
+    
+    /**
+     * Returns the name of the JSON key for the stage info.
+     * 
+     * @param id The simulation ID.
+     * @return The name of the key indicating the stage information.
+     * @throws UnknownSimulationIdException
+     */
+    @Override
+    public String getStageJsonName(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getStageJsonName();
     }
     
     /**

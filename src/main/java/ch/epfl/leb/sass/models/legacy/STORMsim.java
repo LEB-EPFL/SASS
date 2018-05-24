@@ -70,6 +70,11 @@ public class STORMsim extends AbstractSimulator {
     }
     
     @Override
+    public String getStageJsonName() {
+        return null;
+    }
+    
+    @Override
     public String getLaserJsonName() {
         return null;
     }

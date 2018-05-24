@@ -17,48 +17,50 @@
  */
 package ch.epfl.leb.sass.models.components;
 
-import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.components.internal.DefaultStage;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author kmdouglass
+ * @author Kyle M. Douglass
  */
-public class StageTest {
-    private Stage stage;
+public class DefaultStageTest {
+    private DefaultStage stage;
     
-    public StageTest() {
+    public DefaultStageTest() {
     }
     
     // Ensure that the Stageis newly created for each test.
     @Before
     public void setUp() {
-        Stage.Builder builder = new Stage.Builder();
+        DefaultStage.Builder builder = new DefaultStage.Builder();
         builder.x(2).y(3).z(-1);
         this.stage = builder.build();
     }
 
     /**
-     * Test of getX method, of class Stage.
+     * Test of getX method, of class DefaultStage.
      */
     @Test
     public void testGetX() {
         System.out.println("getX");
-        Stage instance = this.stage;
+        DefaultStage instance = this.stage;
         double expResult = 2;
         double result = instance.getX();
         assertEquals(expResult, result, 0.0);
     }
     
     /**
-     * Test of setX method, of class Stage.
+     * Test of setX method, of class DefaultStage.
      */
     @Test
-    public void testsetX() {
+    public void testSetX() {
         System.out.println("setX");
-        Stage instance = this.stage;
+        DefaultStage instance = this.stage;
         double expResult = 10;
         this.stage.setX(expResult);
         double result = instance.getX();
@@ -66,24 +68,24 @@ public class StageTest {
     }
 
     /**
-     * Test of getY method, of class Stage.
+     * Test of getY method, of class DefaultStage.
      */
     @Test
     public void testGetY() {
         System.out.println("getY");
-        Stage instance = this.stage;
+        DefaultStage instance = this.stage;
         double expResult = 3;
         double result = instance.getY();
         assertEquals(expResult, result, 0.0);
     }
     
         /**
-     * Test of setY method, of class Stage.
+     * Test of setY method, of class DefaultStage.
      */
     @Test
-    public void testsetY() {
+    public void testSetY() {
         System.out.println("setY");
-        Stage instance = this.stage;
+        DefaultStage instance = this.stage;
         double expResult = 11;
         this.stage.setY(expResult);
         double result = instance.getY();
@@ -91,27 +93,48 @@ public class StageTest {
     }
 
     /**
-     * Test of getZ method, of class Stage.
+     * Test of getZ method, of class DefaultStage.
      */
     @Test
     public void testGetZ() {
         System.out.println("getZ");
-        Stage instance = this.stage;
+        DefaultStage instance = this.stage;
         double expResult = -1;
         double result = instance.getZ();
         assertEquals(expResult, result, 0.0);
     }
     
     /**
-     * Test of setZ method, of class Stage.
+     * Test of setZ method, of class DefaultStage.
      */
     @Test
-    public void testsetZ() {
+    public void testSetZ() {
         System.out.println("setZ");
-        Stage instance = this.stage;
+        DefaultStage instance = this.stage;
         double expResult = 10;
         this.stage.setZ(expResult);
         double result = instance.getZ();
         assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of toJson method, of class DefaultLaser.
+     */
+    @Test
+    public void testToJson() {
+        System.out.println("testToJson");
+        DefaultStage instance = this.stage;
+        
+        String result = instance.toJson().toString();
+        
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(result).getAsJsonObject();
+        
+        assertTrue(String.valueOf(instance.getX())
+                      .equals(json.get("x").getAsString()));
+        assertTrue(String.valueOf(instance.getY())
+                      .equals(json.get("y").getAsString()));
+        assertTrue(String.valueOf(instance.getZ())
+                      .equals(json.get("z").getAsString()));
     }
 }

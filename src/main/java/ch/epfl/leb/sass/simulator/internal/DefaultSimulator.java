@@ -70,6 +70,7 @@ public class DefaultSimulator extends AbstractSimulator {
     private final String CAMERA_MEMBER_NAME = "Camera";
     private final String FLUOR_MEMBER_NAME = "Fluorophores";
     private final String LASER_MEMBER_NAME = "Laser";
+    private final String STAGE_MEMBER_NAME = "Stage";
        
     private Microscope microscope;
     private ArrayList<Double> emitterHistory;
@@ -211,6 +212,15 @@ public class DefaultSimulator extends AbstractSimulator {
     }
     
     /**
+     * Returns the name of the JSON key for the stage info.
+     * 
+     * @return The name of the key indicating the stage information.
+     */
+    public String getStageJsonName() {
+        return STAGE_MEMBER_NAME;
+    }
+    
+    /**
      * Returns this instance's StateListener.
      * 
      * This method is primarily for testing purposes and is not exposed in the
@@ -331,6 +341,7 @@ public class DefaultSimulator extends AbstractSimulator {
         json.add(CAMERA_MEMBER_NAME, this.microscope.toJsonCamera());
         json.add(FLUOR_MEMBER_NAME, this.microscope.toJsonFluorescence());
         json.add(LASER_MEMBER_NAME, this.microscope.toJsonLaser());
+        json.add(STAGE_MEMBER_NAME, this.microscope.toJsonStage());
         return json;
     }
     

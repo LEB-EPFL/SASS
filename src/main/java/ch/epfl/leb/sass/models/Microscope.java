@@ -25,9 +25,10 @@ import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.Objective;
@@ -87,7 +88,7 @@ public class Microscope implements Serializable {
             DefaultLaser.Builder laserBuilder,
             Objective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
-            Stage.Builder stageBuilder,
+            DefaultStage.Builder stageBuilder,
             FluorophoreCommandBuilder fluorBuilder,
             FluorophoreDynamicsBuilder fluorDynamicsBuilder,
             ObstructorCommandBuilder obstructorBuilder,
@@ -330,5 +331,14 @@ public class Microscope implements Serializable {
         }
         
         return jsonArray;
+    }
+    
+    /**
+     * Returns information about the stage.
+     * 
+     * @return A JsonElement containing information about the stage.
+     */
+    public JsonElement toJsonStage() {
+        return this.stage.toJson();
     }
 }

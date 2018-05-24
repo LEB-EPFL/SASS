@@ -212,7 +212,7 @@ class Worker extends Thread {
                 stop = true;
             }
             
-            imp.setSlice(imp.getSize() - 1);
+            imp.setSlice(imp.getSize());
             imp.updateView();
             try {
                 sleep(20);

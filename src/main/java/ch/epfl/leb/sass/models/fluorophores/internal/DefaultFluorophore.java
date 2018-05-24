@@ -46,15 +46,26 @@ import java.util.ArrayList;
 public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
     
     /**
+     * A flag indicating whether the state of this object has changed.
+     * 
+     * This flag is used only when notifying listeners of a state change.
+     */
+    private boolean changed;
+    
+    /**
      * The list of listeners that are tracking this object.
      */
     private ArrayList<Listener> listeners = new ArrayList();
     
     /**
-     * A flag indicating whether the state of this object has changed.
+     * The amount of time that the fluorophore spent in the emitting state during the frame.
      */
-    private boolean changed;
+    private double onTimeThisFrame = 0.0;
     
+    /**
+     * How many photons the fluorophore emitted during the most recent frame.
+     */
+    private double photonsThisFrame = 0.0;
     /**
      * internal emitter clock for tracking total time elapsed
      */
@@ -100,9 +111,6 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
             throw new IllegalArgumentException("Starting state no. is out of bounds.");
         }
         this.random = RNG.getUniformGenerator();
-        
-        // Log the fluorophore's position
-        this.positionLogger.logPosition(this.getId(), x, y, 0.0);
     }
     
      /**
@@ -133,10 +141,6 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
                                                "bounds.");
         }
         this.random = RNG.getUniformGenerator();
-        
-        // Log the fluorophore's position
-        this.positionLogger.logPosition(this.getId(), x, y, z);
-
     }
 
     /**
@@ -162,6 +166,27 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
      */
     public int getCurrentState() {
         return current_state;
+    }
+    
+    /**
+     * Returns the time spent in the emitting state during the previous frame.
+     * 
+     * This time is the proportion of the frame's duration; 1 corresponds to
+     * having spent the entirety of the frame in the emitting state.
+     * 
+     * @return The time spent in the emitting state.
+     */
+    public double getOnTimeThisFrame() {
+        return onTimeThisFrame;
+    }
+    
+    /**
+     * Returns the number of photons emitted during the previous frame.
+     *
+     * @return The number of photons emitted during the previous frame.
+     */
+    public double getPhotonsThisFrame() {
+        return photonsThisFrame;
     }
     
     /**
@@ -267,6 +292,10 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
 
     @Override
     protected double simulateBrightness() {
+        // Reset the frame tracking variables
+        onTimeThisFrame = 0.0;
+        photonsThisFrame = 0.0;
+        
         if (isBleached()) {
             return 0.0;
         }
@@ -294,14 +323,6 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
                 remaining_time -= transition_time;
                 time_elapsed += transition_time;
                 
-                // DEPRECATED
-                stateLogger.logStateTransition(
-                    this.getId(),
-                    time_elapsed,
-                    current_state,
-                    next_state
-                );
-                
                 // Notify all listeners of this transition.
                 setChanged();
                 notifyListeners(new FluorophoreStateTransition(
@@ -324,12 +345,10 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
         // The brightness of the fluorophore
         double brightness = flicker(on_time*signal);
         
-        // If the fluorophore was on during that frame, write a line in the frame logger
+        // These are only recorded if the fluorophore was on during the frame.
         if (on_time > 0.0) {
-            // Round time_elapsed to the lower integer, to get the current frame
-            // If on_time = 1.0, then frame = int(time_elapsed), hence 0.9999 rather than 1
-            int frame = (int) (time_elapsed + 0.999999);
-            frameLogger.logFrame(frame, this.getId(), this.x, this.y, this.z, brightness, on_time);
+            onTimeThisFrame = on_time;
+            photonsThisFrame = brightness;
         }
         return brightness;
     }
@@ -357,9 +376,12 @@ class DefaultFluorophoreSerializer implements JsonSerializer<DefaultFluorophore>
         result.add("y", new JsonPrimitive(src.y));
         result.add("z", new JsonPrimitive(src.z));
         result.add("currentState", new JsonPrimitive(src.getCurrentState()));
-        result.add("photonsPerFrame", new JsonPrimitive(src.getSignal()));
+        result.add("maxPhotonsPerFrame", new JsonPrimitive(src.getSignal()));
         result.add("bleached", new JsonPrimitive(src.isBleached()));
         result.add("emitting", new JsonPrimitive(src.isOn()));
+        result.add("onTime", new JsonPrimitive(src.getOnTimeThisFrame()));
+        result.add("photonsEmittedLastFrame", 
+                   new JsonPrimitive(src.getPhotonsThisFrame()));
         return result;
     }
 }

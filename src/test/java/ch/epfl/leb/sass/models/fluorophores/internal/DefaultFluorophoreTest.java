@@ -235,7 +235,7 @@ public class DefaultFluorophoreTest {
         assertTrue(String.valueOf(x).equals(json.get("x").getAsString()));
         assertTrue(String.valueOf(y).equals(json.get("y").getAsString()));
         assertTrue(String.valueOf(z).equals(json.get("z").getAsString()));
-        assertTrue(String.valueOf(signal).equals(json.get("photonsPerFrame")
+        assertTrue(String.valueOf(signal).equals(json.get("maxPhotonsPerFrame")
                                                .getAsString()));
         assertTrue(String.valueOf(startState).equals(json.get("currentState")
                                                    .getAsString()));

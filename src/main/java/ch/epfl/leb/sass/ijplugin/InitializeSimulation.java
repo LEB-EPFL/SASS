@@ -20,23 +20,16 @@
 package ch.epfl.leb.sass.ijplugin;
 
 
-import ch.epfl.leb.sass.simulator.internal.DefaultSimulator;
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.loggers.StateLogger;
-import ch.epfl.leb.sass.loggers.PositionLogger;
 import ch.epfl.leb.alica.interfaces.analyzers.AnalyzerFactory;
-import ch.epfl.leb.alica.interfaces.analyzers.AnalyzerSetupPanel;
 import ch.epfl.leb.alica.interfaces.controllers.ControllerFactory;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ij.IJ;
-import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.ButtonModel;
 import java.awt.CardLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -2390,12 +2383,6 @@ public class InitializeSimulation extends java.awt.Dialog {
     private void initializeSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initializeSimulationActionPerformed
 
         updateModel();
-
-        // Enable the loggers.
-        StateLogger.getInstance().reset();
-        StateLogger.getInstance().setPerformLogging(true);
-        PositionLogger.getInstance().reset();
-        PositionLogger.getInstance().setPerformLogging(true);
         
         // Now that we have setup all the components, we assemble the
         // microscope.

@@ -19,16 +19,12 @@ package ch.epfl.leb.sass.server;
 
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
-import ch.epfl.leb.sass.loggers.FrameInfo;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 
-import com.google.gson.Gson;
-
 import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

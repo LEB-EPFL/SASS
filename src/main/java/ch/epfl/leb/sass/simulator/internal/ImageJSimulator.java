@@ -22,8 +22,6 @@ package ch.epfl.leb.sass.simulator.internal;
 import ch.epfl.leb.alica.interfaces.Analyzer;
 import ch.epfl.leb.alica.interfaces.Controller;
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.loggers.StateLogger;
-import ch.epfl.leb.sass.loggers.PositionLogger;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 import java.io.File;
@@ -70,17 +68,7 @@ public class ImageJSimulator extends DefaultSimulator {
      * Records of values of output of analyzer, controller.
      */
     protected HashMap<Integer,JSONObject> history;
-    
-    /**
-     * Logs the state transitions of the molecules.
-     */
-    protected StateLogger stateLogger = StateLogger.getInstance();
-    
-    /**
-     * Logs the ground truth positions of the molecules.
-     */
-    protected PositionLogger positionLogger = PositionLogger.getInstance();
-      
+         
     /**
      * Initialize the simulator from user-specified components.
      * 
@@ -224,19 +212,5 @@ public class ImageJSimulator extends DefaultSimulator {
     @Override
     public int getImageCount() {
         return image_count;
-    }
-    
-    /**
-     * @return The state transition logger.
-     */
-    public StateLogger getStateLogger() {
-        return stateLogger;
-    }
-    
-    /**
-     * @return The emitter position logger.
-     */
-    public PositionLogger getPositionLogger() {
-        return positionLogger;
     }
 }

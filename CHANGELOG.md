@@ -25,6 +25,9 @@ All notable changes to this project will be documented in this file.
   
 ### Removed
 - `getSimulationState()` method of interface `Simulator`
+- `StateLogger`, `PositionLogger`, and `FrameLogger` were
+  removed. Their functionality has been replaced by the new
+  `Observable` interface and serialization routines.
 
 ## [v0.8.0]
 

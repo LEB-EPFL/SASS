@@ -83,13 +83,6 @@ public abstract class AbstractSimulator implements Simulator {
     @Override
     public int getImageCount() {
         return stack.getSize();
-    }
-    
-    @Override
-    public String getSimulationState() {
-        // This is part of RPC development at the moment, so do return nothing.
-        return "";
-    }
-    
+    } 
     
 }

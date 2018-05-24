@@ -1,37 +1,43 @@
 /*
  * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Fédérale de Lausanne
+ * Ecole Polytechnique Fédérale de Lausanne, Switzerland
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.simulator.internal;
+package ch.epfl.leb.sass.logging;
 
-import ch.epfl.leb.sass.models.Microscope;
+import com.google.gson.JsonElement;
+
+import java.io.Serializable;
 
 /**
- * A simulator that is specialized for control by remote procedure calls (RPCs).
+ * Defines methods that all logging messages should posses.
  * 
  * @author Kyle M. Douglass
  */
-public class RPCSimulator extends DefaultSimulator {
-        
+public interface Message extends Serializable {
+    
     /**
-     * Initializes the SimpleSimulator and connects it to the simulation engine.
-     * 
-     * @param microscope The engine that runs the simulation.
+     * A unique identifier for the message type.
+     * @return The message type.
      */
-    public RPCSimulator(Microscope microscope) {
-        super(microscope);
-    }    
+    public MessageType getType();
+    
+    /**
+     * The message as a JSON element.
+     * 
+     * @return A JsonElement represented as a message.
+     */
+    public JsonElement toJson();
+    
 }

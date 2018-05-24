@@ -91,27 +91,4 @@ public class RemoteSimulationServiceHandlerTest {
         String result = instance.getServerStatus();
         assertEquals(expResult, result);
     }
-
-    /**
-     * Test of getSimulationState method, of class RemoteSimulationServiceHandler.
-     */
-    @Test
-    public void testGetSimulationState() throws UnknownSimulationIdException {
-        System.out.println("getSimulationState");
-        RemoteSimulationServiceHandler instance = this.handler;
-        String expResult = "[{\"frame\":1,\"id\":2,\"x\":0.1,\"y\":0.1,\"z\":0.1,\"brightness\":0.5,\"timeOn\":2500.0}]";
-        
-        // Instructs the wrapped simulator to return the expected FrameInfo.
-        Gson gson = new Gson();
-        List<FrameInfo> info = new ArrayList<>();
-        info.add(new FrameInfo(1, 2, 0.1, 0.1, 0.1, 0.5, 2500));
-        when(this.mockSimulator.getSimulationState())
-                               .thenReturn(gson.toJson(info));
-        when(this.mockManager.getSimulator(SIM_ID)).thenReturn(mockSimulator);
-
-        String result = instance.getSimulationState(SIM_ID);
-        
-        // This should probably be changed to a loop over fields...
-        assertEquals(expResult, result);
-    }
 }

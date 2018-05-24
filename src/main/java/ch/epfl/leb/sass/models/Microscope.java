@@ -136,6 +136,59 @@ public class Microscope implements Serializable {
     }
     
     /**
+     * Adds the background signal to the image.
+     * @param image The image to which a background will be added.
+     */
+    private void addBackground(float[][] image) {
+        float[][] backgroundSignal = this.background.generateBackground();
+        
+        for (int row=0; row < image.length; row++) {
+            for (int col=0; col < image[row].length; col++) {
+                image[row][col] += backgroundSignal[row][col];
+            }
+        }
+    }
+    
+    /**
+     * Simulates noise sources.
+     * @param image image to be noised up.
+     */
+    private void addNoise(float[][] image) {
+        
+        // Poisson noise
+        addPoissonNoise(image);
+        
+        for (int row=0; row < image.length; row++) {
+            // Multiplication noise from the EM gain register
+            for (int col=0; col < image[row].length; col++) {
+                if (this.camera.getEmGain() != 0) {
+                    // lambda parameter of nextDouble() is inverse of EM_gain.
+                    image[row][col] = (float) gamma.nextDouble(
+                            image[row][col]+0.01f,
+                            1.0 / ((double) this.camera.getEmGain()));
+                }
+                
+                // Dark noises (readout and thermal)
+                image[row][col] += 
+                        this.camera.getReadoutNoise()*gaussian.nextDouble() +
+                        this.camera.getThermalNoise()*gaussian.nextDouble();
+            }
+        }
+    }
+    
+    /**
+     * Adds Poisson noise to the image.
+     * @param image input image
+     */
+    private void addPoissonNoise(float[][] image) {
+        for (int x = 0; x < image.length; x++) {
+            for (int y = 0; y < image[0].length; y++) {
+                image[x][y] = (float) poisson.nextInt(image[x][y]);
+            }
+        }
+    }
+    
+    /**
      * Return the number of camera pixels in x and y.
      * @return 2D array with number of pixels in x and y.
      */
@@ -143,6 +196,15 @@ public class Microscope implements Serializable {
         int[] result = new int[2];
         result[0] = camera.getNX(); result[1] = camera.getNY();
         return result;
+    }
+    
+    /**
+     * Returns references to the fluorophores in the sample.
+     * 
+     * @return The sample's Fluorophore objects.
+     */
+    public List<Fluorophore> getFluorophores() {
+        return this.fluorophores;
     }
     
     /**
@@ -199,22 +261,6 @@ public class Microscope implements Serializable {
     }
     
     /**
-     * Returns information about the sample fluorophores.
-     * 
-     * @return A JsonElement containing information about the fluorophores.
-     */
-    public JsonObject getFluorescenceInfo() {
-        JsonArray jsonArray = new JsonArray();
-        for (Fluorophore f: fluorophores) {
-            jsonArray.add(f.toJson());
-        }
-        
-        JsonObject json = new JsonObject();
-        json.add(FLUOR_MEMBER_NAME, jsonArray);
-        return json;
-    }
-    
-    /**
      * Returns the JSON member name assigned to the Fluorophores.
      * 
      * @return The JSON member name for the Fluorophore field.
@@ -265,55 +311,18 @@ public class Microscope implements Serializable {
     }
     
     /**
-     * Adds the background signal to the image.
-     * @param image The image to which a background will be added.
+     * Returns information about the sample fluorophores.
+     * 
+     * @return A JsonObject containing information about the fluorophores.
      */
-    private void addBackground(float[][] image) {
-        float[][] backgroundSignal = this.background.generateBackground();
-        
-        for (int row=0; row < image.length; row++) {
-            for (int col=0; col < image[row].length; col++) {
-                image[row][col] += backgroundSignal[row][col];
-            }
+    public JsonObject toJsonFluorescence() {
+        JsonArray jsonArray = new JsonArray();
+        for (Fluorophore f: fluorophores) {
+            jsonArray.add(f.toJson());
         }
-    }
-    
-    /**
-     * Simulates noise sources.
-     * @param image image to be noised up.
-     */
-    private void addNoise(float[][] image) {
         
-        // Poisson noise
-        addPoissonNoise(image);
-        
-        for (int row=0; row < image.length; row++) {
-            // Multiplication noise from the EM gain register
-            for (int col=0; col < image[row].length; col++) {
-                if (this.camera.getEmGain() != 0) {
-                    // lambda parameter of nextDouble() is inverse of EM_gain.
-                    image[row][col] = (float) gamma.nextDouble(
-                            image[row][col]+0.01f,
-                            1.0 / ((double) this.camera.getEmGain()));
-                }
-                
-                // Dark noises (readout and thermal)
-                image[row][col] += 
-                        this.camera.getReadoutNoise()*gaussian.nextDouble() +
-                        this.camera.getThermalNoise()*gaussian.nextDouble();
-            }
-        }
-    }
-    
-    /**
-     * Adds Poisson noise to the image.
-     * @param image input image
-     */
-    private void addPoissonNoise(float[][] image) {
-        for (int x = 0; x < image.length; x++) {
-            for (int y = 0; y < image[0].length; y++) {
-                image[x][y] = (float) poisson.nextInt(image[x][y]);
-            }
-        }
+        JsonObject json = new JsonObject();
+        json.add(FLUOR_MEMBER_NAME, jsonArray);
+        return json;
     }
 }

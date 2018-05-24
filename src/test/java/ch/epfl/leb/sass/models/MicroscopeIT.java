@@ -159,6 +159,17 @@ public class MicroscopeIT {
     }
 
     /**
+     * Test of getFluorophores method, of class Microscope.
+     */
+    @Test
+    public void testGetFluorophores() {
+        System.out.println("getFluorophores");
+        int expResult = 49;
+        int result = microscope.getFluorophores().size();
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of getFovSize method, of class Microscope.
      */
     @Test
@@ -202,14 +213,14 @@ public class MicroscopeIT {
     }
 
     /**
-     * Test of getFluorescenceInfo method, of class Microscope.
+     * Test of toJsonFluorescence method, of class Microscope.
      */
     @Test
     public void testGetFluorescenceInfo() {
         System.out.println("getFluorescenceInfo");
         
         int expResult = 49; // Fluorophores are placed on a grid every 4 pixels.
-        JsonObject json = microscope.getFluorescenceInfo();
+        JsonObject json = microscope.toJsonFluorescence();
         
         JsonArray fluorArray;
         fluorArray = json.get(microscope.getFluorescenceJsonName())

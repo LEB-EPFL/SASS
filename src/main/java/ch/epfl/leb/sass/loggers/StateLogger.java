@@ -30,6 +30,10 @@ import java.util.ArrayList;
  * The StateLogger is a singleton.
  *
  * @author Kyle M. Douglass
+ * @deprecated State logging has now been implemented as an Observer pattern
+ * where each Fluorophore is an Observable that is monitored by a Listener. See
+ * {@link ch.epfl.leb.sass.logging.Observable Observable} and
+ * {@link ch.epfl.leb.sass.logging.Listener Listener}.
  */
 public class StateLogger extends AbstractLogger {
     private static StateLogger uniqueInstance = new StateLogger();

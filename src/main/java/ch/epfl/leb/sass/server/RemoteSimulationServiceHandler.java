@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.server;
 
+import ch.epfl.leb.sass.logging.Message;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.SimulationManager;
@@ -26,6 +27,7 @@ import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import java.util.List;
 import java.nio.ByteBuffer;
@@ -126,24 +128,6 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
         }
         
         return sim.getControlSignal();
-    }
-    
-    /**
-     * Returns the state of the sample fluorescence as a JSON string.
-     * 
-     * @param id The simulation ID.
-     * @return The state of the sample fluorescence as a JSON string.
-     * @throws UnknownSimulationIdException 
-     */
-    @Override
-    public String getFluorescenceInfo(int id) throws UnknownSimulationIdException {
-        Simulator sim = manager.getSimulator(id);
-        if (sim == null) {
-            throw new UnknownSimulationIdException();
-        }
-        
-        Gson gson = new Gson();
-        return gson.toJson(sim.getFluorescenceInfo());
     }
     
     /**
@@ -269,22 +253,6 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
-     * Collects information about the simulation's current state and returns it.
-     * 
-     * @param id The simulation ID.
-     * @return JSON string containing the current state of the simulation.
-     */
-    @Override
-    public String getSimulationState(int id) throws UnknownSimulationIdException {
-        Simulator sim = manager.getSimulator(id);
-        if (sim == null) {
-            throw new UnknownSimulationIdException();
-        }
-        
-        return manager.getSimulator(id).getSimulationState();
-    }
-    
-    /**
      * Returns the ground-truth signal of the image at the given index.
      * 
      * @param id The simulation ID.
@@ -330,4 +298,66 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
                 throws UnknownSimulationIdException {
         manager.getSimulator(id).setControlSignal(power);
     }
+    
+    /**
+     * Returns messages about changes in the simulation state as a JSON string.
+     * 
+     * Unlike {@link #toJsonState(int id) toJsonState()}, which returns
+     * information about the *current* state of just the fluorophores, this
+     * method returns the messages from individual simulation components that
+     * contain information about changes in their state that have occurred since
+     * the last time this method was called.
+     * 
+     * @param id The simulation ID.
+     * @return A JSON string containing the messages that were recorded.
+     * @throws UnknownSimulationIdException
+     */
+    @Override
+    public String toJsonMessages(int id) 
+           throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        List<Message> messages = sim.getMessages();
+        JsonArray json = new JsonArray();
+        for (Message msg: messages) {
+            json.add(msg.toJson());
+        }
+
+        try {
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(json);
+            return jsonString;
+        } catch (Exception ex) {
+            String err = "Unable to convert JSON object to string.";
+            LOGGER.log(Level.SEVERE, err);
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * Returns information on the simulation's current state as a JSON object.
+     * 
+     * Unlike {@link #toJsonMessages(int id) toJsonMessages()}, which returns
+     * information about previous changes in the simulation's state, this method
+     * reports on the current state of the simulation.
+     * 
+     * @param id The simulation ID.
+     * @return The state of the sample fluorescence as a JSON string.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public String toJsonState(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        Gson gson = new Gson();
+        return gson.toJson(sim.toJsonState());
+    }
+    
 }

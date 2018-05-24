@@ -6,8 +6,7 @@
  *
  */
 
-import ch.epfl.leb.sass.loggers.StateLogger;
-import ch.epfl.leb.sass.loggers.PositionLogger;
+import ch.epfl.leb.sass.simulator.Simulator;
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulator;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
@@ -21,14 +20,6 @@ import ch.epfl.leb.sass.utils.RNG;
 
 // The seed determines the outputs of the random number generator.
 RNG.setSeed(42);
-
-// Obtain a reference to the state logger and enable it
-StateLogger stateLogger = StateLogger.getInstance();
-stateLogger.setPerformLogging(true);
-
-// Do the same for the position logger
-PositionLogger positionLogger = PositionLogger.getInstance();
-positionLogger.setPerformLogging(true);
 
 // We will build the simulation by first setting up the components and
 // then assembling them together to form a microscope.
@@ -108,7 +99,7 @@ Microscope microscope = new Microscope(
     backgroundBuilder);
 
 // The simulation engine
-DefaultSimulator generator = new DefaultSimulator(microscope);
+Simulator generator = new DefaultSimulator(microscope);
 
 // set laser power
 generator.setControlSignal(0.03);
@@ -122,13 +113,14 @@ for (i=0;i<10000;i++) {
 }
 
 // Save the stack
-//generator.saveStack(new File("generated_stack.tif"));
+generator.saveStack(new File("generated_stack.tif"));
 
-// Save the fluorophore positions.
-//positionLogger.setFilename("fluorophore_positions.csv");
-//positionLogger.saveLogFile();
+// Save the simulation's current state, including fluorophore
+// positions
+generator.saveState(new File("simulation_state.json"));
 
-// Save the state transitions
-//stateLogger.setFilename("state_transitions.csv");
-//stateLogger.saveLogFile();
+// Save the messages from the simulation, for example,  information
+// about the fluorescence state transitions
+generator.saveMessages(new File("simulation_messages.json"));
+
 

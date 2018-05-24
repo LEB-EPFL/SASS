@@ -9,12 +9,20 @@ All notable changes to this project will be documented in this file.
   multiple `Simulator` instances.
 - A `RPCClient` was created for Java-based interactions with the
   `RPCServer`.
+- `Observable`, `Listener`, and `Message` interfaces were added to
+  handle the new (and more general) logging mechanism for state
+  transitions of Microscope components.
   
 ### Changed
 - The `RPCServer` now provides access to simulatons through a
   `SimulationManager` instance.
 - The API of the `RemoteSimulationService` has been expanded to allow
   for full control over `Simulator` objects on the server.
+- Fluorescence state transition logging has now been implemented as an
+  Observer pattern using `Message` objects.
+  
+### Removed
+- `getSimulationState()` method of interface `Simulator`
 
 ## [v0.8.0]
 

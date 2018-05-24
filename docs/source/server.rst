@@ -14,14 +14,14 @@ associated with the command.
 
 For example, after initializing a simulation and starting the server,
 a Python script on the same PC could adjust the laser power on the
-simulated microscope. It could then ask the server to simulate five
-new images and return them to the Python interpreter for further
-processing.
+simulated microscope. It could then ask the server to simulate a
+number of new images and return them to the Python interpreter for
+further processing.
 
 As another example, a C++ program could run a simulation by connecting
 to the server remotely over a network. The details of setting up your
-networked, such as ensuring the correct ports are open in your
-firewall, are beyond the scope of this documentation.
+network, such as ensuring the correct ports are open in your firewall,
+are beyond the scope of this documentation.
 
 The RPC service was created using `Apache Thrift`_.
 
@@ -113,55 +113,72 @@ client must therefore know what services are provided by the server.
 The SASS RPC server is implemented using `Apache Thrift`_. The types
 of services that are provided by the server are defined in the
 `RPCServer.thrift`_ file in the *thrift* folder of the SASS root
-directory. Here is what the very first RPCServer.thrift file looked
-like ::
+directory. Here is what RPCServer.thrift file looked like at the time
+of this writing (comments are omitted) ::
 
   namespace java ch.epfl.leb.sass.server
   namespace py remotesim
 
+  exception ImageGenerationException { }
+  exception UnknownSimulationIdException { }
+
   service RemoteSimulationService {
 
-    /**
-     * Returns the simulation server's current status.
-     */
+
+    i32 createSimulation(),
+
+    void deleteSimulation(1: i32 id) throws (1: UnknownSimulationIdException ex),
+  
+    double getControlSignal(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+    string getFluorescenceJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+    double getFovSize(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+    i32 getImageCount(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+    binary getNextImage(1: i32 id) throws(1: ImageGenerationException ex,
+                                          2: UnknownSimulationIdException ex2),
+
+    double getObjectSpacePixelSize(1: i32 id) throws (1: UnknownSimulationIdException ex),
+  
     string getServerStatus(),
+  
+    string getShortTrueSignalDescription(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
-    /**
-     * Increments the simulation by one time step and returns an image.
-     */
-    binary getNextImage(),
+    double getTrueSignal(1: i32 id, 2: i32 imageNum) throws (1: UnknownSimulationIdException ex),
 
-    /**
-     * Changes the simulation'ss fluorescence activation laser power.
-     */
-    void setActivationLaserPower(1: double power),
+    void incrementTimeStep(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
-    /**
-     * Returns information about the current state of each emitter in
-     * a JSON string.
-     */
-    string getSimulationState()
+    void setControlSignal(1: i32 id, 2: double power) throws (1: UnknownSimulationIdException ex)
+
+    string toJsonMessages(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+    string toJsonState(1: i32 id) throws (1: UnknownSimulationIdException ex),
        
   }
 
-This script defines the package names for the Java and Python code,
-respectively, and then defines the service that the server
-provides. There are four method calls:
+This file first defines the package names for Java and Python code,
+respectively, and a few exceptions that the server will return when
+something goes wrong. After that, it then defines the service that the
+server provides. There are a number of method calls such as:
 
-1. getServerStatus()
-2. getNextImage()
-3. setActivationLaserPower
-4. getSimulationState
+1. **setControlSignal()** - Adjusts the simulation's laser power.
+2. **getNextImage()** - Simulates a new image.
+3. **toJsonMessages()** - Dump the simulation message cache.
+4. **toJsonState()** - Get information on the current state of the
+   simulation's components.
 
-The comments above the method definitions describe what each method
-does, and the data type that the method returns (string, binary, or
-void) is specific to Thrift's IDL language. After this script is
-compiled by the Thrift compiler into Java and Python code, they are
-converted into the corresponding data types in each language.
+To turn this script into code, it must be compiled by the Thrift
+compiler. An example of how to do this for Java is located `in the
+compile.sh file`_ inside the thrift folder. Compilation produces files
+that enable the server in your target language.
 
 **Note that the SASS RPC server sends images as tif-encoded byte
 strings and the simulation state as JSON strings.** You will need to
 decode this information after its received in your target language.
+
+.. _`in the compile.sh file`: https://github.com/LEB-EPFL/SASS/blob/master/thrift/compile.sh
 
 A Python client
 +++++++++++++++
@@ -229,7 +246,14 @@ tif-encoded byte strings.** You therefore will need the libtiff
 library in your target language to decode them. In Python, this can be
 provided by `pillow`_.
 
+A Java client
++++++++++++++
+
+A simple Java client for the SASS RPC server `is already included in
+SASS`_.
+
 .. _`Apache Thrift`: https://thrift.apache.org/
 .. _`Get Apache Thrift`: https://thrift.apache.org/download
 .. _`RPCServer.thrift`: https://github.com/LEB-EPFL/SASS/blob/master/thrift/RPCServer.thrift
 .. _`pillow`: https://github.com/python-pillow/Pillow
+.. _`is already included SASS`: https://github.com/LEB-EPFL/SASS/blob/master/src/main/java/ch/epfl/leb/sass/client/RPCClient.java

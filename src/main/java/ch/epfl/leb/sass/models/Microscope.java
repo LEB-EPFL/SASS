@@ -28,6 +28,7 @@ import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
@@ -46,7 +47,6 @@ import java.util.Arrays;
 import java.io.Serializable;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 
 /**
@@ -84,7 +84,7 @@ public class Microscope implements Serializable {
      */
     public Microscope(
             DefaultCamera.Builder cameraBuilder,
-            Laser.Builder laserBuilder,
+            DefaultLaser.Builder laserBuilder,
             Objective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
             Stage.Builder stageBuilder,
@@ -307,6 +307,15 @@ public class Microscope implements Serializable {
      */
     public JsonElement toJsonCamera() {
         return this.camera.toJson();
+    }
+    
+    /**
+     * Returns information about the laser.
+     * 
+     * @return A JsonElement containing information about the laser.
+     */
+    public JsonElement toJsonLaser() {
+        return this.laser.toJson();
     }
     
     /**

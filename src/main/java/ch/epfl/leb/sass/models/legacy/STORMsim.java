@@ -70,6 +70,11 @@ public class STORMsim extends AbstractSimulator {
     }
     
     @Override
+    public String getLaserJsonName() {
+        return null;
+    }
+    
+    @Override
     public String getCameraJsonName() {
         return null;
     }

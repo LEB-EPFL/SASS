@@ -12,8 +12,6 @@ import java.io.Serializable;
 /**
  * Defines common methods possessed by all models employed by the microscope.
  * 
- * TODO: Extend the java.io.Serializable interface.
- * 
  * @author Kyle M. Douglass
  */
 public interface Model extends Serializable {

@@ -17,48 +17,66 @@
  */
 package ch.epfl.leb.sass.models.components;
 
-import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author kmdouglass
+ * @author Kyle M. Douglass
  */
-public class LaserTest {
-    private Laser laser;
+public class DefaultLaserTest {
+    private DefaultLaser laser;
     
-    public LaserTest() {
+    public DefaultLaserTest() {
     }
 
     @Before
     public void setUp() {
-        Laser.Builder builder = new Laser.Builder();
+        DefaultLaser.Builder builder = new DefaultLaser.Builder();
         builder.currentPower(10).maxPower(100).minPower(0);
         this.laser = builder.build();
     }
     /**
-     * Test of setPower method, of class Laser.
+     * Test of setPower method, of class DefaultLaser.
      */
     @Test
     public void testSetPower() {
         System.out.println("setPower");
         double newPower = 57.8;
-        Laser instance = this.laser;
+        DefaultLaser instance = this.laser;
         instance.setPower(newPower);
     }
 
     /**
-     * Test of getPower method, of class Laser.
+     * Test of getPower method, of class DefaultLaser.
      */
     @Test
     public void testGetPower() {
         System.out.println("getPower");
-        Laser instance = this.laser;
+        DefaultLaser instance = this.laser;
         double expResult = 10;
         double result = instance.getPower();
         assertEquals(expResult, result, 0.0);
     }
     
+    /**
+     * Test of toJson method, of class DefaultLaser.
+     */
+    @Test
+    public void testToJson() {
+        System.out.println("testToJson");
+        DefaultLaser instance = this.laser;
+        
+        String result = instance.toJson().toString();
+        
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(result).getAsJsonObject();
+        
+        assertTrue(String.valueOf(instance.getPower())
+                      .equals(json.get("currentPower").getAsString()));
+    }
 }

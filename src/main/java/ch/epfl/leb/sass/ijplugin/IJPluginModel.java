@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamicsBuilder;
 import ch.epfl.leb.sass.models.photophysics.internal.StormDynamics;
@@ -486,7 +487,7 @@ public class IJPluginModel implements Serializable {
         Objective.Builder objectiveBuilder = new Objective.Builder();
         Stage.Builder stageBuilder = new Stage.Builder();
         FluorophoreDynamicsBuilder fluorPropBuilder = null;
-        Laser.Builder laserBuilder = new Laser.Builder();
+        DefaultLaser.Builder laserBuilder = new DefaultLaser.Builder();
         PSFBuilder psfBuilder = null;
         FluorophoreCommandBuilder fluorPosBuilder = null;
         GenerateFiducialsRandom2D.Builder fidBuilder = 

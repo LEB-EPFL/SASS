@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,69 +17,27 @@
  */
 package ch.epfl.leb.sass.models.components;
 
-import java.io.Serializable;
+import ch.epfl.leb.sass.models.Model;
 
 /**
- * A source of light for illuminating the sample.
+ * Defines methods common to Lasers.
+ * 
+ * @author Kyle M. Douglass
  */
-public class Laser  implements Serializable {
-    private double currentPower;
-    private double maxPower;
-    private double minPower;
-    
-    public static class Builder {
-        private double currentPower;
-        private double maxPower;
-        private double minPower;
-        
-        public Builder currentPower(double currentPower) {
-            this.currentPower = currentPower;
-            return this;
-        }
-        public Builder maxPower(double maxPower) {
-            this.maxPower = maxPower;
-            return this;
-        }
-        public Builder minPower(double minPower) {
-            this.minPower = minPower;
-            return this;
-        }
-        
-        public Laser build() {
-            return new Laser(this);
-        }
-    }
-    
-    /**
-     * Initialize the light source with given parameters.
-     * @param builder A LightSource builder instance.
-     */
-    private Laser(Builder builder) {
-        this.currentPower = builder.currentPower;
-        this.maxPower = builder.maxPower;
-        this.minPower = builder.minPower;
-    }
+public interface Laser extends Model {
     
     /**
      * Sets the light source's power.
      * 
-     * If the value is not within the limits, set it to the the closest allowed 
-     * value.
      * @param newPower The power of the light source.
      */
-    public void setPower(double newPower) {
-        if (newPower > maxPower)
-            newPower = maxPower;
-        else if (newPower < minPower)
-            newPower = minPower;
-        currentPower = newPower;
-    }
+    public void setPower(double newPower);
     
     /**
-     * Returns the current power.
-     * @return current laser power
+     * Returns the current power if the laser.
+     * 
+     * @return The current laser power.
      */
-    public double getPower() {
-        return currentPower;
-    }
+    public double getPower();
+    
 }

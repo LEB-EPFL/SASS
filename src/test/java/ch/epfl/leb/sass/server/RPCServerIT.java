@@ -21,7 +21,7 @@ import ch.epfl.leb.sass.IntegrationTest;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
-import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.components.Stage;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
@@ -128,8 +128,8 @@ public class RPCServerIT {
         objectiveBuilder.NA(1.3); // Numerical aperture
         objectiveBuilder.mag(60); // Magnification
 
-        // Laser
-        Laser.Builder laserBuilder = new Laser.Builder();
+        // DefaultLaser
+        DefaultLaser.Builder laserBuilder = new DefaultLaser.Builder();
 
         laserBuilder.currentPower(0.0);
         laserBuilder.minPower(0.0);
@@ -431,6 +431,34 @@ public class RPCServerIT {
         
         expResult = 225; // (num_pixels / grid_spacing - 1)^2
         assertEquals(expResult, fluorArray.size());
+    }
+    
+    /**
+     * Test of toJsonState and getLaserJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonStateLaser() throws UnknownSimulationIdException,
+                                           TException {
+        System.out.println("testToJsonStateLaser");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.toJsonState(sims[0].getId());
+        String laserName = client.getLaserJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonObject jsonLaser;
+        jsonLaser = json.get(laserName).getAsJsonObject();
+        assertEquals(0.0, jsonLaser.get("currentPower").getAsDouble(), 0.0);
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.toJsonState(sims[1].getId());
+        laserName = client.getLaserJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        jsonLaser = json.get(laserName).getAsJsonObject();
+        assertEquals(0.0, jsonLaser.get("currentPower").getAsDouble(), 0.0);
     }
     
     /**

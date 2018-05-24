@@ -25,9 +25,10 @@ import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.internal.DefaultImageS;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Stage;
-import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
@@ -44,8 +45,9 @@ import java.util.List;
 import java.util.Arrays;
 import java.io.Serializable;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 /**
  * Integrates all the components into one microscope.
@@ -67,9 +69,6 @@ public class Microscope implements Serializable {
     private final Gamma gamma = RNG.getGammaGenerator();
     private final Normal gaussian = RNG.getGaussianGenerator();
     
-    // Member names for JSON serialization
-    private final String FLUOR_MEMBER_NAME = "Fluorophores";
-    
     /** 
      * Initializes the microscope for simulations.
      * 
@@ -84,7 +83,7 @@ public class Microscope implements Serializable {
      * @param backgroundBuilder Creates the background signal on the image.
      */
     public Microscope(
-            Camera.Builder cameraBuilder,
+            DefaultCamera.Builder cameraBuilder,
             Laser.Builder laserBuilder,
             Objective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
@@ -189,16 +188,6 @@ public class Microscope implements Serializable {
     }
     
     /**
-     * Return the number of camera pixels in x and y.
-     * @return 2D array with number of pixels in x and y.
-     */
-    public int[] getResolution() {
-        int[] result = new int[2];
-        result[0] = camera.getNX(); result[1] = camera.getNY();
-        return result;
-    }
-    
-    /**
      * Returns references to the fluorophores in the sample.
      * 
      * @return The sample's Fluorophore objects.
@@ -261,12 +250,13 @@ public class Microscope implements Serializable {
     }
     
     /**
-     * Returns the JSON member name assigned to the Fluorophores.
-     * 
-     * @return The JSON member name for the Fluorophore field.
+     * Return the number of camera pixels in x and y.
+     * @return 2D array with number of pixels in x and y.
      */
-    public String getFluorescenceJsonName() {
-        return FLUOR_MEMBER_NAME;
+    public int[] getResolution() {
+        int[] result = new int[2];
+        result[0] = camera.getNX(); result[1] = camera.getNY();
+        return result;
     }
     
     /**
@@ -311,18 +301,25 @@ public class Microscope implements Serializable {
     }
     
     /**
+     * Returns information about the camera.
+     * 
+     * @return A JsonElement containing information about the camera.
+     */
+    public JsonElement toJsonCamera() {
+        return this.camera.toJson();
+    }
+    
+    /**
      * Returns information about the sample fluorophores.
      * 
      * @return A JsonObject containing information about the fluorophores.
      */
-    public JsonObject toJsonFluorescence() {
+    public JsonElement toJsonFluorescence() {
         JsonArray jsonArray = new JsonArray();
         for (Fluorophore f: fluorophores) {
             jsonArray.add(f.toJson());
         }
         
-        JsonObject json = new JsonObject();
-        json.add(FLUOR_MEMBER_NAME, jsonArray);
-        return json;
+        return jsonArray;
     }
 }

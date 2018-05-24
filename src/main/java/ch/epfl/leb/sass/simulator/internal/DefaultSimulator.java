@@ -65,6 +65,10 @@ public class DefaultSimulator extends AbstractSimulator {
      * output returns spots per 10 um x 10 um = 100 um^2 area.
      */
     private final double SCALEFACTOR = 100;
+    
+    // Member names for JSON serialization
+    private final String CAMERA_MEMBER_NAME = "Camera";
+    private final String FLUOR_MEMBER_NAME = "Fluorophores";
        
     private Microscope microscope;
     private ArrayList<Double> emitterHistory;
@@ -90,6 +94,16 @@ public class DefaultSimulator extends AbstractSimulator {
             f.addListener(STATE_LISTENER);
         }
         
+    }
+    
+    /**
+     * Returns the JSON member name assigned to the camera.
+     * 
+     * @return The JSON member name for the Camera field.
+     */
+    @Override
+    public String getCameraJsonName() {
+        return CAMERA_MEMBER_NAME;
     }
     
     @Override
@@ -118,7 +132,7 @@ public class DefaultSimulator extends AbstractSimulator {
      * @return The name of the key indicating the fluorescence information.
      */
     public String getFluorescenceJsonName() {
-        return this.microscope.getFluorescenceJsonName();
+        return FLUOR_MEMBER_NAME;
     }
     
     /**
@@ -302,8 +316,11 @@ public class DefaultSimulator extends AbstractSimulator {
      * @return A JSON object containing information on the simulation state.
      */
     @Override
-    public JsonObject toJsonState() {
-        return this.microscope.toJsonFluorescence();
+    public JsonElement toJsonState() {
+        JsonObject json = new JsonObject();
+        json.add(CAMERA_MEMBER_NAME, this.microscope.toJsonCamera());
+        json.add(FLUOR_MEMBER_NAME, this.microscope.toJsonFluorescence());
+        return json;
     }
     
     /**

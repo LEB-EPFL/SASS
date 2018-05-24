@@ -46,6 +46,14 @@ public interface Simulator {
     public double getControlSignal();
     
     /**
+     * Returns the name of the JSON key for the camera info.
+     * 
+     * @return The name of the key indicating the camera information.
+     * @see #toJsonState()
+     */
+    public String getCameraJsonName();
+    
+    /**
      * Returns the name of the JSON key for the fluorescence state info.
      * 
      * @return The name of the key indicating the fluorescence information.

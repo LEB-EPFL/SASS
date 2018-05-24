@@ -131,6 +131,21 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
+     * Returns the name of the JSON key for the camera info.
+     * 
+     * @return The name of the key indicating the camera information.
+     */
+    @Override
+    public String getCameraJsonName(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getCameraJsonName();
+    }
+    
+    /**
      * Returns the name of the JSON key for the fluorescence info.
      * 
      * @return The name of the key indicating the fluorescence information.

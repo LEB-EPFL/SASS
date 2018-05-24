@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal;
 
+import ch.epfl.leb.sass.models.photophysics.StateSystem;
 import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.legacy.Camera;

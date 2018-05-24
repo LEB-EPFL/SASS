@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal;
 
+import ch.epfl.leb.sass.models.photophysics.StateSystem;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;

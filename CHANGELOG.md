@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file.
   for full control over `Simulator` objects on the server.
 - Fluorescence state transition logging has now been implemented as an
   Observer pattern using `Message` objects.
+- The `FluorophoreDynamics`-related classes were moved into their own,
+  new `photophysics` package.
   
 ### Removed
 - `getSimulationState()` method of interface `Simulator`

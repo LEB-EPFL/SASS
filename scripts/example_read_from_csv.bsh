@@ -9,8 +9,8 @@
 
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulator;
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.SimpleDynamics;
+import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
+import ch.epfl.leb.sass.models.photophysics.internal.SimpleDynamics;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.models.components.*;

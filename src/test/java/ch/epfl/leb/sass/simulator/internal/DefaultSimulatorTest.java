@@ -32,6 +32,7 @@ import static org.mockito.Mockito.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 
 import java.io.File;
@@ -121,6 +122,42 @@ public class DefaultSimulatorTest {
             assertEquals(4, json.get("current state").getAsInt());
             assertEquals(5, json.get("next state").getAsInt());
             
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            fail("Could not open temporary file.");
+        };
+    }
+    
+    /**
+     * Test of saveState method, of class DefaultSimulator.
+     */
+    @Test
+    public void testSaveState() throws IOException {
+        System.out.println("testSaveState");
+        File logFile = tempDir.newFile("testLogFile.txt");
+
+        // Add test messages to the simulator.
+        int[] res = {32, 32};
+        when(dummyMicroscope.getResolution()).thenReturn(res);
+        DefaultSimulator sim = new DefaultSimulator(dummyMicroscope);
+     
+        // Create a ground truth JSON object
+        JsonObject expectedResult = new JsonObject();
+        expectedResult.add("x", new JsonPrimitive(1.0));
+        expectedResult.add("y", new JsonPrimitive(2.0));
+        expectedResult.add("z", new JsonPrimitive(3.0));
+        
+        // Save the simulation state
+        when(dummyMicroscope.toJsonFluorescence()).thenReturn(expectedResult);
+        sim.saveState(logFile);
+        
+        try (FileInputStream stream = new FileInputStream(logFile)) {
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new InputStreamReader(stream));
+            JsonObject json = gson.fromJson(reader, JsonObject.class);
+            assertEquals(1.0, expectedResult.get("x").getAsDouble(), 0.0);
+            assertEquals(2.0, expectedResult.get("y").getAsDouble(), 0.0);
+            assertEquals(3.0, expectedResult.get("z").getAsDouble(), 0.0);
         } catch (IOException ex) {
             ex.printStackTrace();
             fail("Could not open temporary file.");

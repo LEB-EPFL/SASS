@@ -24,7 +24,6 @@ import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.utils.images.ImageS;
 import ch.epfl.leb.sass.utils.images.ImageShapeException;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 
 import java.io.File;
@@ -50,7 +49,7 @@ public interface Simulator {
      * Returns the name of the JSON key for the fluorescence state info.
      * 
      * @return The name of the key indicating the fluorescence information.
-     * @see #toJsonFluorescence()
+     * @see #toJsonState()
      */
     public String getFluorescenceJsonName();
     
@@ -136,6 +135,8 @@ public interface Simulator {
      * every fluorophore.
      * 
      * @return JSON string encoding the simulation state.
+     * @deprecated Use {@link #toJsonState() toJsonState()}
+     * instead.
      */
     public String getSimulationState();
     
@@ -177,7 +178,6 @@ public interface Simulator {
      */
     public HashMap<String,Double> getCustomParameters();
 
-    
     /**
      * Saves the messages in the cache to a select file.
      * 
@@ -192,22 +192,33 @@ public interface Simulator {
     public void saveStack(File file);
     
     /**
-     * Returns information about the sample's fluorophores as a JSON object.
+     * Saves the current state of the simulation.
      * 
-     * @return A JSON object containing information on the sample fluorescence.
+     * @param file The file to save to.
      */
-    public JsonObject toJsonFluorescence();
+    public void saveState(File file);
     
     /**
      * Returns messages about changes in the simulation state as a JSON object.
      * 
-     * Unlike {@link #toJsonFluorescence() toJsonFluorescence()}, which returns
-     * information about the *current* state of just the fluorophores, this
-     * method returns the messages from individual simulation components that
-     * contain information about changes in their state that have occurred since
-     * the last time this method was called.
+     * Unlike {@link #toJsonState() toJsonState()}, which returns
+     * information about the *current* state of the simulation, this method
+     * returns the messages from individual simulation components that contain
+     * information about changes in their state that have occurred since the
+     * last time this method was called.
      * 
      * @return A JSON object containing the simulation messages.
      */
     public JsonElement toJsonMessages();
+    
+    /**
+     * Returns information on the simulation's current state as a JSON object.
+     * 
+     * Unlike {@link #toJsonMessages() toJsonMessages()}, which returns
+     * information about previous changes in the simulation's state, this method
+     * reports on the current state of the simulation.
+     * 
+     * @return A JSON object containing information on the simulation state.
+     */
+    public JsonElement toJsonState();
 }

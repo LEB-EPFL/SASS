@@ -316,27 +316,9 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
-     * Returns the state of the sample fluorescence as a JSON string.
-     * 
-     * @param id The simulation ID.
-     * @return The state of the sample fluorescence as a JSON string.
-     * @throws UnknownSimulationIdException 
-     */
-    @Override
-    public String toJsonFluorescence(int id) throws UnknownSimulationIdException {
-        Simulator sim = manager.getSimulator(id);
-        if (sim == null) {
-            throw new UnknownSimulationIdException();
-        }
-        
-        Gson gson = new Gson();
-        return gson.toJson(sim.toJsonFluorescence());
-    }
-    
-    /**
      * Returns messages about changes in the simulation state as a JSON string.
      * 
-     * Unlike {@link #toJsonFluorescence() toJsonFluorescence()}, which returns
+     * Unlike {@link #toJsonState(int id) toJsonState()}, which returns
      * information about the *current* state of just the fluorophores, this
      * method returns the messages from individual simulation components that
      * contain information about changes in their state that have occurred since
@@ -370,7 +352,28 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
             ex.printStackTrace();
             return null;
         }
+    }
+    
+    /**
+     * Returns information on the simulation's current state as a JSON object.
+     * 
+     * Unlike {@link #toJsonMessages(int id) toJsonMessages()}, which returns
+     * information about previous changes in the simulation's state, this method
+     * reports on the current state of the simulation.
+     * 
+     * @param id The simulation ID.
+     * @return The state of the sample fluorescence as a JSON string.
+     * @throws UnknownSimulationIdException 
+     */
+    @Override
+    public String toJsonState(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
         
+        Gson gson = new Gson();
+        return gson.toJson(sim.toJsonState());
     }
     
 }

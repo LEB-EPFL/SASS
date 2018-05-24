@@ -70,6 +70,10 @@ public class STORMsim extends AbstractSimulator {
     }
     
     @Override
+    public void saveState(File file) {
+    }
+    
+    @Override
     public void saveMessages(File file) {
     }
     
@@ -88,7 +92,7 @@ public class STORMsim extends AbstractSimulator {
      * @return A JSON object containing information on the sample fluorescence.
      */
     @Override
-    public JsonObject toJsonFluorescence() {
+    public JsonObject toJsonState() {
         return null;
     }
     

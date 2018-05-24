@@ -237,6 +237,28 @@ public class DefaultSimulator extends AbstractSimulator {
         }
     }
     
+    /**
+     * Saves the current state of the simulation.
+     * 
+     * @param file The file to save to.
+     */
+    public void saveState(File file) {
+        JsonElement json = toJsonState();
+        try (Writer writer = new FileWriter(file)) {
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(json, writer);
+        } catch (IOException ex) {
+            String err = "Could not write simulation state to the file.";
+            LOGGER.log(Level.WARNING, err);
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            String err = "An unknown error occurred while saving the " +
+                         "simulation state to the file.";
+            LOGGER.log(Level.WARNING, err);
+            ex.printStackTrace();
+        }
+    }
+    
     @Override
     public void setControlSignal(double value) {
         parameters.put("target_laser_power", value);
@@ -249,23 +271,13 @@ public class DefaultSimulator extends AbstractSimulator {
     }
     
     /**
-     * Returns information about the sample's fluorophores as a JSON object.
+     * Returns messages about changes in the simulation state as a JSON object.
      * 
-     * @return A JSON object containing information on the sample fluorescence.
-     */
-    @Override
-    public JsonObject toJsonFluorescence() {
-        return this.microscope.toJsonFluorescence();
-    }
-    
-    /**
-     * Returns messages about past changes in the simulation state.
-     * 
-     * Unlike {@link #toJsonFluorescence() toJsonFluorescence()}, which returns
-     * information about the *current* state of just the fluorophores, this
-     * method returns the messages from individual simulation components that
-     * contain information about changes in their state that have occurred since
-     * the last time this method was called.
+     * Unlike {@link #toJsonState() toJsonState()}, which returns
+     * information about the *current* state of the simulation, this method
+     * returns the messages from individual simulation components that contain
+     * information about changes in their state that have occurred since the
+     * last time this method was called.
      * 
      * @return A JSON object containing the simulation messages.
      */
@@ -278,6 +290,20 @@ public class DefaultSimulator extends AbstractSimulator {
         
         Gson gson = new Gson();
         return gson.fromJson(json, JsonArray.class);
+    }
+    
+    /**
+     * Returns information on the simulation's current state as a JSON object.
+     * 
+     * Unlike {@link #toJsonMessages() toJsonMessages()}, which returns
+     * information about previous changes in the simulation's state, this method
+     * reports on the current state of the simulation.
+     * 
+     * @return A JSON object containing information on the simulation state.
+     */
+    @Override
+    public JsonObject toJsonState() {
+        return this.microscope.toJsonFluorescence();
     }
     
     /**

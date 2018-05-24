@@ -20,6 +20,9 @@ All notable changes to this project will be documented in this file.
   for full control over `Simulator` objects on the server.
 - Fluorescence state transition logging has now been implemented as an
   Observer pattern using `Message` objects.
+  
+### Removed
+- `getSimulationState()` method of interface `Simulator`
 
 ## [v0.8.0]
 

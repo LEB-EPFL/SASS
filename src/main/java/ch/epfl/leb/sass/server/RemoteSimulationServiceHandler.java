@@ -253,22 +253,6 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
-     * Collects information about the simulation's current state and returns it.
-     * 
-     * @param id The simulation ID.
-     * @return JSON string containing the current state of the simulation.
-     */
-    @Override
-    public String getSimulationState(int id) throws UnknownSimulationIdException {
-        Simulator sim = manager.getSimulator(id);
-        if (sim == null) {
-            throw new UnknownSimulationIdException();
-        }
-        
-        return manager.getSimulator(id).getSimulationState();
-    }
-    
-    /**
      * Returns the ground-truth signal of the image at the given index.
      * 
      * @param id The simulation ID.

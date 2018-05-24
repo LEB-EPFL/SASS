@@ -128,19 +128,6 @@ public interface Simulator {
     public String getShortTrueSignalDescription();
     
     /**
-     * Retrieves the current state of the simulation.
-     * 
-     * This returns the simulation's current state, which includes all relevant
-     * properties. These may include, for example, the fluorescence state of
-     * every fluorophore.
-     * 
-     * @return JSON string encoding the simulation state.
-     * @deprecated Use {@link #toJsonState() toJsonState()}
-     * instead.
-     */
-    public String getSimulationState();
-    
-    /**
      * Returns internal stack with all generated images.
      * 
      * @return internal stack

@@ -493,24 +493,6 @@ public class RPCServerIT {
     }
     
     /**
-     * Test of getGetSimulationState method,
-     * of class RemoteSimulationServiceHandler.
-     */
-    @Test
-    public void testGetSimulationState() throws UnknownSimulationIdException,
-                                              TException {
-        System.out.println("testGetSimulationState");
-        
-        RemoteSimulationService.Client client = rpcClient.getClient();
-        String result = client.getSimulationState(sims[0].getId());
-        // The state can vary, so just ensure that the string isn't empty
-        assert(!result.equals(""));
-        
-        result = client.getSimulationState(sims[1].getId());
-        // The state can vary, so just ensure that the string isn't empty
-        assert(!result.equals(""));
-    }
-    /**
      * Test of incrementTimeStep method,
      * of class RemoteSimulationServiceHandler.
      */
@@ -522,15 +504,15 @@ public class RPCServerIT {
         RemoteSimulationService.Client client = rpcClient.getClient();
         
         //Sim 0
-        String before = client.getSimulationState(sims[0].getId());
+        String before = client.toJsonState(sims[0].getId());
         client.incrementTimeStep(sims[0].getId());
-        String after = client.getSimulationState(sims[0].getId());
+        String after = client.toJsonState(sims[0].getId());
         assert(!after.equals(before));
         
         // Sim 1
-        before = client.getSimulationState(sims[1].getId());
+        before = client.toJsonState(sims[1].getId());
         client.incrementTimeStep(sims[1].getId());
-        after = client.getSimulationState(sims[1].getId());
+        after = client.toJsonState(sims[1].getId());
         assert(!after.equals(before));
     }
     

@@ -18,12 +18,6 @@
 package ch.epfl.leb.sass.simulator.internal;
 
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.loggers.FrameLogger;
-import ch.epfl.leb.sass.loggers.FrameInfo;
-
-import com.google.gson.Gson;
-
-import java.util.List;
 
 /**
  * A simulator that is specialized for control by remote procedure calls (RPCs).
@@ -31,9 +25,7 @@ import java.util.List;
  * @author Kyle M. Douglass
  */
 public class RPCSimulator extends DefaultSimulator {
-    
-    private final FrameLogger frameLogger = FrameLogger.getInstance();
-    
+        
     /**
      * Initializes the SimpleSimulator and connects it to the simulation engine.
      * 
@@ -41,23 +33,5 @@ public class RPCSimulator extends DefaultSimulator {
      */
     public RPCSimulator(Microscope microscope) {
         super(microscope);
-        frameLogger.reset();
-        frameLogger.setPerformLogging(true);
-        frameLogger.setLogCurrentFrameOnly(true);
-    }
-    
-    /**
-     * Returns the simulation's current state as a JSON-encoded string.
-     * 
-     * @return JSON string containing information about the simulation state.
-     */
-    @Override
-    public String getSimulationState() {
-        List<FrameInfo> allInfo = this.frameLogger.getFrameInfo();
-        
-        Gson gson = new Gson();
-        String json = gson.toJson(allInfo);
-        return json;
-    }
-    
+    }    
 }

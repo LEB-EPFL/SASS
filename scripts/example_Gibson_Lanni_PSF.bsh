@@ -15,6 +15,7 @@ import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.models.components.*;
+import ch.epfl.leb.sass.models.components.internal.*;
 import ch.epfl.leb.sass.models.psfs.internal.GibsonLanniPSF;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid3D;
 import ch.epfl.leb.sass.utils.RNG;
@@ -26,7 +27,7 @@ RNG.setSeed(42);
 // then assembling them together to form a microscope.
 
 // Camera
-Camera.Builder cameraBuilder = new Camera.Builder();
+DefaultCamera.Builder cameraBuilder = new DefaultCamera.Builder();
 
 cameraBuilder.nX(64); // Number of pixels in x
 cameraBuilder.nY(64); // Number of pixels in y

@@ -70,6 +70,11 @@ public class STORMsim extends AbstractSimulator {
     }
     
     @Override
+    public String getCameraJsonName() {
+        return null;
+    }
+    
+    @Override
     public void saveState(File file) {
     }
     

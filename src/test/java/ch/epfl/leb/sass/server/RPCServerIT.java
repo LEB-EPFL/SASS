@@ -20,7 +20,7 @@ package ch.epfl.leb.sass.server;
 import ch.epfl.leb.sass.IntegrationTest;
 import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
-import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.components.Stage;
@@ -109,7 +109,7 @@ public class RPCServerIT {
         // The seed determines the outputs of the random number generator.
         RNG.setSeed(42);
         
-        Camera.Builder cameraBuilder = new Camera.Builder();
+        DefaultCamera.Builder cameraBuilder = new DefaultCamera.Builder();
 
         cameraBuilder.nX(32); // Number of pixels in x
         cameraBuilder.nY(32); // Number of pixels in y
@@ -120,6 +120,7 @@ public class RPCServerIT {
         cameraBuilder.emGain(0);       // Set to zero for CMOS cameras
         cameraBuilder.baseline(100);   // ADU
         cameraBuilder.pixelSize(6.45); // microns
+        cameraBuilder.thermalNoise(0.05); // electrons/frame/pixel
 
         // Objective
         Objective.Builder objectiveBuilder = new Objective.Builder();
@@ -318,37 +319,6 @@ public class RPCServerIT {
     }
     
     /**
-     * Test of toJsonState and getFluorescenceJsonName methods,
- of class RemoteSimulationServiceHandler.
-     */
-    @Test
-    public void testToJsonFluorescence() throws UnknownSimulationIdException,
-                                                 TException {
-        System.out.println("testToJsonFluorescence");
-        
-        RemoteSimulationService.Client client = rpcClient.getClient();
-        JsonParser parser = new JsonParser();
-        
-        // Extract the fluorescence info from the first simulation.
-        String info = client.toJsonState(sims[0].getId());
-        String fluorName = client.getFluorescenceJsonName(sims[0].getId());
-        JsonObject json = parser.parse(info).getAsJsonObject();
-        JsonArray fluorArray;
-        fluorArray = json.get(fluorName).getAsJsonArray();
-        int expResult = 49; // (num_pixels / grid_spacing - 1)^2
-        assertEquals(expResult, fluorArray.size());
-        
-        // Extract the fluorescence info from the second simulation.
-        info = client.toJsonState(sims[1].getId());
-        fluorName = client.getFluorescenceJsonName(sims[1].getId());
-        json = parser.parse(info).getAsJsonObject();
-        fluorArray = json.get(fluorName).getAsJsonArray();
-        
-        expResult = 225; // (num_pixels / grid_spacing - 1)^2
-        assertEquals(expResult, fluorArray.size());
-    }
-    
-    /**
      * Test of toJsonMessages method, of class RemoteSimulationServiceHandler.
      */
     @Test
@@ -384,6 +354,83 @@ public class RPCServerIT {
             assert(typeStrings.contains(typeString));
         }
         
+    }
+    
+    /**
+     * Test of toJsonState and getCameraJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonStateCamera() throws UnknownSimulationIdException,
+                                           TException {
+        System.out.println("testToJsonStateCamera");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.toJsonState(sims[0].getId());
+        String cameraName = client.getCameraJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonObject jsonCamera;
+        jsonCamera = json.get(cameraName).getAsJsonObject();
+        assertEquals(2.2, jsonCamera.get("aduPerElectron").getAsDouble(), 0.0);
+        assertEquals(100, jsonCamera.get("baseline").getAsInt());
+        assertEquals(0.06, jsonCamera.get("darkCurrent").getAsDouble(), 0.0);
+        assertEquals(0, jsonCamera.get("emGain").getAsDouble(), 0.0);
+        assertEquals(32, jsonCamera.get("nPixelsX").getAsInt());
+        assertEquals(32, jsonCamera.get("nPixelsY").getAsInt());
+        assertEquals(6.45, jsonCamera.get("pixelSize").getAsDouble(), 0.0);
+        assertEquals(0.8, jsonCamera.get("quantumEfficiency").getAsDouble(), 0.0);
+        assertEquals(1.6, jsonCamera.get("readoutNoise").getAsDouble(), 0.0);
+        assertEquals(0.05, jsonCamera.get("thermalNoise").getAsDouble(), 0.0);
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.toJsonState(sims[1].getId());
+        cameraName = client.getCameraJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        jsonCamera = json.get(cameraName).getAsJsonObject();
+        assertEquals(2.2, jsonCamera.get("aduPerElectron").getAsDouble(), 0.0);
+        assertEquals(100, jsonCamera.get("baseline").getAsInt());
+        assertEquals(0.06, jsonCamera.get("darkCurrent").getAsDouble(), 0.0);
+        assertEquals(0, jsonCamera.get("emGain").getAsDouble(), 0.0);
+        assertEquals(64, jsonCamera.get("nPixelsX").getAsInt());
+        assertEquals(64, jsonCamera.get("nPixelsY").getAsInt());
+        assertEquals(6.45, jsonCamera.get("pixelSize").getAsDouble(), 0.0);
+        assertEquals(0.8, jsonCamera.get("quantumEfficiency").getAsDouble(), 0.0);
+        assertEquals(1.6, jsonCamera.get("readoutNoise").getAsDouble(), 0.0);
+        assertEquals(0.05, jsonCamera.get("thermalNoise").getAsDouble(), 0.0);
+    }
+    
+    /**
+     * Test of toJsonState and getFluorescenceJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonStateFluorescence() throws UnknownSimulationIdException,
+                                              TException {
+        System.out.println("testToJsonStateFluorescence");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.toJsonState(sims[0].getId());
+        String fluorName = client.getFluorescenceJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonArray fluorArray;
+        fluorArray = json.get(fluorName).getAsJsonArray();
+        int expResult = 49; // (num_pixels / grid_spacing - 1)^2
+        assertEquals(expResult, fluorArray.size());
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.toJsonState(sims[1].getId());
+        fluorName = client.getFluorescenceJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        fluorArray = json.get(fluorName).getAsJsonArray();
+        
+        expResult = 225; // (num_pixels / grid_spacing - 1)^2
+        assertEquals(expResult, fluorArray.size());
     }
     
     /**

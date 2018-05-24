@@ -44,6 +44,11 @@ service RemoteSimulationService {
   double getControlSignal(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
+   * Gets the name of the JSON key for the camera information.
+   */
+  string getCameraJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
    * Gets the name of the JSON key for the fluoresence information.
    */
   string getFluorescenceJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),

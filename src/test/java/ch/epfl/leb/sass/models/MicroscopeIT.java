@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.IntegrationTest;
 import ch.epfl.leb.sass.models.components.*;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
@@ -69,7 +70,7 @@ public class MicroscopeIT {
         // The seed determines the outputs of the random number generator.
         RNG.setSeed(42);
         
-        Camera.Builder cameraBuilder = new Camera.Builder();
+        DefaultCamera.Builder cameraBuilder = new DefaultCamera.Builder();
 
         cameraBuilder.nX(32); // Number of pixels in x
         cameraBuilder.nY(32); // Number of pixels in y
@@ -80,6 +81,7 @@ public class MicroscopeIT {
         cameraBuilder.emGain(0);       // Set to zero for CMOS cameras
         cameraBuilder.baseline(100);   // ADU
         cameraBuilder.pixelSize(6.45); // microns
+        cameraBuilder.thermalNoise(0.05); // electrons/frame/pixel
 
         // Objective
         Objective.Builder objectiveBuilder = new Objective.Builder();
@@ -146,7 +148,7 @@ public class MicroscopeIT {
         
         setupIsDone = true;
     }
-
+    
     /**
      * Test of getResolution method, of class Microscope.
      */
@@ -213,29 +215,46 @@ public class MicroscopeIT {
     }
 
     /**
-     * Test of toJsonFluorescence method, of class Microscope.
-     */
-    @Test
-    public void testGetFluorescenceInfo() {
-        System.out.println("getFluorescenceInfo");
-        
-        int expResult = 49; // Fluorophores are placed on a grid every 4 pixels.
-        JsonObject json = microscope.toJsonFluorescence();
-        
-        JsonArray fluorArray;
-        fluorArray = json.get(microscope.getFluorescenceJsonName())
-                         .getAsJsonArray();
-        
-        assertEquals(expResult, fluorArray.size());
-    }
-
-    /**
      * Test of simulateFrame method, of class Microscope.
      */
     @Test
     public void testSimulateFrame() {
         System.out.println("simulateFrame");
         microscope.simulateFrame();
+    }
+    
+     /**
+     * Test of toJsonCamera method, of class Microscope.
+     */
+    @Test
+    public void testToJsonCamera() {
+        System.out.println("toJsonCamera");
+        
+        JsonObject json = microscope.toJsonCamera().getAsJsonObject();
+        assertEquals(2.2, json.get("aduPerElectron").getAsDouble(), 0.0);
+        assertEquals(100, json.get("baseline").getAsInt());
+        assertEquals(0.06, json.get("darkCurrent").getAsDouble(), 0.0);
+        assertEquals(0, json.get("emGain").getAsDouble(), 0.0);
+        assertEquals(32, json.get("nPixelsX").getAsInt());
+        assertEquals(32, json.get("nPixelsY").getAsInt());
+        assertEquals(6.45, json.get("pixelSize").getAsDouble(), 0.0);
+        assertEquals(0.8, json.get("quantumEfficiency").getAsDouble(), 0.0);
+        assertEquals(1.6, json.get("readoutNoise").getAsDouble(), 0.0);
+        assertEquals(0.05, json.get("thermalNoise").getAsDouble(), 0.0);
+
+    }
+    
+    /**
+     * Test of toJsonFluorescence method, of class Microscope.
+     */
+    @Test
+    public void testToJsonFluorescence() {
+        System.out.println("getToJsonFluorescence");
+        
+        int expResult = 49; // Fluorophores are placed on a grid every 4 pixels.
+        
+        JsonArray fluorArray = microscope.toJsonFluorescence().getAsJsonArray();      
+        assertEquals(expResult, fluorArray.size());
     }
     
 }

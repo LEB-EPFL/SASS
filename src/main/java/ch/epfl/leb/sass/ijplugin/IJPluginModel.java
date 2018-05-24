@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamicsBuilder;
 import ch.epfl.leb.sass.models.photophysics.internal.StormDynamics;
 import ch.epfl.leb.sass.models.photophysics.internal.SimpleDynamics;
@@ -481,7 +482,7 @@ public class IJPluginModel implements Serializable {
      * @return A new microscope built from the model parameters.
      */
     public Microscope build() {
-        Camera.Builder cameraBuilder = new Camera.Builder();
+        DefaultCamera.Builder cameraBuilder = new DefaultCamera.Builder();
         Objective.Builder objectiveBuilder = new Objective.Builder();
         Stage.Builder stageBuilder = new Stage.Builder();
         FluorophoreDynamicsBuilder fluorPropBuilder = null;

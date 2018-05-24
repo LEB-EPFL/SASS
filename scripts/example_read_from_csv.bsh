@@ -45,7 +45,7 @@ objectiveBuilder.NA(1.4); // Numerical aperture
 objectiveBuilder.mag(60); // Magnification
 
 // Laser
-Laser.Builder laserBuilder = new Laser.Builder();
+DefaultLaser.Builder laserBuilder = new DefaultLaser.Builder();
 
 laserBuilder.currentPower(0.0);
 laserBuilder.minPower(0.0);

@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.IntegrationTest;
 import ch.epfl.leb.sass.models.components.*;
@@ -89,8 +90,8 @@ public class MicroscopeIT {
         objectiveBuilder.NA(1.3); // Numerical aperture
         objectiveBuilder.mag(60); // Magnification
 
-        // Laser
-        Laser.Builder laserBuilder = new Laser.Builder();
+        // DefaultLaser
+        DefaultLaser.Builder laserBuilder = new DefaultLaser.Builder();
 
         laserBuilder.currentPower(0.0);
         laserBuilder.minPower(0.0);
@@ -257,4 +258,18 @@ public class MicroscopeIT {
         assertEquals(expResult, fluorArray.size());
     }
     
+    /**
+     * Test of toJsonLaser method, of class Microscope.
+     */
+    @Test
+    public void testToJsonLaser() {
+        System.out.println("toJsonLaser");
+        
+        double laserPower = 1.84;
+        microscope.setLaserPower(laserPower);
+        
+        JsonObject json = microscope.toJsonLaser().getAsJsonObject();
+        assertEquals(1.84, json.get("currentPower").getAsDouble(), 0.0);
+
+    }
 }

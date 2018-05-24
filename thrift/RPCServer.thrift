@@ -64,6 +64,11 @@ service RemoteSimulationService {
   i32 getImageCount(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
+   * Gets the name of the JSON key for the laser information.
+   */
+  string getLaserJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
+
+  /**
    * Increments the simulation by one time step and returns an image.
    */
   binary getNextImage(1: i32 id) throws(1: ImageGenerationException ex,

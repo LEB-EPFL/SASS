@@ -69,6 +69,7 @@ public class DefaultSimulator extends AbstractSimulator {
     // Member names for JSON serialization
     private final String CAMERA_MEMBER_NAME = "Camera";
     private final String FLUOR_MEMBER_NAME = "Fluorophores";
+    private final String LASER_MEMBER_NAME = "Laser";
        
     private Microscope microscope;
     private ArrayList<Double> emitterHistory;
@@ -87,7 +88,7 @@ public class DefaultSimulator extends AbstractSimulator {
         emitterHistory = new ArrayList<>();
         emitterHistory.add(0.0);
         
-        // Create the fluorescence state STATE_LISTENER and attach it to the sample.
+        // Create the fluorescence state STATE_LISTENER and attach it.
         STATE_LISTENER = this.new StateListener();
         List<Fluorophore> fluorophores = this.microscope.getFluorophores();
         for (Fluorophore f: fluorophores) {
@@ -133,6 +134,15 @@ public class DefaultSimulator extends AbstractSimulator {
      */
     public String getFluorescenceJsonName() {
         return FLUOR_MEMBER_NAME;
+    }
+    
+    /**
+     * Returns the name of the JSON key for the laser info.
+     * 
+     * @return The name of the key indicating the laser information.
+     */
+    public String getLaserJsonName() {
+        return LASER_MEMBER_NAME;
     }
     
     /**
@@ -320,6 +330,7 @@ public class DefaultSimulator extends AbstractSimulator {
         JsonObject json = new JsonObject();
         json.add(CAMERA_MEMBER_NAME, this.microscope.toJsonCamera());
         json.add(FLUOR_MEMBER_NAME, this.microscope.toJsonFluorescence());
+        json.add(LASER_MEMBER_NAME, this.microscope.toJsonLaser());
         return json;
     }
     

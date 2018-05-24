@@ -195,6 +195,21 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
+     * Returns the name of the JSON key for the laser info.
+     * 
+     * @return The name of the key indicating the camera information.
+     */
+    @Override
+    public String getLaserJsonName(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getLaserJsonName();
+    }
+    
+    /**
      * Advances the simulator by one time step and returns the image.
      * 
      * @param id The simulation ID.

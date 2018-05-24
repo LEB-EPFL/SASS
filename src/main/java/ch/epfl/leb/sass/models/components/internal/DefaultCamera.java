@@ -190,7 +190,11 @@ public final class DefaultCamera implements Camera {
     public int getNY() {
         return this.nY;
     }
-    
+    /**
+     * Outputs the camera's properties as a JSON element.
+     * 
+     * @return A JSON tree describing the camera's properties.
+     */
     public JsonElement toJson() {
         Gson gson = new GsonBuilder()
                         .registerTypeAdapter(DefaultCamera.class,
@@ -201,7 +205,8 @@ public final class DefaultCamera implements Camera {
 
     class DefaultCameraSerializer implements JsonSerializer<DefaultCamera> {
         @Override
-        public JsonElement serialize(DefaultCamera src, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(DefaultCamera src, Type typeOfSrc,
+                                  JsonSerializationContext context) {
             JsonObject result = new JsonObject();
             result.add("aduPerElectron", new JsonPrimitive(src.getAduPerElectron()));
             result.add("baseline", new JsonPrimitive(src.getBaseline()));

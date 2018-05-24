@@ -62,6 +62,14 @@ public interface Simulator {
     public String getFluorescenceJsonName();
     
     /**
+     * Returns the name of the JSON key for the laser state info.
+     * 
+     * @return The name of the key indicating the laser information.
+     * @see #toJsonState()
+     */
+    public String getLaserJsonName();
+    
+    /**
      * Returns the size of the field-of-view in object space units.
      * 
      * @return size of current FOV in object space units.

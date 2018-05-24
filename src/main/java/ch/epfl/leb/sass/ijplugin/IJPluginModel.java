@@ -17,9 +17,12 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
+import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamicsBuilder;
+import ch.epfl.leb.sass.models.photophysics.internal.StormDynamics;
+import ch.epfl.leb.sass.models.photophysics.internal.SimpleDynamics;
+import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.psfs.internal.*;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.*;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.*;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.*;

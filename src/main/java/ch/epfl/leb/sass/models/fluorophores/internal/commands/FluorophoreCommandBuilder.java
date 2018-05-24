@@ -18,7 +18,7 @@
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
 import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.FluorophoreDynamics;
+import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 
 /**

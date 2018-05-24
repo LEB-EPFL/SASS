@@ -20,7 +20,7 @@
 package ch.epfl.leb.sass.models.legacy;
 
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
-import ch.epfl.leb.sass.models.fluorophores.internal.StateSystem;
+import ch.epfl.leb.sass.models.photophysics.StateSystem;
 import ch.epfl.leb.sass.models.legacy.Camera;
 import static java.lang.Math.sqrt;
 import org.apache.commons.math.MathException;

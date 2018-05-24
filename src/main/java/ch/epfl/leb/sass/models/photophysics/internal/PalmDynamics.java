@@ -17,9 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.dynamics;
+package ch.epfl.leb.sass.models.photophysics.internal;
 
-import ch.epfl.leb.sass.models.fluorophores.internal.StateSystem;
+import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
+import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamicsBuilder;
+import ch.epfl.leb.sass.models.photophysics.StateSystem;
 
 /**
  * A dynamical system for modeling PALM-like fluorescence dynamics.

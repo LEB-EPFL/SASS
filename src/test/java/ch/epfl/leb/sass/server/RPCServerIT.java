@@ -25,7 +25,7 @@ import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.components.Stage;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
-import ch.epfl.leb.sass.models.fluorophores.internal.dynamics.PalmDynamics;
+import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.utils.RNG;

@@ -22,7 +22,7 @@ import ch.epfl.leb.sass.models.Microscope;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
-import ch.epfl.leb.sass.models.components.Objective;
+import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
@@ -122,8 +122,8 @@ public class RPCServerIT {
         cameraBuilder.pixelSize(6.45); // microns
         cameraBuilder.thermalNoise(0.05); // electrons/frame/pixel
 
-        // Objective
-        Objective.Builder objectiveBuilder = new Objective.Builder();
+        // DefaultObjective
+        DefaultObjective.Builder objectiveBuilder = new DefaultObjective.Builder();
 
         objectiveBuilder.NA(1.3); // Numerical aperture
         objectiveBuilder.mag(60); // Magnification
@@ -459,6 +459,36 @@ public class RPCServerIT {
         json = parser.parse(info).getAsJsonObject();
         jsonLaser = json.get(laserName).getAsJsonObject();
         assertEquals(0.0, jsonLaser.get("currentPower").getAsDouble(), 0.0);
+    }
+    
+    /**
+     * Test of toJsonState and getObjectiveJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonStateObjective() throws UnknownSimulationIdException,
+                                                  TException {
+        System.out.println("testToJsonStateObjective");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.toJsonState(sims[0].getId());
+        String objectiveName = client.getObjectiveJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonObject jsonObjective;
+        jsonObjective = json.get(objectiveName).getAsJsonObject();
+        assertEquals(60, jsonObjective.get("magnification").getAsDouble(), 0.0);
+        assertEquals(1.3, jsonObjective.get("numerical aperture").getAsDouble(), 0.0);
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.toJsonState(sims[1].getId());
+        objectiveName = client.getObjectiveJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        jsonObjective = json.get(objectiveName).getAsJsonObject();
+        assertEquals(60, jsonObjective.get("magnification").getAsDouble(), 0.0);
+        assertEquals(1.3, jsonObjective.get("numerical aperture").getAsDouble(), 0.0);
     }
     
      /**

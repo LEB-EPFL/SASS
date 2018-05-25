@@ -70,6 +70,7 @@ public class DefaultSimulator extends AbstractSimulator {
     private final String CAMERA_MEMBER_NAME = "Camera";
     private final String FLUOR_MEMBER_NAME = "Fluorophores";
     private final String LASER_MEMBER_NAME = "Laser";
+    private final String OBJECTIVE_MEMBER_NAME = "Objective";
     private final String STAGE_MEMBER_NAME = "Stage";
        
     private Microscope microscope;
@@ -194,6 +195,17 @@ public class DefaultSimulator extends AbstractSimulator {
         stack.concatenate(pixels);
         
         return pixels;
+    }
+    
+    /**
+     * Returns the name of the JSON key for the objective state info.
+     * 
+     * @return The name of the key indicating the objective information.
+     * @see #toJsonState()
+     */
+    @Override
+    public String getObjectiveJsonName() {
+        return OBJECTIVE_MEMBER_NAME;
     }
     
     /**
@@ -341,6 +353,7 @@ public class DefaultSimulator extends AbstractSimulator {
         json.add(CAMERA_MEMBER_NAME, this.microscope.toJsonCamera());
         json.add(FLUOR_MEMBER_NAME, this.microscope.toJsonFluorescence());
         json.add(LASER_MEMBER_NAME, this.microscope.toJsonLaser());
+        json.add(OBJECTIVE_MEMBER_NAME, this.microscope.toJsonObjective());
         json.add(STAGE_MEMBER_NAME, this.microscope.toJsonStage());
         return json;
     }

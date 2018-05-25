@@ -75,6 +75,11 @@ service RemoteSimulationService {
                                         2: UnknownSimulationIdException ex2),
 
   /**
+   * Gets the name of the JSON key for the objective information.
+   */
+  string getObjectiveJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
+    
+  /**
    * Returns the object space pixel size.
    *
    * Units are the same as those of the camera's pixel size.

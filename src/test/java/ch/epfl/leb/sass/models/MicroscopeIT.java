@@ -17,11 +17,11 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.IntegrationTest;
-import ch.epfl.leb.sass.models.components.*;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands
@@ -85,8 +85,9 @@ public class MicroscopeIT {
         cameraBuilder.pixelSize(6.45); // microns
         cameraBuilder.thermalNoise(0.05); // electrons/frame/pixel
 
-        // Objective
-        Objective.Builder objectiveBuilder = new Objective.Builder();
+        // DefaultObjective
+        DefaultObjective.Builder objectiveBuilder = 
+                new DefaultObjective.Builder();
 
         objectiveBuilder.NA(1.3); // Numerical aperture
         objectiveBuilder.mag(60); // Magnification
@@ -272,6 +273,18 @@ public class MicroscopeIT {
         JsonObject json = microscope.toJsonLaser().getAsJsonObject();
         assertEquals(1.84, json.get("currentPower").getAsDouble(), 0.0);
 
+    }
+    
+    /**
+     * Test of toJsonObjective method, of class Microscope.
+     */
+    @Test
+    public void testToJsonObjective() {
+        System.out.println("toJsonObjective");
+        
+        JsonObject json = microscope.toJsonObjective().getAsJsonObject();
+        assertEquals(60, json.get("magnification").getAsDouble(), 0.0);
+        assertEquals(1.3, json.get("numerical aperture").getAsDouble(), 0.0);
     }
     
     /**

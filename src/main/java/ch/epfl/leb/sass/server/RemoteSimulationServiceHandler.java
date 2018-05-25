@@ -243,6 +243,23 @@ public class RemoteSimulationServiceHandler implements RemoteSimulationService.I
     }
     
     /**
+     * Returns the name of the JSON key for the objective info.
+     * 
+     * @param id The simulation ID.
+     * @return The name of the key indicating the laser information.
+     * @throws UnknownSimulationIdException
+     */
+    @Override
+    public String getObjectiveJsonName(int id) throws UnknownSimulationIdException {
+        Simulator sim = manager.getSimulator(id);
+        if (sim == null) {
+            throw new UnknownSimulationIdException();
+        }
+        
+        return sim.getObjectiveJsonName();
+    }
+    
+    /**
      * Returns the object space pixel size.
      * 
      * Units are the same as those of the camera pixel size.

@@ -51,7 +51,7 @@ laserBuilder.minPower(0.0);
 laserBuilder.maxPower(500.0);
 
 // Stage
-Stage.Builder stageBuilder = new Stage.Builder();
+DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
 
 stageBuilder.x(0);
 stageBuilder.y(0);

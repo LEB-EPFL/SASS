@@ -17,7 +17,6 @@
  */
 package ch.epfl.leb.sass.models.components.internal;
 
-import ch.epfl.leb.sass.models.Model;
 import ch.epfl.leb.sass.models.components.Camera;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

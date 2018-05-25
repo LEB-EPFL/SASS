@@ -92,6 +92,11 @@ service RemoteSimulationService {
   string getShortTrueSignalDescription(1: i32 id) throws (1: UnknownSimulationIdException ex),
 
   /**
+   * Gets the name of the JSON key for the stage information.
+   */
+  string getStageJsonName(1: i32 id) throws (1: UnknownSimulationIdException ex),
+  
+  /**
    * Returns the true simulation signal at the given image.
    */
   double getTrueSignal(1: i32 id, 2: i32 imageNum) throws (1: UnknownSimulationIdException ex),

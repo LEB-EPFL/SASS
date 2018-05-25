@@ -151,6 +151,14 @@ public interface Simulator {
     public ImageS getStack();
     
     /**
+     * Returns the name of the JSON key for the stage state info.
+     * 
+     * @return The name of the key indicating the stage information.
+     * @see #toJsonState()
+     */
+    public String getStageJsonName();
+    
+    /**
      * Returns the actual value of signal (if applicable) for given image.
      * @param image_no 1-based image number in history
      * @return value of signal (e.g. no. of active emitters)

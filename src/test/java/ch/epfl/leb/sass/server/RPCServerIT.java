@@ -23,7 +23,7 @@ import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBack
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.Objective;
-import ch.epfl.leb.sass.models.components.Stage;
+import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid2D;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
@@ -135,8 +135,8 @@ public class RPCServerIT {
         laserBuilder.minPower(0.0);
         laserBuilder.maxPower(500.0);
 
-        // Stage
-        Stage.Builder stageBuilder = new Stage.Builder();
+        // DefaultStage
+        DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
 
         stageBuilder.x(0);
         stageBuilder.y(0);
@@ -459,6 +459,38 @@ public class RPCServerIT {
         json = parser.parse(info).getAsJsonObject();
         jsonLaser = json.get(laserName).getAsJsonObject();
         assertEquals(0.0, jsonLaser.get("currentPower").getAsDouble(), 0.0);
+    }
+    
+     /**
+     * Test of toJsonState and getLaserJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonStateStage() throws UnknownSimulationIdException,
+                                              TException {
+        System.out.println("testToJsonStateStage");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.toJsonState(sims[0].getId());
+        String stageName = client.getStageJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonObject jsonStage;
+        jsonStage = json.get(stageName).getAsJsonObject();
+        assertEquals(0.0, jsonStage.get("x").getAsDouble(), 0.0);
+        assertEquals(0.0, jsonStage.get("y").getAsDouble(), 0.0);
+        assertEquals(0.0, jsonStage.get("z").getAsDouble(), 0.0);
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.toJsonState(sims[1].getId());
+        stageName = client.getStageJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        jsonStage = json.get(stageName).getAsJsonObject();
+        assertEquals(0.0, jsonStage.get("x").getAsDouble(), 0.0);
+        assertEquals(0.0, jsonStage.get("y").getAsDouble(), 0.0);
+        assertEquals(0.0, jsonStage.get("z").getAsDouble(), 0.0);
     }
     
     /**

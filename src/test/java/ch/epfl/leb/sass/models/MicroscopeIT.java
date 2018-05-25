@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.IntegrationTest;
@@ -97,8 +98,8 @@ public class MicroscopeIT {
         laserBuilder.minPower(0.0);
         laserBuilder.maxPower(500.0);
 
-        // Stage
-        Stage.Builder stageBuilder = new Stage.Builder();
+        // DefaultStage
+        DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
 
         stageBuilder.x(0);
         stageBuilder.y(0);
@@ -271,5 +272,18 @@ public class MicroscopeIT {
         JsonObject json = microscope.toJsonLaser().getAsJsonObject();
         assertEquals(1.84, json.get("currentPower").getAsDouble(), 0.0);
 
+    }
+    
+    /**
+     * Test of toJsonStage method, of class Microscope.
+     */
+    @Test
+    public void testToJsonStage() {
+        System.out.println("toJsonStage");
+        
+        JsonObject json = microscope.toJsonStage().getAsJsonObject();
+        assertEquals(0.0, json.get("x").getAsDouble(), 0.0);
+        assertEquals(0.0, json.get("y").getAsDouble(), 0.0);
+        assertEquals(0.0, json.get("z").getAsDouble(), 0.0);
     }
 }

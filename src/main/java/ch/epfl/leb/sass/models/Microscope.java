@@ -335,6 +335,15 @@ public class Microscope implements Serializable {
     }
     
     /**
+     * Returns information about the objective.
+     * 
+     * @return A JsonElement containing information about the stage.
+     */
+    public JsonElement toJsonObjective() {
+        return this.objective.toJson();
+    }
+    
+    /**
      * Returns information about the stage.
      * 
      * @return A JsonElement containing information about the stage.

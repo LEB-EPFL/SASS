@@ -126,6 +126,14 @@ public interface Simulator {
     public ImageS getNextImage() throws ImageShapeException;
     
     /**
+     * Returns the name of the JSON key for the objective state info.
+     * 
+     * @return The name of the key indicating the objective information.
+     * @see #toJsonState()
+     */
+    public String getObjectiveJsonName();
+    
+    /**
      * Returns the size of a pixel in object space units.
      * 
      * The units of this quantity are determined by those of the camera's

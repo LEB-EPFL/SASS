@@ -461,6 +461,36 @@ public class RPCServerIT {
         assertEquals(0.0, jsonLaser.get("currentPower").getAsDouble(), 0.0);
     }
     
+    /**
+     * Test of toJsonState and getObjectiveJsonName methods,
+     * of class RemoteSimulationServiceHandler.
+     */
+    @Test
+    public void testToJsonStateObjective() throws UnknownSimulationIdException,
+                                                  TException {
+        System.out.println("testToJsonStateObjective");
+        
+        RemoteSimulationService.Client client = rpcClient.getClient();
+        JsonParser parser = new JsonParser();
+        
+        // Extract the fluorescence info from the first simulation.
+        String info = client.toJsonState(sims[0].getId());
+        String objectiveName = client.getObjectiveJsonName(sims[0].getId());
+        JsonObject json = parser.parse(info).getAsJsonObject();
+        JsonObject jsonObjective;
+        jsonObjective = json.get(objectiveName).getAsJsonObject();
+        assertEquals(60, jsonObjective.get("magnification").getAsDouble(), 0.0);
+        assertEquals(1.3, jsonObjective.get("numerical aperture").getAsDouble(), 0.0);
+        
+        // Extract the fluorescence info from the second simulation.
+        info = client.toJsonState(sims[1].getId());
+        objectiveName = client.getObjectiveJsonName(sims[1].getId());
+        json = parser.parse(info).getAsJsonObject();
+        jsonObjective = json.get(objectiveName).getAsJsonObject();
+        assertEquals(60, jsonObjective.get("magnification").getAsDouble(), 0.0);
+        assertEquals(1.3, jsonObjective.get("numerical aperture").getAsDouble(), 0.0);
+    }
+    
      /**
      * Test of toJsonState and getLaserJsonName methods,
      * of class RemoteSimulationServiceHandler.

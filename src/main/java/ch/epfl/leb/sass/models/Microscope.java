@@ -28,10 +28,11 @@ import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Stage;
 import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
-import ch.epfl.leb.sass.models.components.Objective;
+import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
@@ -86,7 +87,7 @@ public class Microscope implements Serializable {
     public Microscope(
             DefaultCamera.Builder cameraBuilder,
             DefaultLaser.Builder laserBuilder,
-            Objective.Builder objectiveBuilder,
+            DefaultObjective.Builder objectiveBuilder,
             PSFBuilder psfBuilder,
             DefaultStage.Builder stageBuilder,
             FluorophoreCommandBuilder fluorBuilder,

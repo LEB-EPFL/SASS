@@ -13,7 +13,6 @@ import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
-import ch.epfl.leb.sass.models.components.*;
 import ch.epfl.leb.sass.models.components.internal.*;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresRandom2D;
@@ -39,7 +38,7 @@ cameraBuilder.baseline(100);   // ADU
 cameraBuilder.pixelSize(6.45); // microns
 
 // Objective
-Objective.Builder objectiveBuilder = new Objective.Builder();
+DefaultObjective.Builder objectiveBuilder = new DefaultObjective.Builder();
 
 objectiveBuilder.NA(1.3); // Numerical aperture
 objectiveBuilder.mag(60); // Magnification

@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
@@ -485,7 +486,7 @@ public class IJPluginModel implements Serializable {
      */
     public Microscope build() {
         DefaultCamera.Builder cameraBuilder = new DefaultCamera.Builder();
-        Objective.Builder objectiveBuilder = new Objective.Builder();
+        DefaultObjective.Builder objectiveBuilder = new DefaultObjective.Builder();
         DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
         FluorophoreDynamicsBuilder fluorPropBuilder = null;
         DefaultLaser.Builder laserBuilder = new DefaultLaser.Builder();

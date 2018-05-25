@@ -17,6 +17,7 @@
  */
 package ch.epfl.leb.sass.models;
 
+import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
 import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
@@ -85,8 +86,8 @@ public class MicroscopeIT {
         cameraBuilder.pixelSize(6.45); // microns
         cameraBuilder.thermalNoise(0.05); // electrons/frame/pixel
 
-        // Objective
-        Objective.Builder objectiveBuilder = new Objective.Builder();
+        // DefaultObjective
+        DefaultObjective.Builder objectiveBuilder = new DefaultObjective.Builder();
 
         objectiveBuilder.NA(1.3); // Numerical aperture
         objectiveBuilder.mag(60); // Magnification

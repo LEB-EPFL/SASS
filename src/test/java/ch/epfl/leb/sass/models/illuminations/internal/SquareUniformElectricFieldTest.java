@@ -1,15 +1,34 @@
 /*
- * © All rights reserved. 
- * ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
- * Laboratory of Experimental Biophysics, 2017
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Federale de Lausanne
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ch.epfl.leb.sass.models.illuminations.internal;
 
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+
+import org.apache.commons.math.util.MathUtils;
 import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.complex.ComplexUtils;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for the SquareUniformElectricField.
@@ -18,11 +37,19 @@ import static org.junit.Assert.*;
  */
 public class SquareUniformElectricFieldTest {
     
-    private double width = 20;
-    private double height = 40;
-    private Vector3D orientation = new Vector3D(1, 0, 0); // x-polarized
+    private final double width = 20;
+    private final double height = 40;
+    private final Vector3D orientation = new Vector3D(1, 0, 0); // x-polarized
+    private final RefractiveIndex dummyRefractiveIndex 
+            = mock(RefractiveIndex.class);
+    private final double wavelength = 0.532;
+    private SquareUniformElectricField.Builder builder;
     
-    public SquareUniformElectricFieldTest() {
+    @Before
+    public void setUp() {
+        builder = new SquareUniformElectricField.Builder();
+        builder.height(height).width(width).orientation(orientation)
+               .refractiveIndex(dummyRefractiveIndex).wavelength(wavelength);
     }
 
     /**
@@ -31,33 +58,51 @@ public class SquareUniformElectricFieldTest {
     @Test
     public void testGetEx() {
         System.out.println("testGetEx");
-        SquareUniformElectricField instance = new SquareUniformElectricField(
-                width, height, orientation);
+        SquareUniformElectricField instance = builder.build();
         
         // Inside the illumination area
-        Complex expResult = instance.getEx(10, 20, 0);
-        assertEquals(expResult.getReal(), 1, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, 20, 0)).thenReturn(new Complex(1.0));
+        Complex result = instance.getEx(10, 20, 0);
+        assertEquals(1, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
+        
+        // Inside the illumination area, different z-position
+        Complex expResult
+                = ComplexUtils.polar2Complex(orientation.getX(),
+                                          MathUtils.TWO_PI / wavelength * 1.0);
+        
+        when(dummyRefractiveIndex.getN(10, 20, 1)).thenReturn(new Complex(1.0));
+        result = instance.getEx(10, 20, 1);
+        assertEquals(expResult.getReal(), result.getReal(), 0.0);
+        assertEquals(expResult.getImaginary(), result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEx(-10, 20, 10);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(-10, 20, 10))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEx(-10, 20, 10);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEx(30, 20, -10);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(30, 20, -10))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEx(30, 20, -10);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEx(10, -10, 100);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, -10, 100))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEx(10, -10, 100);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEx(10, 50, -100);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, 50, -100))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEx(10, 50, -100);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
     }
 
     /**
@@ -66,33 +111,41 @@ public class SquareUniformElectricFieldTest {
     @Test
     public void testGetEy() {
         System.out.println("testGetEy");
-        SquareUniformElectricField instance = new SquareUniformElectricField(
-                width, height, orientation);
+        SquareUniformElectricField instance = builder.build();
         
         // Inside the illumination area
-        Complex expResult = instance.getEy(10, 20, 0);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, 20, 0)).thenReturn(new Complex(1.0));
+        Complex result = instance.getEy(10, 20, 0);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEy(-10, 20, 10);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(-10, 20, 10))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEy(-10, 20, 10);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEy(30, 20, -10);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(30, 20, -10))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEy(30, 20, -10);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEy(10, -10, 100);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, -10, 100))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEy(10, -10, 100);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEy(10, 50, -100);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, 50, -100))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEy(10, 50, -100);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
     }
 
     /**
@@ -101,33 +154,66 @@ public class SquareUniformElectricFieldTest {
     @Test
     public void testGetEz() {
         System.out.println("testGetEy");
-        SquareUniformElectricField instance = new SquareUniformElectricField(
-                width, height, orientation);
-        
+        SquareUniformElectricField instance = builder.build();
+
         // Inside the illumination area
-        Complex expResult = instance.getEz(10, 20, 0);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, 20, 0)).thenReturn(new Complex(1.0));
+        Complex result = instance.getEz(10, 20, 0);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEz(-10, 20, 10);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(-10, 20, 10))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEz(-10, 20, 10);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEz(30, 20, -10);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(30, 20, -10))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEz(30, 20, -10);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEz(10, -10, 100);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, -10, 100))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEz(10, -10, 100);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
         
         // Outside the illumination area
-        expResult = instance.getEz(10, 50, -100);
-        assertEquals(expResult.getReal(), 0, 0.0);
-        assertEquals(expResult.getImaginary(), 0, 0.0);
+        when(dummyRefractiveIndex.getN(10, 50, -100))
+           .thenReturn(new Complex(1.0));
+        result = instance.getEz(10, 50, -100);
+        assertEquals(0, result.getReal(), 0.0);
+        assertEquals(0, result.getImaginary(), 0.0);
     }
-    
+ 
+    /**
+     * Test of getEx method, of class SquareUniformElectricField.
+     */
+    @Test
+    public void testGetExAbsorption() {
+        System.out.println("testGetExAbsorption");
+        SquareUniformElectricField instance = builder.build();
+        
+        // The imaginary part of the refractive index determines the absorption.
+        Complex absRefractiveIndex = new Complex(1.0, 1.0);
+        double z = 1.0;
+        double arg = MathUtils.TWO_PI * z / wavelength;
+        double mag = orientation.getX()
+                     * Math.exp(-arg * absRefractiveIndex.getImaginary());
+        
+        // Inside the illumination area, different z-position
+        Complex expResult = ComplexUtils.polar2Complex(
+                mag, arg * absRefractiveIndex.getReal());
+        
+        when(dummyRefractiveIndex.getN(10,20,z)).thenReturn(absRefractiveIndex);
+        Complex result = instance.getEx(10, 20, z);
+        assertEquals(expResult.getReal(), result.getReal(), 0.0);
+        assertEquals(expResult.getImaginary(), result.getImaginary(), 0.0);
+        
+    }
 }

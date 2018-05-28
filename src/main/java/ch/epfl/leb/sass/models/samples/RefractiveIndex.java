@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
- * Ecole Polytechnique Federale de Lausanne
+ * Ecole Polytechnique Fédérale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.commands;
+package ch.epfl.leb.sass.models.samples;
 
-import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
-import java.util.List;
+import org.apache.commons.math3.complex.Complex;
 
 /**
- * Executes a command for generating fluorophores.
+ * Common methods for the sample's refractive index distribution.
  * 
  * @author Kyle M. Douglass
  */
-public interface FluorophoreCommand {
+public interface RefractiveIndex {
     
     /**
-     * Creates a new set of Fluorophore instances.
+     * Returns the (complex) refractive index at the position (x, y, z).
      * 
-     * @return A new list of Fluorophore instances.
+     * z = 0 corresponds to the plane of the coverslip.
+     * 
+     * @param x The x-position within the sample.
+     * @param y The y-position within the sample.
+     * @param z The z-position within the sample.
+     * @return The complex refractive index at the position (x, y, z).
      */
-    public List<Fluorophore> generateFluorophores();
+    public Complex getN(double x, double y, double z);
     
 }

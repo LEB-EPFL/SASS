@@ -17,6 +17,8 @@
  */
 package ch.epfl.leb.sass.models.illuminations;
 
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -55,5 +57,19 @@ public interface ElectricField {
      * @return The z-component of the electric field at the position (x, y, z).
      */
     public Complex getEz(double x, double y, double z);
+    
+    /**
+     * Returns the sample's refractive index that produced this field.
+     * 
+     * @return The refractive index distribution of the sample.
+     */
+    public RefractiveIndex getRefractiveIndex();
+    
+    /**
+     * Returns the radiation's wavelength.
+     * 
+     * @return The wavelength of the radiation.
+     */
+    public double getWavelength();
     
 }

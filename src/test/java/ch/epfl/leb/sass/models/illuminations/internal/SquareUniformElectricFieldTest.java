@@ -216,4 +216,38 @@ public class SquareUniformElectricFieldTest {
         assertEquals(expResult.getImaginary(), result.getImaginary(), 0.0);
         
     }
+    
+    /**
+     * Test of getRefractiveIndexMethod, of class SquareUniformElectricField.
+     */
+    @Test
+    public void testGetRefractiveIndex() {
+        System.out.println("testGetRefractiveIndex");
+        SquareUniformElectricField instance = builder.build();
+
+        // Inside the illumination area
+        when(dummyRefractiveIndex.getN(10, 20, 0))
+           .thenReturn(new Complex(1.0, 0.75));
+        
+        RefractiveIndex result = instance.getRefractiveIndex();
+        result.getN(10, 20, 0).getReal();
+        assertEquals(1.0, result.getN(10, 20, 0).getReal(), 0.0);
+        assertEquals(0.75, result.getN(10, 20, 0).getImaginary(), 0.0);
+    }
+    
+    /**
+     * Test of getWavelength, of class SquareUniformElectricField.
+     */
+    @Test
+    public void testGetWavelength() {
+        System.out.println("testGetWavelength");
+        SquareUniformElectricField instance = builder.build();
+
+        // Inside the illumination area
+        when(dummyRefractiveIndex.getN(10, 20, 0))
+           .thenReturn(new Complex(1.0, 0.75));
+        
+        double result = instance.getWavelength();
+        assertEquals(wavelength, result, 0.0);        
+    }
 }

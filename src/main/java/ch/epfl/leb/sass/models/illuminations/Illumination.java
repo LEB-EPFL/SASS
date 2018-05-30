@@ -29,14 +29,11 @@ import ch.epfl.leb.sass.models.samples.RefractiveIndex;
 public interface Illumination extends Listener, Observable {
     
     /**
-     * Retrieves the complex electric field at the point (x, y, z).
+     * Retrieves the complex electric field.
      * 
-     * @param x The x-position within the sample.
-     * @param y The y-position within the sample.
-     * @param z The z-position within the sample.
-     * @return The complex electric field vector at the point (x, y, z).
+     * @return The complex electric field.
      */
-    public ElectricField getElectricField(double x, double y, double z);
+    public ElectricField getElectricField();
     
     /**
      * Returns the illumination irradiance at the point (x, y, z).
@@ -60,37 +57,11 @@ public interface Illumination extends Listener, Observable {
     public double getPower();
     
     /**
-     * Returns the sample refractive index at the point (x, y, z).
-     * 
-     * @param x The x-position within the sample.
-     * @param y The y-position within the sample.
-     * @param z The z-position within the sample.
-     * @return The sample's refractive index at the point (x, y, z).
-     */
-    public RefractiveIndex getSampleRefractiveIndex(double x, double y, double z);
-    
-    /**
-     * Returns the illumination's wavelength.
-     * 
-     * @return The wavelength of the illuminating light.
-     */
-    public double getWavelength();
-    
-    /**
      * Sets the power carried by the illumination.
      * 
      * @param power The power carried by the illumination.
      */
     public void setPower(double power);
     
-    /**
-     * Sets the sample's refractive index.
-     */
-    public void setSampleRefractiveIndex(RefractiveIndex n);
-    /**
-     * Sets the illumination's wavelength.
-     * 
-     * @param wavelength The wavelength of the illuminating light.
-     */
-    public void setWavelength(double wavelength);
+
 }

@@ -1,7 +1,18 @@
 /*
- * © All rights reserved. 
- * ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
- * Laboratory of Experimental Biophysics, 2017
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
+ * Ecole Polytechnique Fédérale de Lausanne, Switzerland
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ch.epfl.leb.sass.models.illuminations.internal;
 
@@ -31,7 +42,7 @@ public class SquareUniformElectricField implements ElectricField {
     /**
      * The extent of the illumination from y = 0 to y = height.
      */
-    double height;
+    private double height;
     
     /**
      * The orientation of the electric field vector.
@@ -42,22 +53,22 @@ public class SquareUniformElectricField implements ElectricField {
      * this class cannot handle elliptical polarizations. A 3D vector that can
      * hold Complex values is required for elliptical polarization.
      */
-    Vector3D orientation;
+    private Vector3D orientation;
     
     /**
      * The refractive index of the medium.
      */
-    RefractiveIndex refractiveIndex;
+    private RefractiveIndex refractiveIndex;
     
     /**
      * The wavelength of the radiation in free space.
      */
-    double wavelength;
+    private double wavelength;
     
     /**
      * The extent of the illumination from x = 0 to x = width.
      */
-    double width;
+    private double width;
     
     /**
      * The builder for constructing Gaussian2D instances.
@@ -200,6 +211,25 @@ public class SquareUniformElectricField implements ElectricField {
     public Complex getEz(double x, double y, double z) {        
         // E is in the x-y plane by definition of this class.
         return new Complex(0);
+    }
+    
+    /**
+     * Returns the sample's refractive index that produced this field.
+     * 
+     * @return The refractive index distribution of the sample.
+     */
+    public RefractiveIndex getRefractiveIndex() {
+        return refractiveIndex;
+    }
+    
+    /**
+     * Returns the radiation's wavelength.
+     * 
+     * @return The wavelength of the radiation.
+     */
+    @Override
+    public double getWavelength() {
+        return this.wavelength;
     }
     
 }

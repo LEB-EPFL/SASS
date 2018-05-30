@@ -24,5 +24,10 @@ public enum MessageType {
     /**
      * The type of messages that are sent by individual fluorophores.
      */
-    FLUOROPHORE
+    FLUOROPHORE,
+    
+    /**
+     * This message indicates a change in laser power.
+     */
+    LASER_POWER_CHANGE
 }

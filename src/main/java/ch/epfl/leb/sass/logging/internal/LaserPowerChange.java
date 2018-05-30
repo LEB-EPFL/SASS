@@ -45,7 +45,7 @@ public class LaserPowerChange implements Message {
     }
     
     /**
-     * An indentifier that indicates where this message originated from.
+     * An identifier that indicates where this message originated from.
      * 
      * @return The message type.
      */

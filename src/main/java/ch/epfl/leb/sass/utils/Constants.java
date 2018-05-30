@@ -33,4 +33,9 @@ public class Constants {
      * The permittivity of free space in Farads / meter.
      */
     public final static double EPSILON_0 = 8.854187817e-12;
+    
+    /**
+     * Planck's constant times the speed of light in Joules * meters.
+     */
+    public final static double HC = 1.98644568e-25;
 }

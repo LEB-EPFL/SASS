@@ -117,7 +117,8 @@ public class Microscope implements Serializable {
         // Create the set of fluorophores.
         fluorBuilder.camera(camera)
                     .psfBuilder(psfBuilder)
-                    .fluorDynamics(fluorDynamics);
+                    .fluorDynamics(fluorDynamics)
+                    .laser(laser);
         FluorophoreCommand fluorCommand = fluorBuilder.build();
         this.fluorophores = fluorCommand.generateFluorophores();
         
@@ -224,9 +225,6 @@ public class Microscope implements Serializable {
      */
     public void setLaserPower(double laserPower) {
         laser.setPower(laserPower);
-        for (Fluorophore e: fluorophores) {
-            e.recalculateLifetimes(laser.getPower());
-        }
     }
     
     /**

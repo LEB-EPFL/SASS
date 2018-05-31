@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,12 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
+import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
-import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+
 import java.util.List;
 
 /**
@@ -45,6 +47,11 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
     private final FluorophoreDynamics fluorDynamics;
     
     /**
+     * The laser that illuminates the fluorophores.
+     */
+    private final Laser laser;
+    
+    /**
      * A builder for creating PSFs.
      */
     private final PSFBuilder psfBuilder;
@@ -56,6 +63,7 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
         private int numFluors;
         private Camera camera;
         private FluorophoreDynamics fluorDynamics;
+        private Laser laser;
         private PSFBuilder psfBuilder;
         
         public Builder numFluors(int numFluors) {
@@ -70,6 +78,11 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
         @Override
         public Builder fluorDynamics(FluorophoreDynamics fluorDynamics) {
             this.fluorDynamics = fluorDynamics;
+            return this;
+        }
+        @Override
+        public Builder laser(Laser laser) {
+            this.laser = laser;
             return this;
         }
         @Override
@@ -90,6 +103,7 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
     private GenerateFluorophoresRandom2D(Builder builder) {
         this.camera = builder.camera;
         this.fluorDynamics = builder.fluorDynamics;
+        this.laser = builder.laser;
         this.numFluors = builder.numFluors;
         this.psfBuilder = builder.psfBuilder;
     }
@@ -104,6 +118,7 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
         return FluorophoreReceiver.generateFluorophoresRandom2D(
                 this.numFluors, 
                 this.camera,
+                this.laser,
                 this.psfBuilder,
                 this.fluorDynamics);        
     }

@@ -113,8 +113,10 @@ public class SquareUniformIllumination extends AbstractObservable
                                   .getImaginary()
                    * z
                    / electricField.getWavelength());
-
         double irrad = this.power * abs / width / height;
+        
+        // TODO: Change this to an exception!
+        assert(irrad != Double.NaN);
         return irrad;
     }
     
@@ -156,7 +158,6 @@ public class SquareUniformIllumination extends AbstractObservable
             // No data reported by the Observable.
             return;
         }
-        
         try {
             Message msg = (Message) data;
             assert(msg.getType() == MessageType.LASER_POWER_CHANGE);
@@ -164,7 +165,7 @@ public class SquareUniformIllumination extends AbstractObservable
                               .getAsJsonObject()
                               .get("power")
                               .getAsDouble();
-            this.power = power;
+            this.setPower(power);
         } catch (AssertionError ex) {
             String err = "The message from the illumination source was not " + 
                          "the expected type.";

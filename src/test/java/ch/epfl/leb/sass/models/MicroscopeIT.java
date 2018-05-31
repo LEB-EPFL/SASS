@@ -98,6 +98,7 @@ public class MicroscopeIT {
         laserBuilder.currentPower(0.0);
         laserBuilder.minPower(0.0);
         laserBuilder.maxPower(500.0);
+        laserBuilder.wavelength(0.642);
 
         // DefaultStage
         DefaultStage.Builder stageBuilder = new DefaultStage.Builder();

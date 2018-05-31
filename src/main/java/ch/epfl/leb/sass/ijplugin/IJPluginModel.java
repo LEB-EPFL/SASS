@@ -31,7 +31,6 @@ import ch.epfl.leb.sass.models.fluorophores.internal.commands.*;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.*;
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.models.components.*;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
 import ij.IJ;
 import java.io.File;
@@ -558,6 +557,8 @@ public class IJPluginModel implements Serializable {
         laserBuilder.currentPower(laserCurrentPower);
         laserBuilder.minPower(laserMinPower);
         laserBuilder.maxPower(laserMaxPower);
+        // TODO: Make this an option later
+        laserBuilder.wavelength(0.642);
 
         if (emittersCurrentSelection.equals(emittersRandomButtonText) & !(emitters3DCheckBoxEnabled)) {
             // Random 2D fluorophore distributions

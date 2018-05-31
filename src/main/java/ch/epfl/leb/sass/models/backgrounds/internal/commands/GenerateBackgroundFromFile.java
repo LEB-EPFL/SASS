@@ -19,16 +19,14 @@ package ch.epfl.leb.sass.models.backgrounds.internal.commands;
 
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
-import ch.epfl.leb.sass.models.legacy.Camera;
-import ch.epfl.leb.sass.models.obstructors.Obstructor;
+
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.io.Opener;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+
 import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Constant overlay loaded from a tif image.

@@ -49,6 +49,8 @@ import java.util.logging.Logger;
  * extending AbstractObservable, because Java does not support multiple
  * inheritance.
  * 
+ * TODO: IMPLEMENT TESTS FOR THIS CLASS.
+ * 
  * @author Marcel Stefko
  * @author Kyle M. Douglass
  */
@@ -84,7 +86,7 @@ public class PhysicalFluorophore extends AbstractEmitter implements Fluorophore 
     /**
      * Used to monitor changes in the irradiance at this fluorophore.
      */
-    private IrradianceListener irradListener;
+    private IlluminationListener illuminationListener;
     
     /**
      * The list of listeners that are tracking this object.
@@ -178,11 +180,11 @@ public class PhysicalFluorophore extends AbstractEmitter implements Fluorophore 
         }
         this.quantumYield = quantumYield;
         this.random = RNG.getUniformGenerator();
-        this.irradListener = new IrradianceListener();
+        this.illuminationListener = new IlluminationListener();
         
         // Sets the signal field.
         try {
-            irradListener.update(null);
+            illuminationListener.update(null);
         } catch (WrongMessageTypeException ex) {
             String err = "Could not determine the photon flux for this " +
                          "fluorophore due to a malformed message from the " +
@@ -233,6 +235,16 @@ public class PhysicalFluorophore extends AbstractEmitter implements Fluorophore 
      */
     public Illumination getIllumination() {
         return illumination;
+    }
+    
+    /**
+     * Returns the Listener that is attached to the illumination profile.
+     * 
+     * @return The illumination Listener.
+     */
+    @Override
+    public Listener getIlluminationListener() {
+        return this.illuminationListener;
     }
     
     /**
@@ -461,7 +473,7 @@ public class PhysicalFluorophore extends AbstractEmitter implements Fluorophore 
         return gson.toJsonTree(this);
     }
     
-    class IrradianceListener implements Listener {
+    class IlluminationListener implements Listener {
 
         /**
          * This method is called by an Illumination profile when its state has changed.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,12 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal.commands;
 
+import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
-import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+
 import java.util.List;
 
 /**
@@ -55,6 +57,11 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
     private final FluorophoreDynamics fluorDynamics;
     
     /**
+     * The laser that illuminates the fluorophores.
+     */
+    private final Laser laser;
+    
+    /**
      * A builder for creating PSFs.
      */
     private final PSFBuilder psfBuilder;
@@ -67,6 +74,7 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
         private double zLow;
         private double zHigh;
         private Camera camera;
+        private Laser laser;
         private double wavelength;
         private FluorophoreDynamics fluorDynamics;
         private PSFBuilder psfBuilder;
@@ -80,6 +88,11 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
         @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
+            return this;
+        }
+        @Override
+        public Builder laser(Laser laser) {
+            this.laser = laser;
             return this;
         }
         @Override
@@ -105,6 +118,7 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
     private GenerateFluorophoresGrid3D(Builder builder) {
         this.camera = builder.camera;
         this.fluorDynamics = builder.fluorDynamics;
+        this.laser = builder.laser;
         this.spacing = builder.spacing;
         this.psfBuilder = builder.psfBuilder;
         this.zLow = builder.zLow;
@@ -123,6 +137,7 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
                 this.zLow,
                 this.zHigh,
                 this.camera,
+                this.laser,
                 this.psfBuilder,
                 this.fluorDynamics);        
     }

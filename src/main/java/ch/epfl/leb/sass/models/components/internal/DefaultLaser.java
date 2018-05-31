@@ -17,7 +17,10 @@
  */
 package ch.epfl.leb.sass.models.components.internal;
 
+import ch.epfl.leb.sass.logging.Message;
 import ch.epfl.leb.sass.models.components.Laser;
+import ch.epfl.leb.sass.logging.internal.AbstractObservable;
+import ch.epfl.leb.sass.logging.internal.LaserPowerChange;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,15 +35,17 @@ import java.lang.reflect.Type;
 /**
  * A source of light for illuminating the sample.
  */
-public class DefaultLaser implements Laser {
+public class DefaultLaser extends AbstractObservable implements Laser {   
     private double currentPower;
     private double maxPower;
     private double minPower;
+    private double wavelength;
     
     public static class Builder {
         private double currentPower;
         private double maxPower;
         private double minPower;
+        private double wavelength;
         
         public Builder currentPower(double currentPower) {
             this.currentPower = currentPower;
@@ -52,6 +57,10 @@ public class DefaultLaser implements Laser {
         }
         public Builder minPower(double minPower) {
             this.minPower = minPower;
+            return this;
+        }
+        public Builder wavelength(double wavelength) {
+            this.wavelength = wavelength;
             return this;
         }
         
@@ -68,6 +77,7 @@ public class DefaultLaser implements Laser {
         this.currentPower = builder.currentPower;
         this.maxPower = builder.maxPower;
         this.minPower = builder.minPower;
+        this.wavelength = builder.wavelength;
     }
     
     /**
@@ -77,6 +87,15 @@ public class DefaultLaser implements Laser {
     @Override
     public double getPower() {
         return currentPower;
+    }
+    
+    /**
+     * Returns the wavelength of the laser.
+     * 
+     * @return The laser's wavelength.
+     */
+    public double getWavelength() {
+        return wavelength;
     }
     
     /**
@@ -94,6 +113,10 @@ public class DefaultLaser implements Laser {
         else if (newPower < minPower)
             newPower = minPower;
         currentPower = newPower;
+        
+        Message msg = new LaserPowerChange(newPower);
+        setChanged();
+        notifyListeners(msg);
     }
     
     /**
@@ -116,6 +139,7 @@ public class DefaultLaser implements Laser {
                                   JsonSerializationContext context) {
             JsonObject result = new JsonObject();
             result.add("currentPower", new JsonPrimitive(src.getPower()));
+            result.add("wavelength", new JsonPrimitive(src.getWavelength()));
             return result;
         }
     }

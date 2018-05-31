@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 package ch.epfl.leb.sass.models.fluorophores;
 
 import ch.epfl.leb.sass.models.Model;
+import ch.epfl.leb.sass.logging.Listener;
 import ch.epfl.leb.sass.logging.Observable;
 
 /**
@@ -54,6 +55,13 @@ public interface Fluorophore extends Model, Observable {
      * @param pixels Image on which the fluorophore's signature will be drawn.
      */
     public void applyTo(float[][] pixels);
+    
+    /**
+     * Returns the listener that listens for changes in the illumination.
+     
+     * @return The fluorophore's illumination listener.
+     */
+    public Listener getIlluminationListener();
     
     /**
      * Return the x-position of the fluorophore.

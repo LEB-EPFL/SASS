@@ -20,6 +20,7 @@ package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
@@ -60,6 +61,11 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
     private final Laser laser;
     
     /**
+     * The microscope objective.
+     */
+    private final Objective objective;
+    
+    /**
      * A builder for creating PSFs.
      */
     private final PSFBuilder psfBuilder;
@@ -77,6 +83,7 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
         private Camera camera;
         private FluorophoreDynamics fluorDynamics;
         private Laser laser;
+        private Objective objective;
         private PSFBuilder psfBuilder;
         private boolean rescale;
         
@@ -97,6 +104,11 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
         @Override
         public Builder laser(Laser laser) {
             this.laser = laser;
+            return this;
+        }
+        @Override
+        public Builder objective(Objective objective) {
+            this.objective = objective;
             return this;
         }
         @Override
@@ -124,6 +136,7 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
         this.laser = builder.laser;
         this.fluorDynamics = builder.fluorDynamics;
         this.file = builder.file;
+        this.objective = builder.objective;
         this.psfBuilder = builder.psfBuilder;
         this.rescale = builder.rescale;
     }
@@ -140,6 +153,7 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
                     this.file,
                     this.camera,
                     this.laser,
+                    this.objective,
                     this.psfBuilder,
                     this.fluorDynamics,
                     this.rescale);

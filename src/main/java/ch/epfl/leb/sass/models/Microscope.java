@@ -118,7 +118,8 @@ public class Microscope implements Serializable {
         fluorBuilder.camera(camera)
                     .psfBuilder(psfBuilder)
                     .fluorDynamics(fluorDynamics)
-                    .laser(laser);
+                    .laser(laser)
+                    .objective(objective);
         FluorophoreCommand fluorCommand = fluorBuilder.build();
         this.fluorophores = fluorCommand.generateFluorophores();
         

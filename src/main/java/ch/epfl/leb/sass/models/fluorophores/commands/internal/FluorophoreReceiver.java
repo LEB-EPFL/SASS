@@ -21,6 +21,7 @@ import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
 import ch.epfl.leb.sass.models.illuminations.Illumination;
@@ -76,6 +77,7 @@ public class FluorophoreReceiver {
      * @param numFluors The number of fluorophores to add to the field of view.
      * @param camera The camera for determining the size of the field of view.
      * @param laser The laser that illuminates the fluorophores.
+     * @param objective The microscope objective.
      * @param psfBuilder Builder for calculating microscope PSFs.
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
@@ -84,6 +86,7 @@ public class FluorophoreReceiver {
             int numFluors,
             Camera camera,
             Laser laser,
+            Objective objective,
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics) {
         Random rnd = RNG.getUniformGenerator();
@@ -93,8 +96,10 @@ public class FluorophoreReceiver {
         double z = 0;
         Fluorophore fluorophore;
         
-        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize();
-        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize();
+        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize()
+                                  / objective.getMag();
+        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize()
+                                   / objective.getMag();
         Illumination illumination = new SquareUniformIllumination(
                 laser.getPower(), sampleSpaceWidth, sampleSpaceHeight, orientation,
                 laser.getWavelength(), refractiveIndex);
@@ -124,6 +129,7 @@ public class FluorophoreReceiver {
      * @param zHigh The upper bound on the range in z in units of pixels
      * @param camera The camera for determining the size of the field of view.
      * @param laser The laser that illuminates the fluorophores.
+     * @param objective The microscope objective.
      * @param psfBuilder Builder for calculating microscope PSFs.
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
@@ -134,6 +140,7 @@ public class FluorophoreReceiver {
             double zHigh,
             Camera camera,
             Laser laser,
+            Objective objective,
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics) {
         Random rnd = RNG.getUniformGenerator();
@@ -143,8 +150,10 @@ public class FluorophoreReceiver {
         double z;
         Fluorophore fluorophore;
         
-        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize();
-        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize();
+        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize()
+                                  / objective.getMag();
+        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize()
+                                   / objective.getMag();
         Illumination illumination = new SquareUniformIllumination(
                 laser.getPower(), sampleSpaceWidth, sampleSpaceHeight, orientation,
                 laser.getWavelength(), refractiveIndex);
@@ -173,6 +182,7 @@ public class FluorophoreReceiver {
      * @param spacing The distance along the grid between nearest neighbors.
      * @param camera The camera for determining the size of the field of view.
      * @param laser The laser that illuminates the fluorophores.
+     * @param objective The microscope objective.
      * @param psfBuilder Builder for calculating microscope PSFs.
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
@@ -181,6 +191,7 @@ public class FluorophoreReceiver {
             int spacing,
             Camera camera,
             Laser laser,
+            Objective objective,
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics) {
         int limitX = camera.getNX();
@@ -189,8 +200,10 @@ public class FluorophoreReceiver {
         ArrayList<Fluorophore> result = new ArrayList();
         Fluorophore fluorophore; 
         
-        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize();
-        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize();
+        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize()
+                                  / objective.getMag();
+        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize()
+                                   / objective.getMag();
         Illumination illumination = new SquareUniformIllumination(
                 laser.getPower(), sampleSpaceWidth, sampleSpaceHeight, orientation,
                 laser.getWavelength(), refractiveIndex);
@@ -220,6 +233,7 @@ public class FluorophoreReceiver {
      * @param zHigh The upper bound on the range in z in units of pixels.
      * @param camera The camera for determining the size of the field of view.
      * @param laser The laser that illuminates the fluorophores.
+     * @param objective The microscope objective.
      * @param psfBuilder Builder for calculating microscope PSFs.
      * @param fluorDynamics The fluorophore dynamics properties.
      * @return The list of fluorophores.
@@ -230,6 +244,7 @@ public class FluorophoreReceiver {
             double zHigh,
             Camera camera,
             Laser laser,
+            Objective objective,
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics) {
         int limitX = camera.getNX();
@@ -241,8 +256,10 @@ public class FluorophoreReceiver {
         ArrayList<Fluorophore> result = new ArrayList();
         Fluorophore fluorophore;
         
-        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize();
-        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize();
+        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize() 
+                                  / objective.getMag();
+        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize()
+                                   / objective.getMag();
         Illumination illumination = new SquareUniformIllumination(
                 laser.getPower(), sampleSpaceWidth, sampleSpaceHeight, orientation,
                 laser.getWavelength(), refractiveIndex);
@@ -271,6 +288,7 @@ public class FluorophoreReceiver {
      * @param file The CSV file. If this is null, then a dialog is opened.
      * @param camera The camera for determining the size of the field of view.
      * @param laser The laser that illuminates the fluorophores.
+     * @param objective The microscope objective.
      * @param psfBuilder Builder for calculating microscope PSFs.
      * @param fluorDynamics The fluorophore dynamics properties.
      * @param rescale if true, positions are rescaled to fit into frame,
@@ -283,6 +301,7 @@ public class FluorophoreReceiver {
             File file,
             Camera camera,
             Laser laser,
+            Objective objective,
             PSFBuilder psfBuilder,
             FluorophoreDynamics fluorDynamics,
             boolean rescale) throws FileNotFoundException, IOException {
@@ -300,8 +319,10 @@ public class FluorophoreReceiver {
         int counter = 0;
         Fluorophore fluorophore;
         
-        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize();
-        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize();
+        double sampleSpaceWidth = camera.getNX() * camera.getPixelSize() 
+                                  / objective.getMag();
+        double sampleSpaceHeight = camera.getNY() * camera.getPixelSize()
+                                   / objective.getMag();
         Illumination illumination = new SquareUniformIllumination(
                 laser.getPower(), sampleSpaceWidth, sampleSpaceHeight, orientation,
                 laser.getWavelength(), refractiveIndex);

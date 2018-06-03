@@ -20,6 +20,7 @@ package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
+import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
@@ -64,6 +65,11 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
     private final Laser laser;
     
     /**
+     * The microscope objective.
+     */
+    private final Objective objective;
+    
+    /**
      * A builder for creating PSFs.
      */
     private final PSFBuilder psfBuilder;
@@ -78,6 +84,7 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
         private Camera camera;
         private FluorophoreDynamics fluorDynamics;
         private Laser laser;
+        private Objective objective;
         private PSFBuilder psfBuilder;
         
         public Builder numFluors(int numFluors) {
@@ -102,6 +109,11 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
             return this;
         }
         @Override
+        public Builder objective(Objective objective) {
+            this.objective = objective;
+            return this;
+        }
+        @Override
         public Builder psfBuilder(PSFBuilder psfBuilder) {
             this.psfBuilder = psfBuilder;
             return this;
@@ -121,6 +133,7 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
         this.fluorDynamics = builder.fluorDynamics;
         this.laser = builder.laser;
         this.numFluors = builder.numFluors;
+        this.objective = builder.objective;
         this.psfBuilder = builder.psfBuilder;
         this.zLow = builder.zLow;
         this.zHigh = builder.zHigh;
@@ -139,6 +152,7 @@ public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
                 this.zHigh,
                 this.camera,
                 this.laser,
+                this.objective,
                 this.psfBuilder,
                 this.fluorDynamics);        
     }

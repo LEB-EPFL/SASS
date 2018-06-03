@@ -138,7 +138,7 @@ public class PalmDynamics extends FluorophoreDynamics {
                },
                // state 1: inactive
                {
-                   { 0.01 * kA , kA }, // active
+                   { 0.001 * kA , kA }, // active
                    { 0.0 }, // inactive
                    { 0.0 }, // long dark
                    { 0.0 }, // short dark

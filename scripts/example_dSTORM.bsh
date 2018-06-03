@@ -83,8 +83,8 @@ fluorPropBuilder.kBl(0.001);      // Bleaching rate
 fluorPropBuilder.kTriplet(0.1);   // Transition rate to triplet state
 fluorPropBuilder.kTripletRecovery(0.01); // Recovery rate
 fluorPropBuilder.kDark(15);       // Transition rate to dark state
-fluorPropBuilder.kDarkRecovery(0.01); // First order dependence on UV laser
-fluorPropBuilder.kDarkRecoveryConstant(0.01); // Constant recovery rate
+fluorPropBuilder.kDarkRecovery(0.1); // First order dependence on UV laser irradiance
+fluorPropBuilder.kDarkRecoveryConstant(0.001); // Constant recovery rate
 
 // Fluorophore positions on a square grid
 GenerateFluorophoresRandom2D.Builder fluorPosBuilder = new GenerateFluorophoresRandom2D.Builder();

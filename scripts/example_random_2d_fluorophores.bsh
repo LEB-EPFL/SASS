@@ -80,8 +80,8 @@ PalmDynamics.Builder fluorPropBuilder = new PalmDynamics.Builder();
 
 fluorPropBuilder.signal(2500); // Photons per fluorophore per frame
 fluorPropBuilder.wavelength(0.6); // Wavelength, microns
-fluorPropBuilder.kA(100);      // Activation rate
-fluorPropBuilder.kB(0);        // Bleaching rate
+fluorPropBuilder.kA(0.01);      // Activation rate
+fluorPropBuilder.kB(0.1);        // Bleaching rate
 fluorPropBuilder.kD1(0.065);   // Transition rate to first dark state
 fluorPropBuilder.kD2(0.013);   // Transition rate to second dark state
 fluorPropBuilder.kR1(0.004);   // Return rate from first dark state

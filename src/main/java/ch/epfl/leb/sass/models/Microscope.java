@@ -35,6 +35,8 @@ import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.illuminations.Illumination;
+import ch.epfl.leb.sass.models.illuminations.IlluminationBuilder;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
@@ -65,6 +67,7 @@ public class Microscope implements Serializable {
     private final List<Fluorophore> fluorophores;
     private final List<Obstructor> obstructors;
     private final BackgroundCommand background;
+    private final Illumination illumination;
     
     // Random number generators
     private final Poisson poisson = RNG.getPoissonGenerator();
@@ -83,6 +86,7 @@ public class Microscope implements Serializable {
      * @param fluorDynamicsBuilder
      * @param obstructorBuilder Creates the obstructors, e.g. fiducials.
      * @param backgroundBuilder Creates the background signal on the image.
+     * @param illuminationBuilder Creates the illumination profile.
      */
     public Microscope(
             DefaultCamera.Builder cameraBuilder,
@@ -93,7 +97,8 @@ public class Microscope implements Serializable {
             FluorophoreCommandBuilder fluorBuilder,
             FluorophoreDynamicsBuilder fluorDynamicsBuilder,
             ObstructorCommandBuilder obstructorBuilder,
-            BackgroundCommandBuilder backgroundBuilder) {
+            BackgroundCommandBuilder backgroundBuilder,
+            IlluminationBuilder illuminationBuilder) {
         
         // Build objects that do not require further setup
         this.camera = cameraBuilder.build();
@@ -101,6 +106,11 @@ public class Microscope implements Serializable {
         this.objective = objectiveBuilder.build();
         this.stage = stageBuilder.build();
         this.fluorDynamics = fluorDynamicsBuilder.build();
+        
+        // Setup the illumination
+        illuminationBuilder.power(this.laser.getPower());
+        illuminationBuilder.wavelength(this.laser.getWavelength());
+        this.illumination = illuminationBuilder.build();
         
         // Extract the wavelength from the fluorophores
         double wavelength;
@@ -118,8 +128,7 @@ public class Microscope implements Serializable {
         fluorBuilder.camera(camera)
                     .psfBuilder(psfBuilder)
                     .fluorDynamics(fluorDynamics)
-                    .laser(laser)
-                    .objective(objective);
+                    .illumination(illumination);
         FluorophoreCommand fluorCommand = fluorBuilder.build();
         this.fluorophores = fluorCommand.generateFluorophores();
         
@@ -136,6 +145,9 @@ public class Microscope implements Serializable {
         for (Fluorophore f: fluorophores) {
             f.recalculateLifetimes(laser.getPower());
         }
+        
+        // Connects the laser to the illumination profile for messaging.
+        this.laser.addListener(this.illumination);
     }
     
     /**

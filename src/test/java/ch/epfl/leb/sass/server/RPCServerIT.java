@@ -35,6 +35,9 @@ import ch.epfl.leb.sass.simulator.internal.RPCSimulator;
 import ch.epfl.leb.sass.simulator.internal.DefaultSimulationManager;
 import ch.epfl.leb.sass.client.RPCClient;
 import ch.epfl.leb.sass.logging.MessageType;
+import ch.epfl.leb.sass.models.illuminations.internal.SquareUniformIllumination;
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+import ch.epfl.leb.sass.models.samples.internal.UniformRefractiveIndex;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -52,6 +55,8 @@ import java.util.EnumSet;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import org.apache.thrift.TException;
 
@@ -135,6 +140,16 @@ public class RPCServerIT {
         laserBuilder.minPower(0.0);
         laserBuilder.maxPower(500.0);
         laserBuilder.wavelength(0.642);
+        
+        // Illumination profile
+        // TODO: Add illumination setup to the GUI
+        RefractiveIndex n = new UniformRefractiveIndex(new Complex(1.33));
+        SquareUniformIllumination.Builder illumBuilder
+                = new SquareUniformIllumination.Builder();
+        illumBuilder.height(32 * 6.45 / 60);
+        illumBuilder.orientation(new Vector3D(1.0, 0, 0)); // x-polarized
+        illumBuilder.refractiveIndex(n);
+        illumBuilder.width(32 * 6.45 / 60);
 
         // DefaultStage
         DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
@@ -184,7 +199,8 @@ public class RPCServerIT {
             fluorPosBuilder,
             fluorPropBuilder,
             fidBuilder,
-            backgroundBuilder);
+            backgroundBuilder,
+            illumBuilder);
         RPCSimulator sim0 = new RPCSimulator(microscope1);
         sims[0] = sim0;
         
@@ -200,7 +216,8 @@ public class RPCServerIT {
             fluorPosBuilder,
             fluorPropBuilder,
             fidBuilder,
-            backgroundBuilder);
+            backgroundBuilder,
+            illumBuilder);
         RPCSimulator sim1 = new RPCSimulator(microscope2);
         sims[1] = sim1;
         

@@ -30,10 +30,15 @@ import ch.epfl.leb.sass.models.obstructors.internal.commands
                                                    .GenerateFiducialsRandom2D;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands
                                                    .GenerateUniformBackground;
+import ch.epfl.leb.sass.models.illuminations.internal.SquareUniformIllumination;
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+import ch.epfl.leb.sass.models.samples.internal.UniformRefractiveIndex;
 import ch.epfl.leb.sass.utils.RNG;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -99,6 +104,16 @@ public class MicroscopeIT {
         laserBuilder.minPower(0.0);
         laserBuilder.maxPower(500.0);
         laserBuilder.wavelength(0.642);
+        
+        // Illumination profile
+        // TODO: Add illumination setup to the GUI
+        RefractiveIndex n = new UniformRefractiveIndex(new Complex(1.33));
+        SquareUniformIllumination.Builder illumBuilder
+                = new SquareUniformIllumination.Builder();
+        illumBuilder.height(32 * 6.45 / 60);
+        illumBuilder.orientation(new Vector3D(1.0, 0, 0)); // x-polarized
+        illumBuilder.refractiveIndex(n);
+        illumBuilder.width(32 * 6.45 / 60);
 
         // DefaultStage
         DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
@@ -148,7 +163,8 @@ public class MicroscopeIT {
             fluorPosBuilder,
             fluorPropBuilder,
             fidBuilder,
-            backgroundBuilder);
+            backgroundBuilder,
+            illumBuilder);
         
         setupIsDone = true;
     }

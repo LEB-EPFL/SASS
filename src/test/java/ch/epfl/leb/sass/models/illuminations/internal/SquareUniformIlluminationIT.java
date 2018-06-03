@@ -50,9 +50,16 @@ public class SquareUniformIlluminationIT {
     
     @Before
     public void setUp() {
-        instance = new SquareUniformIllumination(
-                initPower, width, height, orientation, wavelength, 
-                refractiveIndex);
+        SquareUniformIllumination.Builder builder
+                = new SquareUniformIllumination.Builder();
+        builder.height(height)
+               .orientation(orientation)
+               .power(initPower)
+               .refractiveIndex(refractiveIndex)
+               .wavelength(wavelength)
+               .width(width);
+        
+        instance = builder.build();
     }
 
     /**

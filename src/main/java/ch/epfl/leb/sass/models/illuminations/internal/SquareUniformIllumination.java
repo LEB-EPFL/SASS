@@ -22,6 +22,7 @@ import ch.epfl.leb.sass.logging.MessageType;
 import ch.epfl.leb.sass.logging.WrongMessageTypeException;
 import ch.epfl.leb.sass.logging.internal.AbstractObservable;
 import ch.epfl.leb.sass.models.illuminations.Illumination;
+import ch.epfl.leb.sass.models.illuminations.IlluminationBuilder;
 import ch.epfl.leb.sass.models.illuminations.ElectricField;
 import ch.epfl.leb.sass.models.samples.RefractiveIndex;
 
@@ -35,7 +36,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  * @author Kyle M. Douglass
  */
 public class SquareUniformIllumination extends AbstractObservable 
-                                  implements Illumination {
+                                       implements Illumination {
     
     private final static Logger LOGGER
             = Logger.getLogger(SquareUniformIllumination.class.getName());
@@ -61,6 +62,48 @@ public class SquareUniformIllumination extends AbstractObservable
     private double width;
     
     /**
+     * A Builder for creating new SquareUniformIllumination instances.
+     */
+    public static class Builder implements IlluminationBuilder {
+        private double height;
+        private Vector3D orientation;
+        private double power;
+        private RefractiveIndex refractiveIndex;
+        private double wavelength;
+        private double width;
+        public Builder height(double height) {
+            this.height = height;
+            return this;
+        }
+        public Builder orientation(Vector3D orientation) {
+            this.orientation = orientation;
+            return this;
+        }
+        @Override
+        public Builder power(double power) { this.power = power; return this; }
+        @Override
+        public Builder refractiveIndex(RefractiveIndex refractiveIndex) {
+            this.refractiveIndex = refractiveIndex;
+            return this;
+        }
+        @Override
+        public Builder wavelength(double wavelength) {
+            this.wavelength = wavelength;
+            return this;
+        }
+        public Builder width(double width) {
+            this.width = width;
+            return this;
+        }
+        
+        public SquareUniformIllumination build() {
+            return new SquareUniformIllumination(
+                    this.power, this.width, this.height, this.orientation,
+                    this.wavelength, this.refractiveIndex);
+        }
+    }
+    
+    /**
      * Creates a new illumination profile that is square and uniform.
      * 
      * @param power The power carried by the radiation.
@@ -70,7 +113,7 @@ public class SquareUniformIllumination extends AbstractObservable
      * @param wavelength The wavelength of the radiation.
      * @param refractiveIndex The sample's refractive index distribution.
      */
-    public SquareUniformIllumination(double power, double width, double height,
+    private SquareUniformIllumination(double power, double width, double height,
             Vector3D orientation, double wavelength,
             RefractiveIndex refractiveIndex) {
         

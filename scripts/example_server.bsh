@@ -16,7 +16,12 @@ import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBack
 import ch.epfl.leb.sass.models.components.internal.*;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresRandom2D;
+import ch.epfl.leb.sass.models.illuminations.internal.SquareUniformIllumination;
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+import ch.epfl.leb.sass.models.samples.internal.UniformRefractiveIndex;
 import ch.epfl.leb.sass.utils.RNG;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import ch.epfl.leb.sass.server.RPCServer;
 
 // The seed determines the outputs of the random number generator.
@@ -51,6 +56,15 @@ laserBuilder.currentPower(0.0);
 laserBuilder.minPower(0.0);
 laserBuilder.maxPower(500.0);
 laserBuilder.wavelength(0.642);
+
+// Illumination profile
+RefractiveIndex n = new UniformRefractiveIndex(new Complex(1.33));
+SquareUniformIllumination.Builder illumBuilder
+        = new SquareUniformIllumination.Builder();
+illumBuilder.height(32 * 6.45 / 60); // microns
+illumBuilder.orientation(new Vector3D(1.0, 0, 0)); // x-polarized
+illumBuilder.refractiveIndex(n);
+illumBuilder.width(32 * 6.45 / 60); // microns
 
 // Stage
 DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
@@ -98,7 +112,8 @@ Microscope microscope = new Microscope(
     fluorPosBuilder,
     fluorPropBuilder,
     fidBuilder,
-    backgroundBuilder
+    backgroundBuilder,
+    illumBuilder
 );
 
 // The server will listen for communication on this port

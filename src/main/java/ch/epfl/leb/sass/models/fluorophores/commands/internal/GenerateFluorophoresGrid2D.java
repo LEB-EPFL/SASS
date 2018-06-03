@@ -18,12 +18,11 @@
 package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
+import ch.epfl.leb.sass.models.illuminations.Illumination;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 
 import java.util.List;
@@ -50,14 +49,9 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     private final FluorophoreDynamics fluorDynamics;
     
     /**
-     * The laser that illuminates the fluorophores.
+     * The illumination profile on the sample.
      */
-    private final Laser laser;
-    
-    /**
-     * The microscope objective.
-     */
-    private final Objective objective;
+    private final Illumination illumination;
     
     /**
      * A builder for creating PSFs.
@@ -70,8 +64,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     public static class Builder implements FluorophoreCommandBuilder {
         private int spacing;
         private Camera camera;
-        private Laser laser;
-        private Objective objective;
+        private Illumination illumination;
         private FluorophoreDynamics fluorDynamics;
         private PSFBuilder psfBuilder;
         
@@ -90,13 +83,8 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
             return this;
         }
         @Override
-        public Builder laser(Laser laser) {
-            this.laser = laser;
-            return this;
-        }
-        @Override
-        public Builder objective(Objective objective) {
-            this.objective = objective;
+        public Builder illumination(Illumination illumination) {
+            this.illumination = illumination;
             return this;
         }
         @Override
@@ -118,8 +106,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     private GenerateFluorophoresGrid2D(Builder builder) {
         this.camera = builder.camera;
         this.fluorDynamics = builder.fluorDynamics;
-        this.laser = builder.laser;
-        this.objective = builder.objective;
+        this.illumination = builder.illumination;
         this.spacing = builder.spacing;
         this.psfBuilder = builder.psfBuilder;
     }
@@ -134,8 +121,7 @@ public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
         return FluorophoreReceiver.generateFluorophoresGrid2D(
                 this.spacing, 
                 this.camera,
-                this.laser,
-                this.objective,
+                this.illumination,
                 this.psfBuilder,
                 this.fluorDynamics);        
     }

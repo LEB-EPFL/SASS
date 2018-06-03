@@ -17,11 +17,10 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.commands;
 
-import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
+import ch.epfl.leb.sass.models.illuminations.Illumination;
 
 /**
  * Interface for populating the field with fluorophores.
@@ -55,20 +54,12 @@ public interface FluorophoreCommandBuilder {
             FluorophoreDynamics fluorDynamics);
     
     /**
-     * Sets the laser that is used to build the fluorophore distributions.
+     * Sets the illumination profile on the sample.
      * 
-     * @param laser The laser whose properties are used to build fluorophores.
+     * @param illumination The illumination profile.
      * @return A new copy of the builder.
      */
-    public FluorophoreCommandBuilder laser(Laser laser);
-    
-    /**
-     * Sets the objective that is used to build the fluorophore distributions.
-     * 
-     * @param laser The objective whose properties are used to build fluorophores.
-     * @return A new copy of the builder.
-     */
-    public FluorophoreCommandBuilder objective(Objective objective);
+    public FluorophoreCommandBuilder illumination(Illumination illumination);
     
     /**
      * Sets the PSF builder that will create the fluorophores' PSFs.

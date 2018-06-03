@@ -19,7 +19,6 @@ package ch.epfl.leb.sass.models.illuminations;
 
 import ch.epfl.leb.sass.logging.Listener;
 import ch.epfl.leb.sass.logging.Observable;
-import ch.epfl.leb.sass.models.samples.RefractiveIndex;
 
 /**
  * Common methods for the microscope's illumination profile.

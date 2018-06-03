@@ -17,6 +17,12 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresRandom3D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresGrid2D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresFromCSV;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresRandom2D;
 import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
@@ -27,7 +33,6 @@ import ch.epfl.leb.sass.models.photophysics.internal.SimpleDynamics;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.psfs.internal.*;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.*;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.*;
 import ch.epfl.leb.sass.models.Microscope;

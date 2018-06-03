@@ -24,7 +24,7 @@ import ch.epfl.leb.sass.models.components.internal.DefaultCamera;
 import ch.epfl.leb.sass.IntegrationTest;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian2D;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands
+import ch.epfl.leb.sass.models.fluorophores.commands.internal
                                                     .GenerateFluorophoresGrid2D;
 import ch.epfl.leb.sass.models.obstructors.internal.commands
                                                    .GenerateFiducialsRandom2D;

@@ -15,32 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.commands;
+package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This serves as the Invoker of a DefaultFluorophore command.
  * 
  * @author Kyle M.Douglass
  */
-public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
+public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
     /**
-     * The file containing the fluorophore position data.
+     * The number of fluorophores to create.
      */
-    private final File file;
+    private final int numFluors;
     
     /**
      * The microscope camera.
@@ -63,23 +59,17 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
     private final PSFBuilder psfBuilder;
     
     /**
-     * Whether the positions should be rescaled to fit inside the field of view.
-     */
-    private final boolean rescale;
-    
-    /**
      * A builder for creating this command for fluorophore generation.
      */
     public static class Builder implements FluorophoreCommandBuilder {
-        private File file;
+        private int numFluors;
         private Camera camera;
         private FluorophoreDynamics fluorDynamics;
         private Laser laser;
         private PSFBuilder psfBuilder;
-        private boolean rescale;
         
-        public Builder file(File file) {
-            this.file = file;
+        public Builder numFluors(int numFluors) {
+            this.numFluors = numFluors;
             return this;
         }
         @Override
@@ -102,14 +92,9 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
             this.psfBuilder = psfBuilder;
             return this;
         }
-        public Builder rescale(boolean rescale) {
-            this.rescale = rescale;
-            return this;
-        }
         
-        @Override
         public FluorophoreCommand build() {
-            return new GenerateFluorophoresFromCSV(this);
+            return new GenerateFluorophoresRandom2D(this);
         }
     }
     
@@ -117,44 +102,26 @@ public final class GenerateFluorophoresFromCSV implements FluorophoreCommand {
      * Creates a new GenerateFluorophoresRandom2D instance.
      * @param builder A Builder instance for this class.
      */
-    private GenerateFluorophoresFromCSV(Builder builder) {
+    private GenerateFluorophoresRandom2D(Builder builder) {
         this.camera = builder.camera;
-        this.laser = builder.laser;
         this.fluorDynamics = builder.fluorDynamics;
-        this.file = builder.file;
+        this.laser = builder.laser;
+        this.numFluors = builder.numFluors;
         this.psfBuilder = builder.psfBuilder;
-        this.rescale = builder.rescale;
     }
     
     /**
      * Executes the command that generates the fluorophores.
      * 
-     * @return The list of Fluorophores.
+     * @return The list of fluorophores.
      */
     @Override
     public List<Fluorophore> generateFluorophores() {
-        try {
-            return FluorophoreReceiver.generateFluorophoresFromCSV(
-                    this.file,
-                    this.camera,
-                    this.laser,
-                    this.psfBuilder,
-                    this.fluorDynamics,
-                    this.rescale);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                        GenerateFluorophoresFromCSV.class.getName())
-                        .log(Level.WARNING, null, ex);
-            
-            // No file found; return empty list of fluorophores.
-            return new ArrayList<Fluorophore>();
-        } catch (IOException ex) {
-            Logger.getLogger(
-                        GenerateFluorophoresFromCSV.class.getName())
-                        .log(Level.WARNING, null, ex);
-            
-            // Error reading file; return empty list of fluorophores.
-            return new ArrayList<Fluorophore>();
-        }
+        return FluorophoreReceiver.generateFluorophoresRandom2D(
+                this.numFluors, 
+                this.camera,
+                this.laser,
+                this.psfBuilder,
+                this.fluorDynamics);        
     }
 }

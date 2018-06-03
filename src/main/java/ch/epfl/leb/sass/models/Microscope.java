@@ -39,9 +39,9 @@ import ch.epfl.leb.sass.models.backgrounds.BackgroundCommand;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommand;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.ObstructorCommandBuilder;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommand;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.FluorophoreCommandBuilder;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamicsBuilder;
 
 import java.util.List;

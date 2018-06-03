@@ -15,12 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.commands;
+package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 
 import java.util.List;
@@ -30,11 +32,21 @@ import java.util.List;
  * 
  * @author Kyle M.Douglass
  */
-public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
+public final class GenerateFluorophoresRandom3D implements FluorophoreCommand {
     /**
      * The number of fluorophores to create.
      */
     private final int numFluors;
+    
+    /**
+     * The lower bound on the fluorophore z-position.
+     */
+    private final double zLow;
+    
+    /**
+     * The upper bound on the fluorophore z-position.
+     */
+    private final double zHigh;
     
     /**
      * The microscope camera.
@@ -61,6 +73,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      */
     public static class Builder implements FluorophoreCommandBuilder {
         private int numFluors;
+        private double zLow;
+        private double zHigh;
         private Camera camera;
         private FluorophoreDynamics fluorDynamics;
         private Laser laser;
@@ -70,6 +84,8 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
             this.numFluors = numFluors;
             return this;
         }
+        public Builder zLow(double zLow) { this.zLow = zLow; return this; }
+        public Builder zHigh(double zHigh) { this.zHigh = zHigh; return this; }
         @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
@@ -92,7 +108,7 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
         }
         
         public FluorophoreCommand build() {
-            return new GenerateFluorophoresRandom2D(this);
+            return new GenerateFluorophoresRandom3D(this);
         }
     }
     
@@ -100,23 +116,27 @@ public final class GenerateFluorophoresRandom2D implements FluorophoreCommand {
      * Creates a new GenerateFluorophoresRandom2D instance.
      * @param builder A Builder instance for this class.
      */
-    private GenerateFluorophoresRandom2D(Builder builder) {
+    private GenerateFluorophoresRandom3D(Builder builder) {
         this.camera = builder.camera;
         this.fluorDynamics = builder.fluorDynamics;
         this.laser = builder.laser;
         this.numFluors = builder.numFluors;
         this.psfBuilder = builder.psfBuilder;
+        this.zLow = builder.zLow;
+        this.zHigh = builder.zHigh;
     }
     
     /**
      * Executes the command that generates the fluorophores.
      * 
-     * @return The list of fluorophores.
+     * @return The list of Fluorophores.
      */
     @Override
     public List<Fluorophore> generateFluorophores() {
-        return FluorophoreReceiver.generateFluorophoresRandom2D(
-                this.numFluors, 
+        return FluorophoreReceiver.generateFluorophoresRandom3D(
+                this.numFluors,
+                this.zLow,
+                this.zHigh,
                 this.camera,
                 this.laser,
                 this.psfBuilder,

@@ -16,7 +16,7 @@ import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRa
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.models.components.internal.*;
 import ch.epfl.leb.sass.models.psfs.internal.GibsonLanniPSF;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresGrid3D;
 import ch.epfl.leb.sass.utils.RNG;
 
 // The seed determines the outputs of the random number generator.

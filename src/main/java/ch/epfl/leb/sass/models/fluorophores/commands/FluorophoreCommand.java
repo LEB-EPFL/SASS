@@ -15,13 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.commands;
+package ch.epfl.leb.sass.models.fluorophores.commands;
 
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import java.util.List;
 
 /**
  * Executes a command for generating fluorophores.
+ * 
+ * A fluorophore command is a tool for generating a new set of Fluorophore
+ * instances. It handles the job of both creating the instances and connecting
+ * the correct Listeners to their Observables.
  * 
  * @author Kyle M. Douglass
  */

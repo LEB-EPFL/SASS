@@ -15,12 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.epfl.leb.sass.models.fluorophores.internal.commands;
+package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommand;
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
 import ch.epfl.leb.sass.models.photophysics.FluorophoreDynamics;
 
 import java.util.List;
@@ -30,21 +32,11 @@ import java.util.List;
  * 
  * @author Kyle M.Douglass
  */
-public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
+public final class GenerateFluorophoresGrid2D implements FluorophoreCommand {
     /**
      * The spacing between neighboring fluorophores [pixels].
      */
     private final int spacing;
-    
-    /**
-     * The lower bound on the fluorophore z-position.
-     */
-    private final double zLow;
-    
-    /**
-     * The upper bound on the fluorophore z-position.
-     */
-    private final double zHigh;
     
     /**
      * The microscope camera.
@@ -71,11 +63,8 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
      */
     public static class Builder implements FluorophoreCommandBuilder {
         private int spacing;
-        private double zLow;
-        private double zHigh;
         private Camera camera;
         private Laser laser;
-        private double wavelength;
         private FluorophoreDynamics fluorDynamics;
         private PSFBuilder psfBuilder;
         
@@ -83,16 +72,9 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
             this.spacing = spacing;
             return this;
         }
-        public Builder zLow(double zLow) { this.zLow = zLow; return this; }
-        public Builder zHigh(double zHigh) { this.zHigh = zHigh; return this; }
         @Override
         public Builder camera(Camera camera) {
             this.camera = camera;
-            return this;
-        }
-        @Override
-        public Builder laser(Laser laser) {
-            this.laser = laser;
             return this;
         }
         @Override
@@ -101,13 +83,19 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
             return this;
         }
         @Override
+        public Builder laser(Laser laser) {
+            this.laser = laser;
+            return this;
+        }
+        @Override
         public Builder psfBuilder(PSFBuilder psfBuilder) {
             this.psfBuilder = psfBuilder;
             return this;
         }
         
+        @Override
         public FluorophoreCommand build() {
-            return new GenerateFluorophoresGrid3D(this);
+            return new GenerateFluorophoresGrid2D(this);
         }
     }
     
@@ -115,27 +103,23 @@ public final class GenerateFluorophoresGrid3D implements FluorophoreCommand {
      * Creates a new GenerateFluorophoresRandom2D instance.
      * @param builder A Builder instance for this class.
      */
-    private GenerateFluorophoresGrid3D(Builder builder) {
+    private GenerateFluorophoresGrid2D(Builder builder) {
         this.camera = builder.camera;
         this.fluorDynamics = builder.fluorDynamics;
         this.laser = builder.laser;
         this.spacing = builder.spacing;
         this.psfBuilder = builder.psfBuilder;
-        this.zLow = builder.zLow;
-        this.zHigh = builder.zHigh;
     }
     
     /**
      * Executes the command that generates the fluorophores.
      * 
-     * @return The list of Fluorophores.
+     * @return The list of fluorophores.
      */
     @Override
     public List<Fluorophore> generateFluorophores() {
-        return FluorophoreReceiver.generateFluorophoresGrid3D(
-                this.spacing,
-                this.zLow,
-                this.zHigh,
+        return FluorophoreReceiver.generateFluorophoresGrid2D(
+                this.spacing, 
                 this.camera,
                 this.laser,
                 this.psfBuilder,

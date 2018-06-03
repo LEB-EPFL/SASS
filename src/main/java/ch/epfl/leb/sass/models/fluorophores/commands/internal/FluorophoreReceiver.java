@@ -19,9 +19,7 @@ package ch.epfl.leb.sass.models.fluorophores.commands.internal;
 
 import ch.epfl.leb.sass.utils.RNG;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.components.Laser;
 import ch.epfl.leb.sass.models.components.Camera;
-import ch.epfl.leb.sass.models.components.Objective;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
 import ch.epfl.leb.sass.models.fluorophores.internal.DefaultFluorophore;
 import ch.epfl.leb.sass.models.illuminations.Illumination;

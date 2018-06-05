@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,6 @@
 package ch.epfl.leb.sass.models.emitters.internal;
 
 import ch.epfl.leb.sass.utils.RNG;
-import ch.epfl.leb.sass.models.legacy.Camera;
 import cern.jet.random.Poisson;
 import java.awt.geom.Point2D;
 import static java.lang.Math.sqrt;
@@ -85,39 +84,6 @@ public abstract class AbstractEmitter extends Point2D.Double  {
     protected Poisson poisson;
     
     /**
-     * Camera settings used for calculating PSF
-     * @deprecated Will be removed in future versions.
-     */
-    @Deprecated
-    protected final Camera camera;
-
-    /**
-     * Creates emitter at given position, and calculates its signature on the
-     * image (what does it look like when it is turned on).
-     * @param camera camera properties (needed for PSF calculation)
-     * @param x x-position in image [pixels, with sub-pixel precision]
-     * @param y y-position in image [pixels, with sub-pixel precision]
-     * @deprecated Camera instances are being decoupled from Emitter.
-     */
-    @Deprecated
-    public AbstractEmitter(Camera camera, double x, double y) {
-        super(x, y);
-        this.z = 0;
-        this.camera = camera;
-        this.poisson = RNG.getPoissonGenerator();
-        final double sigma = camera.fwhm_digital / 2.3548;
-        // radius cutoff
-        final double r = 3 * sigma;
-        // generate pixels which will be added to image when emitter is on
-        this.pixel_list = get_pixels_within_radius(r, camera.fwhm_digital);
-        
-        // Increment the number of emitters and assign the id.
-        this.numberOfEmitters += 1;
-        this.id = this.numberOfEmitters;
-        
-    }
-    
-    /**
      * Creates the emitter at given position, and calculates its image from the PSF and camera.
      * @param x x-position in image [pixels, with sub-pixel precision]
      * @param y y-position in image [pixels, with sub-pixel precision]
@@ -134,7 +100,6 @@ public abstract class AbstractEmitter extends Point2D.Double  {
         
         this.psf = psfBuilder.build();
         this.poisson = RNG.getPoissonGenerator();
-        this.camera = null;
         
         // generate pixels which will be added to the image when emitter is on
         // This must be called **after** super(x,y).

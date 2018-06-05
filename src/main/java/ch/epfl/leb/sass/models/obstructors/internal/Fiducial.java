@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * Author: Marcel Stefko
@@ -19,28 +19,13 @@
  */
 package ch.epfl.leb.sass.models.obstructors.internal;
 
-import ch.epfl.leb.sass.models.legacy.Camera;
 import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import ch.epfl.leb.sass.models.obstructors.Obstructor;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 
 public class Fiducial extends AbstractEmitter implements Obstructor {
     private final double brightness;
-    
-    /**
-     * 
-     * @param camera
-     * @param brightness
-     * @param x
-     * @param y
-     * @deprecated
-     */
-    @Deprecated
-    public Fiducial(Camera camera, double brightness, double x, double y) {
-        super(camera, x, y);
-        this.brightness = brightness;
-    }
-    
+        
     public Fiducial(PSFBuilder psfBuilder,
             double brightness,
             double x,

@@ -1605,13 +1605,10 @@ public class InitializeSimulation extends java.awt.Dialog {
 
         fluorophoreParentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Fluorophores"));
 
-        fluorophoreCardPanel.setBorder(null);
         fluorophoreCardPanel.setLayout(new java.awt.CardLayout());
 
         simpleFluorophoreCard.setBorder(null);
         simpleFluorophoreCard.setName("Simple"); // NOI18N
-
-        simpleFluorophorePanel.setBorder(null);
 
         jLabel33.setText("Signal");
 
@@ -1723,8 +1720,6 @@ public class InitializeSimulation extends java.awt.Dialog {
         palmFluorophoreCard.setBorder(null);
         palmFluorophoreCard.setName("PALM"); // NOI18N
 
-        palmFluorophorePanel.setBorder(null);
-
         jLabel100.setText("Signal");
 
         jLabel101.setText("Wavelength");
@@ -1755,7 +1750,12 @@ public class InitializeSimulation extends java.awt.Dialog {
         palmKA.setText("0.01");
 
         palmKB.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        palmKB.setText("0.01");
+        palmKB.setText("0.1");
+        palmKB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                palmKBActionPerformed(evt);
+            }
+        });
 
         palmKD1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         palmKD1.setText("0.065");
@@ -1915,10 +1915,15 @@ public class InitializeSimulation extends java.awt.Dialog {
         stormKDark.setText("10");
 
         stormKDarkRecovery.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        stormKDarkRecovery.setText("0.01");
+        stormKDarkRecovery.setText("0.1");
 
         stormKDarkRecoveryConstant.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        stormKDarkRecoveryConstant.setText("0.01");
+        stormKDarkRecoveryConstant.setText("0.001");
+        stormKDarkRecoveryConstant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stormKDarkRecoveryConstantActionPerformed(evt);
+            }
+        });
 
         jLabel124.setText("photons/frame");
 
@@ -2582,6 +2587,14 @@ public class InitializeSimulation extends java.awt.Dialog {
     private void palmKD2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_palmKD2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_palmKD2ActionPerformed
+
+    private void stormKDarkRecoveryConstantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stormKDarkRecoveryConstantActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stormKDarkRecoveryConstantActionPerformed
+
+    private void palmKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_palmKBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_palmKBActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

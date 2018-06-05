@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
 - `Observable`, `Listener`, and `Message` interfaces were added to
   handle the new (and more general) logging mechanism for state
   transitions of Microscope components.
+- `A SquareUniformIllumination` pattern was implemented to approximate
+  uniform planewave illumination across a square cross-section of the
+  sample.
   
 ### Changed
 - The `RPCServer` now provides access to simulatons through a
@@ -31,6 +34,8 @@ All notable changes to this project will be documented in this file.
 - `StateLogger`, `PositionLogger`, and `FrameLogger` were
   removed. Their functionality has been replaced by the new
   `Observable` interface and serialization routines.
+- The `legacy` package was removed, along with all deprecated code
+  associated with it.
 
 ## [v0.8.0]
 

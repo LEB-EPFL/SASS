@@ -16,8 +16,13 @@ import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRa
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.GenerateUniformBackground;
 import ch.epfl.leb.sass.models.components.internal.*;
 import ch.epfl.leb.sass.models.psfs.internal.Gaussian3D;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.models.illuminations.internal.SquareUniformIllumination;
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+import ch.epfl.leb.sass.models.samples.internal.UniformRefractiveIndex;
 import ch.epfl.leb.sass.utils.RNG;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 // The seed determines the outputs of the random number generator.
 RNG.setSeed(42);
@@ -50,6 +55,16 @@ DefaultLaser.Builder laserBuilder = new DefaultLaser.Builder();
 laserBuilder.currentPower(0.0);
 laserBuilder.minPower(0.0);
 laserBuilder.maxPower(500.0);
+laserBuilder.wavelength(0.642);
+
+// Illumination profile
+RefractiveIndex n = new UniformRefractiveIndex(new Complex(1.33));
+SquareUniformIllumination.Builder illumBuilder
+        = new SquareUniformIllumination.Builder();
+illumBuilder.height(32 * 6.45 / 60); // microns
+illumBuilder.orientation(new Vector3D(1.0, 0, 0)); // x-polarized
+illumBuilder.refractiveIndex(n);
+illumBuilder.width(32 * 6.45 / 60); // microns
 
 // Stage
 DefaultStage.Builder stageBuilder = new DefaultStage.Builder();
@@ -110,7 +125,8 @@ Microscope microscope = new Microscope(
     fluorPosBuilder,
     fluorPropBuilder,
     fidBuilder,
-    backgroundBuilder);
+    backgroundBuilder,
+    illumBuilder);
 
 // The simulation engine
 DefaultSimulator generator = new DefaultSimulator(microscope);

@@ -2516,8 +2516,11 @@
                     <Component class="javax.swing.JTextField" name="palmKB">
                       <Properties>
                         <Property name="horizontalAlignment" type="int" value="4"/>
-                        <Property name="text" type="java.lang.String" value="0.01"/>
+                        <Property name="text" type="java.lang.String" value="0.1"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="palmKBActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="palmKD1">
                       <Properties>
@@ -2777,14 +2780,17 @@
                     <Component class="javax.swing.JTextField" name="stormKDarkRecovery">
                       <Properties>
                         <Property name="horizontalAlignment" type="int" value="4"/>
-                        <Property name="text" type="java.lang.String" value="0.01"/>
+                        <Property name="text" type="java.lang.String" value="0.1"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="stormKDarkRecoveryConstant">
                       <Properties>
                         <Property name="horizontalAlignment" type="int" value="4"/>
-                        <Property name="text" type="java.lang.String" value="0.01"/>
+                        <Property name="text" type="java.lang.String" value="0.001"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stormKDarkRecoveryConstantActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel124">
                       <Properties>

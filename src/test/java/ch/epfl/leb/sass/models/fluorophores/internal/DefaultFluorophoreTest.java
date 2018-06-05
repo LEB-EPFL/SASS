@@ -17,7 +17,14 @@
  */
 package ch.epfl.leb.sass.models.fluorophores.internal;
 
+import ch.epfl.leb.sass.models.psfs.PSF;
+import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.photophysics.StateSystem;
+import ch.epfl.leb.sass.models.illuminations.Illumination;
+import ch.epfl.leb.sass.logging.Listener;
+import ch.epfl.leb.sass.logging.internal.FluorophoreStateTransition;
+
+
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -26,12 +33,6 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-
-import ch.epfl.leb.sass.logging.Listener;
-import ch.epfl.leb.sass.logging.internal.FluorophoreStateTransition;
-import ch.epfl.leb.sass.models.psfs.PSFBuilder;
-import ch.epfl.leb.sass.models.psfs.PSF;
-import ch.epfl.leb.sass.models.legacy.Camera;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
  * @author Kyle M. Douglass
  */
 public class DefaultFluorophoreTest {
-    private Camera dummyCamera = null;
+    private Illumination dummyIllumination = null;
     private StateSystem dummyStateSystem = null;
     private PSFBuilder dummyPSFBuilder = null;
     private PSF dummyPSF = null;
@@ -54,7 +55,7 @@ public class DefaultFluorophoreTest {
     
     @Before
     public void setUp() {
-        dummyCamera = mock(Camera.class);
+        dummyIllumination = mock(Illumination.class);
         dummyStateSystem = mock(StateSystem.class);
         dummyPSFBuilder = mock(PSFBuilder.class);
         dummyPSF = mock(PSF.class);
@@ -87,8 +88,8 @@ public class DefaultFluorophoreTest {
                .generateSignature(ArgumentMatchers.any(ArrayList.class));
         
         DefaultFluorophore testFluor = new DefaultFluorophore(
-            dummyPSFBuilder, signal, dummyStateSystem, startState, x, y, z
-        );
+            dummyPSFBuilder, dummyIllumination, signal, dummyStateSystem,
+            startState, x, y, z);
         
         // Add two listeners, but immediately remove the first.
         testFluor.addListener(testListener);
@@ -128,8 +129,8 @@ public class DefaultFluorophoreTest {
                .generateSignature(ArgumentMatchers.any(ArrayList.class));
         
         DefaultFluorophore testFluor = new DefaultFluorophore(
-            dummyPSFBuilder, signal, dummyStateSystem, startState, x, y, z
-        );
+            dummyPSFBuilder, dummyIllumination, signal, dummyStateSystem,
+            startState, x, y, z);
         
         testFluor.addListener(testListener);
         testFluor.setChanged();
@@ -161,8 +162,8 @@ public class DefaultFluorophoreTest {
                .generateSignature(ArgumentMatchers.any(ArrayList.class));
         
         DefaultFluorophore testFluor = new DefaultFluorophore(
-            dummyPSFBuilder, signal, dummyStateSystem, startState, x, y, z
-        );
+            dummyPSFBuilder, dummyIllumination, signal, dummyStateSystem,
+            startState, x, y, z);
         
         testFluor.addListener(testListener);
         testFluor.setChanged();
@@ -174,33 +175,6 @@ public class DefaultFluorophoreTest {
         assertEquals(msg.CURRENT_STATE, testListener.currentState);
         assertEquals(msg.NEXT_STATE, testListener.nextState);
 
-    }
-    
-    /**
-     * Test that fluorophores are assigned their proper IDs in successive order.
-     */
-    @Test
-    public void testFluorophoreIdAssignment() {
-        DefaultFluorophore testFluor= new DefaultFluorophore(
-            dummyCamera,
-            1000,
-            dummyStateSystem,
-            -1,
-            0,
-            0
-        );
-        int currID = testFluor.getId();
-        
-        // Create a new DefaultFluorophore and test whether its id is incremented
-        DefaultFluorophore testFluorNext = new DefaultFluorophore(
-            dummyCamera,
-            1000,
-            dummyStateSystem,
-            -1,
-            0,
-            0
-        );
-        assertEquals(++currID, testFluorNext.getId());
     }
     
     /**
@@ -223,8 +197,8 @@ public class DefaultFluorophoreTest {
                .generateSignature(ArgumentMatchers.any(ArrayList.class));
         
         DefaultFluorophore testFluor = new DefaultFluorophore(
-            dummyPSFBuilder, signal, dummyStateSystem, startState, x, y, z
-        );
+            dummyPSFBuilder, dummyIllumination, signal, dummyStateSystem,
+            startState, x, y, z);
         
         String result = testFluor.toJson().toString();
         

@@ -18,20 +18,14 @@
 package ch.epfl.leb.sass.models.components;
 
 import ch.epfl.leb.sass.models.Model;
+import ch.epfl.leb.sass.logging.Observable;
 
 /**
  * Defines methods common to Lasers.
  * 
  * @author Kyle M. Douglass
  */
-public interface Laser extends Model {
-    
-    /**
-     * Sets the light source's power.
-     * 
-     * @param newPower The power of the light source.
-     */
-    public void setPower(double newPower);
+public interface Laser extends Model, Observable {
     
     /**
      * Returns the current power if the laser.
@@ -39,5 +33,19 @@ public interface Laser extends Model {
      * @return The current laser power.
      */
     public double getPower();
+    
+    /**
+     * Returns the wavelength of the laser.
+     * 
+     * @return The laser's wavelength.
+     */
+    public double getWavelength();
+    
+    /**
+     * Sets the light source's power.
+     * 
+     * @param newPower The power of the light source.
+     */
+    public void setPower(double newPower);
     
 }

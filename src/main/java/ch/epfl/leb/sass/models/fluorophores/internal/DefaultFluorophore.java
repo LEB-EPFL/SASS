@@ -20,10 +20,11 @@ package ch.epfl.leb.sass.models.fluorophores.internal;
 import ch.epfl.leb.sass.models.photophysics.StateSystem;
 import ch.epfl.leb.sass.models.emitters.internal.AbstractEmitter;
 import ch.epfl.leb.sass.utils.RNG;
-import ch.epfl.leb.sass.models.legacy.Camera;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.fluorophores.Fluorophore;
+import ch.epfl.leb.sass.models.illuminations.Illumination;
 import ch.epfl.leb.sass.logging.Listener;
+import ch.epfl.leb.sass.logging.WrongMessageTypeException;
 import ch.epfl.leb.sass.logging.internal.FluorophoreStateTransition;
 
 import com.google.gson.Gson;
@@ -37,13 +38,23 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A general fluorescent molecule which emits light.
+ * 
+ * This class directly implements the methods of Observables, rather than
+ * extending AbstractObservable, because Java does not support multiple
+ * inheritance.
+ * 
  * @author Marcel Stefko
  * @author Kyle M. Douglass
  */
 public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
+    
+    private final static Logger LOGGER
+            = Logger.getLogger(DefaultFluorophore.class.getName());
     
     /**
      * A flag indicating whether the state of this object has changed.
@@ -51,6 +62,16 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
      * This flag is used only when notifying listeners of a state change.
      */
     private boolean changed;
+    
+    /**
+     * The illumination profile on this fluorophore.
+     */
+    private Illumination illumination;
+    
+    /**
+     * The listener that listens to changes in the local irradiance.
+     */
+    private IlluminationListener illuminationListener;
     
     /**
      * The list of listeners that are tracking this object.
@@ -91,31 +112,10 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
      */
     private final double signal;
     
-    /**
-     * Initialize fluorophore and calculate its pattern on camera
-     * @param camera Camera used for calculating diffraction pattern
-     * @param signal No of photons per frame.
-     * @param state_system Internal state system for this fluorophore
-     * @param start_state Initial state number
-     * @param x x-position in pixels
-     * @param y y-position in pixels
-     * @deprecated 
-     */
-    @Deprecated
-    public DefaultFluorophore(Camera camera, double signal, StateSystem state_system, int start_state, double x, double y) {
-        super(camera, x, y);
-        this.state_system = state_system;
-        this.signal = signal;
-        this.current_state = start_state;
-        if (start_state >= state_system.getNStates()) {
-            throw new IllegalArgumentException("Starting state no. is out of bounds.");
-        }
-        this.random = RNG.getUniformGenerator();
-    }
-    
      /**
      * Initialize fluorophore and calculate its pattern on camera
      * @param psfBuilder The Builder for calculating microscope PSFs.
+     * @param illumination The illumination profile on the sample.
      * @param signal Number of photons per frame.
      * @param state_system Internal state system for this fluorophore
      * @param start_state Initial state number
@@ -125,6 +125,7 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
      */
     public DefaultFluorophore(
             PSFBuilder psfBuilder,
+            Illumination illumination,
             double signal,
             StateSystem state_system,
             int start_state,
@@ -133,6 +134,7 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
             double z) {
         super(x, y, z, psfBuilder);
         this.state_system = state_system;
+        this.illumination = illumination;
         this.signal = signal;
         this.current_state = start_state;
         this.changed = false;
@@ -141,6 +143,7 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
                                                "bounds.");
         }
         this.random = RNG.getUniformGenerator();
+        this.illuminationListener = new IlluminationListener();
     }
 
     /**
@@ -166,6 +169,16 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
      */
     public int getCurrentState() {
         return current_state;
+    }
+    
+    /**
+     * Returns the Listener that is attached to the illumination profile.
+     * 
+     * @return The illumination Listener.
+     */
+    @Override
+    public Listener getIlluminationListener() {
+        return this.illuminationListener;
     }
     
     /**
@@ -267,7 +280,16 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
     public void notifyListeners(Object data) {
         if (changed) {
             for (Listener l: listeners) {
-                l.update(data);
+                try {
+                    l.update(data);
+                } catch (WrongMessageTypeException ex) {
+                    String err = "Could not notify the Listner "
+                                 + l.getClass().getName() + "of the message " +
+                                 "sent from the Observable "
+                                 + this.getClass().getName() + "because the " +
+                                 "wrong type of message was sent.";
+                    LOGGER.log(Level.SEVERE, err);
+                }
             }
             changed = false;
         }
@@ -275,7 +297,10 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
     
     /**
      * Recalculates the lifetimes of this emitter based on current laser power.
+     * 
      * @param laserPower current laser power
+     * @deprecated This is now taken care of by the Fluorophore's
+     *           IrradianceListener.
      */
     @Override
     public void recalculateLifetimes(double laserPower) {
@@ -364,6 +389,31 @@ public class DefaultFluorophore extends AbstractEmitter implements Fluorophore {
                                              new DefaultFluorophoreSerializer())
                         .create();
         return gson.toJsonTree(this);
+    }
+    
+    /**
+     * Listens to the irradiance profile and changes the fluorophore's state accordingly.
+     */
+    class IlluminationListener implements Listener {
+
+        /**
+         * This method is called by an Illumination profile when its state has changed.
+         * 
+         * @param data The data object that is passed from the Observable, or
+         *             null.
+         */
+        public void update(Object data) throws WrongMessageTypeException {
+            if (isBleached()) {
+                // Unsubscribe from updates from the illumination profile.
+                illumination.deleteListener(illuminationListener);
+                return;
+            }
+            double irrad = illumination.getIrradiance(x, y, z);
+            
+            // Recompute the lifetimes of the fluorescence states
+            state_system.recalculate_lifetimes(irrad);
+            
+        }
     }
 }
 

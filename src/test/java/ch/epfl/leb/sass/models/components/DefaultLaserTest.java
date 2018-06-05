@@ -37,7 +37,7 @@ public class DefaultLaserTest {
     @Before
     public void setUp() {
         DefaultLaser.Builder builder = new DefaultLaser.Builder();
-        builder.currentPower(10).maxPower(100).minPower(0);
+        builder.currentPower(10).maxPower(100).minPower(0).wavelength(0.642);
         this.laser = builder.build();
     }
     /**
@@ -64,6 +64,18 @@ public class DefaultLaserTest {
     }
     
     /**
+     * Test of getWavelength method, of class DefaultLaser.
+     */
+    @Test
+    public void testGetWavelength() {
+        System.out.println("getWavelength");
+        DefaultLaser instance = this.laser;
+        double expResult = 0.642;
+        double result = instance.getWavelength();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
      * Test of toJson method, of class DefaultLaser.
      */
     @Test
@@ -78,5 +90,7 @@ public class DefaultLaserTest {
         
         assertTrue(String.valueOf(instance.getPower())
                       .equals(json.get("currentPower").getAsString()));
+        assertTrue(String.valueOf(instance.getWavelength())
+                      .equals(json.get("wavelength").getAsString()));
     }
 }

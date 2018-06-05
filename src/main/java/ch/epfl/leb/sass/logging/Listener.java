@@ -29,6 +29,6 @@ public interface Listener {
      * 
      * @param data The data object that is passed from the Observable.
      */
-    public void update(Object data);
+    public void update(Object data) throws WrongMessageTypeException;
     
 }

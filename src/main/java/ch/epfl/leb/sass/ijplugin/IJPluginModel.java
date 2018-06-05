@@ -17,6 +17,12 @@
  */
 package ch.epfl.leb.sass.ijplugin;
 
+import ch.epfl.leb.sass.models.fluorophores.commands.FluorophoreCommandBuilder;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresGrid3D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresRandom3D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresGrid2D;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresFromCSV;
+import ch.epfl.leb.sass.models.fluorophores.commands.internal.GenerateFluorophoresRandom2D;
 import ch.epfl.leb.sass.models.components.internal.DefaultObjective;
 import ch.epfl.leb.sass.models.components.internal.DefaultStage;
 import ch.epfl.leb.sass.models.components.internal.DefaultLaser;
@@ -27,12 +33,13 @@ import ch.epfl.leb.sass.models.photophysics.internal.SimpleDynamics;
 import ch.epfl.leb.sass.models.photophysics.internal.PalmDynamics;
 import ch.epfl.leb.sass.models.psfs.PSFBuilder;
 import ch.epfl.leb.sass.models.psfs.internal.*;
-import ch.epfl.leb.sass.models.fluorophores.internal.commands.*;
 import ch.epfl.leb.sass.models.backgrounds.BackgroundCommandBuilder;
 import ch.epfl.leb.sass.models.backgrounds.internal.commands.*;
 import ch.epfl.leb.sass.models.Microscope;
-import ch.epfl.leb.sass.models.components.*;
+import ch.epfl.leb.sass.models.illuminations.internal.SquareUniformIllumination;
 import ch.epfl.leb.sass.models.obstructors.internal.commands.GenerateFiducialsRandom2D;
+import ch.epfl.leb.sass.models.samples.RefractiveIndex;
+import ch.epfl.leb.sass.models.samples.internal.UniformRefractiveIndex;
 import ij.IJ;
 import java.io.File;
 import java.io.Serializable;
@@ -41,6 +48,8 @@ import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * IJPluginModel for the InitializeSimulation window.
@@ -558,6 +567,8 @@ public class IJPluginModel implements Serializable {
         laserBuilder.currentPower(laserCurrentPower);
         laserBuilder.minPower(laserMinPower);
         laserBuilder.maxPower(laserMaxPower);
+        // TODO: Make this an option later
+        laserBuilder.wavelength(0.642);
 
         if (emittersCurrentSelection.equals(emittersRandomButtonText) & !(emitters3DCheckBoxEnabled)) {
             // Random 2D fluorophore distributions
@@ -669,6 +680,16 @@ public class IJPluginModel implements Serializable {
             
         }
         
+        // TODO: Add illumination setup to the GUI
+        RefractiveIndex n = new UniformRefractiveIndex(new Complex(1.33));
+        SquareUniformIllumination.Builder illumBuilder
+                = new SquareUniformIllumination.Builder();
+        illumBuilder.height(cameraNY * cameraPixelSize / objectiveMag);
+        illumBuilder.orientation(new Vector3D(1.0, 0, 0)); // x-polarized
+        illumBuilder.refractiveIndex(n);
+        illumBuilder.width(cameraNY * cameraPixelSize / objectiveMag);
+        
+        
         return new Microscope(
             cameraBuilder,
             laserBuilder,
@@ -678,7 +699,8 @@ public class IJPluginModel implements Serializable {
             fluorPosBuilder,
             fluorPropBuilder,
             fidBuilder,
-            backgroundBuilder
+            backgroundBuilder,
+            illumBuilder
         );
     }
     
